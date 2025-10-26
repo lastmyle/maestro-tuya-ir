@@ -172,9 +172,7 @@ class HVACCodeGenerator:
 
         return commands
 
-    def _validate_parameters(
-        self, power: str, mode: str, temperature: int, fan: str, swing: str
-    ):
+    def _validate_parameters(self, power: str, mode: str, temperature: int, fan: str, swing: str):
         """Validate command parameters against protocol capabilities."""
         caps = self.protocol_def.capabilities
 

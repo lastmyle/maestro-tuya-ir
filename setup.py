@@ -2,7 +2,6 @@
 Setup script for building C++ bindings using pybind11.
 """
 
-
 from pybind11.setup_helpers import Pybind11Extension, build_ext
 from setuptools import setup
 

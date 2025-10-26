@@ -57,8 +57,7 @@ class ProtocolDefinition:
         # Check header timing
         mark, space = self.header
         return (
-            abs(timings[0] - mark) <= self.tolerance
-            and abs(timings[1] - space) <= self.tolerance
+            abs(timings[0] - mark) <= self.tolerance and abs(timings[1] - space) <= self.tolerance
         )
 
 
@@ -174,9 +173,7 @@ def identify_protocol(timings: list[int], manufacturer_hint: Optional[str] = Non
     result = identify_protocol_irremote(timings, tolerance_multiplier=1.5)
 
     if not result:
-        raise ValueError(
-            f"Could not identify protocol. Header: [{timings[0]}, {timings[1]}]"
-        )
+        raise ValueError(f"Could not identify protocol. Header: [{timings[0]}, {timings[1]}]")
 
     # Convert IRremoteESP8266 result to our format
     manufacturers = result["manufacturer"]
@@ -215,15 +212,29 @@ def identify_protocol(timings: list[int], manufacturer_hint: Optional[str] = Non
 
 def get_protocol_by_name(protocol_name: str) -> Optional[ProtocolDefinition]:
     """
-    Get protocol definition by name.
+    Get protocol definition by name (case-insensitive).
 
     Args:
-        protocol_name: Protocol name (e.g., "fujitsu_ac")
+        protocol_name: Protocol name (e.g., "fujitsu_ac" or "FUJITSU_AC")
 
     Returns:
         ProtocolDefinition or None if not found
     """
-    return PROTOCOLS.get(protocol_name)
+    # Try exact match first
+    if protocol_name in PROTOCOLS:
+        return PROTOCOLS[protocol_name]
+
+    # Try case-insensitive match
+    protocol_lower = protocol_name.lower()
+    if protocol_lower in PROTOCOLS:
+        return PROTOCOLS[protocol_lower]
+
+    # Try with underscores replaced by spaces (e.g., "FUJITSU AC" -> "fujitsu_ac")
+    protocol_normalized = protocol_lower.replace(" ", "_")
+    if protocol_normalized in PROTOCOLS:
+        return PROTOCOLS[protocol_normalized]
+
+    return None
 
 
 def get_supported_manufacturers() -> list[str]:

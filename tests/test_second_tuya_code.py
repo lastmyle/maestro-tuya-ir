@@ -61,7 +61,7 @@ def test_identify_second_code_protocol():
         print(f"  Header pattern: [{timings[0]}, {timings[1]}]")
 
         # Verify protocol detection
-        assert protocol_info['confidence'] >= 0.5
+        assert protocol_info["confidence"] >= 0.5
 
     except ValueError as e:
         print(f"\n⚠️  Could not identify protocol: {e}")
@@ -103,7 +103,7 @@ def test_compare_two_codes():
         print(f"\n  Code 1: {proto1['manufacturer']} ({proto1['protocol']})")
         print(f"  Code 2: {proto2['manufacturer']} ({proto2['protocol']})")
 
-        if proto1['manufacturer'] == proto2['manufacturer']:
+        if proto1["manufacturer"] == proto2["manufacturer"]:
             print(f"\n✅ Both codes are from {proto1['manufacturer']}")
         else:
             print("\n⚠️  Different manufacturers detected:")

@@ -50,4 +50,4 @@ def test_fastlz_decompress_invalid():
     """Test that invalid data raises ValueError."""
     with pytest.raises(ValueError):
         # Invalid compressed data should raise an error
-        fastlz_decompress(b"\xFF" * 100)
+        fastlz_decompress(b"\xff" * 100)

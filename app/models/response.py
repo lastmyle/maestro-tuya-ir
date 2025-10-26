@@ -69,7 +69,5 @@ class HealthResponse(BaseModel):
     """Response model for /api/health endpoint."""
 
     status: str = Field("ok", description="Service status")
-    supportedManufacturers: list[str] = Field(
-        ..., description="List of supported manufacturers"
-    )
+    supportedManufacturers: list[str] = Field(..., description="List of supported manufacturers")
     version: str = Field("1.0.0", description="API version")

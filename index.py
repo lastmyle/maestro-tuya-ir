@@ -13,8 +13,7 @@ from app.api import decode, encode, generate, health, identify
 app = FastAPI(
     title="Maestro Tuya IR Bridge",
     description=(
-        "Translate, decode, and generate complete IR command sets "
-        "for Tuya-based HVAC devices"
+        "Translate, decode, and generate complete IR command sets for Tuya-based HVAC devices"
     ),
     version="1.0.0",
     docs_url="/",  # Swagger UI at root

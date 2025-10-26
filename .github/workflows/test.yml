@@ -1,0 +1,49 @@
+name: Tests
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          version: "latest"
+
+      - name: Set up Python
+        run: uv python install 3.12
+
+      - name: Install system dependencies for C++ compilation
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential python3-dev
+
+      - name: Install dependencies
+        run: uv sync --all-extras
+
+      - name: Build C++ extensions (REQUIRED)
+        run: uv run python setup.py build_ext --inplace
+
+      - name: Verify C++ bindings
+        run: |
+          uv run python -c "from app.core.protocols import IRREMOTE_AVAILABLE; assert IRREMOTE_AVAILABLE, 'C++ bindings not available'"
+          echo "✅ C++ bindings successfully loaded"
+
+      - name: Run tests
+        run: uv run pytest tests/ -v --tb=short
+
+      - name: Upload coverage reports
+        if: always()
+        uses: codecov/codecov-action@v4
+        with:
+          files: ./coverage.xml
+          fail_ci_if_error: false

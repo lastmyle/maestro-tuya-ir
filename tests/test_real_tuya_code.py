@@ -91,14 +91,20 @@ def test_identify_real_fujitsu_protocol():
         print(f"  Capabilities: {protocol_info['capabilities']}")
 
         # Verify protocol detection
-        assert protocol_info['manufacturer'] in [
-            'Fujitsu', 'Daikin', 'Mitsubishi', 'Gree',
-            'Carrier', 'Hisense', 'Hitachi', 'Hyundai'
+        assert protocol_info["manufacturer"] in [
+            "Fujitsu",
+            "Daikin",
+            "Mitsubishi",
+            "Gree",
+            "Carrier",
+            "Hisense",
+            "Hitachi",
+            "Hyundai",
         ]
-        assert protocol_info['confidence'] >= 0.5
-        assert 'modes' in protocol_info['capabilities']
-        assert 'fanSpeeds' in protocol_info['capabilities']
-        assert 'tempRange' in protocol_info['capabilities']
+        assert protocol_info["confidence"] >= 0.5
+        assert "modes" in protocol_info["capabilities"]
+        assert "fanSpeeds" in protocol_info["capabilities"]
+        assert "tempRange" in protocol_info["capabilities"]
 
     except ValueError as e:
         # If protocol can't be identified, that's also valid
@@ -180,6 +186,7 @@ def test_real_command_structure():
 
     # Count unique timing values (can indicate mark/space patterns)
     from collections import Counter
+
     timing_counts = Counter(timings)
     most_common = timing_counts.most_common(10)
     print("  Most common timings:")

@@ -12,8 +12,7 @@ try:
     import _irremote
 except ImportError as e:
     raise ImportError(
-        "C++ bindings not available. Build the extension with: "
-        "python setup.py build_ext --inplace"
+        "C++ bindings not available. Build the extension with: python setup.py build_ext --inplace"
     ) from e
 
 
