@@ -118,7 +118,7 @@ cd maestro-tuya-ir
 uv sync
 
 # Run with multiple workers
-uv run uvicorn main:app --host 0.0.0.0 --port 8000 --workers 4
+uv run uvicorn index:app --host 0.0.0.0 --port 8000 --workers 4
 ```
 
 ### Systemd Service Example
@@ -134,7 +134,7 @@ After=network.target
 Type=simple
 User=www-data
 WorkingDirectory=/opt/maestro-tuya-ir
-ExecStart=/root/.cargo/bin/uv run uvicorn main:app --host 0.0.0.0 --port 8000 --workers 4
+ExecStart=/root/.cargo/bin/uv run uvicorn index:app --host 0.0.0.0 --port 8000 --workers 4
 Restart=always
 RestartSec=10
 
@@ -188,11 +188,11 @@ Use [Mangum](https://mangum.io/) to wrap FastAPI for Lambda:
    uv add mangum
    ```
 
-2. Update `main.py`:
+2. Update `index.py`:
    ```python
    from mangum import Mangum
 
-   # At the end of main.py
+   # At the end of index.py
    handler = Mangum(app)
    ```
 

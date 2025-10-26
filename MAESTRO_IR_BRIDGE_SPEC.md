@@ -28,7 +28,7 @@ cd maestro-tuya-ir-bridge
 uv sync
 
 # Run the development server
-uv run uvicorn main:app --reload --host 0.0.0.0 --port 8000
+uv run uvicorn index:app --reload --host 0.0.0.0 --port 8000
 ```
 
 ### Running Tests
@@ -652,7 +652,7 @@ maestro-tuya-hvac-ir-bridge/
 ├── .python-version              # Python version (3.14)
 ├── Dockerfile
 ├── .gitignore
-├── main.py                      # FastAPI app entry point
+├── index.py                     # FastAPI app entry point
 ├── app/
 │   ├── __init__.py
 │   ├── api/

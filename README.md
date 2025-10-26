@@ -33,7 +33,7 @@ cd maestro-tuya-ir-bridge
 uv sync
 
 # Run the development server
-uv run uvicorn main:app --reload --host 0.0.0.0 --port 8000
+uv run uvicorn index:app --reload --host 0.0.0.0 --port 8000
 ```
 
 The API will be available at `http://localhost:8000` with interactive docs at `http://localhost:8000/`.
@@ -205,7 +205,7 @@ maestro-tuya-ir-bridge/
 │       └── response.py
 ├── tests/                 # Test suite
 ├── data/                  # Sample data
-├── main.py               # FastAPI application
+├── index.py              # FastAPI application
 ├── pyproject.toml        # Project dependencies
 ├── uv.lock              # Locked dependencies
 └── Dockerfile           # Docker configuration
