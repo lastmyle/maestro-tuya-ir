@@ -2,9 +2,18 @@
 HVAC IR protocol detection and identification.
 
 Identifies manufacturer and protocol from IR timing patterns.
+REQUIRES IRremoteESP8266 C++ bindings.
 """
 
 from typing import Optional
+
+# Import required C++ bindings - application will fail if not available
+from app.core.irremote_bindings import (
+    IRProtocolDatabase,
+    identify_protocol_irremote,
+)
+
+IRREMOTE_AVAILABLE = True  # Always True since import is required
 
 
 class ProtocolDefinition:
@@ -58,18 +67,6 @@ class ProtocolDefinition:
 PROTOCOLS = {
     "fujitsu_ac": ProtocolDefinition(
         name="fujitsu_ac",
-        manufacturer="Fujitsu",
-        header=(9000, 4500),
-        tolerance=300,
-        capabilities={
-            "modes": ["cool", "heat", "dry", "fan", "auto"],
-            "fanSpeeds": ["low", "medium", "high", "auto", "quiet"],
-            "tempRange": {"min": 16, "max": 30, "unit": "celsius"},
-            "features": ["swing", "quiet", "powerful"],
-        },
-    ),
-    "fujitsu_ac_alt": ProtocolDefinition(
-        name="fujitsu_ac_alt",
         manufacturer="Fujitsu",
         header=(3300, 1600),
         tolerance=300,
@@ -154,6 +151,7 @@ def identify_protocol(timings: list[int], manufacturer_hint: Optional[str] = Non
     Identify HVAC protocol from raw IR timings.
 
     Uses timing pattern analysis to match against known protocols.
+    Will use IRremoteESP8266 C++ bindings if available for improved detection.
 
     Args:
         timings: Raw microsecond timing array
@@ -173,41 +171,46 @@ def identify_protocol(timings: list[int], manufacturer_hint: Optional[str] = Non
     if not timings or len(timings) < 2:
         raise ValueError("Insufficient timing data for protocol identification")
 
-    # If manufacturer hint provided, try that first
-    if manufacturer_hint:
-        for protocol_name, protocol in PROTOCOLS.items():
-            if protocol.manufacturer.lower() == manufacturer_hint.lower():
-                if protocol.matches(timings):
-                    return {
-                        "protocol": protocol.name,
-                        "manufacturer": protocol.manufacturer,
-                        "confidence": 0.98,
-                        "capabilities": protocol.capabilities,
-                    }
+    # Use C++ bindings (REQUIRED)
+    result = identify_protocol_irremote(timings, tolerance_multiplier=1.5)
 
-    # Try all protocols
-    matches = []
-    for protocol_name, protocol in PROTOCOLS.items():
-        if protocol.matches(timings):
-            # Calculate confidence based on header match quality
-            mark_diff = abs(timings[0] - protocol.header[0])
-            space_diff = abs(timings[1] - protocol.header[1])
-            total_diff = mark_diff + space_diff
-            confidence = max(0.5, 1.0 - (total_diff / (protocol.tolerance * 2)))
-            matches.append((protocol, confidence))
-
-    if not matches:
+    if not result:
         raise ValueError(
             f"Could not identify protocol. Header: [{timings[0]}, {timings[1]}]"
         )
 
-    # Return best match
-    best_protocol, best_confidence = max(matches, key=lambda x: x[1])
+    # Convert IRremoteESP8266 result to our format
+    manufacturers = result["manufacturer"]
+    primary_manufacturer = manufacturers[0] if manufacturers else "Unknown"
+
+    # Get capabilities from our local definitions if available
+    protocol_name_lower = result["protocol"].lower()
+    capabilities = None
+
+    # Try to find matching local protocol for capabilities
+    for local_protocol in PROTOCOLS.values():
+        if (
+            local_protocol.manufacturer == primary_manufacturer
+            or local_protocol.name == protocol_name_lower
+        ):
+            capabilities = local_protocol.capabilities
+            break
+
+    # If no local match, use default capabilities
+    if not capabilities:
+        capabilities = {
+            "modes": ["cool", "heat", "dry", "fan", "auto"],
+            "fanSpeeds": ["auto", "low", "medium", "high"],
+            "tempRange": {"min": 16, "max": 30, "unit": "celsius"},
+            "features": ["swing"],
+        }
+
     return {
-        "protocol": best_protocol.name,
-        "manufacturer": best_protocol.manufacturer,
-        "confidence": round(best_confidence, 2),
-        "capabilities": best_protocol.capabilities,
+        "protocol": result["protocol"],
+        "manufacturer": primary_manufacturer,
+        "confidence": result["confidence"],
+        "capabilities": capabilities,
+        "source": "irremote_esp8266",
     }
 
 

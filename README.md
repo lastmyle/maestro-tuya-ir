@@ -10,14 +10,16 @@ Translate, decode, and generate complete IR command sets for Tuya-based HVAC dev
 - **Identify Devices**: Detect manufacturer and protocol from a single IR code
 - **Generate Command Sets**: Create complete HVAC control databases (245+ commands)
 - **Encode Commands**: Generate individual IR codes for specific settings
-- **Multi-Manufacturer Support**: Fujitsu, Daikin, Mitsubishi, Gree, Carrier, and more
+- **IRremoteESP8266 Integration**: Enhanced protocol detection using C++ bindings to the comprehensive IRremoteESP8266 library (40+ HVAC manufacturers)
+- **Multi-Manufacturer Support**: Fujitsu, Daikin, Mitsubishi, Gree, LG, Samsung, Panasonic, Hitachi, Toshiba, Sharp, Haier, Midea, and many more
 
 ## Quick Start
 
 ### Prerequisites
 
-- Python 3.14+
+- Python 3.11+
 - [uv](https://docs.astral.sh/uv/) package manager
+- **C++ compiler** (gcc, clang, or MSVC) - **REQUIRED** for building protocol detection bindings
 
 ### Installation
 
@@ -29,12 +31,21 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 git clone https://github.com/yourusername/maestro-tuya-ir-bridge.git
 cd maestro-tuya-ir-bridge
 
-# Install dependencies
+# Install dependencies and build C++ extensions (REQUIRED)
+make install
+
+# Or manually:
 uv sync
+uv run python setup.py build_ext --inplace
 
 # Run the development server
 uv run uvicorn index:app --reload --host 0.0.0.0 --port 8000
 ```
+
+**Important**: C++ bindings are **REQUIRED** for this application. The `make install` command builds them automatically. If you don't have a C++ compiler, install one first:
+- **macOS**: `xcode-select --install`
+- **Linux**: `sudo apt install build-essential` (Debian/Ubuntu)
+- **Windows**: Install Visual Studio Build Tools
 
 The API will be available at `http://localhost:8000` with interactive docs at `http://localhost:8000/`.
 
@@ -134,16 +145,62 @@ curl http://localhost:8000/api/health
 
 ## Supported Manufacturers
 
-- **Fujitsu** - Full support with extended features
-- **Daikin** - Including Econo and Powerful modes
-- **Mitsubishi** - Standard HVAC controls
+Via **IRremoteESP8266 C++ Bindings** (40+ manufacturers):
+- **Fujitsu** (FUJITSU_AC, FUJITSU_AC264) - Full support with extended features
+- **Daikin** (DAIKIN, DAIKIN2) - Including Econo and Powerful modes
+- **Mitsubishi** (MITSUBISHI_AC, MITSUBISHI_HEAVY_152) - Standard HVAC controls
 - **Gree** - With Turbo mode support
-- **Carrier** - Basic HVAC functions
-- **Hisense** - Standard protocol support
-- **Hitachi** - Basic support
-- **Hyundai** - Standard controls
+- **LG** - Including General Electric variants
+- **Samsung** - AR series support
+- **Panasonic** - CS series support
+- **Hitachi** (HITACHI_AC, HITACHI_AC1) - Multiple protocol variants
+- **Toshiba** / **Carrier** - RAS series
+- **Sharp** - CRMC-A series
+- **Haier** / **Daichi** - HSU series
+- **Midea** / **Comfee** / **Electrolux** / **Keystone** / **Trotec** - MWMA series
+- **Coolix** (Midea, Tokio, Airwell, Beko, Bosch) - Multi-brand protocol
+- **Electra** / **AEG** / **AUX** / **Frigidaire** - YKR series
+- **Whirlpool** - SPIS series
+- And many more...
 
 ## Development
+
+### C++ Bindings
+
+The project includes Python bindings to the IRremoteESP8266 protocol database for enhanced protocol detection.
+
+**Building the C++ Extensions:**
+```bash
+# Build C++ extensions (required after pulling updates)
+uv run python setup.py build_ext --inplace
+
+# The extension will be available at _irremote.cpython-*.so
+```
+
+**Using the Bindings in Python:**
+```python
+from app.core.irremote_bindings import IRProtocolDatabase
+
+# Create database instance
+db = IRProtocolDatabase()
+
+# Identify protocol from timings
+timings = [3294, 1605, 420, 1200, ...]
+result = db.identify_protocol(timings)
+print(f"Manufacturer: {result['manufacturer']}")
+print(f"Protocol: {result['protocol']}")
+print(f"Confidence: {result['confidence']}")
+
+# Get all supported manufacturers
+manufacturers = db.get_all_manufacturers()
+print(f"Supported: {len(manufacturers)} manufacturers")
+```
+
+The C++ bindings provide:
+- **20+ HVAC protocols** with accurate timing definitions
+- **40+ manufacturer variants** (many brands share protocols)
+- **Better detection accuracy** compared to built-in Python detection
+- **Automatic fallback** to built-in detection if bindings unavailable
 
 ### Running Tests
 
@@ -156,6 +213,9 @@ uv run pytest --cov=app tests/
 
 # Run specific test file
 uv run pytest tests/test_tuya.py
+
+# Test C++ bindings
+uv run python test_bindings.py
 ```
 
 ### Code Quality

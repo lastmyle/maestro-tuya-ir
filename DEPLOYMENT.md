@@ -6,6 +6,8 @@ This guide covers deploying the Maestro Tuya IR Bridge.
 
 Vercel provides serverless deployment with zero configuration.
 
+**Important**: This application **REQUIRES** C++ bindings for protocol detection. The `vercel.json` includes a custom build command that compiles IRremoteESP8266 C++ bindings during deployment. Vercel's build environment includes gcc, so compilation should succeed. If compilation fails, the deployment will fail.
+
 ### Prerequisites
 
 - [Vercel account](https://vercel.com/signup)
@@ -99,10 +101,17 @@ The project includes these Vercel-specific files:
 - Maximum function duration: 10s (Hobby), 60s (Pro)
 - No persistent file storage
 - Runs as serverless functions (not long-running processes)
+- **C++ compiler required** - Deployment will fail if C++ bindings cannot be compiled (Vercel includes gcc by default)
 
 ---
 
 ## Traditional Server Deployment
+
+**Benefits over Vercel**:
+- ✅ Full C++ bindings support (40+ HVAC manufacturers)
+- ✅ No timeout limits
+- ✅ Persistent storage if needed
+- ✅ Full control over runtime environment
 
 ### Using uv (Recommended)
 
@@ -114,8 +123,12 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 git clone <your-repo>
 cd maestro-tuya-ir
 
-# Install dependencies
+# Install dependencies and build C++ extensions
 uv sync
+uv run python setup.py build_ext --inplace
+
+# Verify C++ bindings are available
+uv run python -c "from app.core.protocols import IRREMOTE_AVAILABLE; print('C++ bindings:', IRREMOTE_AVAILABLE)"
 
 # Run with multiple workers
 uv run uvicorn index:app --host 0.0.0.0 --port 8000 --workers 4

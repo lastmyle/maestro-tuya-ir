@@ -11,12 +11,21 @@ setup:  ## Install uv if not already installed
 
 install: setup  ## Install project dependencies
 	uv sync
+	@echo "Building C++ extensions (REQUIRED)..."
+	uv run python setup.py build_ext --inplace
 
 install-dev: setup  ## Install project dependencies including dev tools
 	uv sync --all-extras
+	@echo "Building C++ extensions (REQUIRED)..."
+	uv run python setup.py build_ext --inplace
 
-build:  ## Build the project
+build:  ## Build the project (Python package)
 	uv build
+
+build-ext:  ## Build C++ extensions for IRremoteESP8266 bindings
+	uv run python setup.py build_ext --inplace
+
+build-all: build build-ext  ## Build both Python package and C++ extensions
 
 test:  ## Run tests
 	uv run pytest tests/ -v
@@ -52,6 +61,8 @@ clean:  ## Clean up generated files
 	rm -rf dist
 	rm -rf build
 	rm -rf *.egg-info
+	rm -f _irremote*.so
+	rm -f test_bindings.py
 	find . -type d -name __pycache__ -exec rm -rf {} + 2>/dev/null || true
 
 api-test:  ## Test the API endpoints (server must be running)

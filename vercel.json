@@ -1,0 +1,3 @@
+{
+  "buildCommand": "pip install uv && uv sync --no-dev && uv run python setup.py build_ext --inplace"
+}

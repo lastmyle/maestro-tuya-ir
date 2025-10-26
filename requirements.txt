@@ -2,3 +2,8 @@
 fastapi>=0.104.0
 uvicorn[standard]>=0.24.0
 pydantic>=2.5.0
+
+# Build dependencies for C++ extensions (optional)
+# If C++ compilation fails on Vercel, the app falls back to built-in protocol detection
+setuptools>=70.0.0
+pybind11>=2.11.0

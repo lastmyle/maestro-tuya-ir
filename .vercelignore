@@ -2,7 +2,7 @@
 __pycache__/
 *.py[cod]
 *$py.class
-*.so
+# *.so  # Don't ignore .so files - we want to include C++ extensions if built
 .Python
 
 # Virtual environments
@@ -34,7 +34,7 @@ htmlcov/
 data/
 
 # UV/Poetry (use requirements.txt instead for Vercel)
-pyproject.toml
+# Note: setup.py, bindings/, and pyproject.toml are kept for C++ build
 uv.lock
 .uv/
 

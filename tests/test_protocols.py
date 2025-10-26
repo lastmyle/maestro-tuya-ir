@@ -13,12 +13,12 @@ from app.core.protocols import (
 
 def test_identify_fujitsu():
     """Test identifying Fujitsu protocol from header timings."""
-    # Fujitsu header: 9000, 4500
-    timings = [9000, 4500, 600, 540, 600, 1600]
+    # Fujitsu header: 3300, 1600 (FUJITSU_AC from IRremoteESP8266)
+    timings = [3300, 1600, 420, 1200, 400, 392]
     result = identify_protocol(timings)
 
     assert result["manufacturer"] == "Fujitsu"
-    assert result["protocol"] == "fujitsu_ac"
+    assert result["protocol"] in ["fujitsu_ac", "FUJITSU_AC"]
     assert result["confidence"] > 0.8
 
 
@@ -34,7 +34,7 @@ def test_identify_daikin():
 
 def test_identify_with_manufacturer_hint():
     """Test protocol identification with manufacturer hint."""
-    timings = [9000, 4500, 600, 540]
+    timings = [3300, 1600, 420, 1200]
     result = identify_protocol(timings, manufacturer_hint="Fujitsu")
 
     assert result["manufacturer"] == "Fujitsu"
