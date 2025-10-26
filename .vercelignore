@@ -1,0 +1,42 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+env/
+
+# Testing
+tests/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Development
+.git/
+.gitignore
+.vscode/
+.idea/
+
+# Docker
+.dockerignore
+
+# Documentation
+*.md
+!README.md
+
+# Data files
+data/
+
+# UV/Poetry
+uv.lock
+.uv/
+
+# Misc
+.DS_Store
+Makefile

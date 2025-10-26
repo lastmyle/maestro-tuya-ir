@@ -38,15 +38,21 @@ uv run uvicorn main:app --reload --host 0.0.0.0 --port 8000
 
 The API will be available at `http://localhost:8000` with interactive docs at `http://localhost:8000/`.
 
-### Docker Deployment
+## Deployment
 
-```bash
-# Build the image
-docker build -t maestro-tuya-ir .
+### Deploy to Vercel (Recommended)
 
-# Run the container
-docker run -p 8000:8000 maestro-tuya-ir
-```
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/yourusername/maestro-tuya-ir-bridge)
+
+**Quick Deploy:**
+1. Push your code to GitHub
+2. Go to [vercel.com/new](https://vercel.com/new)
+3. Import your repository
+4. Click Deploy
+
+Your API will be live at `https://your-project.vercel.app`
+
+See [DEPLOYMENT.md](DEPLOYMENT.md) for detailed deployment instructions including AWS, GCP, and Azure.
 
 ## API Endpoints
 

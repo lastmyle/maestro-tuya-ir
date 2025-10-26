@@ -54,15 +54,6 @@ clean:  ## Clean up generated files
 	rm -rf *.egg-info
 	find . -type d -name __pycache__ -exec rm -rf {} + 2>/dev/null || true
 
-docker-build:  ## Build Docker image
-	docker build -t maestro-tuya-ir:latest .
-
-docker-run:  ## Run Docker container
-	docker run -p 8000:8000 maestro-tuya-ir:latest
-
-docker-dev:  ## Run Docker container in development mode
-	docker run -p 8000:8000 -v $(PWD):/app maestro-tuya-ir:latest
-
 api-test:  ## Test the API endpoints (server must be running)
 	@echo "Testing /api/health..."
 	@curl -s http://localhost:8000/api/health | python -m json.tool
