@@ -1,0 +1,44 @@
+{
+  "description": "Sample Tuya IR codes for testing",
+  "codes": {
+    "fujitsu_cool_24": {
+      "manufacturer": "Fujitsu",
+      "protocol": "fujitsu_ac",
+      "description": "Fujitsu AC - Cool mode, 24°C, Auto fan",
+      "tuyaCode": "Sample code - would be actual Base64 in real data",
+      "settings": {
+        "power": "on",
+        "mode": "cool",
+        "temperature": 24,
+        "fan": "auto",
+        "swing": "off"
+      }
+    },
+    "daikin_heat_22": {
+      "manufacturer": "Daikin",
+      "protocol": "daikin_ac",
+      "description": "Daikin AC - Heat mode, 22°C, Low fan",
+      "tuyaCode": "Sample code - would be actual Base64 in real data",
+      "settings": {
+        "power": "on",
+        "mode": "heat",
+        "temperature": 22,
+        "fan": "low",
+        "swing": "off"
+      }
+    },
+    "mitsubishi_auto_25": {
+      "manufacturer": "Mitsubishi",
+      "protocol": "mitsubishi_ac",
+      "description": "Mitsubishi AC - Auto mode, 25°C, Medium fan",
+      "tuyaCode": "Sample code - would be actual Base64 in real data",
+      "settings": {
+        "power": "on",
+        "mode": "auto",
+        "temperature": 25,
+        "fan": "medium",
+        "swing": "on"
+      }
+    }
+  }
+}
