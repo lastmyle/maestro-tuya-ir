@@ -56,7 +56,7 @@ The Maestro Tuya IR Bridge includes Python bindings to a comprehensive IR protoc
 
 ### Prerequisites
 
-- Python 3.11+
+- Python 3.12+
 - C++ compiler (g++, clang, or MSVC)
 - pybind11 (installed automatically via uv)
 
@@ -151,28 +151,28 @@ print(f"Source: {result['source']}")  # 'irremote_esp8266' or 'builtin'
 
 The bindings include timing definitions for 20+ protocols:
 
-| Protocol | Manufacturers | Header (mark/space) | Notes |
-|----------|--------------|---------------------|-------|
-| FUJITSU_AC | Fujitsu, Fujitsu General, OGeneral | 3300/1600µs | Standard Fujitsu AC protocol |
-| FUJITSU_AC264 | Fujitsu | 3300/1600µs | Extended 264-bit protocol |
-| DAIKIN | Daikin | 3650/1623µs | ARC series remotes |
-| DAIKIN2 | Daikin | 3500/1728µs | ARC4xx series |
-| MITSUBISHI_AC | Mitsubishi, Mitsubishi Electric | 3400/1750µs | MSZ series |
-| MITSUBISHI_HEAVY_152 | Mitsubishi Heavy Industries | 3200/1600µs | SRK series |
-| GREE | Gree, Cooper & Hunter, RusClimate, Soleus Air | 9000/4500µs | YAW1F series |
-| LG | LG, General Electric | 8000/4000µs | AKB series remotes |
-| SAMSUNG_AC | Samsung | 690/17844µs | AR series |
-| PANASONIC_AC | Panasonic | 3500/1750µs | CS series |
-| HITACHI_AC | Hitachi | 3400/1700µs | RAK/RAS series |
-| HITACHI_AC1 | Hitachi | 3300/1700µs | Alternate protocol |
-| TOSHIBA_AC | Toshiba, Carrier | 4400/4300µs | RAS series |
-| SHARP_AC | Sharp | 3800/1900µs | CRMC-A series |
-| HAIER_AC | Haier, Daichi | 3000/3000µs | HSU series |
-| MIDEA | Midea, Comfee, Electrolux, Keystone, Trotec | 4420/4420µs | MWMA series |
-| COOLIX | Midea, Tokio, Airwell, Beko, Bosch | 4480/4480µs | Multi-brand variant |
-| CARRIER_AC | Carrier | 8960/4480µs | 619EGX series |
-| ELECTRA_AC | Electra, AEG, AUX, Frigidaire | 9000/4500µs | YKR series |
-| WHIRLPOOL_AC | Whirlpool | 8950/4484µs | SPIS series |
+| Protocol             | Manufacturers                                 | Header (mark/space) | Notes                        |
+| -------------------- | --------------------------------------------- | ------------------- | ---------------------------- |
+| FUJITSU_AC           | Fujitsu, Fujitsu General, OGeneral            | 3300/1600µs         | Standard Fujitsu AC protocol |
+| FUJITSU_AC264        | Fujitsu                                       | 3300/1600µs         | Extended 264-bit protocol    |
+| DAIKIN               | Daikin                                        | 3650/1623µs         | ARC series remotes           |
+| DAIKIN2              | Daikin                                        | 3500/1728µs         | ARC4xx series                |
+| MITSUBISHI_AC        | Mitsubishi, Mitsubishi Electric               | 3400/1750µs         | MSZ series                   |
+| MITSUBISHI_HEAVY_152 | Mitsubishi Heavy Industries                   | 3200/1600µs         | SRK series                   |
+| GREE                 | Gree, Cooper & Hunter, RusClimate, Soleus Air | 9000/4500µs         | YAW1F series                 |
+| LG                   | LG, General Electric                          | 8000/4000µs         | AKB series remotes           |
+| SAMSUNG_AC           | Samsung                                       | 690/17844µs         | AR series                    |
+| PANASONIC_AC         | Panasonic                                     | 3500/1750µs         | CS series                    |
+| HITACHI_AC           | Hitachi                                       | 3400/1700µs         | RAK/RAS series               |
+| HITACHI_AC1          | Hitachi                                       | 3300/1700µs         | Alternate protocol           |
+| TOSHIBA_AC           | Toshiba, Carrier                              | 4400/4300µs         | RAS series                   |
+| SHARP_AC             | Sharp                                         | 3800/1900µs         | CRMC-A series                |
+| HAIER_AC             | Haier, Daichi                                 | 3000/3000µs         | HSU series                   |
+| MIDEA                | Midea, Comfee, Electrolux, Keystone, Trotec   | 4420/4420µs         | MWMA series                  |
+| COOLIX               | Midea, Tokio, Airwell, Beko, Bosch            | 4480/4480µs         | Multi-brand variant          |
+| CARRIER_AC           | Carrier                                       | 8960/4480µs         | 619EGX series                |
+| ELECTRA_AC           | Electra, AEG, AUX, Frigidaire                 | 9000/4500µs         | YKR series                   |
+| WHIRLPOOL_AC         | Whirlpool                                     | 8950/4484µs         | SPIS series                  |
 
 ## Protocol Detection Algorithm
 
@@ -193,6 +193,7 @@ confidence = (mark_score + space_score) / 2
 ```
 
 Example:
+
 - Actual header: [3294µs, 1605µs]
 - Expected header: [3300µs, 1600µs]
 - Tolerance: 300µs
@@ -280,6 +281,7 @@ protocols.push_back(IRProtocol(
 ```
 
 Then rebuild:
+
 ```bash
 make build-ext
 ```
@@ -289,11 +291,13 @@ make build-ext
 ### Build Errors
 
 **Error**: `ModuleNotFoundError: No module named 'pybind11'`
+
 ```bash
 uv add --dev pybind11 setuptools
 ```
 
 **Error**: `c++: command not found`
+
 - Install a C++ compiler (gcc, clang, or MSVC)
 - macOS: `xcode-select --install`
 - Linux: `sudo apt install build-essential`
@@ -302,10 +306,12 @@ uv add --dev pybind11 setuptools
 ### Runtime Errors
 
 **Error**: `ImportError: No module named '_irremote'`
+
 - The C++ extension wasn't built
 - Run: `make build-ext`
 
 **Fallback to Built-in Detection**
+
 - If C++ bindings fail to import, the system automatically falls back to built-in Python detection
 - Check `result['source']` to see which detection method was used
 

@@ -9,7 +9,6 @@ from typing import Optional
 
 # Import required C++ bindings - application will fail if not available
 from app.core.irremote_bindings import (
-    IRProtocolDatabase,
     identify_protocol_irremote,
 )
 

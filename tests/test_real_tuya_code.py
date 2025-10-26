@@ -84,7 +84,7 @@ def test_identify_real_fujitsu_protocol():
     try:
         protocol_info = identify_protocol(timings)
 
-        print(f"\n🔍 Protocol Detection Results:")
+        print("\n🔍 Protocol Detection Results:")
         print(f"  Manufacturer: {protocol_info['manufacturer']}")
         print(f"  Protocol: {protocol_info['protocol']}")
         print(f"  Confidence: {protocol_info['confidence']}")
@@ -171,7 +171,7 @@ def test_real_command_structure():
     timings = decode_tuya_ir(tuya_code)
 
     # Analyze structure
-    print(f"\n📋 Command Structure Analysis:")
+    print("\n📋 Command Structure Analysis:")
     print(f"  Total timings: {len(timings)}")
     print(f"  Header (first 2): {timings[:2]}")
     print(f"  Min timing: {min(timings)}")
@@ -182,7 +182,7 @@ def test_real_command_structure():
     from collections import Counter
     timing_counts = Counter(timings)
     most_common = timing_counts.most_common(10)
-    print(f"  Most common timings:")
+    print("  Most common timings:")
     for timing, count in most_common:
         print(f"    {timing}µs: {count} times")
 

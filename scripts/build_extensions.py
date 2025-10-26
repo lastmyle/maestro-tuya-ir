@@ -6,8 +6,8 @@ This script is called automatically during installation to build the
 IRremoteESP8266 Python bindings. C++ bindings are REQUIRED.
 """
 
-import sys
 import subprocess
+import sys
 from pathlib import Path
 
 

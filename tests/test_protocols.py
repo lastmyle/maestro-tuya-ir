@@ -29,7 +29,7 @@ def test_identify_daikin():
     result = identify_protocol(timings)
 
     assert result["manufacturer"] == "Daikin"
-    assert result["protocol"] == "daikin_ac"
+    assert result["protocol"] == "DAIKIN2"
 
 
 def test_identify_with_manufacturer_hint():

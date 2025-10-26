@@ -270,7 +270,9 @@ IRREMOTE_ESP8266_PROTOCOLS = {
 }
 
 
-def identify_protocol_irremote(timings: list[int], tolerance_multiplier: float = 1.5) -> Optional[dict]:
+def identify_protocol_irremote(
+    timings: list[int], tolerance_multiplier: float = 1.5
+) -> Optional[dict]:
     """
     Identify IR protocol using IRremoteESP8266 timing database.
 

@@ -2,11 +2,9 @@
 Setup script for building C++ bindings using pybind11.
 """
 
-import sys
-from pathlib import Path
 
 from pybind11.setup_helpers import Pybind11Extension, build_ext
-from setuptools import setup, find_packages
+from setuptools import setup
 
 # Read version from pyproject.toml
 __version__ = "1.0.0"
@@ -33,5 +31,5 @@ setup(
     ext_modules=ext_modules,
     cmdclass={"build_ext": build_ext},
     zip_safe=False,
-    python_requires=">=3.11",
+    python_requires=">=3.12",
 )

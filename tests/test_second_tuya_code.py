@@ -12,7 +12,12 @@ def test_decode_second_tuya_command():
     """
     Test decoding second real Tuya IR command.
     """
-    tuya_code = "B9oMWAatAYIBgAMFyASCAYIBQAcBrQFAB8ADQA9AA8APQAdAD0ADQAvgIQNAAQGtAeAJN0ABAa0BwAPgAx8CrQGCIAEBrQFAE+AJAwCC4AATAYIBQAMBggFAE0AJ4BMDQCMByARAIQKCAa0gAYAFAa0BQAdAA4AbAK1gAcALQA/gOQNAAeAJRwGtAeANFQGtAeALF+AVEwPlAYIBQCMDyASCAUAH4A8DC8gEggGtAYIBrQGCAQ=="
+    tuya_code = (
+        "B9oMWAatAYIBgAMFyASCAYIBQAcBrQFAB8ADQA9AA8APQAdAD0ADQAvgIQNAAQGtAeAJN0AB"
+        "Aa0BwAPgAx8CrQGCIAEBrQFAE+AJAwCC4AATAYIBQAMBggFAE0AJ4BMDQCMByARAIQKCAa0g"
+        "AYAFAa0BQAdAA4AbAK1gAcALQA/gOQNAAeAJRwGtAeANFQGtAeALF+AVEwPlAYIBQCMDyASC"
+        "AUAH4A8DC8gEggGtAYIBrQGCAQ=="
+    )
 
     # Decode to raw timings
     timings = decode_tuya_ir(tuya_code)
@@ -35,7 +40,12 @@ def test_identify_second_code_protocol():
     """
     Test identifying the protocol from the second Tuya command.
     """
-    tuya_code = "B9oMWAatAYIBgAMFyASCAYIBQAcBrQFAB8ADQA9AA8APQAdAD0ADQAvgIQNAAQGtAeAJN0ABAa0BwAPgAx8CrQGCIAEBrQFAE+AJAwCC4AATAYIBQAMBggFAE0AJ4BMDQCMByARAIQKCAa0gAYAFAa0BQAdAA4AbAK1gAcALQA/gOQNAAeAJRwGtAeANFQGtAeALF+AVEwPlAYIBQCMDyASCAUAH4A8DC8gEggGtAYIBrQGCAQ=="
+    tuya_code = (
+        "B9oMWAatAYIBgAMFyASCAYIBQAcBrQFAB8ADQA9AA8APQAdAD0ADQAvgIQNAAQGtAeAJN0AB"
+        "Aa0BwAPgAx8CrQGCIAEBrQFAE+AJAwCC4AATAYIBQAMBggFAE0AJ4BMDQCMByARAIQKCAa0g"
+        "AYAFAa0BQAdAA4AbAK1gAcALQA/gOQNAAeAJRwGtAeANFQGtAeALF+AVEwPlAYIBQCMDyASC"
+        "AUAH4A8DC8gEggGtAYIBrQGCAQ=="
+    )
 
     # Decode to timings
     timings = decode_tuya_ir(tuya_code)
@@ -44,7 +54,7 @@ def test_identify_second_code_protocol():
     try:
         protocol_info = identify_protocol(timings)
 
-        print(f"\n🔍 Second Code - Protocol Detection:")
+        print("\n🔍 Second Code - Protocol Detection:")
         print(f"  Manufacturer: {protocol_info['manufacturer']}")
         print(f"  Protocol: {protocol_info['protocol']}")
         print(f"  Confidence: {protocol_info['confidence']}")
@@ -63,14 +73,26 @@ def test_compare_two_codes():
     """
     Compare the two Tuya codes to see if they're from the same manufacturer.
     """
-    code1 = "Ed4MRQYFAkQBxAGIAcQBwATEAYAHQBMAiKABA8QBwASAA0ALQAMGRAHEAcAEiCADA8QBiAGAA0ATgAvAAUAPQAFAB4ADAsQBiGABQDfAL8AHAIhgAQDEIAEBiAHgAR8BiAFAD0ABQBMBwARAB0ADQAtAA0ALQAMBxAHARwjABIgBiAHEAYhgAUAH4AcDAYgBQCNAAwGIAYAbQAsCxAGIoAEBxAFAS0ADQAsDwATEAcALQA8AiKABwAlABwHEAYAhQAECxAGIYAFAB+ADA4ABQBGAAQDEIAEBRAFBZ0AHAsQBiCABgAUBiAGAB0AFAcQBgBsCxAGIYAHAB0ABAcQB4BMbQLcAiKABAcAE4AUDQAELwATEAYgBxAGIAYgB"
+    code1 = (
+        "Ed4MRQYFAkQBxAGIAcQBwATEAYAHQBMAiKABA8QBwASAA0ALQAMGRAHEAcAEiCADA8QBiAGA"
+        "A0ATgAvAAUAPQAFAB4ADAsQBiGABQDfAL8AHAIhgAQDEIAEBiAHgAR8BiAFAD0ABQBMBwARA"
+        "B0ADQAtAA0ALQAMBxAHARwjABIgBiAHEAYhgAUAH4AcDAYgBQCNAAwGIAYAbQAsCxAGIoAEB"
+        "xAFAS0ADQAsDwATEAcALQA8AiKABwAlABwHEAYAhQAECxAGIYAFAB+ADA4ABQBGAAQDEIAEB"
+        "RAFBZ0AHAsQBiCABgAUBiAGAB0AFAcQBgBsCxAGIYAHAB0ABAcQB4BMbQLcAiKABAcAE4AU"
+        "DQAELwATEAYgBxAGIAYgB"
+    )
 
-    code2 = "B9oMWAatAYIBgAMFyASCAYIBQAcBrQFAB8ADQA9AA8APQAdAD0ADQAvgIQNAAQGtAeAJN0ABAa0BwAPgAx8CrQGCIAEBrQFAE+AJAwCC4AATAYIBQAMBggFAE0AJ4BMDQCMByARAIQKCAa0gAYAFAa0BQAdAA4AbAK1gAcALQA/gOQNAAeAJRwGtAeANFQGtAeALF+AVEwPlAYIBQCMDyASCAUAH4A8DC8gEggGtAYIBrQGCAQ=="
+    code2 = (
+        "B9oMWAatAYIBgAMFyASCAYIBQAcBrQFAB8ADQA9AA8APQAdAD0ADQAvgIQNAAQGtAeAJN0AB"
+        "Aa0BwAPgAx8CrQGCIAEBrQFAE+AJAwCC4AATAYIBQAMBggFAE0AJ4BMDQCMByARAIQKCAa0g"
+        "AYAFAa0BQAdAA4AbAK1gAcALQA/gOQNAAeAJRwGtAeANFQGtAeALF+AVEwPlAYIBQCMDyASC"
+        "AUAH4A8DC8gEggGtAYIBrQGCAQ=="
+    )
 
     timings1 = decode_tuya_ir(code1)
     timings2 = decode_tuya_ir(code2)
 
-    print(f"\n🔬 Comparison:")
+    print("\n🔬 Comparison:")
     print(f"  Code 1 - {len(timings1)} timings, header: [{timings1[0]}, {timings1[1]}]")
     print(f"  Code 2 - {len(timings2)} timings, header: [{timings2[0]}, {timings2[1]}]")
 
@@ -84,7 +106,7 @@ def test_compare_two_codes():
         if proto1['manufacturer'] == proto2['manufacturer']:
             print(f"\n✅ Both codes are from {proto1['manufacturer']}")
         else:
-            print(f"\n⚠️  Different manufacturers detected:")
+            print("\n⚠️  Different manufacturers detected:")
             print(f"     Code 1: {proto1['manufacturer']}")
             print(f"     Code 2: {proto2['manufacturer']}")
 
