@@ -1,3 +1,15 @@
 {
-  "buildCommand": "pip install uv && uv sync --no-dev && uv run python setup.py build_ext --inplace"
+  "buildCommand": "pip install uv && uv sync --no-dev && uv run python setup.py build_ext --inplace",
+  "github": {
+    "enabled": true,
+    "autoAlias": true,
+    "silent": false,
+    "autoJobCancelation": true
+  },
+  "git": {
+    "deploymentEnabled": {
+      "main": true,
+      "develop": true
+    }
+  }
 }

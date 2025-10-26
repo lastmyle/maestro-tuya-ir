@@ -244,6 +244,40 @@ uv add --dev package-name
 uv lock --upgrade
 ```
 
+## CI/CD Pipeline
+
+### Automated Checks
+
+Every pull request and push triggers automated checks:
+
+- ✅ **Tests** - Build C++ extensions, run all tests
+- ✅ **Lint** - Code quality checks with ruff
+- ✅ **PR Title** - Validates conventional commits format
+- ✅ **Deployment Gate** - Blocks Vercel until all checks pass
+
+### Branch Protection
+
+Configure required status checks to block merging/deployment:
+
+1. **Tests** must pass (C++ bindings + pytest)
+2. **Lint** must pass (ruff check + format)
+3. **PR Title Check** must pass (conventional commits)
+4. **Deployment Gate** waits for all checks
+
+See [.github/BRANCH_PROTECTION.md](.github/BRANCH_PROTECTION.md) for setup instructions.
+
+### Conventional Commits
+
+All PR titles must follow the format: `<type>[scope]: <description>`
+
+**Examples:**
+- `feat: add Samsung AC protocol support`
+- `fix(api): correct Fujitsu timing detection`
+- `docs: update deployment guide`
+- `test: add integration tests for Tuya codes`
+
+See [.github/CONTRIBUTING.md](.github/CONTRIBUTING.md) for contribution guidelines.
+
 ## Project Structure
 
 ```
