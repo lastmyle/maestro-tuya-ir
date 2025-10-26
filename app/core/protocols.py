@@ -68,6 +68,18 @@ PROTOCOLS = {
             "features": ["swing", "quiet", "powerful"],
         },
     ),
+    "fujitsu_ac_alt": ProtocolDefinition(
+        name="fujitsu_ac_alt",
+        manufacturer="Fujitsu",
+        header=(3300, 1600),
+        tolerance=300,
+        capabilities={
+            "modes": ["cool", "heat", "dry", "fan", "auto"],
+            "fanSpeeds": ["low", "medium", "high", "auto", "quiet"],
+            "tempRange": {"min": 16, "max": 30, "unit": "celsius"},
+            "features": ["swing", "quiet", "powerful"],
+        },
+    ),
     "daikin_ac": ProtocolDefinition(
         name="daikin_ac",
         manufacturer="Daikin",

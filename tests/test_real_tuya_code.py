@@ -12,9 +12,10 @@ def test_decode_real_fujitsu_command():
     """
     Test decoding a real Tuya IR command.
 
-    This appears to be a Fujitsu HVAC command based on the timing pattern.
+    This is a real Fujitsu HVAC command (alternate protocol variant).
+    Header: [3294µs, 1605µs] - different from standard Fujitsu [9000µs, 4500µs]
     """
-    # Real Tuya IR code (appears to be Fujitsu HVAC)
+    # Real Tuya IR code from Fujitsu HVAC (alternate protocol)
     tuya_code = (
         "Ed4MRQYFAkQBxAGIAcQBwATEA"
         "YAHQBMAiKABA8QBwASAA0ALQA"
@@ -53,7 +54,9 @@ def test_decode_real_fujitsu_command():
 def test_identify_real_fujitsu_protocol():
     """
     Test identifying the protocol from the real Tuya command.
-    Should detect as Fujitsu based on header timing.
+
+    Real-world Fujitsu command with alternate header timing [3294µs, 1605µs].
+    Should now detect as Fujitsu (alternate protocol) instead of Mitsubishi.
     """
     tuya_code = (
         "Ed4MRQYFAkQBxAGIAcQBwATEA"
