@@ -35,6 +35,26 @@ class ProtocolTiming:
         self.frequency_khz = frequency_khz
         self.tolerance = tolerance
 
+    @property
+    def manufacturer(self) -> str:
+        """Get primary manufacturer name (for backwards compatibility)."""
+        return self.manufacturers[0] if self.manufacturers else "Unknown"
+
+    @property
+    def header(self) -> List[int]:
+        """Get header timing as [mark, space]."""
+        return [self.header_mark, self.header_space]
+
+    @property
+    def capabilities(self) -> Dict[str, Any]:
+        """Get default HVAC capabilities for this protocol."""
+        return {
+            "modes": ["cool", "heat", "dry", "fan", "auto"],
+            "fanSpeeds": ["auto", "low", "medium", "high", "quiet"],
+            "tempRange": {"min": 16, "max": 30, "unit": "celsius"},
+            "features": ["swing"],
+        }
+
     def to_dict(self) -> Dict[str, Any]:
         """Convert to dictionary representation."""
         return {
@@ -491,7 +511,7 @@ def get_protocols_by_manufacturer(manufacturer: str) -> List[str]:
 
 def identify_protocol(
     timings: List[int], tolerance_multiplier: float = 1.5
-) -> Optional[Dict[str, Any]]:
+) -> Dict[str, Any]:
     """
     Identify IR protocol from raw timing data.
 
@@ -500,10 +520,10 @@ def identify_protocol(
         tolerance_multiplier: Adjust tolerance (1.0 = default, 1.5 = more lenient)
 
     Returns:
-        Dictionary with protocol info, or None if no match:
+        Dictionary with protocol info:
         {
             "protocol": str,
-            "manufacturer": List[str],
+            "manufacturer": str,
             "confidence": float,
             "timing_match": {
                 "header_mark": int,
@@ -512,9 +532,12 @@ def identify_protocol(
                 "expected_space": int,
             }
         }
+
+    Raises:
+        ValueError: If timings array is insufficient or protocol cannot be identified
     """
     if len(timings) < 4:
-        return None
+        raise ValueError("Insufficient timing data: need at least 4 values (header mark/space + data)")
 
     header_mark = timings[0]
     header_space = timings[1]
@@ -538,7 +561,10 @@ def identify_protocol(
                 best_match = proto
 
     if best_match is None:
-        return None
+        raise ValueError(
+            f"Could not identify protocol from timings (header: {header_mark}, {header_space}). "
+            "No matching protocol found."
+        )
 
     # Default HVAC capabilities
     capabilities = {
@@ -596,8 +622,9 @@ def parse_hvac_state(timings: List[int], protocol: str) -> Dict[str, Any]:
     """
     Parse HVAC state from IR timings.
 
-    Note: This is a simplified implementation. Real implementation would
-    decode the actual bit patterns for each protocol.
+    Supports all major AC manufacturers from IRremoteESP8266:
+    - Fujitsu, Daikin, Mitsubishi, Panasonic, Samsung, LG
+    - And 9 other manufacturers
 
     Args:
         timings: Raw IR timing array
@@ -606,12 +633,6 @@ def parse_hvac_state(timings: List[int], protocol: str) -> Dict[str, Any]:
     Returns:
         Dictionary with power, mode, temperature, fan, swing settings
     """
-    # This is a placeholder - real implementation would decode bit patterns
-    # For now, return default/unknown state
-    return {
-        "power": "unknown",
-        "mode": "unknown",
-        "temperature": None,
-        "fan": "unknown",
-        "swing": "unknown",
-    }
+    # Use unified AC decoder for all manufacturers
+    from app.core.ac_decoders import decode_ac_protocol
+    return decode_ac_protocol(timings, protocol)

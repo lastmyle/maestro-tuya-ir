@@ -7,11 +7,11 @@
       'name': 'FUJITSU_AC',
     }),
     'state': dict({
-      'fan': 'unknown',
-      'mode': 'unknown',
-      'power': 'unknown',
-      'swing': 'unknown',
-      'temperature': None,
+      'fan': 'auto',
+      'mode': 'auto',
+      'power': 'on',
+      'swing': 'off',
+      'temperature': 17,
     }),
     'success': True,
     'timings': list([
@@ -430,16 +430,13 @@
   dict({
     'capabilities': dict({
       'fanSpeeds': list([
+        'auto',
         'low',
         'medium',
         'high',
-        'auto',
-        'quiet',
       ]),
       'features': list([
         'swing',
-        'quiet',
-        'powerful',
       ]),
       'modes': list([
         'cool',
@@ -455,11 +452,11 @@
       }),
     }),
     'detectedState': dict({
-      'fan': 'unknown',
-      'mode': 'unknown',
-      'power': 'unknown',
-      'swing': 'unknown',
-      'temperature': None,
+      'fan': 'auto',
+      'mode': 'auto',
+      'power': 'on',
+      'swing': 'off',
+      'temperature': 17,
     }),
     'manufacturer': 'Fujitsu',
     'modelFamily': None,

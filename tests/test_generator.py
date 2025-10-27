@@ -109,7 +109,7 @@ def test_generate_all_commands_defaults():
 
 def test_different_manufacturers():
     """Test generating commands for different manufacturers."""
-    for protocol in ["fujitsu_ac", "daikin_ac", "mitsubishi_ac"]:
+    for protocol in ["fujitsu_ac", "daikin", "mitsubishi_ac"]:  # Use actual protocol names
         generator = HVACCodeGenerator(protocol)
         code = generator.generate_code(mode="cool", temperature=24)
 

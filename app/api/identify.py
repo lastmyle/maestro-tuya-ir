@@ -33,7 +33,7 @@ async def identify(request: IdentifyRequest):
         timings = decode_tuya_ir(request.tuyaCode)
 
         # Identify protocol
-        protocol_data = identify_protocol(timings, request.manufacturer)
+        protocol_data = identify_protocol(timings)
 
         # Parse current state
         detected_state = parse_hvac_state(timings, protocol_data["protocol"])

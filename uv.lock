@@ -185,6 +185,7 @@ dev = [
 
 [package.dev-dependencies]
 dev = [
+    { name = "httpx" },
     { name = "pybind11" },
     { name = "pyminify" },
     { name = "setuptools" },
@@ -207,6 +208,7 @@ provides-extras = ["dev"]
 
 [package.metadata.requires-dev]
 dev = [
+    { name = "httpx", specifier = ">=0.28.1" },
     { name = "pybind11", specifier = ">=3.0.1" },
     { name = "pyminify", specifier = ">=0.0.1" },
     { name = "setuptools", specifier = ">=80.9.0" },
