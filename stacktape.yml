@@ -5,7 +5,7 @@ serviceName: maestro-ir-bridge
 
 resources:
   # HTTP API Gateway for public access
-  ir-api:
+  irApi:
     type: http-api-gateway
     properties:
       cors:
@@ -19,7 +19,7 @@ resources:
           - "*"
 
   # Lambda function (no VPC = serverless, pay-per-use)
-  ir-bridge-function:
+  irBridgeFunction:
     type: function
     properties:
       packaging:
@@ -27,7 +27,6 @@ resources:
         properties:
           entryfilePath: lambda_handler.py
       runtime: python3.12
-      handler: lambda_handler.handler
       timeout: 15
       memory: 512
       environment:
@@ -37,12 +36,12 @@ resources:
         # Route root path to Lambda (for Swagger UI at /)
         - type: http-api-gateway
           properties:
-            httpApiGatewayName: ir-api
+            httpApiGatewayName: irApi
             path: /
             method: GET
         # Route all other paths to Lambda
         - type: http-api-gateway
           properties:
-            httpApiGatewayName: ir-api
+            httpApiGatewayName: irApi
             path: /{proxy+}
-            method: ANY
+            method: "*"

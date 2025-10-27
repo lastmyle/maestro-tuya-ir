@@ -68,11 +68,11 @@ api-test:  ## Test the API endpoints (server must be running)
 
 deploy-dev:  ## Deploy to development environment
 	@echo "🚀 Deploying to development..."
-	stacktape deploy --stage=dev --region=us-east-1
+	stacktape deploy --projectName=maestro-tuya-ir --stage=dev --region=us-west-2 --aa aws-development
 
 deploy-prod:  ## Deploy to production environment
 	@echo "🚀 Deploying to production..."
-	stacktape deploy --stage=production --region=us-east-1
+	stacktape deploy --projectName=maestro-tuya-ir --stage=production --region=us-west-2 --aa aws-production
 
 all: install test lint  ## Install, test, and lint
 

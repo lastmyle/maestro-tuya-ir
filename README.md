@@ -49,6 +49,7 @@ The API will be available at `http://localhost:8000` with interactive docs at `h
 Deploy as a serverless Lambda function on AWS with no VPC overhead.
 
 **Prerequisites:**
+
 ```bash
 # Install Stacktape CLI
 npm install -g stacktape
@@ -58,15 +59,17 @@ stacktape auth:aws --project-id maestro-ir-bridge
 ```
 
 **Deploy:**
+
 ```bash
 # Deploy to production
-stacktape deploy --stage production --region us-east-1
+stacktape deploy --stage production --region us-west-2
 
 # Your API will be live at:
-# https://[your-api-id].execute-api.us-east-1.amazonaws.com
+# https://[your-api-id].execute-api.us-west-2.amazonaws.com
 ```
 
 **Benefits:**
+
 - $0/month cost (within AWS Lambda free tier for typical usage)
 - No VPC overhead (serverless, pay-per-invocation)
 - Consolidated with existing AWS/Stacktape infrastructure
@@ -159,6 +162,7 @@ curl http://localhost:8000/api/health
 ## Supported Manufacturers
 
 Via **IRremoteESP8266 Protocol Database** (47 manufacturers, 32 protocols):
+
 - **Fujitsu** (FUJITSU_AC, FUJITSU_AC264) - Full support with extended features
 - **Daikin** (DAIKIN, DAIKIN2) - Including Econo and Powerful modes
 - **Mitsubishi** (MITSUBISHI_AC, MITSUBISHI_HEAVY_152) - Standard HVAC controls
@@ -183,12 +187,14 @@ Via **IRremoteESP8266 Protocol Database** (47 manufacturers, 32 protocols):
 The project uses a generated Python module ([app/core/protocol_timings.py](app/core/protocol_timings.py)) containing timing constants from IRremoteESP8266 v2.8.6.
 
 **Regenerating Protocol Timings:**
+
 ```bash
 # Regenerate protocol_timings.py from hardcoded constants
 python scripts/generate_protocol_timings.py
 ```
 
 **Using Protocol Detection:**
+
 ```python
 from app.core.protocol_timings import identify_protocol, get_supported_manufacturers
 
@@ -205,6 +211,7 @@ print(f"Supported: {len(manufacturers)} manufacturers")
 ```
 
 The protocol database provides:
+
 - **32 HVAC protocols** with accurate timing definitions
 - **47 manufacturer variants** (many brands share protocols)
 - **Pure Python** implementation (no C++ compilation required)
@@ -278,6 +285,7 @@ Force pushes and branch deletion are disabled.
 All PR titles must follow the format: `<type>[scope]: <description>`
 
 **Examples:**
+
 - `feat: add Samsung AC protocol support`
 - `fix(api): correct Fujitsu timing detection`
 - `docs: update deployment guide`
@@ -394,5 +402,6 @@ MIT License - see LICENSE file
 ## Support
 
 For issues and questions:
+
 - GitHub Issues: https://github.com/yourusername/maestro-tuya-ir-bridge/issues
 - Documentation: http://localhost:8000/ (when running)
