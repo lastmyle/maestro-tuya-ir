@@ -44,42 +44,25 @@ The API will be available at `http://localhost:8000` with interactive docs at `h
 
 ## Deployment
 
-### Deploy to AWS via Stacktape (Recommended)
-
-Deploy as a serverless Lambda function on AWS with no VPC overhead.
-
-**Prerequisites:**
-
-```bash
-# Install Stacktape CLI
-npm install -g stacktape
-
-# Authenticate with AWS
-stacktape auth:aws --project-id maestro-ir-bridge
-```
-
-**Deploy:**
-
-```bash
-# Deploy to production
-stacktape deploy --stage production --region us-west-2
-
-# Your API will be live at:
-# https://[your-api-id].execute-api.us-west-2.amazonaws.com
-```
-
-**Benefits:**
-
-- $0/month cost (within AWS Lambda free tier for typical usage)
-- No VPC overhead (serverless, pay-per-invocation)
-- Consolidated with existing AWS/Stacktape infrastructure
-- Auto-scaling with no server management
-
-**Alternative: Vercel**
+### Deploy to Vercel (Recommended)
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/yourusername/maestro-tuya-ir-bridge)
 
-See [DEPLOYMENT.md](DEPLOYMENT.md) for detailed deployment instructions including Vercel, AWS ECS, GCP, and Azure.
+**Quick Deploy:**
+1. Push your code to GitHub
+2. Go to [vercel.com/new](https://vercel.com/new)
+3. Import your repository
+4. Click Deploy
+
+Your API will be live at `https://your-project.vercel.app`
+
+**Benefits:**
+- $0/month (free tier)
+- Automatic deployments on git push
+- Global CDN
+- Zero configuration needed
+
+See [DEPLOYMENT.md](DEPLOYMENT.md) for detailed deployment instructions including AWS, GCP, and Azure.
 
 ## API Endpoints
 

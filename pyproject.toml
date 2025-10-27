@@ -39,6 +39,7 @@ select = ["E", "F", "I"]
 [dependency-groups]
 dev = [
     "pybind11>=3.0.1",
+    "pyminify>=0.0.1",
     "setuptools>=80.9.0",
     "syrupy>=5.0.0",
 ]
