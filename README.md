@@ -10,7 +10,7 @@ Translate, decode, and generate complete IR command sets for Tuya-based HVAC dev
 - **Identify Devices**: Detect manufacturer and protocol from a single IR code
 - **Generate Command Sets**: Create complete HVAC control databases (245+ commands)
 - **Encode Commands**: Generate individual IR codes for specific settings
-- **IRremoteESP8266 Integration**: Enhanced protocol detection using C++ bindings to the comprehensive IRremoteESP8266 library (40+ HVAC manufacturers)
+- **IRremoteESP8266 Integration**: Enhanced protocol detection using timing database from the comprehensive IRremoteESP8266 library (47 HVAC manufacturers)
 - **Multi-Manufacturer Support**: Fujitsu, Daikin, Mitsubishi, Gree, LG, Samsung, Panasonic, Hitachi, Toshiba, Sharp, Haier, Midea, and many more
 
 ## Quick Start
@@ -19,7 +19,6 @@ Translate, decode, and generate complete IR command sets for Tuya-based HVAC dev
 
 - Python 3.11+
 - [uv](https://docs.astral.sh/uv/) package manager
-- **C++ compiler** (gcc, clang, or MSVC) - **REQUIRED** for building protocol detection bindings
 
 ### Installation
 
@@ -31,39 +30,53 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 git clone https://github.com/yourusername/maestro-tuya-ir-bridge.git
 cd maestro-tuya-ir-bridge
 
-# Install dependencies and build C++ extensions (REQUIRED)
+# Install dependencies
 make install
 
 # Or manually:
 uv sync
-uv run python setup.py build_ext --inplace
 
 # Run the development server
 uv run uvicorn index:app --reload --host 0.0.0.0 --port 8000
 ```
 
-**Important**: C++ bindings are **REQUIRED** for this application. The `make install` command builds them automatically. If you don't have a C++ compiler, install one first:
-- **macOS**: `xcode-select --install`
-- **Linux**: `sudo apt install build-essential` (Debian/Ubuntu)
-- **Windows**: Install Visual Studio Build Tools
-
 The API will be available at `http://localhost:8000` with interactive docs at `http://localhost:8000/`.
 
 ## Deployment
 
-### Deploy to Vercel (Recommended)
+### Deploy to AWS via Stacktape (Recommended)
+
+Deploy as a serverless Lambda function on AWS with no VPC overhead.
+
+**Prerequisites:**
+```bash
+# Install Stacktape CLI
+npm install -g stacktape
+
+# Authenticate with AWS
+stacktape auth:aws --project-id maestro-ir-bridge
+```
+
+**Deploy:**
+```bash
+# Deploy to production
+stacktape deploy --stage production --region us-east-1
+
+# Your API will be live at:
+# https://[your-api-id].execute-api.us-east-1.amazonaws.com
+```
+
+**Benefits:**
+- $0/month cost (within AWS Lambda free tier for typical usage)
+- No VPC overhead (serverless, pay-per-invocation)
+- Consolidated with existing AWS/Stacktape infrastructure
+- Auto-scaling with no server management
+
+**Alternative: Vercel**
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/yourusername/maestro-tuya-ir-bridge)
 
-**Quick Deploy:**
-1. Push your code to GitHub
-2. Go to [vercel.com/new](https://vercel.com/new)
-3. Import your repository
-4. Click Deploy
-
-Your API will be live at `https://your-project.vercel.app`
-
-See [DEPLOYMENT.md](DEPLOYMENT.md) for detailed deployment instructions including AWS, GCP, and Azure.
+See [DEPLOYMENT.md](DEPLOYMENT.md) for detailed deployment instructions including Vercel, AWS ECS, GCP, and Azure.
 
 ## API Endpoints
 
@@ -145,7 +158,7 @@ curl http://localhost:8000/api/health
 
 ## Supported Manufacturers
 
-Via **IRremoteESP8266 C++ Bindings** (40+ manufacturers):
+Via **IRremoteESP8266 Protocol Database** (47 manufacturers, 32 protocols):
 - **Fujitsu** (FUJITSU_AC, FUJITSU_AC264) - Full support with extended features
 - **Daikin** (DAIKIN, DAIKIN2) - Including Econo and Powerful modes
 - **Mitsubishi** (MITSUBISHI_AC, MITSUBISHI_HEAVY_152) - Standard HVAC controls
@@ -165,42 +178,37 @@ Via **IRremoteESP8266 C++ Bindings** (40+ manufacturers):
 
 ## Development
 
-### C++ Bindings
+### Protocol Database
 
-The project includes Python bindings to the IRremoteESP8266 protocol database for enhanced protocol detection.
+The project uses a generated Python module ([app/core/protocol_timings.py](app/core/protocol_timings.py)) containing timing constants from IRremoteESP8266 v2.8.6.
 
-**Building the C++ Extensions:**
+**Regenerating Protocol Timings:**
 ```bash
-# Build C++ extensions (required after pulling updates)
-uv run python setup.py build_ext --inplace
-
-# The extension will be available at _irremote.cpython-*.so
+# Regenerate protocol_timings.py from hardcoded constants
+python scripts/generate_protocol_timings.py
 ```
 
-**Using the Bindings in Python:**
+**Using Protocol Detection:**
 ```python
-from app.core.irremote_bindings import IRProtocolDatabase
-
-# Create database instance
-db = IRProtocolDatabase()
+from app.core.protocol_timings import identify_protocol, get_supported_manufacturers
 
 # Identify protocol from timings
 timings = [3294, 1605, 420, 1200, ...]
-result = db.identify_protocol(timings)
+result = identify_protocol(timings)
 print(f"Manufacturer: {result['manufacturer']}")
 print(f"Protocol: {result['protocol']}")
 print(f"Confidence: {result['confidence']}")
 
 # Get all supported manufacturers
-manufacturers = db.get_all_manufacturers()
+manufacturers = get_supported_manufacturers()
 print(f"Supported: {len(manufacturers)} manufacturers")
 ```
 
-The C++ bindings provide:
-- **20+ HVAC protocols** with accurate timing definitions
-- **40+ manufacturer variants** (many brands share protocols)
-- **Better detection accuracy** compared to built-in Python detection
-- **Automatic fallback** to built-in detection if bindings unavailable
+The protocol database provides:
+- **32 HVAC protocols** with accurate timing definitions
+- **47 manufacturer variants** (many brands share protocols)
+- **Pure Python** implementation (no C++ compilation required)
+- **Generated from IRremoteESP8266 v2.8.6** timing constants
 
 ### Running Tests
 
@@ -213,9 +221,6 @@ uv run pytest --cov=app tests/
 
 # Run specific test file
 uv run pytest tests/test_tuya.py
-
-# Test C++ bindings
-uv run python test_bindings.py
 ```
 
 ### Code Quality
@@ -250,16 +255,16 @@ uv lock --upgrade
 
 Every pull request and push triggers automated checks:
 
-- ✅ **Tests** - Build C++ extensions, run all tests
+- ✅ **Tests** - Run all pytest tests
 - ✅ **Lint** - Code quality checks with ruff
 - ✅ **Lint PR** - Validates conventional commits format
-- ✅ **Deployment Gate** - Blocks Vercel until all checks pass
+- ✅ **Deployment Gate** - Blocks deployment until all checks pass
 
 ### Branch Protection
 
 The `main` branch is protected with the following rules:
 
-1. **Tests** must pass (C++ bindings + pytest)
+1. **Tests** must pass (pytest)
 2. **Lint** must pass (ruff check + format)
 3. **Lint PR** must pass (conventional commits)
 4. **Deployment Gate** waits for all checks
@@ -292,10 +297,10 @@ maestro-tuya-ir-bridge/
 │   │   ├── encode.py
 │   │   └── health.py
 │   ├── core/              # Core functionality
-│   │   ├── fastlz.py      # FastLZ compression
-│   │   ├── tuya.py        # Tuya format conversion
-│   │   ├── protocols.py   # Protocol detection
-│   │   └── generator.py   # HVAC code generation
+│   │   ├── fastlz.py           # FastLZ compression
+│   │   ├── tuya.py             # Tuya format conversion
+│   │   ├── protocol_timings.py # Protocol database (generated)
+│   │   └── generator.py        # HVAC code generation
 │   └── models/            # Pydantic models
 │       ├── request.py
 │       └── response.py

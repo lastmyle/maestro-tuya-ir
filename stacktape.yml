@@ -1,0 +1,58 @@
+# Stacktape configuration for Maestro Tuya IR Bridge
+# Deploy as Lambda function to AWS (add to existing stack or use standalone)
+
+serviceName: maestro-ir-bridge
+region: us-east-1
+
+resources:
+  # Lambda function (no VPC = serverless, pay-per-use)
+  ir-bridge-function:
+    type: function
+    properties:
+      packaging:
+        type: stacktape-lambda-buildpack
+      runtime: python3.12
+      handler: lambda_handler.handler
+      timeout: 15
+      memory: 512
+      environment:
+        - name: ENVIRONMENT
+          value: production
+
+  # HTTP API Gateway for public access
+  ir-api:
+    type: http-api-gateway
+    properties:
+      cors:
+        # Configure CORS for Hubitat, Admin, Customer apps
+        allowedOrigins:
+          - "*"  # TODO: Restrict to specific origins in production
+        allowedHeaders:
+          - "*"
+        allowedMethods:
+          - "*"
+        allowCredentials: false
+      routes:
+        # Root endpoint (Swagger UI)
+        - path: /
+          method: GET
+          function: ir-bridge-function
+
+        # API root
+        - path: /api
+          method: GET
+          function: ir-bridge-function
+
+        # All API routes (decode, identify, generate, encode, health)
+        - path: /api/{proxy+}
+          method: ANY
+          function: ir-bridge-function
+
+        # Docs endpoints
+        - path: /redoc
+          method: GET
+          function: ir-bridge-function
+
+        - path: /openapi.json
+          method: GET
+          function: ir-bridge-function

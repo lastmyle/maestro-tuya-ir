@@ -490,7 +490,7 @@ def get_protocols_by_manufacturer(manufacturer: str) -> List[str]:
 
 
 def identify_protocol(
-    timings: List[int], tolerance_multiplier: float = 1.5, manufacturer_hint: Optional[str] = None
+    timings: List[int], tolerance_multiplier: float = 1.5
 ) -> Optional[Dict[str, Any]]:
     """
     Identify IR protocol from raw timing data.
@@ -498,16 +498,13 @@ def identify_protocol(
     Args:
         timings: Array of timing values in microseconds [mark, space, mark, space, ...]
         tolerance_multiplier: Adjust tolerance (1.0 = default, 1.5 = more lenient)
-        manufacturer_hint: Optional manufacturer name to prioritize (unused, for compatibility)
 
     Returns:
         Dictionary with protocol info, or None if no match:
         {
             "protocol": str,
-            "manufacturer": List[str] or str (primary manufacturer),
+            "manufacturer": List[str],
             "confidence": float,
-            "capabilities": dict,
-            "source": str,
             "timing_match": {
                 "header_mark": int,
                 "header_space": int,
