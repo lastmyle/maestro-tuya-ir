@@ -1,18 +1,18 @@
 """
 HVAC IR protocol detection and identification.
 
-Identifies manufacturer and protocol from IR timing patterns.
-REQUIRES IRremoteESP8266 C++ bindings.
+Identifies manufacturer and protocol from IR timing patterns using
+pure Python implementation (no C++ compilation required).
+
+Protocol timing constants extracted from IRremoteESP8266 v2.8.6.
 """
 
 from typing import Optional
 
-# Import required C++ bindings - application will fail if not available
-from app.core.irremote_bindings import (
-    identify_protocol_irremote,
-)
+# Import pure Python protocol timings (no C++ compilation required!)
+from app.core.protocol_timings import identify_protocol as identify_protocol_irremote
 
-IRREMOTE_AVAILABLE = True  # Always True since import is required
+IRREMOTE_AVAILABLE = True  # Always True - pure Python implementation
 
 
 class ProtocolDefinition:

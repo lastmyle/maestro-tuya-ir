@@ -11,21 +11,19 @@ setup:  ## Install uv if not already installed
 
 install: setup  ## Install project dependencies
 	uv sync
-	@echo "Building C++ extensions (REQUIRED)..."
-	uv run python setup.py build_ext --inplace
+	@echo "Generating protocol timing constants..."
+	uv run python scripts/generate_protocol_timings.py
 
 install-dev: setup  ## Install project dependencies including dev tools
 	uv sync --all-extras
-	@echo "Building C++ extensions (REQUIRED)..."
-	uv run python setup.py build_ext --inplace
+	@echo "Generating protocol timing constants..."
+	uv run python scripts/generate_protocol_timings.py
 
 build:  ## Build the project (Python package)
 	uv build
 
-build-ext:  ## Build C++ extensions for IRremoteESP8266 bindings
-	uv run python setup.py build_ext --inplace
-
-build-all: build build-ext  ## Build both Python package and C++ extensions
+generate-protocols:  ## Generate protocol timing constants from IRremoteESP8266 data
+	uv run python scripts/generate_protocol_timings.py
 
 test:  ## Run tests
 	uv run pytest tests/ -v
