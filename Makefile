@@ -66,6 +66,16 @@ api-test:  ## Test the API endpoints (server must be running)
 		-d '{"manufacturer":"Fujitsu","protocol":"fujitsu_ac","command":{"power":"on","mode":"cool","temperature":24,"fan":"auto","swing":"off"}}' \
 		| python -m json.tool | head -15
 
+deploy-dev:  ## Deploy to Vercel (development environment)
+	@command -v vercel >/dev/null 2>&1 || (echo "❌ Vercel CLI not found. Install with: npm i -g vercel" && exit 1)
+	@echo "🚀 Deploying to Vercel (development)..."
+	vercel
+
+deploy-prod:  ## Deploy to Vercel (production environment)
+	@command -v vercel >/dev/null 2>&1 || (echo "❌ Vercel CLI not found. Install with: npm i -g vercel" && exit 1)
+	@echo "🚀 Deploying to Vercel (production)..."
+	vercel --prod
+
 all: install test lint  ## Install, test, and lint
 
 .DEFAULT_GOAL := help
