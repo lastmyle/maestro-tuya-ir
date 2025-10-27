@@ -257,19 +257,16 @@ Every pull request and push triggers automated checks:
 
 ### Branch Protection
 
-Configure required status checks to block merging/deployment:
+The `main` branch is protected with the following rules:
 
 1. **Tests** must pass (C++ bindings + pytest)
 2. **Lint** must pass (ruff check + format)
 3. **Lint PR** must pass (conventional commits)
 4. **Deployment Gate** waits for all checks
+5. **Code Owner Review** - @rhys-lastmyle must approve PRs
+6. **Strict Status Checks** - Branches must be up to date before merging
 
-**Quick Setup:**
-```bash
-./scripts/setup_branch_protection.sh
-```
-
-This configures GitHub branch protection rules via the `gh` CLI.
+Force pushes and branch deletion are disabled.
 
 ### Conventional Commits
 
