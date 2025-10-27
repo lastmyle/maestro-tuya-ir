@@ -133,13 +133,17 @@ def decode_fujitsu_ac_state(state_bytes: List[int]) -> Dict[str, Any]:
     """
     Decode Fujitsu AC state from byte array.
 
-    State structure (16-byte format):
-    - Byte 0-1: Header (0x14, 0x63)
-    - Byte 5: Command
-    - Byte 8: Power/Temperature
-    - Byte 9: Mode
-    - Byte 10: Fan/Swing
-    - Byte 15: Checksum
+    State structure:
+    - Short format (7 bytes): OFF command
+      - Byte 0-1: Header (0x14, 0x63)
+      - Byte 5: Command (0x02 = turn off)
+    - Full format (16 bytes): State command
+      - Byte 0-1: Header (0x14, 0x63)
+      - Byte 5: Command
+      - Byte 8: Power/Temperature
+      - Byte 9: Mode
+      - Byte 10: Fan/Swing
+      - Byte 15: Checksum
 
     Args:
         state_bytes: State byte array
@@ -147,11 +151,25 @@ def decode_fujitsu_ac_state(state_bytes: List[int]) -> Dict[str, Any]:
     Returns:
         Dictionary with power, mode, temperature, fan, swing
     """
+    if len(state_bytes) < 6:
+        return unknown_state()
+
+    # Check for short OFF command (7 bytes with cmd byte = 0x02)
+    if len(state_bytes) >= 6 and state_bytes[5] == FUJITSU_CMD_TURN_OFF:
+        return {
+            "power": "off",
+            "mode": "unknown",
+            "temperature": None,
+            "fan": "unknown",
+            "swing": "unknown",
+        }
+
+    # Full format requires at least 10 bytes
     if len(state_bytes) < 10:
         return unknown_state()
 
     # Byte 5: Command (0x02 = turn off)
-    cmd = state_bytes[5] if len(state_bytes) > 5 else 0
+    cmd = state_bytes[5]
     power = "off" if cmd == FUJITSU_CMD_TURN_OFF else "on"
 
     # Byte 8: Temperature (bits 0-6) and power flag (bit 7)
