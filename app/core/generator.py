@@ -11,6 +11,13 @@ from typing import Optional
 from app.core.protocol_timings import get_protocol_by_name
 from app.core.tuya import encode_tuya_ir
 
+# Import Fujitsu encoder for real protocol support
+try:
+    from app.core.fujitsu_encoder import generate_fujitsu_command
+    FUJITSU_ENCODER_AVAILABLE = True
+except ImportError:
+    FUJITSU_ENCODER_AVAILABLE = False
+
 
 class HVACCodeGenerator:
     """Generator for HVAC IR codes."""
@@ -101,8 +108,12 @@ class HVACCodeGenerator:
         """
         self._validate_parameters(power, mode, temperature, fan, swing)
 
-        # Generate IR timings
-        timings = self._encode_command(power, mode, temperature, fan, swing)
+        # Use protocol-specific encoder if available
+        if "fujitsu" in self.protocol.lower() and FUJITSU_ENCODER_AVAILABLE:
+            timings = generate_fujitsu_command(power, mode, temperature, fan, swing)
+        else:
+            # Fall back to generic encoder
+            timings = self._encode_command(power, mode, temperature, fan, swing)
 
         # Convert to Tuya format
         return encode_tuya_ir(timings)
