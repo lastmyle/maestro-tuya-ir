@@ -1,4 +1,4 @@
-.PHONY: help setup install build test run dev clean lint format check docker-build docker-run
+.PHONY: help setup install build test run dev clean lint format check deploy-dev deploy-prod logs-dev logs-prod info-dev info-prod delete-dev delete-prod
 
 help:  ## Show this help message
 	@echo "Maestro Tuya IR Bridge - Available Commands:"
@@ -11,19 +11,13 @@ setup:  ## Install uv if not already installed
 
 install: setup  ## Install project dependencies
 	uv sync
-	@echo "Generating protocol timing constants..."
-	uv run python scripts/generate_protocol_timings.py
 
 install-dev: setup  ## Install project dependencies including dev tools
 	uv sync --all-extras
-	@echo "Generating protocol timing constants..."
-	uv run python scripts/generate_protocol_timings.py
 
 build:  ## Build the project (Python package)
 	uv build
 
-generate-protocols:  ## Generate protocol timing constants from IRremoteESP8266 data
-	uv run python scripts/generate_protocol_timings.py
 
 test:  ## Run tests
 	uv run pytest tests/ -v
@@ -71,6 +65,14 @@ api-test:  ## Test the API endpoints (server must be running)
 		-H "Content-Type: application/json" \
 		-d '{"manufacturer":"Fujitsu","protocol":"fujitsu_ac","command":{"power":"on","mode":"cool","temperature":24,"fan":"auto","swing":"off"}}' \
 		| python -m json.tool | head -15
+
+deploy-dev:  ## Deploy to development environment
+	@echo "🚀 Deploying to development..."
+	stacktape deploy --stage=dev --region=us-east-1
+
+deploy-prod:  ## Deploy to production environment
+	@echo "🚀 Deploying to production..."
+	stacktape deploy --stage=production --region=us-east-1
 
 all: install test lint  ## Install, test, and lint
 
