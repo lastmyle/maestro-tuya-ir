@@ -38,8 +38,8 @@ gh api \
   -f required_status_checks[contexts][]='Vercel – maestro-tuya-ir' \
   -f enforce_admins=false \
   -f required_pull_request_reviews[dismiss_stale_reviews]=true \
-  -f required_pull_request_reviews[require_code_owner_reviews]=false \
-  -f required_pull_request_reviews[required_approving_review_count]=0 \
+  -f required_pull_request_reviews[require_code_owner_reviews]=true \
+  -f required_pull_request_reviews[required_approving_review_count]=1 \
   -f required_pull_request_reviews[require_last_push_approval]=false \
   -f restrictions=null \
   -f required_linear_history=false \
@@ -56,9 +56,12 @@ echo ""
 echo "📋 Configuration:"
 echo "   - Required status checks: test, lint, Vercel"
 echo "   - Strict status checks: enabled (must be up to date)"
-echo "   - Require PR reviews: disabled (solo dev)"
+echo "   - Require PR reviews: 1 approval required"
+echo "   - Code owner reviews: required (@rhys-lastmyle)"
+echo "   - Dismiss stale reviews: enabled"
 echo "   - Admins can bypass: yes"
 echo "   - Force push: disabled"
 echo "   - Delete branch: disabled"
 echo ""
+echo "📝 Code owners defined in: .github/CODEOWNERS"
 echo "🔍 View settings: https://github.com/$REPO/settings/branches"

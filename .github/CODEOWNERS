@@ -1,0 +1,28 @@
+# Code Owners for Maestro Tuya IR Bridge
+# These owners will be automatically requested for review when someone opens a pull request.
+# https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+
+# Default owner for everything in the repo
+* @rhys-lastmyle
+
+# Python code
+*.py @rhys-lastmyle
+app/ @rhys-lastmyle
+tests/ @rhys-lastmyle
+
+# C++ bindings
+bindings/ @rhys-lastmyle
+*.cpp @rhys-lastmyle
+setup.py @rhys-lastmyle
+
+# Configuration files
+pyproject.toml @rhys-lastmyle
+vercel.json @rhys-lastmyle
+Makefile @rhys-lastmyle
+
+# Documentation
+*.md @rhys-lastmyle
+@CLAUDE.md @rhys-lastmyle
+
+# GitHub workflows and settings
+.github/ @rhys-lastmyle
