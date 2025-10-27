@@ -4,7 +4,7 @@ Tests for real Tuya IR code decoding.
 
 import pytest
 
-from app.core.protocols import identify_protocol
+from app.core.protocol_timings import identify_protocol
 from app.core.tuya import decode_tuya_ir, encode_tuya_ir
 
 

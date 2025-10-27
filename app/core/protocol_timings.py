@@ -490,7 +490,7 @@ def get_protocols_by_manufacturer(manufacturer: str) -> List[str]:
 
 
 def identify_protocol(
-    timings: List[int], tolerance_multiplier: float = 1.5
+    timings: List[int], tolerance_multiplier: float = 1.5, manufacturer_hint: Optional[str] = None
 ) -> Optional[Dict[str, Any]]:
     """
     Identify IR protocol from raw timing data.
@@ -498,13 +498,16 @@ def identify_protocol(
     Args:
         timings: Array of timing values in microseconds [mark, space, mark, space, ...]
         tolerance_multiplier: Adjust tolerance (1.0 = default, 1.5 = more lenient)
+        manufacturer_hint: Optional manufacturer name to prioritize (unused, for compatibility)
 
     Returns:
         Dictionary with protocol info, or None if no match:
         {
             "protocol": str,
-            "manufacturer": List[str],
+            "manufacturer": List[str] or str (primary manufacturer),
             "confidence": float,
+            "capabilities": dict,
+            "source": str,
             "timing_match": {
                 "header_mark": int,
                 "header_space": int,
@@ -540,14 +543,78 @@ def identify_protocol(
     if best_match is None:
         return None
 
+    # Default HVAC capabilities
+    capabilities = {
+        "modes": ["cool", "heat", "dry", "fan", "auto"],
+        "fanSpeeds": ["auto", "low", "medium", "high"],
+        "tempRange": {"min": 16, "max": 30, "unit": "celsius"},
+        "features": ["swing"],
+    }
+
     return {
         "protocol": best_match.name,
-        "manufacturer": best_match.manufacturers,
+        "manufacturer": best_match.manufacturers[0] if best_match.manufacturers else "Unknown",
         "confidence": round(best_score, 2),
+        "capabilities": capabilities,
+        "source": "irremote_esp8266",
         "timing_match": {
             "header_mark": header_mark,
             "header_space": header_space,
             "expected_mark": best_match.header_mark,
             "expected_space": best_match.header_space,
         },
+    }
+
+
+def get_protocol_by_name(protocol_name: str) -> Optional[ProtocolTiming]:
+    """
+    Get protocol definition by name (case-insensitive).
+
+    Args:
+        protocol_name: Protocol name (e.g., "fujitsu_ac" or "FUJITSU_AC")
+
+    Returns:
+        ProtocolTiming or None if not found
+    """
+    protocol_lower = protocol_name.lower().replace(" ", "_")
+
+    for proto in PROTOCOL_TIMINGS:
+        if proto.name.lower() == protocol_lower:
+            return proto
+
+    return None
+
+
+def get_supported_manufacturers() -> List[str]:
+    """
+    Get sorted list of unique manufacturers from all protocols.
+
+    Returns:
+        Sorted list of manufacturer names
+    """
+    return get_all_manufacturers()
+
+
+def parse_hvac_state(timings: List[int], protocol: str) -> Dict[str, Any]:
+    """
+    Parse HVAC state from IR timings.
+
+    Note: This is a simplified implementation. Real implementation would
+    decode the actual bit patterns for each protocol.
+
+    Args:
+        timings: Raw IR timing array
+        protocol: Protocol name
+
+    Returns:
+        Dictionary with power, mode, temperature, fan, swing settings
+    """
+    # This is a placeholder - real implementation would decode bit patterns
+    # For now, return default/unknown state
+    return {
+        "power": "unknown",
+        "mode": "unknown",
+        "temperature": None,
+        "fan": "unknown",
+        "swing": "unknown",
     }

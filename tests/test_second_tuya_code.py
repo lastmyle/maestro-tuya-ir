@@ -4,7 +4,7 @@ Test for second real Tuya IR code.
 
 import pytest
 
-from app.core.protocols import identify_protocol
+from app.core.protocol_timings import identify_protocol
 from app.core.tuya import decode_tuya_ir
 
 

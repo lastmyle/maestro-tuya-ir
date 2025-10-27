@@ -4,7 +4,7 @@ Tests for protocol detection and identification.
 
 import pytest
 
-from app.core.protocols import (
+from app.core.protocol_timings import (
     get_protocol_by_name,
     get_supported_manufacturers,
     identify_protocol,

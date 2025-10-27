@@ -5,7 +5,7 @@
 from fastapi import APIRouter, HTTPException
 
 from app.core.generator import HVACCodeGenerator
-from app.core.protocols import get_protocol_by_name
+from app.core.protocol_timings import get_protocol_by_name
 from app.models.request import GenerateRequest
 from app.models.response import ErrorResponse, GenerateResponse
 
@@ -32,7 +32,7 @@ async def generate(request: GenerateRequest):
         # Validate protocol exists
         protocol_def = get_protocol_by_name(request.protocol)
         if not protocol_def:
-            from app.core.protocols import get_supported_manufacturers
+            from app.core.protocol_timings import get_supported_manufacturers
 
             raise HTTPException(
                 status_code=422,

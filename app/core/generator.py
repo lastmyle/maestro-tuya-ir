@@ -8,7 +8,7 @@ integrate with hvac_ir library or IRremoteESP8266.
 
 from typing import Optional
 
-from app.core.protocols import get_protocol_by_name
+from app.core.protocol_timings import get_protocol_by_name
 from app.core.tuya import encode_tuya_ir
 
 

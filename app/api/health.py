@@ -4,7 +4,7 @@
 
 from fastapi import APIRouter
 
-from app.core.protocols import get_supported_manufacturers
+from app.core.protocol_timings import get_supported_manufacturers
 from app.models.response import HealthResponse
 
 router = APIRouter()

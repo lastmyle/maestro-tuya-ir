@@ -50,7 +50,7 @@ async def encode(request: EncodeRequest):
     except ValueError as e:
         error_msg = str(e)
         if "Unsupported protocol" in error_msg:
-            from app.core.protocols import get_supported_manufacturers
+            from app.core.protocol_timings import get_supported_manufacturers
 
             raise HTTPException(
                 status_code=422,
