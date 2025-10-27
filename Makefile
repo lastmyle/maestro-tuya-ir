@@ -1,4 +1,4 @@
-.PHONY: help setup install build test run dev clean lint format check deploy-dev deploy-prod logs-dev logs-prod info-dev info-prod delete-dev delete-prod
+.PHONY: help setup install build test run dev clean lint format check deploy-dev deploy-prod logs-dev logs-prod info-dev info-prod delete-dev delete-prod sam-build sam-deploy-dev sam-deploy-prod sam-local
 
 help:  ## Show this help message
 	@echo "Maestro Tuya IR Bridge - Available Commands:"
@@ -66,13 +66,33 @@ api-test:  ## Test the API endpoints (server must be running)
 		-d '{"manufacturer":"Fujitsu","protocol":"fujitsu_ac","command":{"power":"on","mode":"cool","temperature":24,"fan":"auto","swing":"off"}}' \
 		| python -m json.tool | head -15
 
-deploy-dev:  ## Deploy to development environment
+deploy-dev:  ## Deploy to development environment (Stacktape - BLOCKED by minification issue)
 	@echo "🚀 Deploying to development..."
+	@echo "⚠️  WARNING: Stacktape deployment is blocked by python-minifier issue"
+	@echo "ℹ️  Use 'make sam-deploy-dev' instead"
 	stacktape deploy --projectName=maestro-tuya-ir --stage=dev --region=us-west-2 --aa aws-development
 
-deploy-prod:  ## Deploy to production environment
+deploy-prod:  ## Deploy to production environment (Stacktape - BLOCKED by minification issue)
 	@echo "🚀 Deploying to production..."
+	@echo "⚠️  WARNING: Stacktape deployment is blocked by python-minifier issue"
+	@echo "ℹ️  Use 'make sam-deploy-prod' instead"
 	stacktape deploy --projectName=maestro-tuya-ir --stage=production --region=us-west-2 --aa aws-production
+
+sam-build:  ## Build Lambda container image with AWS SAM
+	@echo "🔨 Building Lambda container image..."
+	sam build --use-container
+
+sam-deploy-dev:  ## Deploy to AWS Lambda (development) using SAM
+	@echo "🚀 Deploying to AWS Lambda (dev) via SAM..."
+	sam deploy --stack-name maestro-ir-bridge-dev --region us-west-2 --no-confirm-changeset --capabilities CAPABILITY_IAM
+
+sam-deploy-prod:  ## Deploy to AWS Lambda (production) using SAM
+	@echo "🚀 Deploying to AWS Lambda (production) via SAM..."
+	sam deploy --stack-name maestro-ir-bridge-prod --region us-west-2 --no-confirm-changeset --capabilities CAPABILITY_IAM
+
+sam-local:  ## Run Lambda function locally with SAM
+	@echo "🏠 Starting Lambda function locally..."
+	sam local start-api --host 127.0.0.1 --port 3000
 
 all: install test lint  ## Install, test, and lint
 

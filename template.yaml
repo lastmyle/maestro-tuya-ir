@@ -1,0 +1,55 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Maestro Tuya IR Bridge - FastAPI on AWS Lambda
+
+Globals:
+  Function:
+    Timeout: 15
+    MemorySize: 512
+    Environment:
+      Variables:
+        ENVIRONMENT: production
+
+Resources:
+  IrBridgeFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      PackageType: Image
+      Architectures:
+        - x86_64
+      Events:
+        RootPath:
+          Type: HttpApi
+          Properties:
+            Path: /
+            Method: GET
+            ApiId: !Ref IrApi
+        ApiProxy:
+          Type: HttpApi
+          Properties:
+            Path: /{proxy+}
+            Method: ANY
+            ApiId: !Ref IrApi
+    Metadata:
+      Dockerfile: Dockerfile.lambda
+      DockerContext: .
+      DockerTag: python3.12-v1
+
+  IrApi:
+    Type: AWS::Serverless::HttpApi
+    Properties:
+      CorsConfiguration:
+        AllowOrigins:
+          - "*"
+        AllowHeaders:
+          - "*"
+        AllowMethods:
+          - "*"
+
+Outputs:
+  ApiUrl:
+    Description: "API Gateway endpoint URL"
+    Value: !Sub "https://${IrApi}.execute-api.${AWS::Region}.amazonaws.com"
+  FunctionArn:
+    Description: "Lambda Function ARN"
+    Value: !GetAtt IrBridgeFunction.Arn
