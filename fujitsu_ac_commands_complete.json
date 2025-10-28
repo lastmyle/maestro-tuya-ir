@@ -1,0 +1,3018 @@
+{
+  "device": "Fujitsu AC",
+  "protocol": "fujitsu_ac_16byte",
+  "total_commands": 376,
+  "compression": "tuya1.py (FastLZ level 2)",
+  "checksum_formula": "(0x9E - Sum) & 0xFF",
+  "verified_working": [
+    "off",
+    "heat_24c_low (original 24C_High code)"
+  ],
+  "commands": {
+    "off": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/gEzPgA7fgCQM=",
+      "bytes": "146300101002FD",
+      "power": "off"
+    },
+    "auto_16c_auto": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+Avx+Av3+BbA+EHE+ERLw==",
+      "bytes": "1463001010FE0930010010000000209F",
+      "power": "on",
+      "mode": "auto",
+      "temperature": 16,
+      "fan": "auto"
+    },
+    "auto_16c_low": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+Avx+APr+A3T+A7A+EPw+AJ+w==",
+      "bytes": "1463001010FE0930010011000000209E",
+      "power": "on",
+      "mode": "auto",
+      "temperature": 16,
+      "fan": "low"
+    },
+    "auto_16c_medium": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+Avx+APs+A7T+BLj+ENLw==",
+      "bytes": "1463001010FE0930010012000000209D",
+      "power": "on",
+      "mode": "auto",
+      "temperature": 16,
+      "fan": "medium"
+    },
+    "auto_16c_high": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+Avx+BPT+A7A+EXQ+ABqw==",
+      "bytes": "1463001010FE0930010013000000209C",
+      "power": "on",
+      "mode": "auto",
+      "temperature": 16,
+      "fan": "high"
+    },
+    "auto_16c_quiet": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+Avx+APt+A/T+A7i+AH7+AJ+w==",
+      "bytes": "1463001010FE0930010014000000209B",
+      "power": "on",
+      "mode": "auto",
+      "temperature": 16,
+      "fan": "quiet"
+    },
+    "auto_17c_auto": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AL2+Ar1+A/P+A7A+AH3+ELK4Cr",
+      "bytes": "1463001010FE0930110010000000208F",
+      "power": "on",
+      "mode": "auto",
+      "temperature": 17,
+      "fan": "auto"
+    },
+    "auto_17c_low": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AL2+Azz+EvF+BDA+EPw+AJqw==",
+      "bytes": "1463001010FE0930110011000000208E",
+      "power": "on",
+      "mode": "auto",
+      "temperature": 17,
+      "fan": "low"
+    },
+    "auto_17c_medium": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AL2+Az0+EvF+BDA+AL3+ENxw==",
+      "bytes": "1463001010FE0930110012000000208D",
+      "power": "on",
+      "mode": "auto",
+      "temperature": 17,
+      "fan": "medium"
+    },
+    "auto_17c_high": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AL2+Anz+Ang+BXA+ETQ+AF6w==",
+      "bytes": "1463001010FE0930110013000000208C",
+      "power": "on",
+      "mode": "auto",
+      "temperature": 17,
+      "fan": "high"
+    },
+    "auto_17c_quiet": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AL2+Az1+EvF+BDA+AH3+ER2w==",
+      "bytes": "1463001010FE0930110014000000208B",
+      "power": "on",
+      "mode": "auto",
+      "temperature": 17,
+      "fan": "quiet"
+    },
+    "auto_18c_auto": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+APb+Ar2+A3O+A/A+AH3+ERNw==",
+      "bytes": "1463001010FE0930210010000000207F",
+      "power": "on",
+      "mode": "auto",
+      "temperature": 18,
+      "fan": "auto"
+    },
+    "auto_18c_low": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+APb+Avz+EvF+BDA+EPw+EJNw==",
+      "bytes": "1463001010FE0930210011000000207E",
+      "power": "on",
+      "mode": "auto",
+      "temperature": 18,
+      "fan": "low"
+    },
+    "auto_18c_medium": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+APb+Av0+EvF+BDA+AL3+ENNw==",
+      "bytes": "1463001010FE0930210012000000207D",
+      "power": "on",
+      "mode": "auto",
+      "temperature": 18,
+      "fan": "medium"
+    },
+    "auto_18c_high": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+APb+Ajz+Ang+BXA+EfQwFWAQ==",
+      "bytes": "1463001010FE0930210013000000207C",
+      "power": "on",
+      "mode": "auto",
+      "temperature": 18,
+      "fan": "high"
+    },
+    "auto_18c_quiet": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+APb+Av1+EvF+BDA+AH3+ED2+EFNw==",
+      "bytes": "1463001010FE0930210014000000207B",
+      "power": "on",
+      "mode": "auto",
+      "temperature": 18,
+      "fan": "quiet"
+    },
+    "auto_19c_auto": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+BD2+Afg+BXA+AH3+EHK+AB4w==",
+      "bytes": "1463001010FE0930310010000000206F",
+      "power": "on",
+      "mode": "auto",
+      "temperature": 19,
+      "fan": "auto"
+    },
+    "auto_19c_low": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+A32+ELG+ErF+BDA+EPw+ED44Cn",
+      "bytes": "1463001010FE0930310011000000206E",
+      "power": "on",
+      "mode": "auto",
+      "temperature": 19,
+      "fan": "low"
+    },
+    "auto_19c_medium": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+A72+Ang+BXA+AL3+AD9+EBvw==",
+      "bytes": "1463001010FE0930310012000000206D",
+      "power": "on",
+      "mode": "auto",
+      "temperature": 19,
+      "fan": "medium"
+    },
+    "auto_19c_high": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+A32+Arg+BXA+ETQ+EFvw==",
+      "bytes": "1463001010FE0930310013000000206C",
+      "power": "on",
+      "mode": "auto",
+      "temperature": 19,
+      "fan": "high"
+    },
+    "auto_19c_quiet": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+A/2+EPP+BrA+AH3+EH2+EBvw==",
+      "bytes": "1463001010FE0930310014000000206B",
+      "power": "on",
+      "mode": "auto",
+      "temperature": 19,
+      "fan": "quiet"
+    },
+    "auto_20c_auto": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+APj+BP3+BbA+AH3+ELL4Cn",
+      "bytes": "1463001010FE0930410010000000205F",
+      "power": "on",
+      "mode": "auto",
+      "temperature": 20,
+      "fan": "auto"
+    },
+    "auto_20c_low": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+APj+Af3+ELG+ErF+BDA+EPw+AD+4Cn",
+      "bytes": "1463001010FE0930410011000000205E",
+      "power": "on",
+      "mode": "auto",
+      "temperature": 20,
+      "fan": "low"
+    },
+    "auto_20c_medium": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+APj+Aj3+Ang+BXA+AL3+EHL4Cn",
+      "bytes": "1463001010FE0930410012000000205D",
+      "power": "on",
+      "mode": "auto",
+      "temperature": 20,
+      "fan": "medium"
+    },
+    "auto_20c_high": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+APj+Af3+Arg+BXA+EXQ+ABpw==",
+      "bytes": "1463001010FE0930410013000000205C",
+      "power": "on",
+      "mode": "auto",
+      "temperature": 20,
+      "fan": "high"
+    },
+    "auto_20c_quiet": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+APj+An3+EPP+BrA+AH3+ED2+AFpw==",
+      "bytes": "1463001010FE0930410014000000205B",
+      "power": "on",
+      "mode": "auto",
+      "temperature": 20,
+      "fan": "quiet"
+    },
+    "auto_21c_auto": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AL2+AfS+Ar3+BbA+AH3+ERKw==",
+      "bytes": "1463001010FE0930510010000000204F",
+      "power": "on",
+      "mode": "auto",
+      "temperature": 21,
+      "fan": "auto"
+    },
+    "auto_21c_low": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AL2+AfS+ATP+BzA+EPw+EJKw==",
+      "bytes": "1463001010FE0930510011000000204E",
+      "power": "on",
+      "mode": "auto",
+      "temperature": 21,
+      "fan": "low"
+    },
+    "auto_21c_medium": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AL2+AfS+ALQ+EvF+BDA+AL3+ENKw==",
+      "bytes": "1463001010FE0930510012000000204D",
+      "power": "on",
+      "mode": "auto",
+      "temperature": 21,
+      "fan": "medium"
+    },
+    "auto_21c_high": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AL2+AfS+AbT+BrA+ETQ+AFpw==",
+      "bytes": "1463001010FE0930510013000000204C",
+      "power": "on",
+      "mode": "auto",
+      "temperature": 21,
+      "fan": "high"
+    },
+    "auto_21c_quiet": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AL2+AfS+A7N+BLA+AH3+EL24Cn",
+      "bytes": "1463001010FE0930510014000000204B",
+      "power": "on",
+      "mode": "auto",
+      "temperature": 21,
+      "fan": "quiet"
+    },
+    "auto_22c_auto": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+ATb+BL3+BbA+AH3+ERMw==",
+      "bytes": "1463001010FE0930610010000000203F",
+      "power": "on",
+      "mode": "auto",
+      "temperature": 22,
+      "fan": "auto"
+    },
+    "auto_22c_low": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+ATb+Arz+EvF+BDA+EPw+EJMw==",
+      "bytes": "1463001010FE0930610011000000203E",
+      "power": "on",
+      "mode": "auto",
+      "temperature": 22,
+      "fan": "low"
+    },
+    "auto_22c_medium": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+ATb+Ar0+EvF+BDA+AL3+ENMw==",
+      "bytes": "1463001010FE0930610012000000203D",
+      "power": "on",
+      "mode": "auto",
+      "temperature": 22,
+      "fan": "medium"
+    },
+    "auto_22c_high": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+ATb+Afz+Ang+BXA+EbQ4Cj",
+      "bytes": "1463001010FE0930610013000000203C",
+      "power": "on",
+      "mode": "auto",
+      "temperature": 22,
+      "fan": "high"
+    },
+    "auto_22c_quiet": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+ATb+Ar1+EvF+BDA+AH3+ED2+EFuw==",
+      "bytes": "1463001010FE0930610014000000203B",
+      "power": "on",
+      "mode": "auto",
+      "temperature": 22,
+      "fan": "quiet"
+    },
+    "auto_23c_auto": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AP7+BP3+BbA+AH3+EHK+ABow==",
+      "bytes": "1463001010FE0930710010000000202F",
+      "power": "on",
+      "mode": "auto",
+      "temperature": 23,
+      "fan": "auto"
+    },
+    "auto_23c_low": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AP7+Af3+ELG+ErF+BDA+AX0+ABow==",
+      "bytes": "1463001010FE0930710011000000202E",
+      "power": "on",
+      "mode": "auto",
+      "temperature": 23,
+      "fan": "low"
+    },
+    "auto_23c_medium": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AP7+Aj3+Ang+BXA+AL3+AD9+ABow==",
+      "bytes": "1463001010FE0930710012000000202D",
+      "power": "on",
+      "mode": "auto",
+      "temperature": 23,
+      "fan": "medium"
+    },
+    "auto_23c_high": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AP7+Af3+Arg+BXA+ETQ+AFow==",
+      "bytes": "1463001010FE0930710013000000202C",
+      "power": "on",
+      "mode": "auto",
+      "temperature": 23,
+      "fan": "high"
+    },
+    "auto_23c_quiet": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AP7+An3+EPP+BrA+AH3+EH2+ABow==",
+      "bytes": "1463001010FE0930710014000000202B",
+      "power": "on",
+      "mode": "auto",
+      "temperature": 23,
+      "fan": "quiet"
+    },
+    "auto_24c_auto": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+ATj+Ar4+EvF+BDA+AH3+EPLwFWAQ==",
+      "bytes": "1463001010FE0930810010000000201F",
+      "power": "on",
+      "mode": "auto",
+      "temperature": 24,
+      "fan": "auto"
+    },
+    "auto_24c_low": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+ATj+AfT+AnM+BXA+EPw+EJtw==",
+      "bytes": "1463001010FE0930810011000000201E",
+      "power": "on",
+      "mode": "auto",
+      "temperature": 24,
+      "fan": "low"
+    },
+    "auto_24c_medium": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+ATj+Af4+Ang+BXA+AL3+ELLwFWAQ==",
+      "bytes": "1463001010FE0930810012000000201D",
+      "power": "on",
+      "mode": "auto",
+      "temperature": 24,
+      "fan": "medium"
+    },
+    "auto_24c_high": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+ATj+BHT+BfA+EXQ+ABnw==",
+      "bytes": "1463001010FE0930810013000000201C",
+      "power": "on",
+      "mode": "auto",
+      "temperature": 24,
+      "fan": "high"
+    },
+    "auto_24c_quiet": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+ATj+Aj4+EPP+BrA+AH3+ED2+AFnw==",
+      "bytes": "1463001010FE0930810014000000201B",
+      "power": "on",
+      "mode": "auto",
+      "temperature": 24,
+      "fan": "quiet"
+    },
+    "auto_25c_auto": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AL2+AjT+An3+BbA+AH3+ELK4AD",
+      "bytes": "1463001010FE0930910010000000200F",
+      "power": "on",
+      "mode": "auto",
+      "temperature": 25,
+      "fan": "auto"
+    },
+    "auto_25c_low": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AL2+AnT+Aj3+BbA+EPw+AJmw==",
+      "bytes": "1463001010FE0930910011000000200E",
+      "power": "on",
+      "mode": "auto",
+      "temperature": 25,
+      "fan": "low"
+    },
+    "auto_25c_medium": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AL2+AjT+AvM+BTA+AL3+ENsw==",
+      "bytes": "1463001010FE0930910012000000200D",
+      "power": "on",
+      "mode": "auto",
+      "temperature": 25,
+      "fan": "medium"
+    },
+    "auto_25c_high": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AL2+BDT+BrA+ETQ+AFmw==",
+      "bytes": "1463001010FE0930910013000000200C",
+      "power": "on",
+      "mode": "auto",
+      "temperature": 25,
+      "fan": "high"
+    },
+    "auto_25c_quiet": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AL2+AjT+EXP+BrA+AH3+ARmw==",
+      "bytes": "1463001010FE0930910014000000200B",
+      "power": "on",
+      "mode": "auto",
+      "temperature": 25,
+      "fan": "quiet"
+    },
+    "auto_26c_auto": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+APb+AfT+An3+BbA+AH3+EROw==",
+      "bytes": "1463001010FE0930A1001000000020FF",
+      "power": "on",
+      "mode": "auto",
+      "temperature": 26,
+      "fan": "auto"
+    },
+    "auto_26c_low": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+APb+AjT+Aj3+BbA+EPw+EJOw==",
+      "bytes": "1463001010FE0930A1001100000020FE",
+      "power": "on",
+      "mode": "auto",
+      "temperature": 26,
+      "fan": "low"
+    },
+    "auto_26c_medium": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+APb+AfT+EHM+EvF+BDA+AL3+ENOw==",
+      "bytes": "1463001010FE0930A1001200000020FD",
+      "power": "on",
+      "mode": "auto",
+      "temperature": 26,
+      "fan": "medium"
+    },
+    "auto_26c_high": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+APb+BDT+BnA+EhQw==",
+      "bytes": "1463001010FE0930A1001300000020FC",
+      "power": "on",
+      "mode": "auto",
+      "temperature": 26,
+      "fan": "high"
+    },
+    "auto_26c_quiet": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+APb+AfT+AzM+BPA+AH3+ED2+EFOw==",
+      "bytes": "1463001010FE0930A1001400000020FB",
+      "power": "on",
+      "mode": "auto",
+      "temperature": 26,
+      "fan": "quiet"
+    },
+    "auto_27c_auto": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AT7+Ar4+EvF+BDA+AH3+EHK+EBOw==",
+      "bytes": "1463001010FE0930B1001000000020EF",
+      "power": "on",
+      "mode": "auto",
+      "temperature": 27,
+      "fan": "auto"
+    },
+    "auto_27c_low": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AT7+AfT+Aj3+BbA+AP0+ED44HD",
+      "bytes": "1463001010FE0930B1001100000020EE",
+      "power": "on",
+      "mode": "auto",
+      "temperature": 27,
+      "fan": "low"
+    },
+    "auto_27c_medium": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AT7+Af4+Ang+BXA+AL3+AH14HD",
+      "bytes": "1463001010FE0930B1001200000020ED",
+      "power": "on",
+      "mode": "auto",
+      "temperature": 27,
+      "fan": "medium"
+    },
+    "auto_27c_high": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AT7+A7T+BrA+ETQ+EFTw==",
+      "bytes": "1463001010FE0930B1001300000020EC",
+      "power": "on",
+      "mode": "auto",
+      "temperature": 27,
+      "fan": "high"
+    },
+    "auto_27c_quiet": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AT7+Aj4+ArM+BPA+AH3+EH2+EBOw==",
+      "bytes": "1463001010FE0930B1001400000020EB",
+      "power": "on",
+      "mode": "auto",
+      "temperature": 27,
+      "fan": "quiet"
+    },
+    "auto_28c_auto": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+APj+Av4+EvF+BDA+AH3+ELL4HD",
+      "bytes": "1463001010FE0930C1001000000020DF",
+      "power": "on",
+      "mode": "auto",
+      "temperature": 28,
+      "fan": "auto"
+    },
+    "auto_28c_low": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+APj+Af4+ELG+ErF+BDA+EPw+AD+4HD",
+      "bytes": "1463001010FE0930C1001100000020DE",
+      "power": "on",
+      "mode": "auto",
+      "temperature": 28,
+      "fan": "low"
+    },
+    "auto_28c_medium": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+APj+Aj4+Ang+BXA+AL3+EHL4HD",
+      "bytes": "1463001010FE0930C1001200000020DD",
+      "power": "on",
+      "mode": "auto",
+      "temperature": 28,
+      "fan": "medium"
+    },
+    "auto_28c_high": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+APj+Af4+Arg+BXA+EXQ+EBww==",
+      "bytes": "1463001010FE0930C1001300000020DC",
+      "power": "on",
+      "mode": "auto",
+      "temperature": 28,
+      "fan": "high"
+    },
+    "auto_28c_quiet": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+APj+An4+EPP+BrA+AH3+ED2+AFCw==",
+      "bytes": "1463001010FE0930C1001400000020DB",
+      "power": "on",
+      "mode": "auto",
+      "temperature": 28,
+      "fan": "quiet"
+    },
+    "auto_29c_auto": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AL2+Az4+EvF+BDA+AH3+EPKwGTBA==",
+      "bytes": "1463001010FE0930D1001000000020CF",
+      "power": "on",
+      "mode": "auto",
+      "temperature": 29,
+      "fan": "auto"
+    },
+    "auto_29c_low": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AL2+Aj4+APP+BzA+EPw+AH9wGTBA==",
+      "bytes": "1463001010FE0930D1001100000020CE",
+      "power": "on",
+      "mode": "auto",
+      "temperature": 29,
+      "fan": "low"
+    },
+    "auto_29c_medium": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AL2+An4+Ang+BXA+AL3+AL9wGTBA==",
+      "bytes": "1463001010FE0930D1001200000020CD",
+      "power": "on",
+      "mode": "auto",
+      "temperature": 29,
+      "fan": "medium"
+    },
+    "auto_29c_high": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AL2+Aj4+Arg+BXA+ETQ+EFww==",
+      "bytes": "1463001010FE0930D1001300000020CC",
+      "power": "on",
+      "mode": "auto",
+      "temperature": 29,
+      "fan": "high"
+    },
+    "auto_29c_quiet": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AL2+Ar4+EPP+BrA+AH3+EL24HD",
+      "bytes": "1463001010FE0930D1001400000020CB",
+      "power": "on",
+      "mode": "auto",
+      "temperature": 29,
+      "fan": "quiet"
+    },
+    "auto_30c_auto": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AXb+BH3+BbA+AH3+EPMwGTBA==",
+      "bytes": "1463001010FE0930E1001000000020BF",
+      "power": "on",
+      "mode": "auto",
+      "temperature": 30,
+      "fan": "auto"
+    },
+    "auto_30c_low": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AXb+Anz+EvF+BDA+EPw+EHMwGTBA==",
+      "bytes": "1463001010FE0930E1001100000020BE",
+      "power": "on",
+      "mode": "auto",
+      "temperature": 30,
+      "fan": "low"
+    },
+    "auto_30c_medium": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AXb+An0+EvF+BDA+AL3+ELMwGTBA==",
+      "bytes": "1463001010FE0930E1001200000020BD",
+      "power": "on",
+      "mode": "auto",
+      "temperature": 30,
+      "fan": "medium"
+    },
+    "auto_30c_high": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AXb+A7T+BnA+EbQ4Cr",
+      "bytes": "1463001010FE0930E1001300000020BC",
+      "power": "on",
+      "mode": "auto",
+      "temperature": 30,
+      "fan": "high"
+    },
+    "auto_30c_quiet": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AXb+An1+EvF+BDA+AH3+ED2+AFDw==",
+      "bytes": "1463001010FE0930E1001400000020BB",
+      "power": "on",
+      "mode": "auto",
+      "temperature": 30,
+      "fan": "quiet"
+    },
+    "cool_16c_auto": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+Arj+BDL+BLA+EPw+EJLw==",
+      "bytes": "1463001010FE0930010110000000209E",
+      "power": "on",
+      "mode": "cool",
+      "temperature": 16,
+      "fan": "auto"
+    },
+    "cool_16c_low": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+Arj+ATr+EvF+BDA+AL3+ENLw==",
+      "bytes": "1463001010FE0930010111000000209D",
+      "power": "on",
+      "mode": "cool",
+      "temperature": 16,
+      "fan": "low"
+    },
+    "cool_16c_medium": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+Arj+ATs+EvF+BDA+EXQ+ABqw==",
+      "bytes": "1463001010FE0930010112000000209C",
+      "power": "on",
+      "mode": "cool",
+      "temperature": 16,
+      "fan": "medium"
+    },
+    "cool_16c_high": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+Arj+AzT+BbA+AH3+ED2+AFqw==",
+      "bytes": "1463001010FE0930010113000000209B",
+      "power": "on",
+      "mode": "cool",
+      "temperature": 16,
+      "fan": "high"
+    },
+    "cool_16c_quiet": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+Arj+ATt+EvF+BDA+ELr+AN+w==",
+      "bytes": "1463001010FE0930010114000000209A",
+      "power": "on",
+      "mode": "cool",
+      "temperature": 16,
+      "fan": "quiet"
+    },
+    "cool_17c_auto": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AL2+Ajr+An3+BbA+EPw+AJ2w==",
+      "bytes": "1463001010FE0930110110000000208E",
+      "power": "on",
+      "mode": "cool",
+      "temperature": 17,
+      "fan": "auto"
+    },
+    "cool_17c_low": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AL2+Azr+EvF+BDA+AL3+ENxw==",
+      "bytes": "1463001010FE0930110111000000208D",
+      "power": "on",
+      "mode": "cool",
+      "temperature": 17,
+      "fan": "low"
+    },
+    "cool_17c_medium": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AL2+Ajr+EHM+EvF+BDA+ETQ+AF2w==",
+      "bytes": "1463001010FE0930110112000000208C",
+      "power": "on",
+      "mode": "cool",
+      "temperature": 17,
+      "fan": "medium"
+    },
+    "cool_17c_high": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AL2+Anr+Ang+BXA+AH3+ER2w==",
+      "bytes": "1463001010FE0930110113000000208B",
+      "power": "on",
+      "mode": "cool",
+      "temperature": 17,
+      "fan": "high"
+    },
+    "cool_17c_quiet": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AL2+Ajr+EXP+BrA+AP0+AJ2w==",
+      "bytes": "1463001010FE0930110114000000208A",
+      "power": "on",
+      "mode": "cool",
+      "temperature": 17,
+      "fan": "quiet"
+    },
+    "cool_18c_auto": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+APb+AjU+Aj3+BbA+EPw+EJNw==",
+      "bytes": "1463001010FE0930210110000000207E",
+      "power": "on",
+      "mode": "cool",
+      "temperature": 18,
+      "fan": "auto"
+    },
+    "cool_18c_low": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+APb+Avr+EvF+BDA+AL3+ENNw==",
+      "bytes": "1463001010FE0930210111000000207D",
+      "power": "on",
+      "mode": "cool",
+      "temperature": 18,
+      "fan": "low"
+    },
+    "cool_18c_medium": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+APb+AnU+AjL+BXA+EfQwFWAQ==",
+      "bytes": "1463001010FE0930210112000000207C",
+      "power": "on",
+      "mode": "cool",
+      "temperature": 18,
+      "fan": "medium"
+    },
+    "cool_18c_high": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+APb+Ajr+Ang+BXA+AH3+ED2+EFNw==",
+      "bytes": "1463001010FE0930210113000000207B",
+      "power": "on",
+      "mode": "cool",
+      "temperature": 18,
+      "fan": "high"
+    },
+    "cool_18c_quiet": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+APb+AjU+ETP+BrA+ELr+ELRwFWAQ==",
+      "bytes": "1463001010FE0930210114000000207A",
+      "power": "on",
+      "mode": "cool",
+      "temperature": 18,
+      "fan": "quiet"
+    },
+    "cool_19c_auto": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AX7+An5+EvF+BDA+AP0+ED44Cn",
+      "bytes": "1463001010FE0930310110000000206E",
+      "power": "on",
+      "mode": "cool",
+      "temperature": 19,
+      "fan": "auto"
+    },
+    "cool_19c_low": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AX7+Anr+EvF+BDA+AL3+AD9+EBvw==",
+      "bytes": "1463001010FE0930310111000000206D",
+      "power": "on",
+      "mode": "cool",
+      "temperature": 19,
+      "fan": "low"
+    },
+    "cool_19c_medium": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AX7+AfU+AjL+BXA+ETQ+EFvw==",
+      "bytes": "1463001010FE0930310112000000206C",
+      "power": "on",
+      "mode": "cool",
+      "temperature": 19,
+      "fan": "medium"
+    },
+    "cool_19c_high": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AX7+Abr+Ang+BXA+AH3+EH2+EBvw==",
+      "bytes": "1463001010FE0930310113000000206B",
+      "power": "on",
+      "mode": "cool",
+      "temperature": 19,
+      "fan": "high"
+    },
+    "cool_19c_quiet": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AX7+Af5+EPP+BrA+ELr+AHB4Cn",
+      "bytes": "1463001010FE0930310114000000206A",
+      "power": "on",
+      "mode": "cool",
+      "temperature": 19,
+      "fan": "quiet"
+    },
+    "cool_20c_auto": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+APj+EPD+A33+BbA+EPw+AD+4Cn",
+      "bytes": "1463001010FE0930410110000000205E",
+      "power": "on",
+      "mode": "cool",
+      "temperature": 20,
+      "fan": "auto"
+    },
+    "cool_20c_low": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+APj+EPD+AXr+EvF+BDA+AL3+EHL4Cn",
+      "bytes": "1463001010FE0930410111000000205D",
+      "power": "on",
+      "mode": "cool",
+      "temperature": 20,
+      "fan": "low"
+    },
+    "cool_20c_medium": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+APj+EPD+AXs+EvF+BDA+EXQ+ABpw==",
+      "bytes": "1463001010FE0930410112000000205C",
+      "power": "on",
+      "mode": "cool",
+      "temperature": 20,
+      "fan": "medium"
+    },
+    "cool_20c_high": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+APj+EPD+AvT+BjA+AH3+ED2+AF1w==",
+      "bytes": "1463001010FE0930410113000000205B",
+      "power": "on",
+      "mode": "cool",
+      "temperature": 20,
+      "fan": "high"
+    },
+    "cool_20c_quiet": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+APj+EPD+AXt+EvF+BDA+ELr+AH+4Cn",
+      "bytes": "1463001010FE0930410114000000205A",
+      "power": "on",
+      "mode": "cool",
+      "temperature": 20,
+      "fan": "quiet"
+    },
+    "cool_21c_auto": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AL2+ETD+A33+BbA+EPw+EJKw==",
+      "bytes": "1463001010FE0930510110000000204E",
+      "power": "on",
+      "mode": "cool",
+      "temperature": 21,
+      "fan": "auto"
+    },
+    "cool_21c_low": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AL2+ETD+AXr+EvF+BDA+AL3+ENKw==",
+      "bytes": "1463001010FE0930510111000000204D",
+      "power": "on",
+      "mode": "cool",
+      "temperature": 21,
+      "fan": "low"
+    },
+    "cool_21c_medium": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AL2+ETD+AXs+EvF+BDA+ETQ+AFpw==",
+      "bytes": "1463001010FE0930510112000000204C",
+      "power": "on",
+      "mode": "cool",
+      "temperature": 21,
+      "fan": "medium"
+    },
+    "cool_21c_high": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AL2+ETD+AnT+BrA+AH3+EL24Cn",
+      "bytes": "1463001010FE0930510113000000204B",
+      "power": "on",
+      "mode": "cool",
+      "temperature": 21,
+      "fan": "high"
+    },
+    "cool_21c_quiet": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AL2+ETD+AXt+EvF+BDA+AX0+ABpw==",
+      "bytes": "1463001010FE0930510114000000204A",
+      "power": "on",
+      "mode": "cool",
+      "temperature": 21,
+      "fan": "quiet"
+    },
+    "cool_22c_auto": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+ATb+AfU+Aj3+BbA+EPw+EJMw==",
+      "bytes": "1463001010FE0930610110000000203E",
+      "power": "on",
+      "mode": "cool",
+      "temperature": 22,
+      "fan": "auto"
+    },
+    "cool_22c_low": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+ATb+Arr+EvF+BDA+AL3+ENMw==",
+      "bytes": "1463001010FE0930610111000000203D",
+      "power": "on",
+      "mode": "cool",
+      "temperature": 22,
+      "fan": "low"
+    },
+    "cool_22c_medium": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+ATb+AjU+Ajg+BXA+EbQ4Cj",
+      "bytes": "1463001010FE0930610112000000203C",
+      "power": "on",
+      "mode": "cool",
+      "temperature": 22,
+      "fan": "medium"
+    },
+    "cool_22c_high": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+ATb+Afr+Ang+BXA+AH3+ED2+EFuw==",
+      "bytes": "1463001010FE0930610113000000203B",
+      "power": "on",
+      "mode": "cool",
+      "temperature": 22,
+      "fan": "high"
+    },
+    "cool_22c_quiet": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+ATb+AfU+ETP+BrA+ELr+EHR4Cj",
+      "bytes": "1463001010FE0930610114000000203A",
+      "power": "on",
+      "mode": "cool",
+      "temperature": 22,
+      "fan": "quiet"
+    },
+    "cool_23c_auto": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AP7+EPD+A33+BbA+Ah0w==",
+      "bytes": "1463001010FE0930710110000000202E",
+      "power": "on",
+      "mode": "cool",
+      "temperature": 23,
+      "fan": "auto"
+    },
+    "cool_23c_low": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AP7+EPD+AXr+EvF+BDA+AL3+AN0w==",
+      "bytes": "1463001010FE0930710111000000202D",
+      "power": "on",
+      "mode": "cool",
+      "temperature": 23,
+      "fan": "low"
+    },
+    "cool_23c_medium": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AP7+EPD+AXs+EvF+BDA+ETQ+AFow==",
+      "bytes": "1463001010FE0930710112000000202C",
+      "power": "on",
+      "mode": "cool",
+      "temperature": 23,
+      "fan": "medium"
+    },
+    "cool_23c_high": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AP7+EPD+AnT+BrA+AH3+EH2+ABow==",
+      "bytes": "1463001010FE0930710113000000202B",
+      "power": "on",
+      "mode": "cool",
+      "temperature": 23,
+      "fan": "high"
+    },
+    "cool_23c_quiet": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AP7+EPD+AXt+EvF+BDA+ELr+ANow==",
+      "bytes": "1463001010FE0930710114000000202A",
+      "power": "on",
+      "mode": "cool",
+      "temperature": 23,
+      "fan": "quiet"
+    },
+    "cool_24c_auto": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+ATj+Ar5+EvF+BDA+EPw+EJtw==",
+      "bytes": "1463001010FE0930810110000000201E",
+      "power": "on",
+      "mode": "cool",
+      "temperature": 24,
+      "fan": "auto"
+    },
+    "cool_24c_low": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+ATj+Ab5+ELG+ErF+BDA+AL3+ELLwFWAQ==",
+      "bytes": "1463001010FE0930810111000000201D",
+      "power": "on",
+      "mode": "cool",
+      "temperature": 24,
+      "fan": "low"
+    },
+    "cool_24c_medium": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+ATj+Af5+Ang+BXA+EXQ+ABnw==",
+      "bytes": "1463001010FE0930810112000000201C",
+      "power": "on",
+      "mode": "cool",
+      "temperature": 24,
+      "fan": "medium"
+    },
+    "cool_24c_high": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+ATj+Ab5+Arg+BXA+AH3+ED2+AFnw==",
+      "bytes": "1463001010FE0930810113000000201B",
+      "power": "on",
+      "mode": "cool",
+      "temperature": 24,
+      "fan": "high"
+    },
+    "cool_24c_quiet": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+ATj+Aj5+EPP+BrA+ELr+ENtw==",
+      "bytes": "1463001010FE0930810114000000201A",
+      "power": "on",
+      "mode": "cool",
+      "temperature": 24,
+      "fan": "quiet"
+    },
+    "cool_25c_auto": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AL2+Az5+EvF+BDA+EPw+AJmw==",
+      "bytes": "1463001010FE0930910110000000200E",
+      "power": "on",
+      "mode": "cool",
+      "temperature": 25,
+      "fan": "auto"
+    },
+    "cool_25c_low": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AL2+Aj5+ATP+BvA+AL3+ENsw==",
+      "bytes": "1463001010FE0930910111000000200D",
+      "power": "on",
+      "mode": "cool",
+      "temperature": 25,
+      "fan": "low"
+    },
+    "cool_25c_medium": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AL2+An5+Ang+BXA+ETQ+AFmw==",
+      "bytes": "1463001010FE0930910112000000200C",
+      "power": "on",
+      "mode": "cool",
+      "temperature": 25,
+      "fan": "medium"
+    },
+    "cool_25c_high": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AL2+Aj5+Arg+BXA+APw+AJmw==",
+      "bytes": "1463001010FE0930910113000000200B",
+      "power": "on",
+      "mode": "cool",
+      "temperature": 25,
+      "fan": "high"
+    },
+    "cool_25c_quiet": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AL2+Ar5+EPP+BrA+AP0+AJmw==",
+      "bytes": "1463001010FE0930910114000000200A",
+      "power": "on",
+      "mode": "cool",
+      "temperature": 25,
+      "fan": "quiet"
+    },
+    "cool_26c_auto": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+APb+Av5+EvF+BDA+EPw+EJOw==",
+      "bytes": "1463001010FE0930A1011000000020FE",
+      "power": "on",
+      "mode": "cool",
+      "temperature": 26,
+      "fan": "auto"
+    },
+    "cool_26c_low": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+APb+Af5+ELG+ErF+BDA+AL3+ENOw==",
+      "bytes": "1463001010FE0930A1011100000020FD",
+      "power": "on",
+      "mode": "cool",
+      "temperature": 26,
+      "fan": "low"
+    },
+    "cool_26c_medium": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+APb+Aj5+Ang+BXA+EhQw==",
+      "bytes": "1463001010FE0930A1011200000020FC",
+      "power": "on",
+      "mode": "cool",
+      "temperature": 26,
+      "fan": "medium"
+    },
+    "cool_26c_high": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+APb+Af5+Arg+BXA+AH3+AHz+EBOw==",
+      "bytes": "1463001010FE0930A1011300000020FB",
+      "power": "on",
+      "mode": "cool",
+      "temperature": 26,
+      "fan": "high"
+    },
+    "cool_26c_quiet": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+APb+An5+EPP+BrA+ELr+ENRw==",
+      "bytes": "1463001010FE0930A1011400000020FA",
+      "power": "on",
+      "mode": "cool",
+      "temperature": 26,
+      "fan": "quiet"
+    },
+    "cool_27c_auto": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AT7+Ar5+EvF+BDA+AP0+AH1wGTBA==",
+      "bytes": "1463001010FE0930B1011000000020EE",
+      "power": "on",
+      "mode": "cool",
+      "temperature": 27,
+      "fan": "auto"
+    },
+    "cool_27c_low": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AT7+Ab5+ELG+ErF+BDA+AL3+AL1wGTBA==",
+      "bytes": "1463001010FE0930B1011100000020ED",
+      "power": "on",
+      "mode": "cool",
+      "temperature": 27,
+      "fan": "low"
+    },
+    "cool_27c_medium": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AT7+Af5+Ang+BXA+ETQ+EFTw==",
+      "bytes": "1463001010FE0930B1011200000020EC",
+      "power": "on",
+      "mode": "cool",
+      "temperature": 27,
+      "fan": "medium"
+    },
+    "cool_27c_high": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AT7+Ab5+Arg+BXA+AH3+EH2+EBOw==",
+      "bytes": "1463001010FE0930B1011300000020EB",
+      "power": "on",
+      "mode": "cool",
+      "temperature": 27,
+      "fan": "high"
+    },
+    "cool_27c_quiet": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AT7+Aj5+EPP+BrA+ELr+AHB4HD",
+      "bytes": "1463001010FE0930B1011400000020EA",
+      "power": "on",
+      "mode": "cool",
+      "temperature": 27,
+      "fan": "quiet"
+    },
+    "cool_28c_auto": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+APj+ALX+A73+BbA+EPw+AD+4HD",
+      "bytes": "1463001010FE0930C1011000000020DE",
+      "power": "on",
+      "mode": "cool",
+      "temperature": 28,
+      "fan": "auto"
+    },
+    "cool_28c_low": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+APj+ALX+Abr+EvF+BDA+AL3+EHL4HD",
+      "bytes": "1463001010FE0930C1011100000020DD",
+      "power": "on",
+      "mode": "cool",
+      "temperature": 28,
+      "fan": "low"
+    },
+    "cool_28c_medium": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+APj+ALX+Abs+EvF+BDA+EXQ+EBww==",
+      "bytes": "1463001010FE0930C1011200000020DC",
+      "power": "on",
+      "mode": "cool",
+      "temperature": 28,
+      "fan": "medium"
+    },
+    "cool_28c_high": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+APj+ALX+AzT+BjA+AH3+ED2+AFCw==",
+      "bytes": "1463001010FE0930C1011300000020DB",
+      "power": "on",
+      "mode": "cool",
+      "temperature": 28,
+      "fan": "high"
+    },
+    "cool_28c_quiet": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+APj+ALX+Abt+EvF+BDA+ELr+AH+4HD",
+      "bytes": "1463001010FE0930C1011400000020DA",
+      "power": "on",
+      "mode": "cool",
+      "temperature": 28,
+      "fan": "quiet"
+    },
+    "cool_29c_auto": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AL2+AHc+BD3+BbA+EPw+AH9wGTBA==",
+      "bytes": "1463001010FE0930D1011000000020CE",
+      "power": "on",
+      "mode": "cool",
+      "temperature": 29,
+      "fan": "auto"
+    },
+    "cool_29c_low": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AL2+AHc+Ajr+EvF+BDA+AL3+AL9wGTBA==",
+      "bytes": "1463001010FE0930D1011100000020CD",
+      "power": "on",
+      "mode": "cool",
+      "temperature": 29,
+      "fan": "low"
+    },
+    "cool_29c_medium": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AL2+AHc+Aj0+EvF+BDA+ETQ+EFww==",
+      "bytes": "1463001010FE0930D1011200000020CC",
+      "power": "on",
+      "mode": "cool",
+      "temperature": 29,
+      "fan": "medium"
+    },
+    "cool_29c_high": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AL2+AHc+AzT+BrA+AH3+EL24HD",
+      "bytes": "1463001010FE0930D1011300000020CB",
+      "power": "on",
+      "mode": "cool",
+      "temperature": 29,
+      "fan": "high"
+    },
+    "cool_29c_quiet": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AL2+AHc+Aj1+EvF+BDA+AT0+EFww==",
+      "bytes": "1463001010FE0930D1011400000020CA",
+      "power": "on",
+      "mode": "cool",
+      "temperature": 29,
+      "fan": "quiet"
+    },
+    "cool_30c_auto": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+Abb+BD3+BbA+EPw+EHMwGTBA==",
+      "bytes": "1463001010FE0930E1011000000020BE",
+      "power": "on",
+      "mode": "cool",
+      "temperature": 30,
+      "fan": "auto"
+    },
+    "cool_30c_low": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+Abb+Ajr+EvF+BDA+AL3+ELMwGTBA==",
+      "bytes": "1463001010FE0930E1011100000020BD",
+      "power": "on",
+      "mode": "cool",
+      "temperature": 30,
+      "fan": "low"
+    },
+    "cool_30c_medium": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+Abb+Aj0+EvF+BDA+Af0wGTBA==",
+      "bytes": "1463001010FE0930E1011200000020BC",
+      "power": "on",
+      "mode": "cool",
+      "temperature": 30,
+      "fan": "medium"
+    },
+    "cool_30c_high": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+Abb+A3T+BnA+AH3+ED2+AFDw==",
+      "bytes": "1463001010FE0930E1011300000020BB",
+      "power": "on",
+      "mode": "cool",
+      "temperature": 30,
+      "fan": "high"
+    },
+    "cool_30c_quiet": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+Abb+Aj1+EvF+BDA+ELr+AH14Cr",
+      "bytes": "1463001010FE0930E1011400000020BA",
+      "power": "on",
+      "mode": "cool",
+      "temperature": 30,
+      "fan": "quiet"
+    },
+    "dry_16c_auto": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AfM+A/3+BbA+ELE+ENLw==",
+      "bytes": "1463001010FE0930010210000000209D",
+      "power": "on",
+      "mode": "dry",
+      "temperature": 16,
+      "fan": "auto"
+    },
+    "dry_16c_low": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AfM+Afr+EvF+BDA+EXQ+ABqw==",
+      "bytes": "1463001010FE0930010211000000209C",
+      "power": "on",
+      "mode": "dry",
+      "temperature": 16,
+      "fan": "low"
+    },
+    "dry_16c_medium": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AfM+Afs+EvF+BDA+EHE+ED2+AFqw==",
+      "bytes": "1463001010FE0930010212000000209B",
+      "power": "on",
+      "mode": "dry",
+      "temperature": 16,
+      "fan": "medium"
+    },
+    "dry_16c_high": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AfM+BDT+BXA+ELr+ANqw==",
+      "bytes": "1463001010FE0930010213000000209A",
+      "power": "on",
+      "mode": "dry",
+      "temperature": 16,
+      "fan": "high"
+    },
+    "dry_16c_quiet": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AfM+Af1+EvF+BDA+EPE+AJ+w==",
+      "bytes": "1463001010FE09300102140000002099",
+      "power": "on",
+      "mode": "dry",
+      "temperature": 16,
+      "fan": "quiet"
+    },
+    "dry_17c_auto": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AL2+Ans+AvK+BPA+AL3+ENxw==",
+      "bytes": "1463001010FE0930110210000000208D",
+      "power": "on",
+      "mode": "dry",
+      "temperature": 17,
+      "fan": "auto"
+    },
+    "dry_17c_low": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AL2+Ajs+AbP+BnA+ETQ+AFqw==",
+      "bytes": "1463001010FE0930110211000000208C",
+      "power": "on",
+      "mode": "dry",
+      "temperature": 17,
+      "fan": "low"
+    },
+    "dry_17c_medium": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AL2+Azs+EvF+BDA+AH3+ER2w==",
+      "bytes": "1463001010FE0930110212000000208B",
+      "power": "on",
+      "mode": "dry",
+      "temperature": 17,
+      "fan": "medium"
+    },
+    "dry_17c_high": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AL2+Ajs+Arg+BXA+AP0+AJ6w==",
+      "bytes": "1463001010FE0930110213000000208A",
+      "power": "on",
+      "mode": "dry",
+      "temperature": 17,
+      "fan": "high"
+    },
+    "dry_17c_quiet": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AL2+Ans+ETP+BrA+AP3+AJ6w==",
+      "bytes": "1463001010FE09301102140000002089",
+      "power": "on",
+      "mode": "dry",
+      "temperature": 17,
+      "fan": "quiet"
+    },
+    "dry_18c_auto": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+APb+Ajs+AvK+BPA+AL3+ENNw==",
+      "bytes": "1463001010FE0930210210000000207D",
+      "power": "on",
+      "mode": "dry",
+      "temperature": 18,
+      "fan": "auto"
+    },
+    "dry_18c_low": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+APb+Afs+AjK+BfA+EfQwFWAQ==",
+      "bytes": "1463001010FE0930210211000000207C",
+      "power": "on",
+      "mode": "dry",
+      "temperature": 18,
+      "fan": "low"
+    },
+    "dry_18c_medium": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+APb+Avs+EvF+BDA+AH3+ED2+EFNw==",
+      "bytes": "1463001010FE0930210212000000207B",
+      "power": "on",
+      "mode": "dry",
+      "temperature": 18,
+      "fan": "medium"
+    },
+    "dry_18c_high": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+APb+Afs+Arg+BXA+APv+EJNw==",
+      "bytes": "1463001010FE0930210213000000207A",
+      "power": "on",
+      "mode": "dry",
+      "temperature": 18,
+      "fan": "high"
+    },
+    "dry_18c_quiet": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+APb+Ajs+ETP+BrA+AP3+EJNw==",
+      "bytes": "1463001010FE09302102140000002079",
+      "power": "on",
+      "mode": "dry",
+      "temperature": 18,
+      "fan": "quiet"
+    },
+    "dry_19c_auto": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+Af7+A/3+BbA+AL3+AD9+EBvw==",
+      "bytes": "1463001010FE0930310210000000206D",
+      "power": "on",
+      "mode": "dry",
+      "temperature": 19,
+      "fan": "auto"
+    },
+    "dry_19c_low": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+Af7+Afr+EvF+BDA+ETQ+EFvw==",
+      "bytes": "1463001010FE0930310211000000206C",
+      "power": "on",
+      "mode": "dry",
+      "temperature": 19,
+      "fan": "low"
+    },
+    "dry_19c_medium": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+Af7+Afs+EvF+BDA+AH3+EH2+EBvw==",
+      "bytes": "1463001010FE0930310212000000206B",
+      "power": "on",
+      "mode": "dry",
+      "temperature": 19,
+      "fan": "medium"
+    },
+    "dry_19c_high": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+Af7+AvT+BrA+APv+ADB4Cn",
+      "bytes": "1463001010FE0930310213000000206A",
+      "power": "on",
+      "mode": "dry",
+      "temperature": 19,
+      "fan": "high"
+    },
+    "dry_19c_quiet": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+Af7+Af1+EvF+BDA+AP3+ED44Cn",
+      "bytes": "1463001010FE09303102140000002069",
+      "power": "on",
+      "mode": "dry",
+      "temperature": 19,
+      "fan": "quiet"
+    },
+    "dry_20c_auto": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+APj+AnV+ArK+BPA+AL3+EHL4Cn",
+      "bytes": "1463001010FE0930410210000000205D",
+      "power": "on",
+      "mode": "dry",
+      "temperature": 20,
+      "fan": "auto"
+    },
+    "dry_20c_low": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+APj+AfV+ELG+ErF+BDA+EXQ+ABpw==",
+      "bytes": "1463001010FE0930410211000000205C",
+      "power": "on",
+      "mode": "dry",
+      "temperature": 20,
+      "fan": "low"
+    },
+    "dry_20c_medium": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+APj+AjV+Ang+BXA+AH3+ED2+EF5w==",
+      "bytes": "1463001010FE0930410212000000205B",
+      "power": "on",
+      "mode": "dry",
+      "temperature": 20,
+      "fan": "medium"
+    },
+    "dry_20c_high": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+APj+AfV+Arg+BXA+ELr+AH+4Cn",
+      "bytes": "1463001010FE0930410213000000205A",
+      "power": "on",
+      "mode": "dry",
+      "temperature": 20,
+      "fan": "high"
+    },
+    "dry_20c_quiet": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+APj+ArV+AfK+BXA+AP3+AD+4Cn",
+      "bytes": "1463001010FE09304102140000002059",
+      "power": "on",
+      "mode": "dry",
+      "temperature": 20,
+      "fan": "quiet"
+    },
+    "dry_21c_auto": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AL2+EHB+Aj6+EvF+BDA+AL3+ENKw==",
+      "bytes": "1463001010FE0930510210000000204D",
+      "power": "on",
+      "mode": "dry",
+      "temperature": 21,
+      "fan": "auto"
+    },
+    "dry_21c_low": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AL2+EHB+ATs+APP+BzA+ETQ+AFpw==",
+      "bytes": "1463001010FE0930510211000000204C",
+      "power": "on",
+      "mode": "dry",
+      "temperature": 21,
+      "fan": "low"
+    },
+    "dry_21c_medium": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AL2+EHB+Ajs+EvF+BDA+AH3+AR0w==",
+      "bytes": "1463001010FE0930510212000000204B",
+      "power": "on",
+      "mode": "dry",
+      "temperature": 21,
+      "fan": "medium"
+    },
+    "dry_21c_high": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AL2+EHB+ATs+Arg+BXA+Ah0w==",
+      "bytes": "1463001010FE0930510213000000204A",
+      "power": "on",
+      "mode": "dry",
+      "temperature": 21,
+      "fan": "high"
+    },
+    "dry_21c_quiet": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AL2+EHB+AfV+AfK+BXA+AP3+AJ0w==",
+      "bytes": "1463001010FE09305102140000002049",
+      "power": "on",
+      "mode": "dry",
+      "temperature": 21,
+      "fan": "quiet"
+    },
+    "dry_22c_auto": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+ATb+AjV+ArK+BPA+AL3+ENMw==",
+      "bytes": "1463001010FE0930610210000000203D",
+      "power": "on",
+      "mode": "dry",
+      "temperature": 22,
+      "fan": "auto"
+    },
+    "dry_22c_low": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+ATb+Abs+ELG+ErF+BDA+EbQ4Cj",
+      "bytes": "1463001010FE0930610211000000203C",
+      "power": "on",
+      "mode": "dry",
+      "temperature": 22,
+      "fan": "low"
+    },
+    "dry_22c_medium": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+ATb+Ars+EvF+BDA+AH3+ED2+EFuw==",
+      "bytes": "1463001010FE0930610212000000203B",
+      "power": "on",
+      "mode": "dry",
+      "temperature": 22,
+      "fan": "medium"
+    },
+    "dry_22c_high": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+ATb+Abs+Arg+BXA+ELr+EHR4Cj",
+      "bytes": "1463001010FE0930610213000000203A",
+      "power": "on",
+      "mode": "dry",
+      "temperature": 22,
+      "fan": "high"
+    },
+    "dry_22c_quiet": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+ATb+AnV+AfK+BXA+AP3+EJMw==",
+      "bytes": "1463001010FE09306102140000002039",
+      "power": "on",
+      "mode": "dry",
+      "temperature": 22,
+      "fan": "quiet"
+    },
+    "dry_23c_auto": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AP7+AnV+ArK+BPA+AL3+AD9+ABow==",
+      "bytes": "1463001010FE0930710210000000202D",
+      "power": "on",
+      "mode": "dry",
+      "temperature": 23,
+      "fan": "auto"
+    },
+    "dry_23c_low": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AP7+AfV+ELG+ErF+BDA+ETQ+AFow==",
+      "bytes": "1463001010FE0930710211000000202C",
+      "power": "on",
+      "mode": "dry",
+      "temperature": 23,
+      "fan": "low"
+    },
+    "dry_23c_medium": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AP7+AjV+Ang+BXA+AH3+EH2+ABow==",
+      "bytes": "1463001010FE0930710212000000202B",
+      "power": "on",
+      "mode": "dry",
+      "temperature": 23,
+      "fan": "medium"
+    },
+    "dry_23c_high": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AP7+AfV+Arg+BXA+ELr+EN4w==",
+      "bytes": "1463001010FE0930710213000000202A",
+      "power": "on",
+      "mode": "dry",
+      "temperature": 23,
+      "fan": "high"
+    },
+    "dry_23c_quiet": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AP7+ArV+AfK+BXA+AP3+AJow==",
+      "bytes": "1463001010FE09307102140000002029",
+      "power": "on",
+      "mode": "dry",
+      "temperature": 23,
+      "fan": "quiet"
+    },
+    "dry_24c_auto": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+ATj+EPE+Az3+BbA+AL3+ELLwFWAQ==",
+      "bytes": "1463001010FE0930810210000000201D",
+      "power": "on",
+      "mode": "dry",
+      "temperature": 24,
+      "fan": "auto"
+    },
+    "dry_24c_low": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+ATj+EPE+ATr+EvF+BDA+EXQ+ABnw==",
+      "bytes": "1463001010FE0930810211000000201C",
+      "power": "on",
+      "mode": "dry",
+      "temperature": 24,
+      "fan": "low"
+    },
+    "dry_24c_medium": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+ATj+EPE+ATs+EvF+BDA+AH3+ED2+AFnw==",
+      "bytes": "1463001010FE0930810212000000201B",
+      "power": "on",
+      "mode": "dry",
+      "temperature": 24,
+      "fan": "medium"
+    },
+    "dry_24c_high": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+ATj+EPE+AvT+BfA+ELr+ENtw==",
+      "bytes": "1463001010FE0930810213000000201A",
+      "power": "on",
+      "mode": "dry",
+      "temperature": 24,
+      "fan": "high"
+    },
+    "dry_24c_quiet": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+ATj+EPE+A3K+BXA+AP3+EJtw==",
+      "bytes": "1463001010FE09308102140000002019",
+      "power": "on",
+      "mode": "dry",
+      "temperature": 24,
+      "fan": "quiet"
+    },
+    "dry_25c_auto": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AL2+EXE+Az3+BbA+APw+AJmw==",
+      "bytes": "1463001010FE0930910210000000200D",
+      "power": "on",
+      "mode": "dry",
+      "temperature": 25,
+      "fan": "auto"
+    },
+    "dry_25c_low": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AL2+EXE+ATr+EvF+BDA+ETQ+AFmw==",
+      "bytes": "1463001010FE0930910211000000200C",
+      "power": "on",
+      "mode": "dry",
+      "temperature": 25,
+      "fan": "low"
+    },
+    "dry_25c_medium": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AL2+EXE+ATs+EvF+BDA+AHw+ARxw==",
+      "bytes": "1463001010FE0930910212000000200B",
+      "power": "on",
+      "mode": "dry",
+      "temperature": 25,
+      "fan": "medium"
+    },
+    "dry_25c_high": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AL2+EXE+AjT+BrA+AP0+AJmw==",
+      "bytes": "1463001010FE0930910213000000200A",
+      "power": "on",
+      "mode": "dry",
+      "temperature": 25,
+      "fan": "high"
+    },
+    "dry_25c_quiet": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AL2+EXE+ATt+EvF+BDA+AP3+AJmw==",
+      "bytes": "1463001010FE09309102140000002009",
+      "power": "on",
+      "mode": "dry",
+      "temperature": 25,
+      "fan": "quiet"
+    },
+    "dry_26c_auto": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+APb+ETE+Az3+BbA+AL3+ENOw==",
+      "bytes": "1463001010FE0930A1021000000020FD",
+      "power": "on",
+      "mode": "dry",
+      "temperature": 26,
+      "fan": "auto"
+    },
+    "dry_26c_low": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+APb+ETE+ATr+EvF+BDA+EhQw==",
+      "bytes": "1463001010FE0930A1021100000020FC",
+      "power": "on",
+      "mode": "dry",
+      "temperature": 26,
+      "fan": "low"
+    },
+    "dry_26c_medium": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+APb+ETE+ATs+EvF+BDA+AH3+ADz+EFOw==",
+      "bytes": "1463001010FE0930A1021200000020FB",
+      "power": "on",
+      "mode": "dry",
+      "temperature": 26,
+      "fan": "medium"
+    },
+    "dry_26c_high": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+APb+ETE+AnT+BnA+ELr+ENRw==",
+      "bytes": "1463001010FE0930A1021300000020FA",
+      "power": "on",
+      "mode": "dry",
+      "temperature": 26,
+      "fan": "high"
+    },
+    "dry_26c_quiet": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+APb+ETE+ATt+EvF+BDA+AP3+EJOw==",
+      "bytes": "1463001010FE0930A1021400000020F9",
+      "power": "on",
+      "mode": "dry",
+      "temperature": 26,
+      "fan": "quiet"
+    },
+    "dry_27c_auto": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AT7+EPE+Az3+BbA+AL3+AH14HD",
+      "bytes": "1463001010FE0930B1021000000020ED",
+      "power": "on",
+      "mode": "dry",
+      "temperature": 27,
+      "fan": "auto"
+    },
+    "dry_27c_low": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AT7+EPE+ATr+EvF+BDA+ETQ+EFTw==",
+      "bytes": "1463001010FE0930B1021100000020EC",
+      "power": "on",
+      "mode": "dry",
+      "temperature": 27,
+      "fan": "low"
+    },
+    "dry_27c_medium": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AT7+EPE+ATs+EvF+BDA+AH3+ALz4HD",
+      "bytes": "1463001010FE0930B1021200000020EB",
+      "power": "on",
+      "mode": "dry",
+      "temperature": 27,
+      "fan": "medium"
+    },
+    "dry_27c_high": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AT7+EPE+AjT+BrA+ELr+AHB4HD",
+      "bytes": "1463001010FE0930B1021300000020EA",
+      "power": "on",
+      "mode": "dry",
+      "temperature": 27,
+      "fan": "high"
+    },
+    "dry_27c_quiet": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AT7+EPE+ATt+EvF+BDA+AP3+AD14HD",
+      "bytes": "1463001010FE0930B1021400000020E9",
+      "power": "on",
+      "mode": "dry",
+      "temperature": 27,
+      "fan": "quiet"
+    },
+    "dry_28c_auto": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+APj+ADJ+Aj6+EvF+BDA+AL3+EHL4HD",
+      "bytes": "1463001010FE0930C1021000000020DD",
+      "power": "on",
+      "mode": "dry",
+      "temperature": 28,
+      "fan": "auto"
+    },
+    "dry_28c_low": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+APj+ADJ+ATs+ELG+ErF+BDA+EXQ+EBww==",
+      "bytes": "1463001010FE0930C1021100000020DC",
+      "power": "on",
+      "mode": "dry",
+      "temperature": 28,
+      "fan": "low"
+    },
+    "dry_28c_medium": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+APj+ADJ+Ajs+EvF+BDA+AH3+ED2+AFCw==",
+      "bytes": "1463001010FE0930C1021200000020DB",
+      "power": "on",
+      "mode": "dry",
+      "temperature": 28,
+      "fan": "medium"
+    },
+    "dry_28c_high": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+APj+ADJ+ATs+Arg+BXA+ELr+AL0wGTBA==",
+      "bytes": "1463001010FE0930C1021300000020DA",
+      "power": "on",
+      "mode": "dry",
+      "temperature": 28,
+      "fan": "high"
+    },
+    "dry_28c_quiet": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+APj+ADJ+AfV+AfK+BXA+AP3+AH0wGTBA==",
+      "bytes": "1463001010FE0930C1021400000020D9",
+      "power": "on",
+      "mode": "dry",
+      "temperature": 28,
+      "fan": "quiet"
+    },
+    "dry_29c_auto": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AL2+AHJ+Aj6+EvF+BDA+AL3+AL9wGTBA==",
+      "bytes": "1463001010FE0930D1021000000020CD",
+      "power": "on",
+      "mode": "dry",
+      "temperature": 29,
+      "fan": "auto"
+    },
+    "dry_29c_low": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AL2+AHJ+ATs+APP+BzA+ETQ+EFww==",
+      "bytes": "1463001010FE0930D1021100000020CC",
+      "power": "on",
+      "mode": "dry",
+      "temperature": 29,
+      "fan": "low"
+    },
+    "dry_29c_medium": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AL2+AHJ+Ajs+EvF+BDA+AH3+EL24HD",
+      "bytes": "1463001010FE0930D1021200000020CB",
+      "power": "on",
+      "mode": "dry",
+      "temperature": 29,
+      "fan": "medium"
+    },
+    "dry_29c_high": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AL2+AHJ+ATs+Arg+BXA+AT0+EFww==",
+      "bytes": "1463001010FE0930D1021300000020CA",
+      "power": "on",
+      "mode": "dry",
+      "temperature": 29,
+      "fan": "high"
+    },
+    "dry_29c_quiet": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AL2+AHJ+AfV+AfK+BXA+AP3+AHCwGTBA==",
+      "bytes": "1463001010FE0930D1021400000020C9",
+      "power": "on",
+      "mode": "dry",
+      "temperature": 29,
+      "fan": "quiet"
+    },
+    "dry_30c_auto": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AXb+AfV+Ajg+BXA+AL3+ELMwGTBA==",
+      "bytes": "1463001010FE0930E1021000000020BD",
+      "power": "on",
+      "mode": "dry",
+      "temperature": 30,
+      "fan": "auto"
+    },
+    "dry_30c_low": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AXb+AXs+ELG+ErF+BDA+EbQ4Cr",
+      "bytes": "1463001010FE0930E1021100000020BC",
+      "power": "on",
+      "mode": "dry",
+      "temperature": 30,
+      "fan": "low"
+    },
+    "dry_30c_medium": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AXb+Ans+EvF+BDA+AH3+ED2+AF1w==",
+      "bytes": "1463001010FE0930E1021200000020BB",
+      "power": "on",
+      "mode": "dry",
+      "temperature": 30,
+      "fan": "medium"
+    },
+    "dry_30c_high": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AXb+AXs+Arg+BXA+ELr+AN1w==",
+      "bytes": "1463001010FE0930E1021300000020BA",
+      "power": "on",
+      "mode": "dry",
+      "temperature": 30,
+      "fan": "high"
+    },
+    "dry_30c_quiet": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AXb+AjV+AfK+BXA+AP3+AJ1w==",
+      "bytes": "1463001010FE0930E1021400000020B9",
+      "power": "on",
+      "mode": "dry",
+      "temperature": 30,
+      "fan": "quiet"
+    },
+    "fan_16c_auto": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+Abj+Aj6+EvF+BDA+EXQ+ABqw==",
+      "bytes": "1463001010FE0930010310000000209C",
+      "power": "on",
+      "mode": "fan",
+      "temperature": 16,
+      "fan": "auto"
+    },
+    "fan_16c_low": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+Abj+ATI+ELG+ErF+BDA+AH3+ED2+EFLw==",
+      "bytes": "1463001010FE0930010311000000209B",
+      "power": "on",
+      "mode": "fan",
+      "temperature": 16,
+      "fan": "low"
+    },
+    "fan_16c_medium": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+Abj+Ajs+EvF+BDA+ELr+AN+w==",
+      "bytes": "1463001010FE0930010312000000209A",
+      "power": "on",
+      "mode": "fan",
+      "temperature": 16,
+      "fan": "medium"
+    },
+    "fan_16c_high": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+Abj+ATI+Arg+BXA+AP3+AJqw==",
+      "bytes": "1463001010FE09300103130000002099",
+      "power": "on",
+      "mode": "fan",
+      "temperature": 16,
+      "fan": "high"
+    },
+    "fan_16c_quiet": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+Abj+AfV+Afg+BXA+AP0+EJLw==",
+      "bytes": "1463001010FE09300103140000002098",
+      "power": "on",
+      "mode": "fan",
+      "temperature": 16,
+      "fan": "quiet"
+    },
+    "fan_17c_auto": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AL2+Az6+EvF+BDA+ETQ+AFqw==",
+      "bytes": "1463001010FE0930110310000000208C",
+      "power": "on",
+      "mode": "fan",
+      "temperature": 17,
+      "fan": "auto"
+    },
+    "fan_17c_low": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AL2+Aj6+AXP+BrA+AH3+ER2w==",
+      "bytes": "1463001010FE0930110311000000208B",
+      "power": "on",
+      "mode": "fan",
+      "temperature": 17,
+      "fan": "low"
+    },
+    "fan_17c_medium": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AL2+An6+Ang+BXA+AP0+AJ6w==",
+      "bytes": "1463001010FE0930110312000000208A",
+      "power": "on",
+      "mode": "fan",
+      "temperature": 17,
+      "fan": "medium"
+    },
+    "fan_17c_high": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AL2+Aj6+Arg+BXA+AP3+AJ6w==",
+      "bytes": "1463001010FE09301103130000002089",
+      "power": "on",
+      "mode": "fan",
+      "temperature": 17,
+      "fan": "high"
+    },
+    "fan_17c_quiet": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AL2+Ar6+EPP+BrA+EPY+AJ6w==",
+      "bytes": "1463001010FE09301103140000002088",
+      "power": "on",
+      "mode": "fan",
+      "temperature": 17,
+      "fan": "quiet"
+    },
+    "fan_18c_auto": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+APb+Av6+EvF+BDA+EfQwFWAQ==",
+      "bytes": "1463001010FE0930210310000000207C",
+      "power": "on",
+      "mode": "fan",
+      "temperature": 18,
+      "fan": "auto"
+    },
+    "fan_18c_low": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+APb+Af6+ELG+ErF+BDA+APv+EJNw==",
+      "bytes": "1463001010FE0930210311000000207B",
+      "power": "on",
+      "mode": "fan",
+      "temperature": 18,
+      "fan": "low"
+    },
+    "fan_18c_medium": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+APb+Aj6+Ang+BXA+ELr+ELRwFWAQ==",
+      "bytes": "1463001010FE0930210312000000207A",
+      "power": "on",
+      "mode": "fan",
+      "temperature": 18,
+      "fan": "medium"
+    },
+    "fan_18c_high": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+APb+Af6+Arg+BXA+AP3+EJNw==",
+      "bytes": "1463001010FE09302103130000002079",
+      "power": "on",
+      "mode": "fan",
+      "temperature": 18,
+      "fan": "high"
+    },
+    "fan_18c_quiet": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+APb+An6+EPP+BrA+EPY+EJNw==",
+      "bytes": "1463001010FE09302103140000002078",
+      "power": "on",
+      "mode": "fan",
+      "temperature": 18,
+      "fan": "quiet"
+    },
+    "fan_19c_auto": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AX7+An6+EvF+BDA+ETQ+EFvw==",
+      "bytes": "1463001010FE0930310310000000206C",
+      "power": "on",
+      "mode": "fan",
+      "temperature": 19,
+      "fan": "auto"
+    },
+    "fan_19c_low": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AX7+AX6+ELG+ErF+BDA+APv+ADB4Cn",
+      "bytes": "1463001010FE0930310311000000206B",
+      "power": "on",
+      "mode": "fan",
+      "temperature": 19,
+      "fan": "low"
+    },
+    "fan_19c_medium": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AX7+Ab6+Ang+BXA+ELr+AHB4Cn",
+      "bytes": "1463001010FE0930310312000000206A",
+      "power": "on",
+      "mode": "fan",
+      "temperature": 19,
+      "fan": "medium"
+    },
+    "fan_19c_high": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AX7+AX6+Arg+BXA+AP3+ED44Cn",
+      "bytes": "1463001010FE09303103130000002069",
+      "power": "on",
+      "mode": "fan",
+      "temperature": 19,
+      "fan": "high"
+    },
+    "fan_19c_quiet": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AX7+Af6+EPP+BrA+EPY+ED44Cn",
+      "bytes": "1463001010FE09303103140000002068",
+      "power": "on",
+      "mode": "fan",
+      "temperature": 19,
+      "fan": "quiet"
+    },
+    "fan_20c_auto": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+APj+EDD+Aj6+EvF+BDA+EXQ+ABpw==",
+      "bytes": "1463001010FE0930410310000000205C",
+      "power": "on",
+      "mode": "fan",
+      "temperature": 20,
+      "fan": "auto"
+    },
+    "fan_20c_low": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+APj+EDD+ATs+ELG+ErF+BDA+AH3+ALy4Cn",
+      "bytes": "1463001010FE0930410311000000205B",
+      "power": "on",
+      "mode": "fan",
+      "temperature": 20,
+      "fan": "low"
+    },
+    "fan_20c_medium": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+APj+EDD+Ajs+EvF+BDA+ELr+AH+4Cn",
+      "bytes": "1463001010FE0930410312000000205A",
+      "power": "on",
+      "mode": "fan",
+      "temperature": 20,
+      "fan": "medium"
+    },
+    "fan_20c_high": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+APj+EDD+ATs+Arg+BXA+AP3+AD+4Cn",
+      "bytes": "1463001010FE09304103130000002059",
+      "power": "on",
+      "mode": "fan",
+      "temperature": 20,
+      "fan": "high"
+    },
+    "fan_20c_quiet": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+APj+EDD+AfV+Afg+BXA+AT0+AFpw==",
+      "bytes": "1463001010FE09304103140000002058",
+      "power": "on",
+      "mode": "fan",
+      "temperature": 20,
+      "fan": "quiet"
+    },
+    "fan_21c_auto": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AL2+AHB+Aj6+EvF+BDA+ETQ+AFpw==",
+      "bytes": "1463001010FE0930510310000000204C",
+      "power": "on",
+      "mode": "fan",
+      "temperature": 21,
+      "fan": "auto"
+    },
+    "fan_21c_low": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AL2+AHB+ATs+APP+BzA+AH3+EL24Cn",
+      "bytes": "1463001010FE0930510311000000204B",
+      "power": "on",
+      "mode": "fan",
+      "temperature": 21,
+      "fan": "low"
+    },
+    "fan_21c_medium": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AL2+AHB+Ajs+EvF+BDA+AX0+ABpw==",
+      "bytes": "1463001010FE0930510312000000204A",
+      "power": "on",
+      "mode": "fan",
+      "temperature": 21,
+      "fan": "medium"
+    },
+    "fan_21c_high": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AL2+AHB+ATs+Arg+BXA+AP3+AJpw==",
+      "bytes": "1463001010FE09305103130000002049",
+      "power": "on",
+      "mode": "fan",
+      "temperature": 21,
+      "fan": "high"
+    },
+    "fan_21c_quiet": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AL2+AHB+AfV+Afg+BXA+EPY+EJKw==",
+      "bytes": "1463001010FE09305103140000002048",
+      "power": "on",
+      "mode": "fan",
+      "temperature": 21,
+      "fan": "quiet"
+    },
+    "fan_22c_auto": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+ATb+Ar6+EvF+BDA+EbQ4Cj",
+      "bytes": "1463001010FE0930610310000000203C",
+      "power": "on",
+      "mode": "fan",
+      "temperature": 22,
+      "fan": "auto"
+    },
+    "fan_22c_low": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+ATb+Ab6+ELG+ErF+BDA+AH3+AHy+ABow==",
+      "bytes": "1463001010FE0930610311000000203B",
+      "power": "on",
+      "mode": "fan",
+      "temperature": 22,
+      "fan": "low"
+    },
+    "fan_22c_medium": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+ATb+Af6+Ang+BXA+ELr+EHR4Cj",
+      "bytes": "1463001010FE0930610312000000203A",
+      "power": "on",
+      "mode": "fan",
+      "temperature": 22,
+      "fan": "medium"
+    },
+    "fan_22c_high": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+ATb+Ab6+Arg+BXA+AP3+EJMw==",
+      "bytes": "1463001010FE09306103130000002039",
+      "power": "on",
+      "mode": "fan",
+      "temperature": 22,
+      "fan": "high"
+    },
+    "fan_22c_quiet": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+ATb+Aj6+EPP+BrA+EPY+EJMw==",
+      "bytes": "1463001010FE09306103140000002038",
+      "power": "on",
+      "mode": "fan",
+      "temperature": 22,
+      "fan": "quiet"
+    },
+    "fan_23c_auto": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AP7+EDD+Aj6+EvF+BDA+ETQ+AFow==",
+      "bytes": "1463001010FE0930710310000000202C",
+      "power": "on",
+      "mode": "fan",
+      "temperature": 23,
+      "fan": "auto"
+    },
+    "fan_23c_low": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AP7+EDD+ATs+ELG+ErF+BDA+AH3+EH2+ABow==",
+      "bytes": "1463001010FE0930710311000000202B",
+      "power": "on",
+      "mode": "fan",
+      "temperature": 23,
+      "fan": "low"
+    },
+    "fan_23c_medium": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AP7+EDD+Ajs+EvF+BDA+ELr+EN4w==",
+      "bytes": "1463001010FE0930710312000000202A",
+      "power": "on",
+      "mode": "fan",
+      "temperature": 23,
+      "fan": "medium"
+    },
+    "fan_23c_high": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AP7+EDD+ATs+Arg+BXA+AP3+EJ4w==",
+      "bytes": "1463001010FE09307103130000002029",
+      "power": "on",
+      "mode": "fan",
+      "temperature": 23,
+      "fan": "high"
+    },
+    "fan_23c_quiet": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AP7+EDD+AfV+Afg+BXA+EPY+AJow==",
+      "bytes": "1463001010FE09307103140000002028",
+      "power": "on",
+      "mode": "fan",
+      "temperature": 23,
+      "fan": "quiet"
+    },
+    "fan_24c_auto": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+ATj+ALY+A33+BbA+EXQ+ABnw==",
+      "bytes": "1463001010FE0930810310000000201C",
+      "power": "on",
+      "mode": "fan",
+      "temperature": 24,
+      "fan": "auto"
+    },
+    "fan_24c_low": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+ATj+ALY+AXr+EvF+BDA+AH3+ED2+AFnw==",
+      "bytes": "1463001010FE0930810311000000201B",
+      "power": "on",
+      "mode": "fan",
+      "temperature": 24,
+      "fan": "low"
+    },
+    "fan_24c_medium": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+ATj+ALY+AXs+EvF+BDA+ELr+ENtw==",
+      "bytes": "1463001010FE0930810312000000201A",
+      "power": "on",
+      "mode": "fan",
+      "temperature": 24,
+      "fan": "medium"
+    },
+    "fan_24c_high": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+ATj+ALY+AzT+BfA+AP3+EJtw==",
+      "bytes": "1463001010FE09308103130000002019",
+      "power": "on",
+      "mode": "fan",
+      "temperature": 24,
+      "fan": "high"
+    },
+    "fan_24c_quiet": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+ATj+ALY+AXt+EvF+BDA+AP0+EJtw==",
+      "bytes": "1463001010FE09308103140000002018",
+      "power": "on",
+      "mode": "fan",
+      "temperature": 24,
+      "fan": "quiet"
+    },
+    "fan_25c_auto": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AL2+ALd+A/3+BbA+ETQ+AFmw==",
+      "bytes": "1463001010FE0930910310000000200C",
+      "power": "on",
+      "mode": "fan",
+      "temperature": 25,
+      "fan": "auto"
+    },
+    "fan_25c_low": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AL2+ALd+Afr+EvF+BDA+ALw+ANmw==",
+      "bytes": "1463001010FE0930910311000000200B",
+      "power": "on",
+      "mode": "fan",
+      "temperature": 25,
+      "fan": "low"
+    },
+    "fan_25c_medium": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AL2+ALd+Afs+EvF+BDA+AP0+AJmw==",
+      "bytes": "1463001010FE0930910312000000200A",
+      "power": "on",
+      "mode": "fan",
+      "temperature": 25,
+      "fan": "medium"
+    },
+    "fan_25c_high": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AL2+ALd+AvT+BrA+AP3+AJmw==",
+      "bytes": "1463001010FE09309103130000002009",
+      "power": "on",
+      "mode": "fan",
+      "temperature": 25,
+      "fan": "high"
+    },
+    "fan_25c_quiet": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AL2+ALd+Af1+EvF+BDA+EPY+AJmw==",
+      "bytes": "1463001010FE09309103140000002008",
+      "power": "on",
+      "mode": "fan",
+      "temperature": 25,
+      "fan": "quiet"
+    },
+    "fan_26c_auto": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+APb+AHd+A/3+BbA+EhQw==",
+      "bytes": "1463001010FE0930A1031000000020FC",
+      "power": "on",
+      "mode": "fan",
+      "temperature": 26,
+      "fan": "auto"
+    },
+    "fan_26c_low": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+APb+AHd+Afr+EvF+BDA+AH3+ALz4HD",
+      "bytes": "1463001010FE0930A1031100000020FB",
+      "power": "on",
+      "mode": "fan",
+      "temperature": 26,
+      "fan": "low"
+    },
+    "fan_26c_medium": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+APb+AHd+Afs+EvF+BDA+ELr+ENRw==",
+      "bytes": "1463001010FE0930A1031200000020FA",
+      "power": "on",
+      "mode": "fan",
+      "temperature": 26,
+      "fan": "medium"
+    },
+    "fan_26c_high": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+APb+AHd+AzT+BnA+AP3+EJOw==",
+      "bytes": "1463001010FE0930A1031300000020F9",
+      "power": "on",
+      "mode": "fan",
+      "temperature": 26,
+      "fan": "high"
+    },
+    "fan_26c_quiet": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+APb+AHd+Af1+EvF+BDA+EPY+EJOw==",
+      "bytes": "1463001010FE0930A1031400000020F8",
+      "power": "on",
+      "mode": "fan",
+      "temperature": 26,
+      "fan": "quiet"
+    },
+    "fan_27c_auto": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AT7+ALY+A33+BbA+ETQ+AF1w==",
+      "bytes": "1463001010FE0930B1031000000020EC",
+      "power": "on",
+      "mode": "fan",
+      "temperature": 27,
+      "fan": "auto"
+    },
+    "fan_27c_low": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AT7+ALY+AXr+EvF+BDA+AH3+EH2+AB1w==",
+      "bytes": "1463001010FE0930B1031100000020EB",
+      "power": "on",
+      "mode": "fan",
+      "temperature": 27,
+      "fan": "low"
+    },
+    "fan_27c_medium": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AT7+ALY+AXs+EvF+BDA+ELr+AHB4HD",
+      "bytes": "1463001010FE0930B1031200000020EA",
+      "power": "on",
+      "mode": "fan",
+      "temperature": 27,
+      "fan": "medium"
+    },
+    "fan_27c_high": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AT7+ALY+AnT+BrA+AP3+AJ1w==",
+      "bytes": "1463001010FE0930B1031300000020E9",
+      "power": "on",
+      "mode": "fan",
+      "temperature": 27,
+      "fan": "high"
+    },
+    "fan_27c_quiet": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AT7+ALY+AXt+EvF+BDA+EPY+AJ1w==",
+      "bytes": "1463001010FE0930B1031400000020E8",
+      "power": "on",
+      "mode": "fan",
+      "temperature": 27,
+      "fan": "quiet"
+    },
+    "fan_28c_auto": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+APj+APY+A33+BbA+EXQ+EBww==",
+      "bytes": "1463001010FE0930C1031000000020DC",
+      "power": "on",
+      "mode": "fan",
+      "temperature": 28,
+      "fan": "auto"
+    },
+    "fan_28c_low": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+APj+APY+AXr+EvF+BDA+AH3+ED2+AFCw==",
+      "bytes": "1463001010FE0930C1031100000020DB",
+      "power": "on",
+      "mode": "fan",
+      "temperature": 28,
+      "fan": "low"
+    },
+    "fan_28c_medium": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+APj+APY+AXs+EvF+BDA+ELr+AH+4HD",
+      "bytes": "1463001010FE0930C1031200000020DA",
+      "power": "on",
+      "mode": "fan",
+      "temperature": 28,
+      "fan": "medium"
+    },
+    "fan_28c_high": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+APj+APY+AvT+BjA+AP3+AD+4HD",
+      "bytes": "1463001010FE0930C1031300000020D9",
+      "power": "on",
+      "mode": "fan",
+      "temperature": 28,
+      "fan": "high"
+    },
+    "fan_28c_quiet": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+APj+APY+AXt+EvF+BDA+AX0+EBww==",
+      "bytes": "1463001010FE0930C1031400000020D8",
+      "power": "on",
+      "mode": "fan",
+      "temperature": 28,
+      "fan": "quiet"
+    },
+    "fan_29c_auto": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AL2+ALc+A/3+BbA+ETQ+EFww==",
+      "bytes": "1463001010FE0930D1031000000020CC",
+      "power": "on",
+      "mode": "fan",
+      "temperature": 29,
+      "fan": "auto"
+    },
+    "fan_29c_low": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AL2+ALc+Afr+EvF+BDA+AH3+EL24HD",
+      "bytes": "1463001010FE0930D1031100000020CB",
+      "power": "on",
+      "mode": "fan",
+      "temperature": 29,
+      "fan": "low"
+    },
+    "fan_29c_medium": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AL2+ALc+Afs+EvF+BDA+AT0+EFww==",
+      "bytes": "1463001010FE0930D1031200000020CA",
+      "power": "on",
+      "mode": "fan",
+      "temperature": 29,
+      "fan": "medium"
+    },
+    "fan_29c_high": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AL2+ALc+AvT+BrA+AP3+AHCwGTBA==",
+      "bytes": "1463001010FE0930D1031300000020C9",
+      "power": "on",
+      "mode": "fan",
+      "temperature": 29,
+      "fan": "high"
+    },
+    "fan_29c_quiet": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AL2+ALc+Af1+EvF+BDA+EPY+AH9wGTBA==",
+      "bytes": "1463001010FE0930D1031400000020C8",
+      "power": "on",
+      "mode": "fan",
+      "temperature": 29,
+      "fan": "quiet"
+    },
+    "fan_30c_auto": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+Afb+A/3+BbA+Ab04Cr",
+      "bytes": "1463001010FE0930E1031000000020BC",
+      "power": "on",
+      "mode": "fan",
+      "temperature": 30,
+      "fan": "auto"
+    },
+    "fan_30c_low": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+Afb+Afr+EvF+BDA+AH3+ED2+AFDw==",
+      "bytes": "1463001010FE0930E1031100000020BB",
+      "power": "on",
+      "mode": "fan",
+      "temperature": 30,
+      "fan": "low"
+    },
+    "fan_30c_medium": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+Afb+Afs+EvF+BDA+ELr+AH14Cr",
+      "bytes": "1463001010FE0930E1031200000020BA",
+      "power": "on",
+      "mode": "fan",
+      "temperature": 30,
+      "fan": "medium"
+    },
+    "fan_30c_high": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+Afb+AzT+BnA+AP3+EHMwGTBA==",
+      "bytes": "1463001010FE0930E1031300000020B9",
+      "power": "on",
+      "mode": "fan",
+      "temperature": 30,
+      "fan": "high"
+    },
+    "fan_30c_quiet": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+Afb+Af1+EvF+BDA+EPY+EHMwGTBA==",
+      "bytes": "1463001010FE0930E1031400000020B8",
+      "power": "on",
+      "mode": "fan",
+      "temperature": 30,
+      "fan": "quiet"
+    },
+    "heat_16c_auto": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+Afx+BHJ+BTA+EHE+ED2+AF+w==",
+      "bytes": "1463001010FE0930010410000000209B",
+      "power": "on",
+      "mode": "heat",
+      "temperature": 16,
+      "fan": "auto"
+    },
+    "heat_16c_low": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+Afx+APt+ELG+ErF+BDA+APk+AJ+w==",
+      "bytes": "1463001010FE0930010411000000209A",
+      "power": "on",
+      "mode": "heat",
+      "temperature": 16,
+      "fan": "low"
+    },
+    "heat_16c_medium": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+Afx+ATt+ArT+BTA+EPE+AJ+w==",
+      "bytes": "1463001010FE09300104120000002099",
+      "power": "on",
+      "mode": "heat",
+      "temperature": 16,
+      "fan": "medium"
+    },
+    "heat_16c_high": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+Afx+APt+AvT+BTA+Ahqw==",
+      "bytes": "1463001010FE09300104130000002098",
+      "power": "on",
+      "mode": "heat",
+      "temperature": 16,
+      "fan": "high"
+    },
+    "heat_16c_quiet": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+Afx+Aft+EvF+BDA+EHE+EDJ+AF+w==",
+      "bytes": "1463001010FE09300104140000002097",
+      "power": "on",
+      "mode": "heat",
+      "temperature": 16,
+      "fan": "quiet"
+    },
+    "heat_17c_auto": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AL2+Art+AnJ+BTA+AH3+ER2w==",
+      "bytes": "1463001010FE0930110410000000208B",
+      "power": "on",
+      "mode": "heat",
+      "temperature": 17,
+      "fan": "auto"
+    },
+    "heat_17c_low": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AL2+Ajt+AfP+BjA+AP0+AJqw==",
+      "bytes": "1463001010FE0930110411000000208A",
+      "power": "on",
+      "mode": "heat",
+      "temperature": 17,
+      "fan": "low"
+    },
+    "heat_17c_medium": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AL2+Ant+Ang+BXA+AP3+AJ6w==",
+      "bytes": "1463001010FE09301104120000002089",
+      "power": "on",
+      "mode": "heat",
+      "temperature": 17,
+      "fan": "medium"
+    },
+    "heat_17c_high": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AL2+Ajt+Arg+BXA+AfwwGTBA==",
+      "bytes": "1463001010FE09301104130000002088",
+      "power": "on",
+      "mode": "heat",
+      "temperature": 17,
+      "fan": "high"
+    },
+    "heat_17c_quiet": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AL2+Azt+EvF+BDA+AH3+EPrwGTBA==",
+      "bytes": "1463001010FE09301104140000002087",
+      "power": "on",
+      "mode": "heat",
+      "temperature": 17,
+      "fan": "quiet"
+    },
+    "heat_18c_auto": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+APb+Ant+AnJ+BTA+AH3+ED2+EFNw==",
+      "bytes": "1463001010FE0930210410000000207B",
+      "power": "on",
+      "mode": "heat",
+      "temperature": 18,
+      "fan": "auto"
+    },
+    "heat_18c_low": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+APb+Aft+ELG+ErF+BDA+APk+EJNw==",
+      "bytes": "1463001010FE0930210411000000207A",
+      "power": "on",
+      "mode": "heat",
+      "temperature": 18,
+      "fan": "low"
+    },
+    "heat_18c_medium": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+APb+Ajt+Ang+BXA+AP3+EJNw==",
+      "bytes": "1463001010FE09302104120000002079",
+      "power": "on",
+      "mode": "heat",
+      "temperature": 18,
+      "fan": "medium"
+    },
+    "heat_18c_high": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+APb+Aft+Arg+BXA+AXq+EBvw==",
+      "bytes": "1463001010FE09302104130000002078",
+      "power": "on",
+      "mode": "heat",
+      "temperature": 18,
+      "fan": "high"
+    },
+    "heat_18c_quiet": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+APb+Avt+EvF+BDA+AH3+AD8+EFNw==",
+      "bytes": "1463001010FE09302104140000002077",
+      "power": "on",
+      "mode": "heat",
+      "temperature": 18,
+      "fan": "quiet"
+    },
+    "heat_19c_auto": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+Af2+Af7+EvF+BDA+AH3+EH2+EBvw==",
+      "bytes": "1463001010FE0930310410000000206B",
+      "power": "on",
+      "mode": "heat",
+      "temperature": 19,
+      "fan": "auto"
+    },
+    "heat_19c_low": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+Af2+APt+ELG+ErF+BDA+APk+ADB4Cn",
+      "bytes": "1463001010FE0930310411000000206A",
+      "power": "on",
+      "mode": "heat",
+      "temperature": 19,
+      "fan": "low"
+    },
+    "heat_19c_medium": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+Af2+ATt+Ang+BXA+AP3+ED44Cn",
+      "bytes": "1463001010FE09303104120000002069",
+      "power": "on",
+      "mode": "heat",
+      "temperature": 19,
+      "fan": "medium"
+    },
+    "heat_19c_high": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+Af2+APt+Arg+BXA+ATq+EFvw==",
+      "bytes": "1463001010FE09303104130000002068",
+      "power": "on",
+      "mode": "heat",
+      "temperature": 19,
+      "fan": "high"
+    },
+    "heat_19c_quiet": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+Af2+Aft+EvF+BDA+AH3+AL84Cn",
+      "bytes": "1463001010FE09303104140000002067",
+      "power": "on",
+      "mode": "heat",
+      "temperature": 19,
+      "fan": "quiet"
+    },
+    "heat_20c_auto": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+APj+AL8+A73+BbA+AH3+ED2+EF5w==",
+      "bytes": "1463001010FE0930410410000000205B",
+      "power": "on",
+      "mode": "heat",
+      "temperature": 20,
+      "fan": "auto"
+    },
+    "heat_20c_low": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+APj+AL8+AzJ+BjA+APu+AD+4Cn",
+      "bytes": "1463001010FE0930410411000000205A",
+      "power": "on",
+      "mode": "heat",
+      "temperature": 20,
+      "fan": "low"
+    },
+    "heat_20c_medium": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+APj+AL8+Abs+EvF+BDA+AP3+AD+4Cn",
+      "bytes": "1463001010FE09304104120000002059",
+      "power": "on",
+      "mode": "heat",
+      "temperature": 20,
+      "fan": "medium"
+    },
+    "heat_20c_high": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+APj+AL8+AzT+BjA+Abq4Cn",
+      "bytes": "1463001010FE09304104130000002058",
+      "power": "on",
+      "mode": "heat",
+      "temperature": 20,
+      "fan": "high"
+    },
+    "heat_20c_quiet": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+APj+AL8+Abt+EvF+BDA+AH3+AD8+AFpw==",
+      "bytes": "1463001010FE09304104140000002057",
+      "power": "on",
+      "mode": "heat",
+      "temperature": 20,
+      "fan": "quiet"
+    },
+    "heat_21c_auto": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AL2+ATF+A33+BbA+AH3+EL24Cn",
+      "bytes": "1463001010FE0930510410000000204B",
+      "power": "on",
+      "mode": "heat",
+      "temperature": 21,
+      "fan": "auto"
+    },
+    "heat_21c_low": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AL2+ATF+AXr+EvF+BDA+Ab04Cn",
+      "bytes": "1463001010FE0930510411000000204A",
+      "power": "on",
+      "mode": "heat",
+      "temperature": 21,
+      "fan": "low"
+    },
+    "heat_21c_medium": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AL2+ATF+AXs+EvF+BDA+AP3+AJpw==",
+      "bytes": "1463001010FE09305104120000002049",
+      "power": "on",
+      "mode": "heat",
+      "temperature": 21,
+      "fan": "medium"
+    },
+    "heat_21c_high": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AL2+ATF+AnT+BrA+ATq+AFpw==",
+      "bytes": "1463001010FE09305104130000002048",
+      "power": "on",
+      "mode": "heat",
+      "temperature": 21,
+      "fan": "high"
+    },
+    "heat_21c_quiet": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AL2+ATF+AXt+EvF+BDA+AH3+EPwwFWAQ==",
+      "bytes": "1463001010FE09305104140000002047",
+      "power": "on",
+      "mode": "heat",
+      "temperature": 21,
+      "fan": "quiet"
+    },
+    "heat_22c_auto": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+ATb+Ajt+AnJ+BTA+AH3+ED2+EFuw==",
+      "bytes": "1463001010FE0930610410000000203B",
+      "power": "on",
+      "mode": "heat",
+      "temperature": 22,
+      "fan": "auto"
+    },
+    "heat_22c_low": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+ATb+Abt+AfJ+BjA+APu+EJMw==",
+      "bytes": "1463001010FE0930610411000000203A",
+      "power": "on",
+      "mode": "heat",
+      "temperature": 22,
+      "fan": "low"
+    },
+    "heat_22c_medium": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+ATb+Aft+Ang+BXA+AP3+EJMw==",
+      "bytes": "1463001010FE09306104120000002039",
+      "power": "on",
+      "mode": "heat",
+      "temperature": 22,
+      "fan": "medium"
+    },
+    "heat_22c_high": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+ATb+Abt+Arg+BXA+AXq+ABow==",
+      "bytes": "1463001010FE09306104130000002038",
+      "power": "on",
+      "mode": "heat",
+      "temperature": 22,
+      "fan": "high"
+    },
+    "heat_22c_quiet": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+ATb+Art+EvF+BDA+AH3+AD8+EFuw==",
+      "bytes": "1463001010FE09306104140000002037",
+      "power": "on",
+      "mode": "heat",
+      "temperature": 22,
+      "fan": "quiet"
+    },
+    "heat_23c_auto": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AP7+AL8+A73+BbA+AH3+EH2+ABow==",
+      "bytes": "1463001010FE0930710410000000202B",
+      "power": "on",
+      "mode": "heat",
+      "temperature": 23,
+      "fan": "auto"
+    },
+    "heat_23c_low": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AP7+AL8+Abr+EvF+BDA+APu+EJ4w==",
+      "bytes": "1463001010FE0930710411000000202A",
+      "power": "on",
+      "mode": "heat",
+      "temperature": 23,
+      "fan": "low"
+    },
+    "heat_23c_medium": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AP7+AL8+Abs+EvF+BDA+AP3+EJ4w==",
+      "bytes": "1463001010FE09307104120000002029",
+      "power": "on",
+      "mode": "heat",
+      "temperature": 23,
+      "fan": "medium"
+    },
+    "heat_23c_high": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AP7+AL8+ArT+BrA+ATq+AFow==",
+      "bytes": "1463001010FE09307104130000002028",
+      "power": "on",
+      "mode": "heat",
+      "temperature": 23,
+      "fan": "high"
+    },
+    "heat_23c_quiet": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AP7+AL8+Abt+EvF+BDA+AH3+ERJw==",
+      "bytes": "1463001010FE09307104140000002027",
+      "power": "on",
+      "mode": "heat",
+      "temperature": 23,
+      "fan": "quiet"
+    },
+    "heat_24c_auto": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+ATj+AnW+AjJ+BTA+AH3+ED2+AFnw==",
+      "bytes": "1463001010FE0930810410000000201B",
+      "power": "on",
+      "mode": "heat",
+      "temperature": 24,
+      "fan": "auto"
+    },
+    "heat_24c_low": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+ATj+AbJ+ELG+ErF+BDA+APk+EJtw==",
+      "bytes": "1463001010FE0930810411000000201A",
+      "power": "on",
+      "mode": "heat",
+      "temperature": 24,
+      "fan": "low"
+    },
+    "heat_24c_medium": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+ATj+BHJ+BfA+AP3+EJtw==",
+      "bytes": "1463001010FE09308104120000002019",
+      "power": "on",
+      "mode": "heat",
+      "temperature": 24,
+      "fan": "medium"
+    },
+    "heat_24c_high": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+ATj+AbJ+Arg+BXA+AfqwFWAQ==",
+      "bytes": "1463001010FE09308104130000002018",
+      "power": "on",
+      "mode": "heat",
+      "temperature": 24,
+      "fan": "high"
+    },
+    "heat_24c_quiet": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+ATj+AjW+EPP+BrA+AH3+AD8+AFnw==",
+      "bytes": "1463001010FE09308104140000002017",
+      "power": "on",
+      "mode": "heat",
+      "temperature": 24,
+      "fan": "quiet"
+    },
+    "heat_25c_auto": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AL2+AXC+Az3+BbA+AHw+EP2wFWAQ==",
+      "bytes": "1463001010FE0930910410000000200B",
+      "power": "on",
+      "mode": "heat",
+      "temperature": 25,
+      "fan": "auto"
+    },
+    "heat_25c_low": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AL2+AXC+ATr+EvF+BDA+AP0+AJmw==",
+      "bytes": "1463001010FE0930910411000000200A",
+      "power": "on",
+      "mode": "heat",
+      "temperature": 25,
+      "fan": "low"
+    },
+    "heat_25c_medium": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AL2+AXC+ATs+EvF+BDA+Ahww==",
+      "bytes": "1463001010FE09309104120000002009",
+      "power": "on",
+      "mode": "heat",
+      "temperature": 25,
+      "fan": "medium"
+    },
+    "heat_25c_high": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AL2+AXC+AjT+BrA+ATq+AFmw==",
+      "bytes": "1463001010FE09309104130000002008",
+      "power": "on",
+      "mode": "heat",
+      "temperature": 25,
+      "fan": "high"
+    },
+    "heat_25c_quiet": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AL2+AXC+ATt+EvF+BDA+AHw+ERrw==",
+      "bytes": "1463001010FE09309104140000002007",
+      "power": "on",
+      "mode": "heat",
+      "temperature": 25,
+      "fan": "quiet"
+    },
+    "heat_26c_auto": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+APb+EHC+Af7+EvF+BDA+AH3+ADz+EFOw==",
+      "bytes": "1463001010FE0930A1041000000020FB",
+      "power": "on",
+      "mode": "heat",
+      "temperature": 26,
+      "fan": "auto"
+    },
+    "heat_26c_low": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+APb+EHC+APt+ELG+ErF+BDA+APk+EJOw==",
+      "bytes": "1463001010FE0930A1041100000020FA",
+      "power": "on",
+      "mode": "heat",
+      "temperature": 26,
+      "fan": "low"
+    },
+    "heat_26c_medium": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+APb+EHC+ATt+Ang+BXA+AP3+EJOw==",
+      "bytes": "1463001010FE0930A1041200000020F9",
+      "power": "on",
+      "mode": "heat",
+      "temperature": 26,
+      "fan": "medium"
+    },
+    "heat_26c_high": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+APb+EHC+APt+Arg+BXA+AXq+EBOw==",
+      "bytes": "1463001010FE0930A1041300000020F8",
+      "power": "on",
+      "mode": "heat",
+      "temperature": 26,
+      "fan": "high"
+    },
+    "heat_26c_quiet": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+APb+EHC+Aft+EvF+BDA+AH3+AD8+EFOw==",
+      "bytes": "1463001010FE0930A1041400000020F7",
+      "power": "on",
+      "mode": "heat",
+      "temperature": 26,
+      "fan": "quiet"
+    },
+    "heat_27c_auto": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AT7+AnW+AjJ+BTA+AH3+AHz+EBOw==",
+      "bytes": "1463001010FE0930B1041000000020EB",
+      "power": "on",
+      "mode": "heat",
+      "temperature": 27,
+      "fan": "auto"
+    },
+    "heat_27c_low": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AT7+AbW+ELG+ErF+BDA+APk+ADB4HD",
+      "bytes": "1463001010FE0930B1041100000020EA",
+      "power": "on",
+      "mode": "heat",
+      "temperature": 27,
+      "fan": "low"
+    },
+    "heat_27c_medium": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AT7+AfW+Ang+BXA+AP3+AD14HD",
+      "bytes": "1463001010FE0930B1041200000020E9",
+      "power": "on",
+      "mode": "heat",
+      "temperature": 27,
+      "fan": "medium"
+    },
+    "heat_27c_high": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AT7+AbW+Arg+BXA+ATq+EFTw==",
+      "bytes": "1463001010FE0930B1041300000020E8",
+      "power": "on",
+      "mode": "heat",
+      "temperature": 27,
+      "fan": "high"
+    },
+    "heat_27c_quiet": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AT7+AjW+EPP+BrA+AH3+AL84HD",
+      "bytes": "1463001010FE0930B1041400000020E7",
+      "power": "on",
+      "mode": "heat",
+      "temperature": 27,
+      "fan": "quiet"
+    },
+    "heat_28c_auto": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+APj+ArW+AjJ+BTA+AH3+ED2+AFCw==",
+      "bytes": "1463001010FE0930C1041000000020DB",
+      "power": "on",
+      "mode": "heat",
+      "temperature": 28,
+      "fan": "auto"
+    },
+    "heat_28c_low": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+APj+AjJ+Aj3+BbA+APk+AD+4HD",
+      "bytes": "1463001010FE0930C1041100000020DA",
+      "power": "on",
+      "mode": "heat",
+      "temperature": 28,
+      "fan": "low"
+    },
+    "heat_28c_medium": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+APj+AjW+Ang+BXA+AP3+AD+4HD",
+      "bytes": "1463001010FE0930C1041200000020D9",
+      "power": "on",
+      "mode": "heat",
+      "temperature": 28,
+      "fan": "medium"
+    },
+    "heat_28c_high": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+APj+BHJ+BjA+Ab04HD",
+      "bytes": "1463001010FE0930C1041300000020D8",
+      "power": "on",
+      "mode": "heat",
+      "temperature": 28,
+      "fan": "high"
+    },
+    "heat_28c_quiet": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+APj+AnW+EPP+BrA+AH3+AD8+ADBwGTBA==",
+      "bytes": "1463001010FE0930C1041400000020D7",
+      "power": "on",
+      "mode": "heat",
+      "temperature": 28,
+      "fan": "quiet"
+    },
+    "heat_29c_auto": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AL2+AbJ+Av3+BbA+AH3+EL24HD",
+      "bytes": "1463001010FE0930D1041000000020CB",
+      "power": "on",
+      "mode": "heat",
+      "temperature": 29,
+      "fan": "auto"
+    },
+    "heat_29c_low": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AL2+AbJ+AXP+BzA+AT0+EFww==",
+      "bytes": "1463001010FE0930D1041100000020CA",
+      "power": "on",
+      "mode": "heat",
+      "temperature": 29,
+      "fan": "low"
+    },
+    "heat_29c_medium": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AL2+AbJ+APs+EvF+BDA+AP3+AHCwGTBA==",
+      "bytes": "1463001010FE0930D1041200000020C9",
+      "power": "on",
+      "mode": "heat",
+      "temperature": 29,
+      "fan": "medium"
+    },
+    "heat_29c_high": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AL2+AbJ+AfT+BrA+ATq+EFww==",
+      "bytes": "1463001010FE0930D1041300000020C8",
+      "power": "on",
+      "mode": "heat",
+      "temperature": 29,
+      "fan": "high"
+    },
+    "heat_29c_quiet": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AL2+AbJ+APt+EvF+BDA+AH3+ERww==",
+      "bytes": "1463001010FE0930D1041400000020C7",
+      "power": "on",
+      "mode": "heat",
+      "temperature": 29,
+      "fan": "quiet"
+    },
+    "heat_30c_auto": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AXb+AjW+AjJ+BTA+AH3+ED2+AFDw==",
+      "bytes": "1463001010FE0930E1041000000020BB",
+      "power": "on",
+      "mode": "heat",
+      "temperature": 30,
+      "fan": "auto"
+    },
+    "heat_30c_low": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AXb+AXt+ELG+ErF+BDA+APk+AH1wGTBA==",
+      "bytes": "1463001010FE0930E1041100000020BA",
+      "power": "on",
+      "mode": "heat",
+      "temperature": 30,
+      "fan": "low"
+    },
+    "heat_30c_medium": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AXb+Abt+Ang+BXA+AP3+AH1wGTBA==",
+      "bytes": "1463001010FE0930E1041200000020B9",
+      "power": "on",
+      "mode": "heat",
+      "temperature": 30,
+      "fan": "medium"
+    },
+    "heat_30c_high": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AXb+AXt+Arg+BXA+AXq+EB6w==",
+      "bytes": "1463001010FE0930E1041300000020B8",
+      "power": "on",
+      "mode": "heat",
+      "temperature": 30,
+      "fan": "high"
+    },
+    "heat_30c_quiet": {
+      "code": "B/cMNAbRAVYBgAMBkwTgBQfgAxfgGxPgHwPgFzfgCx/Ag+APA+AfW+ALz+AXb+Ant+EvF+BDA+AH3+AD8+AFCw==",
+      "bytes": "1463001010FE0930E1041400000020B7",
+      "power": "on",
+      "mode": "heat",
+      "temperature": 30,
+      "fan": "quiet"
+    }
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "device": "Hubitat Fujitsu AC",
+  "protocol": "fujitsu_ac",
+  "variant": "16-byte",
+  "sample_codes": {
+    "OFF": "BvQMFwbeAb4gARFdAb4BlQTeAV0B3gGVBL4BXQFAAwHeAUADAZUEQANAD0ADAd4BQAMBlQRAA+ABD0ATAV0BQA/AA0APwAPAE0AHBd4BlQTeAUAHAL4gAQFdAUADAd4B4AMDAZUEQBNAAwHeAYADAb4B4AkTQBsBvgFAAwGVBEALAd4BQAcBlQSADwuVBN4BlQS+AZUE3gE=",
+    "ON": "BxoNDAbbAV8BQAMDtgGUBEAHAdsBgAcBtgGAA4APAZQE4AEP4A8TQBeAA+AFKwFfAcADgBcBlATADwLbAbYgAQFfAUADAdsBwAMBlARAD0ADAdsBwAMBlATgBwMAtuACEwG2AeADJwC2IAEBXwFAAwHbAeADAwC2IAEGXwG2AZQE22ADAV8BQAOADwFfAeADAwG2AUADQCcBXwGAAwC2IAEBXwFAAwHbAeAFAwG2AeADJ4APALYgB0AL4AEDALYgAQFfAUADAdsB4AkDQBdAA+AHG0ATQAPgExfgBx9ADwO2AZQEQDMDtgFfAYAHQA+AA4ALC18BtgGUBLYBtgG2AQ=="
+  },
+  "decoded_samples": {
+    "OFF": {
+      "power": "off",
+      "mode": "unknown",
+      "temperature": null,
+      "fan": "unknown",
+      "swing": "unknown"
+    },
+    "ON": {
+      "power": "on",
+      "mode": "auto",
+      "temperature": 20,
+      "fan": "high",
+      "swing": "vertical"
+    }
+  }
+}

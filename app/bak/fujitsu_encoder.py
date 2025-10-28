@@ -25,11 +25,13 @@ from app.core.ac_decoders import (
 )
 
 # Fujitsu protocol constants
-FUJITSU_HEADER_MARK = 3300
-FUJITSU_HEADER_SPACE = 1600
-FUJITSU_BIT_MARK = 400
-FUJITSU_ZERO_SPACE = 400
-FUJITSU_ONE_SPACE = 1200
+# Extracted from ACTUAL working 24C_High code (not theoretical values!)
+# These exact timing values are required to match Tuya's compression
+FUJITSU_HEADER_MARK = 3319
+FUJITSU_HEADER_SPACE = 1588
+FUJITSU_BIT_MARK = 465
+FUJITSU_ZERO_SPACE = 342
+FUJITSU_ONE_SPACE = 1171
 
 
 def calculate_checksum(state_bytes: List[int]) -> int:
@@ -104,14 +106,24 @@ def encode_fujitsu_state(
         0x00,  # Byte 8: Temperature + power bit
         0x00,  # Byte 9: Mode
         0x00,  # Byte 10: Fan + swing
-        0x00,  # Byte 11: Extra
-        0x00,  # Byte 12: Extra
-        0x00,  # Byte 13: Extra
-        0x00,  # Byte 14: Extra
+        0x00,  # Byte 11: Timer low bits
+        0x00,  # Byte 12: Timer mid bits
+        0x00,  # Byte 13: Timer high bits
+        0x20,  # Byte 14: Unknown bit 5 set (required for hardware compatibility)
         0x00,  # Byte 15: Checksum
     ]
 
-    # Encode mode
+    # Byte 8: Power (bit 0), Fahrenheit (bit 1), Temp (bits 2-7)
+    # From IRremoteESP8266: _.Temp = (temp - kFujitsuAcMinTemp) * 4
+    temp_clamped = max(FUJITSU_MIN_TEMP_C, min(FUJITSU_MAX_TEMP_C, temperature))
+    temp_value = int((temp_clamped - FUJITSU_MIN_TEMP_C) * 4)
+    temp_value = max(0, min(63, temp_value))  # Clamp to 6 bits
+    power_bit = 1  # Power ON
+    fahrenheit_bit = 0  # Celsius
+    state_bytes[8] = power_bit | (fahrenheit_bit << 1) | (temp_value << 2)
+
+    # Byte 9: Mode (bits 0-2), Clean (bit 3), TimerType (bits 4-5)
+    # From IRremoteESP8266: _.Mode = mode
     mode_map = {
         "auto": FUJITSU_MODE_AUTO,
         "cool": FUJITSU_MODE_COOL,
@@ -119,19 +131,11 @@ def encode_fujitsu_state(
         "fan": FUJITSU_MODE_FAN,
         "heat": FUJITSU_MODE_HEAT,
     }
-    mode_val = mode_map.get(mode.lower(), FUJITSU_MODE_COOL)
-    state_bytes[9] = mode_val & 0x07
+    mode_val = mode_map.get(mode.lower(), FUJITSU_MODE_AUTO)
+    state_bytes[9] = mode_val & 0x07  # Only mode bits, rest are 0
 
-    # Encode temperature
-    # Temperature encoding: (temp - offset) * 2 - 1
-    # Stored in byte 8 bits 0-6, with power bit in bit 7
-    temp_clamped = max(FUJITSU_MIN_TEMP_C, min(FUJITSU_MAX_TEMP_C, temperature))
-    temp_encoded = (temp_clamped - FUJITSU_MIN_TEMP_C) * 2 - 1
-    if temp_encoded < 0:
-        temp_encoded = 0
-    state_bytes[8] = (temp_encoded & 0x7F) | 0x80  # Set power bit (bit 7)
-
-    # Encode fan speed
+    # Byte 10: Fan (bits 0-2), unused (bit 3), Swing (bits 4-5)
+    # From IRremoteESP8266: _.Fan = fanSpeed; _.Swing = swingMode
     fan_map = {
         "auto": FUJITSU_FAN_AUTO,
         "low": FUJITSU_FAN_LOW,
@@ -141,10 +145,14 @@ def encode_fujitsu_state(
     }
     fan_val = fan_map.get(fan.lower(), FUJITSU_FAN_AUTO)
 
-    # Encode swing (simplified - just off for now)
-    swing_val = 0x00  # Off
+    swing_map = {
+        "off": 0x0,
+        "vertical": 0x1,
+        "horizontal": 0x2,
+        "both": 0x3,
+    }
+    swing_val = swing_map.get(swing.lower(), 0x0)
 
-    # Combine fan and swing in byte 10
     state_bytes[10] = (fan_val & 0x07) | ((swing_val & 0x03) << 4)
 
     # Calculate and set checksum

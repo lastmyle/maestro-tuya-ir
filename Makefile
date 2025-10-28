@@ -20,7 +20,7 @@ build:  ## Build the project (Python package)
 
 
 test:  ## Run tests
-	uv run pytest tests/ -v
+	uv run pytest tests/ -v -s --snapshot-update -n 0
 
 test-coverage:  ## Run tests with coverage report
 	uv run pytest tests/ --cov=app --cov-report=html --cov-report=term

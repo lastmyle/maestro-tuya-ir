@@ -5,7 +5,7 @@
 from fastapi import APIRouter, HTTPException
 
 from app.core.generator import generate_command
-from app.core.tuya import decode_tuya_ir
+from app.core.tuya_encoder import decode_tuya_ir
 from app.models.request import EncodeRequest
 from app.models.response import EncodeResponse, ErrorResponse
 

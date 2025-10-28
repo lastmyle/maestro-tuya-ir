@@ -1,0 +1,11 @@
+OFF Command
+
+D/QMFwa+Ab4BvgG+Ab4BlQRABcAHgAtABUAXQANAC0ADQANAD0ADQAtAA0ADQANAA0ADQANAA0ADQANAA0ADQAPgFzfgCx/gCxNAS0ADwBtAB0ADQANAA0ADQAM=
+
+Expected behavior:
+- AC turns OFF
+
+Protocol verification:
+- Bytes: 14 63 00 10 10 02 FD
+- Checksum = 0xFD ✅
+- 7-byte OFF command format ✅

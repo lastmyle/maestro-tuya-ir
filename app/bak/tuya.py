@@ -6,8 +6,8 @@ Handles encoding and decoding between Tuya Base64 format and raw IR timings.
 
 import base64
 import struct
-
-from app.core.fastlz import fastlz_compress, fastlz_decompress
+import io
+from app.core.fastlz import fastlz_decompress, fastlz_compress
 
 
 def decode_tuya_ir(tuya_code: str) -> list[int]:

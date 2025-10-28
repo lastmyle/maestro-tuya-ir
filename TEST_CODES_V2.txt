@@ -1,0 +1,97 @@
+================================================================================
+HUBITAT TEST CODES V2
+================================================================================
+
+Generated using reverse-engineered protocol from your working codes.
+
+Protocol Structure (16 bytes for ON, 7 bytes for OFF):
+  Byte 0-4:  Header (14 63 00 10 10)
+  Byte 5:    ON/OFF marker (FE=ON, 02=OFF)
+  Byte 6-7:  Unknown but consistent (09 30)
+  Byte 8:    Temperature + Power bit
+  Byte 9:    Mode (0x00=Auto, 0x01=Cool, 0x04=Heat)
+  Byte 10:   Fan/Swing (0x11 from working codes)
+  Byte 11-13: Unknown (00 00 00)
+  Byte 14:   Hardware compat (0x20)
+  Byte 15:   Checksum
+
+================================================================================
+
+TEST CODE 1: OFF
+--------------------------------------------------------------------------------
+Code: BfQMFwa+AcABAZUE4AUH4AMX4BsT4B8B4Bc34Asf4BMz4AO34AkD
+
+Bytes: 14 63 00 10 10 02 FD
+Expected: AC turns OFF
+
+================================================================================
+
+TEST CODE 2: 18°C Cool Auto
+--------------------------------------------------------------------------------
+Code: BfQMFwa+AcABAZUE4AUH4AMX4BsT4B8B4Bc34AsfwG/gDwPgH1vgC7vgD2/gL6/hLxfgQwHgC7/gDec=
+
+Bytes: 14 63 00 10 10 FE 09 30 21 01 11 00 00 00 20 85
+Expected: AC ON, Cool mode, 18°C, Auto fan
+
+Decoded:
+  Power: ON
+  Temperature: 18.0°C
+  Mode: Cool
+
+================================================================================
+
+TEST CODE 3: 22°C Cool Auto
+--------------------------------------------------------------------------------
+Code: BfQMFwa+AcABAZUE4AUH4AMX4BsT4B8B4Bc34AsfwG/gDwPgH1vgC7vgE2/gK6/hLxfgQwHgC9/hDcM=
+
+Bytes: 14 63 00 10 10 FE 09 30 61 01 11 00 00 00 20 C5
+Expected: AC ON, Cool mode, 22°C, Auto fan (should match working code)
+
+Decoded:
+  Power: ON
+  Temperature: 22.0°C
+  Mode: Cool
+
+================================================================================
+
+TEST CODE 4: 25°C Cool Auto
+--------------------------------------------------------------------------------
+Code: BfQMFwa+AcABAZUE4AUH4AMX4BsT4B8B4Bc34AsfwG/gDwPgH1vgC7vgC9vgI+fgEz/gbwHgC9/gAwfgAQM=
+
+Bytes: 14 63 00 10 10 FE 09 30 91 01 11 00 00 00 20 F5
+Expected: AC ON, Cool mode, 25°C, Auto fan
+
+Decoded:
+  Power: ON
+  Temperature: 25.0°C
+  Mode: Cool
+
+================================================================================
+
+TEST CODE 5: 24°C Heat Auto
+--------------------------------------------------------------------------------
+Code: BfQMFwa+AcABAZUE4AUH4AMX4BsT4B8B4Bc34AsfwG/gDwPgH1vgC7vgEzPgGyfhCxvgdwHgF6vhATs=
+
+Bytes: 14 63 00 10 10 FE 09 30 81 04 11 00 00 00 20 E8
+Expected: AC ON, Heat mode, 24°C, Auto fan
+
+Decoded:
+  Power: ON
+  Temperature: 24.0°C
+  Mode: Heat
+
+================================================================================
+
+TEST CODE 6: 22°C Auto Mode
+--------------------------------------------------------------------------------
+Code: BfQMFwa+AcABAZUE4AUH4AMX4BsT4B8B4Bc34AsfwG/gDwPgH1vgC7vgE2/gK8/hLxfgQwHgD9PgCeM=
+
+Bytes: 14 63 00 10 10 FE 09 30 61 00 11 00 00 00 20 C4
+Expected: AC ON, Auto mode, 22°C
+
+Decoded:
+  Power: ON
+  Temperature: 22.0°C
+  Mode: Auto
+
+================================================================================

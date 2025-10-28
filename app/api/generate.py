@@ -44,8 +44,15 @@ async def generate(request: GenerateRequest):
                 },
             )
 
+        # Detect variant from sample code if provided (Fujitsu only)
+        detected_variant = None
+        if request.sampleCode and "fujitsu" in request.protocol.lower():
+            from app.core.fujitsu_variant_detector import detect_fujitsu_variant
+
+            detected_variant = detect_fujitsu_variant(request.sampleCode)
+
         # Create generator
-        generator = HVACCodeGenerator(request.protocol)
+        generator = HVACCodeGenerator(request.protocol, detected_variant=detected_variant)
 
         # Parse filters
         modes = None

@@ -9,15 +9,11 @@ integrate with hvac_ir library or IRremoteESP8266.
 from typing import Optional
 
 from app.core.protocol_timings import get_protocol_by_name
-from app.core.tuya import encode_tuya_ir
+from app.core.tuya_encoder import encode_tuya_ir
 
-# Import Fujitsu encoder for real protocol support
-try:
-    from app.core.fujitsu_encoder import generate_fujitsu_command
-    FUJITSU_ENCODER_AVAILABLE = True
-except ImportError:
-    FUJITSU_ENCODER_AVAILABLE = False
-
+# Import Fujitsu encoders for real protocol support
+from app.core.fujitsu_encoder import generate_fujitsu_command as generate_fujitsu_16byte
+from app.core.fujitsu_3byte_encoder import generate_fujitsu_3byte_command
 
 class HVACCodeGenerator:
     """Generator for HVAC IR codes."""
@@ -57,17 +53,19 @@ class HVACCodeGenerator:
         },
     }
 
-    def __init__(self, protocol: str):
+    def __init__(self, protocol: str, detected_variant: str = None):
         """
         Initialize generator for a specific protocol.
 
         Args:
             protocol: Protocol name (e.g., "fujitsu_ac")
+            detected_variant: Optional variant identifier (e.g., "3byte" for Fujitsu)
 
         Raises:
             ValueError: If protocol is not supported
         """
         self.protocol = protocol
+        self.detected_variant = detected_variant
         self.protocol_def = get_protocol_by_name(protocol)
         if not self.protocol_def:
             raise ValueError(f"Unsupported protocol: {protocol}")
@@ -109,8 +107,13 @@ class HVACCodeGenerator:
         self._validate_parameters(power, mode, temperature, fan, swing)
 
         # Use protocol-specific encoder if available
-        if "fujitsu" in self.protocol.lower() and FUJITSU_ENCODER_AVAILABLE:
-            timings = generate_fujitsu_command(power, mode, temperature, fan, swing)
+        if "fujitsu" in self.protocol.lower():
+            # Detect which Fujitsu variant to use
+            if self.detected_variant == "3byte":
+                timings = generate_fujitsu_3byte_command(power, mode, temperature, fan, swing)
+            else:
+                # Default to 16-byte IRremoteESP8266 format
+                timings = generate_fujitsu_16byte(power, mode, temperature, fan, swing)
         else:
             # Fall back to generic encoder
             timings = self._encode_command(power, mode, temperature, fan, swing)
@@ -284,6 +287,7 @@ def generate_command(
     temperature: int = 24,
     fan: str = "auto",
     swing: str = "off",
+    sample_code: Optional[str] = None,
 ) -> str:
     """
     Convenience function to generate a single command.
@@ -295,9 +299,16 @@ def generate_command(
         temperature: Temperature in Celsius
         fan: Fan speed
         swing: Swing setting
+        sample_code: Optional sample Tuya code for variant detection (Fujitsu only)
 
     Returns:
         Tuya Base64 IR code
     """
-    generator = HVACCodeGenerator(protocol)
+    # Detect variant from sample code if provided (Fujitsu only)
+    detected_variant = None
+    if sample_code and "fujitsu" in protocol.lower():
+        from app.core.fujitsu_variant_detector import detect_fujitsu_variant
+        detected_variant = detect_fujitsu_variant(sample_code)
+
+    generator = HVACCodeGenerator(protocol, detected_variant=detected_variant)
     return generator.generate_code(power, mode, temperature, fan, swing)

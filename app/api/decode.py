@@ -5,7 +5,7 @@
 from fastapi import APIRouter, HTTPException
 
 from app.core.protocol_timings import identify_protocol, parse_hvac_state
-from app.core.tuya import decode_tuya_ir
+from app.core.tuya_encoder import decode_tuya_ir
 from app.models.request import DecodeRequest
 from app.models.response import DecodeResponse, ErrorResponse, ProtocolInfo
 

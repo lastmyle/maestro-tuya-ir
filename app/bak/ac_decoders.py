@@ -78,12 +78,12 @@ def unknown_state() -> Dict[str, Any]:
 # FUJITSU AC DECODER
 # ============================================================================
 
-# Fujitsu mode constants
-FUJITSU_MODE_AUTO = 0x0
-FUJITSU_MODE_COOL = 0x1
-FUJITSU_MODE_DRY = 0x2
-FUJITSU_MODE_FAN = 0x3
-FUJITSU_MODE_HEAT = 0x4
+# Fujitsu mode constants (from IRremoteESP8266)
+FUJITSU_MODE_AUTO = 0x0  # 0b000
+FUJITSU_MODE_COOL = 0x1  # 0b001
+FUJITSU_MODE_DRY = 0x2   # 0b010
+FUJITSU_MODE_FAN = 0x3   # 0b011
+FUJITSU_MODE_HEAT = 0x4  # 0b100
 
 FUJITSU_MODE_MAP = {
     FUJITSU_MODE_AUTO: "auto",
@@ -93,12 +93,12 @@ FUJITSU_MODE_MAP = {
     FUJITSU_MODE_HEAT: "heat",
 }
 
-# Fujitsu fan speed constants
-FUJITSU_FAN_AUTO = 0x0
-FUJITSU_FAN_HIGH = 0x1
-FUJITSU_FAN_MED = 0x2
-FUJITSU_FAN_LOW = 0x3
-FUJITSU_FAN_QUIET = 0x4
+# Fujitsu fan speed constants (from IRremoteESP8266)
+FUJITSU_FAN_AUTO = 0x0   # kFujitsuAcFanAuto
+FUJITSU_FAN_HIGH = 0x1   # kFujitsuAcFanHigh
+FUJITSU_FAN_MED = 0x2    # kFujitsuAcFanMed
+FUJITSU_FAN_LOW = 0x3    # kFujitsuAcFanLow
+FUJITSU_FAN_QUIET = 0x4  # kFujitsuAcFanQuiet
 
 FUJITSU_FAN_MAP = {
     FUJITSU_FAN_AUTO: "auto",
@@ -108,11 +108,11 @@ FUJITSU_FAN_MAP = {
     FUJITSU_FAN_QUIET: "quiet",
 }
 
-# Fujitsu swing constants
-FUJITSU_SWING_OFF = 0x0
-FUJITSU_SWING_VERT = 0x1
-FUJITSU_SWING_HORIZ = 0x2
-FUJITSU_SWING_BOTH = 0x3
+# Fujitsu swing constants (from IRremoteESP8266)
+FUJITSU_SWING_OFF = 0x0     # kFujitsuAcSwingOff
+FUJITSU_SWING_VERT = 0x1    # kFujitsuAcSwingVert
+FUJITSU_SWING_HORIZ = 0x2   # kFujitsuAcSwingHoriz
+FUJITSU_SWING_BOTH = 0x3    # kFujitsuAcSwingBoth
 
 FUJITSU_SWING_MAP = {
     FUJITSU_SWING_OFF: "off",
@@ -133,17 +133,17 @@ def decode_fujitsu_ac_state(state_bytes: List[int]) -> Dict[str, Any]:
     """
     Decode Fujitsu AC state from byte array.
 
-    State structure:
-    - Short format (7 bytes): OFF command
-      - Byte 0-1: Header (0x14, 0x63)
-      - Byte 5: Command (0x02 = turn off)
-    - Full format (16 bytes): State command
-      - Byte 0-1: Header (0x14, 0x63)
-      - Byte 5: Command
-      - Byte 8: Power/Temperature
-      - Byte 9: Mode
-      - Byte 10: Fan/Swing
-      - Byte 15: Checksum
+    Supports two variants:
+    1. 3-byte repeating pattern (12 bytes total = 4 repetitions)
+       - Byte 0: Power (bit 0) + Mode (bits 2-3) + Temperature (bits 1,4-7)
+       - Byte 1: Temp LSB (bit 0) + Fan (bits 1-3) + Mode (bits 4-7)
+       - Byte 2: Checksum
+    2. 16-byte IRremoteESP8266 format
+       - Byte 0-1: Header (0x14, 0x63)
+       - Byte 5: Command
+       - Byte 8: Power/Temperature
+       - Byte 9: Mode
+       - Byte 10: Fan/Swing
 
     Args:
         state_bytes: State byte array
@@ -151,6 +151,76 @@ def decode_fujitsu_ac_state(state_bytes: List[int]) -> Dict[str, Any]:
     Returns:
         Dictionary with power, mode, temperature, fan, swing
     """
+    if len(state_bytes) < 3:
+        return unknown_state()
+
+    # VARIANT 1: 3-byte repeating pattern (12 bytes)
+    if len(state_bytes) == 12:
+        # Decode first 3-byte pattern (pattern repeats 4 times for redundancy)
+        byte0 = state_bytes[0]
+        byte1 = state_bytes[1]
+        byte2 = state_bytes[2]
+
+        # Check if it's OFF command (byte0 bit 0 = 0)
+        if (byte0 & 0x01) == 0:
+            return {
+                "power": "off",
+                "mode": "unknown",
+                "temperature": None,
+                "fan": "unknown",
+                "swing": "unknown",
+            }
+
+        # Power is ON
+        # Extract mode from byte1 bits 4-7
+        mode_val = (byte1 >> 4) & 0x0F
+        mode_map_3byte = {
+            0x1: "cool",
+            0x9: "heat",
+            0x5: "dry",
+            0xD: "fan",
+        }
+        mode = mode_map_3byte.get(mode_val, "unknown")
+
+        # Extract temperature
+        # Temp MSB from byte0 bits 1,4-7 (shifted right by 1)
+        temp_msb = byte0 >> 1
+        # Temp LSB from byte1 bit 0
+        temp_lsb = byte1 & 0x01
+
+        # Decode temperature from lookup (simplified)
+        # This is complex, so we use a reverse lookup
+        temp_encoding_reverse = {
+            0x20: 20, 0x21: 21,  # 0x41 >> 1 = 0x20
+            0x60: 22, 0x61: 23,  # 0xC1 >> 1 = 0x60
+            0x10: 24, 0x11: 25,  # 0x21 >> 1 = 0x10
+            0x50: 26, 0x51: 27,  # 0xA1 >> 1 = 0x50
+            0x48: 28, 0x49: 29,  # 0x91 >> 1 = 0x48
+            0x18: 30,            # 0x31 >> 1 = 0x18
+        }
+        temp_key = temp_msb | temp_lsb
+        temperature = temp_encoding_reverse.get(temp_key, 24)
+
+        # Extract fan from byte1 bits 1-3
+        fan_val = (byte1 >> 1) & 0x07
+        fan_map_3byte = {
+            0: "auto",
+            1: "medium",
+            2: "low",
+            3: "high",
+        }
+        fan = fan_map_3byte.get(fan_val, "unknown")
+
+        return {
+            "power": "on",
+            "mode": mode,
+            "temperature": temperature,
+            "fan": fan,
+            "swing": "off",  # Not supported in 3-byte variant
+        }
+
+    # VARIANT 2: IRremoteESP8266 format (16-byte or 7-byte OFF command)
+    # Translated directly from https://github.com/crankyoldgit/IRremoteESP8266
     if len(state_bytes) < 6:
         return unknown_state()
 
@@ -164,42 +234,42 @@ def decode_fujitsu_ac_state(state_bytes: List[int]) -> Dict[str, Any]:
             "swing": "unknown",
         }
 
-    # Full format requires at least 10 bytes
-    if len(state_bytes) < 10:
+    # Full format requires at least 11 bytes
+    if len(state_bytes) < 11:
         return unknown_state()
 
-    # Byte 5: Command (0x02 = turn off)
-    cmd = state_bytes[5]
-    power = "off" if cmd == FUJITSU_CMD_TURN_OFF else "on"
+    # Byte 8: Power (bit 0), Fahrenheit (bit 1), Temp (bits 2-7)
+    # From IRremoteESP8266: uint64_t Power:1; uint64_t Fahrenheit:1; uint64_t Temp:6;
+    byte_8 = state_bytes[8]
+    power_bit = byte_8 & 0x01  # Bit 0
+    temp_raw = (byte_8 >> 2) & 0x3F  # Bits 2-7 (6 bits)
 
-    # Byte 8: Temperature (bits 0-6) and power flag (bit 7)
-    temp_byte = state_bytes[8] if len(state_bytes) > 8 else 0
-    temp_raw = temp_byte & 0x7F  # Lower 7 bits
-    power_bit = (temp_byte >> 7) & 0x01  # Bit 7
+    power = "on" if power_bit else "off"
 
-    # Power bit set = on
-    if power_bit == 1:
-        power = "on"
-
-    # Temperature calculation: (raw_value + 1) / 2 + offset
+    # Temperature calculation from IRremoteESP8266: Temp / 4 + kFujitsuAcMinTemp
+    # (For non-ARREW4E models, which is the standard 16-byte format)
     temperature = None
     if temp_raw > 0:
-        temperature = int((temp_raw + 1) / 2 + FUJITSU_MIN_TEMP_C)
+        temperature = temp_raw / 4.0 + FUJITSU_MIN_TEMP_C
         # Clamp to valid range
         if temperature < FUJITSU_MIN_TEMP_C:
             temperature = FUJITSU_MIN_TEMP_C
         elif temperature > FUJITSU_MAX_TEMP_C:
             temperature = FUJITSU_MAX_TEMP_C
+        # Round to nearest 0.5
+        temperature = round(temperature * 2) / 2
 
-    # Byte 9: Mode (bits 0-2)
-    mode_byte = state_bytes[9] if len(state_bytes) > 9 else 0
-    mode_val = mode_byte & 0x07  # Lower 3 bits
+    # Byte 9: Mode (bits 0-2), Clean (bit 3), TimerType (bits 4-5)
+    # From IRremoteESP8266: uint64_t Mode:3;
+    byte_9 = state_bytes[9]
+    mode_val = byte_9 & 0x07  # Bits 0-2 (3 bits)
     mode = FUJITSU_MODE_MAP.get(mode_val, "unknown")
 
-    # Byte 10: Fan (bits 0-2) and Swing (bits 4-5)
-    fan_swing_byte = state_bytes[10] if len(state_bytes) > 10 else 0
-    fan_val = fan_swing_byte & 0x07  # Bits 0-2
-    swing_val = (fan_swing_byte >> 4) & 0x03  # Bits 4-5
+    # Byte 10: Fan (bits 0-2), unused (bit 3), Swing (bits 4-5)
+    # From IRremoteESP8266: uint64_t Fan:3; skip 1; uint64_t Swing:2;
+    byte_10 = state_bytes[10]
+    fan_val = byte_10 & 0x07  # Bits 0-2 (3 bits)
+    swing_val = (byte_10 >> 4) & 0x03  # Bits 4-5 (2 bits)
 
     fan = FUJITSU_FAN_MAP.get(fan_val, "unknown")
     swing = FUJITSU_SWING_MAP.get(swing_val, "unknown")

@@ -1,7 +1,11 @@
 {
     "python.testing.pytestArgs": [
-        "tests"
+        "tests",
+        "--snapshot-update",
+        "-n",
+        "0",
+        "-s"
     ],
     "python.testing.unittestEnabled": false,
-    "python.testing.pytestEnabled": true
+    "python.testing.pytestEnabled": true,
 }

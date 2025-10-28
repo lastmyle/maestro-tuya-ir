@@ -26,6 +26,10 @@ class GenerateRequest(BaseModel):
     manufacturer: str = Field(..., description="Manufacturer name (e.g., 'Fujitsu')")
     protocol: str = Field(..., description="Protocol name (e.g., 'fujitsu_ac')")
     filter: Optional["GenerateFilter"] = Field(None, description="Optional filter criteria")
+    sampleCode: Optional[str] = Field(
+        None,
+        description="Optional sample Tuya IR code for variant detection (Fujitsu only)",
+    )
 
 
 class GenerateFilter(BaseModel):

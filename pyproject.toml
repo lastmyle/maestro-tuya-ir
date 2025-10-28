@@ -41,6 +41,7 @@ dev = [
     "httpx>=0.28.1",
     "pybind11>=3.0.1",
     "pyminify>=0.0.1",
+    "pytest-xdist>=3.8.0",
     "setuptools>=80.9.0",
     "syrupy>=5.0.0",
 ]
