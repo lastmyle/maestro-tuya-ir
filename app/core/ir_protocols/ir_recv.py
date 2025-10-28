@@ -21,6 +21,7 @@ from app.core.ir_protocols.fujitsu import (
 ## Constants from IRremoteESP8266.h and IRrecv.h
 kHeader = 2  # Usual nr. of header entries
 kFooter = 2  # Usual nr. of footer entries
+kMarkExcess = 50  # From IRrecv.h line 24
 kStateSizeMax = 256  # Max state size (simplified for Python)
 kFujitsuAcStateLength = 16  # From IRremoteESP8266.h line 1250
 kFujitsuAcStateLengthShort = 7  # From IRremoteESP8266.h line 1251
@@ -540,3 +541,186 @@ def validate_fujitsu_timings(timings: List[int]) -> bool:
     tolerance = 25 + kFujitsuAcExtraTolerance
     return validate_timings(timings, kFujitsuAcHdrMark, kFujitsuAcHdrSpace,
                           kFujitsuAcBitMark, tolerance)
+
+
+## Match & decode a generic/typical constant bit time <= 64bit IR message.
+## The data is stored at result_ptr.
+## @note Values of 0 for hdrmark, hdrspace, footermark, or footerspace mean
+##   skip that requirement.
+## @param[in] data_ptr A pointer to where we are at in the capture buffer.
+## @note `data_ptr` is assumed to be pointing to a "Mark", not a "Space".
+## @param[out] result_ptr A ptr to where to start storing the bits we decoded.
+## @param[in] remaining The size of the capture buffer remaining.
+## @param[in] nbits Nr. of data bits we expect.
+## @param[in] hdrmark Nr. of uSeconds for the expected header mark signal.
+## @param[in] hdrspace Nr. of uSeconds for the expected header space signal.
+## @param[in] one Nr. of uSeconds for the expected mark signal for a '1' bit.
+## @param[in] zero Nr. of uSeconds for the expected mark signal for a '0' bit.
+## @param[in] footermark Nr. of uSeconds for the expected footer mark signal.
+## @param[in] footerspace Nr. of uSeconds for the expected footer space/gap signal.
+## @param[in] atleast Is the match on the footerspace a matchAtLeast or matchSpace?
+## @param[in] tolerance Percentage error margin to allow. (Default: kUseDefTol)
+## @param[in] excess Nr. of uSeconds. (Def: kMarkExcess)
+## @param[in] MSBfirst Bit order to save the data in. (Def: true)
+##   true is Most Significant Bit First Order, false is Least Significant First
+## @return If successful, how many buffer entries were used. Otherwise 0.
+## Direct translation from IRremoteESP8266 IRrecv::matchGenericConstBitTime (lines 1766-1830)
+def matchGenericConstBitTime(data_ptr: List[int], result_ptr: List[int],
+                             remaining: int, nbits: int, hdrmark: int,
+                             hdrspace: int, one: int, zero: int,
+                             footermark: int, footerspace: int, atleast: bool,
+                             tolerance: int, excess: int, MSBfirst: bool) -> int:
+    """
+    Match & decode a generic/typical constant bit time IR message.
+    EXACT translation from IRremoteESP8266 IRrecv::matchGenericConstBitTime
+
+    Returns offset (number of buffer entries used) on success, 0 on failure.
+    """
+    offset = 0
+    result = 0
+
+    # If we expect a footermark, then this can be processed like normal.
+    # Lines 1783-1786
+    if footermark:
+        used = _matchGeneric(
+            data_ptr=data_ptr,
+            result_bits_ptr=result_ptr,
+            result_bytes_ptr=None,
+            use_bits=True,
+            remaining=remaining,
+            nbits=nbits,
+            hdrmark=hdrmark,
+            hdrspace=hdrspace,
+            onemark=one,
+            onespace=zero,
+            zeromark=zero,
+            zerospace=one,
+            footermark=footermark,
+            footerspace=footerspace,
+            atleast=atleast,
+            tolerance=tolerance,
+            excess=excess,
+            MSBfirst=MSBfirst
+        )
+        return used
+
+    # Otherwise handle like normal, except for the last bit. and no footer.
+    # Lines 1787-1791
+    bits = (nbits - 1) if (nbits > 0) else 0  # Make sure we don't underflow.
+    result_temp = [0]
+    offset = _matchGeneric(
+        data_ptr=data_ptr,
+        result_bits_ptr=result_temp,
+        result_bytes_ptr=None,
+        use_bits=True,
+        remaining=remaining,
+        nbits=bits,
+        hdrmark=hdrmark,
+        hdrspace=hdrspace,
+        onemark=one,
+        onespace=zero,
+        zeromark=zero,
+        zerospace=one,
+        footermark=0,
+        footerspace=0,
+        atleast=False,
+        tolerance=tolerance,
+        excess=excess,
+        MSBfirst=True
+    )
+    if not offset:
+        return 0  # Didn't match.
+    result = result_temp[0]
+
+    # Now for the last bit.
+    # Lines 1792-1795
+    if remaining <= offset:
+        return 0  # Not enough buffer.
+    result <<= 1
+    last_bit = False
+
+    # Is the mark a '1' or a `0`?
+    # Lines 1796-1804
+    if matchMark(data_ptr[offset], one, tolerance, excess):  # 1
+        last_bit = True
+        result |= 1
+    elif matchMark(data_ptr[offset], zero, tolerance, excess):  # 0
+        last_bit = False
+    else:
+        return 0  # It's neither, so fail.
+
+    offset += 1
+    expected_space = (zero if last_bit else one) + footerspace
+
+    # If we are not at the end of the buffer, check for at least the expected
+    # space value.
+    # Lines 1805-1819
+    if remaining > offset:
+        if atleast:
+            if not matchAtLeast(data_ptr[offset], expected_space, tolerance, excess):
+                return 0
+        else:
+            if not matchSpace(data_ptr[offset], expected_space, tolerance):
+                return 0
+        offset += 1
+
+    if not MSBfirst:
+        result = reverseBits(result, nbits)
+    result_ptr[0] = result
+    return offset
+
+
+## Match & decode a generic/typical <= 64bit IR message.
+## The data is stored at result_ptr.
+## @note Values of 0 for hdrmark, hdrspace, footermark, or footerspace mean
+##   skip that requirement.
+## @param[in] data_ptr A pointer to where we are at in the capture buffer.
+## @note `data_ptr` is assumed to be pointing to a "Mark", not a "Space".
+## @param[out] result_ptr A ptr to where to start storing the bits we decoded.
+## @param[in] remaining The size of the capture buffer remaining.
+## @param[in] nbits Nr. of data bits we expect.
+## @param[in] hdrmark Nr. of uSeconds for the expected header mark signal.
+## @param[in] hdrspace Nr. of uSeconds for the expected header space signal.
+## @param[in] onemark Nr. of uSeconds in an expected mark signal for a '1' bit.
+## @param[in] onespace Nr. of uSecs in an expected space signal for a '1' bit.
+## @param[in] zeromark Nr. of uSecs in an expected mark signal for a '0' bit.
+## @param[in] zerospace Nr. of uSecs in an expected space signal for a '0' bit.
+## @param[in] footermark Nr. of uSeconds for the expected footer mark signal.
+## @param[in] footerspace Nr. of uSeconds for the expected footer space/gap signal.
+## @param[in] atleast Is the match on the footerspace a matchAtLeast or matchSpace?
+## @param[in] tolerance Percentage error margin to allow. (Default: kUseDefTol)
+## @param[in] excess Nr. of uSeconds. (Def: kMarkExcess)
+## @return If successful, how many buffer entries were used. Otherwise 0.
+## Direct translation from IRremoteESP8266 IRrecv::matchGeneric (uint64_t variant)
+def matchGeneric(data_ptr: List[int], result_ptr: List[int], remaining: int,
+                 nbits: int, hdrmark: int, hdrspace: int, onemark: int,
+                 onespace: int, zeromark: int, zerospace: int, footermark: int,
+                 footerspace: int, atleast: bool, tolerance: int) -> bool:
+    """
+    Match & decode a generic/typical IR message (uint64_t result variant).
+    EXACT translation from IRremoteESP8266 IRrecv::matchGeneric (uint64_t variant)
+
+    Returns True on success, False on failure.
+    """
+    # This is a wrapper that calls _matchGeneric with use_bits=True
+    used = _matchGeneric(
+        data_ptr=data_ptr,
+        result_bits_ptr=result_ptr,
+        result_bytes_ptr=None,
+        use_bits=True,
+        remaining=remaining,
+        nbits=nbits,
+        hdrmark=hdrmark,
+        hdrspace=hdrspace,
+        onemark=onemark,
+        onespace=onespace,
+        zeromark=zeromark,
+        zerospace=zerospace,
+        footermark=footermark,
+        footerspace=footerspace,
+        atleast=atleast,
+        tolerance=tolerance,
+        excess=kMarkExcess,
+        MSBfirst=True
+    )
+    return used != 0
