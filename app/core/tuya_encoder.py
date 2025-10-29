@@ -32,9 +32,6 @@ def encode_ir(signal: list[int], compression_level=2) -> str:
     Automatically removes trailing gap values (> 8000µs) as they represent
     inter-message gaps used in hardware transmission, not part of the signal pattern.
     """
-    # Remove trailing gap if present (values > 8000µs are inter-message gaps)
-    if signal and signal[-1] > 8000:
-        signal = signal[:-1]
 
     payload = b"".join(pack("<H", t) for t in signal)
     compress(out := io.BytesIO(), payload, compression_level)
