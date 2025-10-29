@@ -22,6 +22,7 @@ from app.core.ir_protocols.fujitsu import (
 kHeader = 2  # Usual nr. of header entries
 kFooter = 2  # Usual nr. of footer entries
 kMarkExcess = 50  # From IRrecv.h line 24
+kUseDefTol = 25  # Default tolerance percentage (From IRrecv.h)
 kStateSizeMax = 256  # Max state size (simplified for Python)
 kFujitsuAcStateLength = 16  # From IRremoteESP8266.h line 1250
 kFujitsuAcStateLengthShort = 7  # From IRremoteESP8266.h line 1251

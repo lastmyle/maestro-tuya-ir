@@ -489,30 +489,12 @@ async def identify(request: IdentifyRequest):
 
         if not decode(results):
             # Provide helpful error message
-            supported_count = len(SUPPORTED_MANUFACTURERS)
-            hint_msg = ""
-            if request.manufacturer:
-                # Check if manufacturer matches any code or display_name
-                manufacturer_lower = request.manufacturer.lower()
-                is_supported = any(
-                    manufacturer_lower == m["code"]
-                    or manufacturer_lower == m["display_name"].lower()
-                    for m in SUPPORTED_MANUFACTURERS
-                )
-
-                if is_supported:
-                    hint_msg = f" Manufacturer hint '{request.manufacturer}' is supported, but the IR code doesn't match any known patterns for this brand."
-                else:
-                    first_10 = [m["display_name"] for m in sorted(SUPPORTED_MANUFACTURERS, key=lambda x: x["display_name"])[:10]]
-                    hint_msg = f" Manufacturer hint '{request.manufacturer}' is not in our supported list. Supported manufacturers: {', '.join(first_10)}... (and {supported_count - 10} more)."
-
             raise HTTPException(
                 status_code=400,
                 detail={
                     "error": "PROTOCOL_NOT_RECOGNIZED",
                     "message": "Could not identify protocol from IR code",
-                    "details": f"Tried all 91+ supported protocol variants across {supported_count} manufacturers.{hint_msg} Code may be corrupted or from an unsupported device.",
-                    "supported_manufacturers": [m["display_name"] for m in sorted(SUPPORTED_MANUFACTURERS, key=lambda x: x["display_name"])],
+                    "details": "Tried all 91+ supported protocol variants across 46 manufacturers. Code may be corrupted or from an unsupported device.",
                 },
             )
 
@@ -521,7 +503,7 @@ async def identify(request: IdentifyRequest):
         state_bytes = results.state[:byte_count]
 
         # Step 4: Map protocol to manufacturer and get capabilities
-        protocol_info = get_protocol_info(results.decode_type, state_bytes, request.manufacturer)
+        protocol_info = get_protocol_info(results.decode_type, state_bytes)
 
         # Step 5: Generate commands for the detected protocol
         commands = generate_commands_for_protocol(results.decode_type, state_bytes)

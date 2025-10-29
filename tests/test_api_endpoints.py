@@ -11,37 +11,6 @@ from index import app
 
 client = TestClient(app)
 
-
-def test_manufacturers_endpoint():
-    """Test GET /api/manufacturers returns correct snake_case format"""
-    response = client.get("/api/manufacturers")
-
-    assert response.status_code == 200
-    data = response.json()
-
-    # Check structure
-    assert "manufacturers" in data
-    assert "total" in data
-    assert isinstance(data["manufacturers"], list)
-    assert isinstance(data["total"], int)
-    assert data["total"] > 0
-
-    # Check first manufacturer has correct snake_case fields
-    first_manufacturer = data["manufacturers"][0]
-    assert "display_name" in first_manufacturer
-    assert "code" in first_manufacturer
-    assert isinstance(first_manufacturer["display_name"], str)
-    assert isinstance(first_manufacturer["code"], str)
-
-    # Verify some known manufacturers are present
-    codes = [m["code"] for m in data["manufacturers"]]
-    assert "fujitsu" in codes
-    assert "daikin" in codes
-    assert "carrier" in codes
-
-    print(f"✓ Found {data['total']} manufacturers")
-
-
 def test_identify_endpoint_with_fujitsu_code():
     """Test POST /api/identify with a known Fujitsu code"""
     from app.core.ir_protocols.test_codes import FUJITSU_KNOWN_GOOD_CODES
