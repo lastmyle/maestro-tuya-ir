@@ -22,62 +22,62 @@ router = APIRouter()
 
 # Complete list of all supported manufacturers (46 total)
 SUPPORTED_MANUFACTURERS = [
-    {"displayName": "Airton", "code": "airton"},
-    {"displayName": "Airwell", "code": "airwell"},
-    {"displayName": "Amcor", "code": "amcor"},
-    {"displayName": "Argo", "code": "argo"},
-    {"displayName": "Bluestar Heavy", "code": "bluestar_heavy"},
-    {"displayName": "Bosch", "code": "bosch"},
-    {"displayName": "Carrier", "code": "carrier"},
-    {"displayName": "Clima Butler", "code": "clima_butler"},
-    {"displayName": "Coolix", "code": "coolix"},
-    {"displayName": "Corona", "code": "corona"},
-    {"displayName": "Daikin", "code": "daikin"},
-    {"displayName": "Delonghi", "code": "delonghi"},
-    {"displayName": "Doshisha", "code": "doshisha"},
-    {"displayName": "Ecoclim", "code": "ecoclim"},
-    {"displayName": "Electra", "code": "electra"},
-    {"displayName": "Fujitsu", "code": "fujitsu"},
-    {"displayName": "Goodweather", "code": "goodweather"},
-    {"displayName": "Gorenje", "code": "gorenje"},
-    {"displayName": "Gree", "code": "gree"},
-    {"displayName": "Haier", "code": "haier"},
-    {"displayName": "Hitachi", "code": "hitachi"},
-    {"displayName": "Kelon", "code": "kelon"},
-    {"displayName": "Kelvinator", "code": "kelvinator"},
-    {"displayName": "LG", "code": "lg"},
-    {"displayName": "Midea", "code": "midea"},
-    {"displayName": "Mirage", "code": "mirage"},
-    {"displayName": "Mitsubishi", "code": "mitsubishi"},
-    {"displayName": "Neoclima", "code": "neoclima"},
-    {"displayName": "Nikai", "code": "nikai"},
-    {"displayName": "Panasonic", "code": "panasonic"},
-    {"displayName": "Rhoss", "code": "rhoss"},
-    {"displayName": "Samsung", "code": "samsung"},
-    {"displayName": "Sanyo", "code": "sanyo"},
-    {"displayName": "Sharp", "code": "sharp"},
-    {"displayName": "Symphony", "code": "symphony"},
-    {"displayName": "TCL", "code": "tcl"},
-    {"displayName": "Teco", "code": "teco"},
-    {"displayName": "Technibel", "code": "technibel"},
-    {"displayName": "Teknopoint", "code": "teknopoint"},
-    {"displayName": "Toshiba", "code": "toshiba"},
-    {"displayName": "Transcold", "code": "transcold"},
-    {"displayName": "Trotec", "code": "trotec"},
-    {"displayName": "Truma", "code": "truma"},
-    {"displayName": "Vestel", "code": "vestel"},
-    {"displayName": "Voltas", "code": "voltas"},
-    {"displayName": "Whirlpool", "code": "whirlpool"},
-    {"displayName": "Whynter", "code": "whynter"},
-    {"displayName": "York", "code": "york"},
-    {"displayName": "Zepeal", "code": "zepeal"},
+    {"display_name": "Airton", "code": "airton"},
+    {"display_name": "Airwell", "code": "airwell"},
+    {"display_name": "Amcor", "code": "amcor"},
+    {"display_name": "Argo", "code": "argo"},
+    {"display_name": "Bluestar Heavy", "code": "bluestar_heavy"},
+    {"display_name": "Bosch", "code": "bosch"},
+    {"display_name": "Carrier", "code": "carrier"},
+    {"display_name": "Clima Butler", "code": "clima_butler"},
+    {"display_name": "Coolix", "code": "coolix"},
+    {"display_name": "Corona", "code": "corona"},
+    {"display_name": "Daikin", "code": "daikin"},
+    {"display_name": "Delonghi", "code": "delonghi"},
+    {"display_name": "Doshisha", "code": "doshisha"},
+    {"display_name": "Ecoclim", "code": "ecoclim"},
+    {"display_name": "Electra", "code": "electra"},
+    {"display_name": "Fujitsu", "code": "fujitsu"},
+    {"display_name": "Goodweather", "code": "goodweather"},
+    {"display_name": "Gorenje", "code": "gorenje"},
+    {"display_name": "Gree", "code": "gree"},
+    {"display_name": "Haier", "code": "haier"},
+    {"display_name": "Hitachi", "code": "hitachi"},
+    {"display_name": "Kelon", "code": "kelon"},
+    {"display_name": "Kelvinator", "code": "kelvinator"},
+    {"display_name": "LG", "code": "lg"},
+    {"display_name": "Midea", "code": "midea"},
+    {"display_name": "Mirage", "code": "mirage"},
+    {"display_name": "Mitsubishi", "code": "mitsubishi"},
+    {"display_name": "Neoclima", "code": "neoclima"},
+    {"display_name": "Nikai", "code": "nikai"},
+    {"display_name": "Panasonic", "code": "panasonic"},
+    {"display_name": "Rhoss", "code": "rhoss"},
+    {"display_name": "Samsung", "code": "samsung"},
+    {"display_name": "Sanyo", "code": "sanyo"},
+    {"display_name": "Sharp", "code": "sharp"},
+    {"display_name": "Symphony", "code": "symphony"},
+    {"display_name": "TCL", "code": "tcl"},
+    {"display_name": "Teco", "code": "teco"},
+    {"display_name": "Technibel", "code": "technibel"},
+    {"display_name": "Teknopoint", "code": "teknopoint"},
+    {"display_name": "Toshiba", "code": "toshiba"},
+    {"display_name": "Transcold", "code": "transcold"},
+    {"display_name": "Trotec", "code": "trotec"},
+    {"display_name": "Truma", "code": "truma"},
+    {"display_name": "Vestel", "code": "vestel"},
+    {"display_name": "Voltas", "code": "voltas"},
+    {"display_name": "Whirlpool", "code": "whirlpool"},
+    {"display_name": "Whynter", "code": "whynter"},
+    {"display_name": "York", "code": "york"},
+    {"display_name": "Zepeal", "code": "zepeal"},
 ]
 
 
 class ManufacturerInfo(BaseModel):
     """Manufacturer information"""
 
-    displayName: str
+    display_name: str
     code: str
 
 
@@ -91,7 +91,7 @@ class ManufacturersResponse(BaseModel):
 class IdentifyRequest(BaseModel):
     """Request model for /api/identify"""
 
-    tuyaCode: str
+    tuya_code: str
     manufacturer: Optional[str] = None  # Optional hint to improve detection accuracy
 
 
@@ -100,7 +100,7 @@ class CommandInfo(BaseModel):
 
     name: str
     description: str
-    tuyaCode: str
+    tuya_code: str
 
 
 class IdentifyResponse(BaseModel):
@@ -109,14 +109,14 @@ class IdentifyResponse(BaseModel):
     protocol: str  # Protocol name (e.g., "FUJITSU_AC", "GREE", "DAIKIN")
     manufacturer: str  # Manufacturer name(s)
     commands: List[CommandInfo]  # Complete command set
-    minTemperature: int  # Minimum temperature supported
-    maxTemperature: int  # Maximum temperature supported
-    operationModes: List[str]  # Available operation modes (cool, heat, dry, fan, auto)
-    fanModes: List[str]  # Available fan modes (auto, low, med, high, etc.)
+    min_temperature: int  # Minimum temperature supported
+    max_temperature: int  # Maximum temperature supported
+    operation_modes: List[str]  # Available operation modes (cool, heat, dry, fan, auto)
+    fan_modes: List[str]  # Available fan modes (auto, low, med, high, etc.)
     # Optional fields
     confidence: Optional[float] = None  # Confidence in protocol detection (0.0-1.0)
     notes: Optional[str] = None  # Additional notes about the protocol
-    detectedState: Optional[Dict[str, Any]] = None  # Current state from the IR code
+    detected_state: Optional[Dict[str, Any]] = None  # Current state from the IR code
     model: Optional[str] = None  # Specific model if detected
 
 
@@ -143,7 +143,7 @@ def generate_fujitsu_commands(current_bytes: List[int]) -> List[CommandInfo]:
             CommandInfo(
                 name=f"set_temp_{temp}c",
                 description=f"Set temperature to {temp}°C",
-                tuyaCode=tuya_code,
+                tuya_code=tuya_code,
             )
         )
 
@@ -167,7 +167,7 @@ def generate_fujitsu_commands(current_bytes: List[int]) -> List[CommandInfo]:
         tuya_code = encode_ir(signal)
 
         commands.append(
-            CommandInfo(name=f"set_mode_{mode_name}", description=mode_desc, tuyaCode=tuya_code)
+            CommandInfo(name=f"set_mode_{mode_name}", description=mode_desc, tuya_code=tuya_code)
         )
 
     # Fan speed commands
@@ -190,7 +190,7 @@ def generate_fujitsu_commands(current_bytes: List[int]) -> List[CommandInfo]:
         tuya_code = encode_ir(signal)
 
         commands.append(
-            CommandInfo(name=f"set_fan_{fan_name}", description=fan_desc, tuyaCode=tuya_code)
+            CommandInfo(name=f"set_fan_{fan_name}", description=fan_desc, tuya_code=tuya_code)
         )
 
     # Power commands
@@ -208,7 +208,7 @@ def generate_fujitsu_commands(current_bytes: List[int]) -> List[CommandInfo]:
             CommandInfo(
                 name=f"power_{power_name}",
                 description=f"Turn power {power_name}",
-                tuyaCode=tuya_code,
+                tuya_code=tuya_code,
             )
         )
 
@@ -240,7 +240,7 @@ def generate_gree_commands(current_bytes: List[int]) -> List[CommandInfo]:
             CommandInfo(
                 name=f"set_temp_{temp}c",
                 description=f"Set temperature to {temp}°C",
-                tuyaCode=tuya_code,
+                tuya_code=tuya_code,
             )
         )
 
@@ -266,7 +266,7 @@ def generate_gree_commands(current_bytes: List[int]) -> List[CommandInfo]:
         tuya_code = encode_ir(signal)
 
         commands.append(
-            CommandInfo(name=f"set_mode_{mode_name}", description=mode_desc, tuyaCode=tuya_code)
+            CommandInfo(name=f"set_mode_{mode_name}", description=mode_desc, tuya_code=tuya_code)
         )
 
     # Fan speed commands
@@ -290,7 +290,7 @@ def generate_gree_commands(current_bytes: List[int]) -> List[CommandInfo]:
         tuya_code = encode_ir(signal)
 
         commands.append(
-            CommandInfo(name=f"set_fan_{fan_name}", description=fan_desc, tuyaCode=tuya_code)
+            CommandInfo(name=f"set_fan_{fan_name}", description=fan_desc, tuya_code=tuya_code)
         )
 
     # Power commands
@@ -308,7 +308,7 @@ def generate_gree_commands(current_bytes: List[int]) -> List[CommandInfo]:
             CommandInfo(
                 name=f"power_{power_name}",
                 description=f"Turn power {power_name}",
-                tuyaCode=tuya_code,
+                tuya_code=tuya_code,
             )
         )
 
@@ -336,100 +336,100 @@ def get_protocol_info(
         # Fujitsu (1 variant)
         decode_type_t.FUJITSU_AC: {
             "manufacturer": "Fujitsu",
-            "minTemperature": 16,
-            "maxTemperature": 30,
-            "operationModes": ["auto", "cool", "heat", "dry", "fan"],
-            "fanModes": ["auto", "quiet", "low", "med", "high"],
+            "min_temperature": 16,
+            "max_temperature": 30,
+            "operation_modes": ["auto", "cool", "heat", "dry", "fan"],
+            "fan_modes": ["auto", "quiet", "low", "med", "high"],
             "notes": "Fujitsu AC (128-bit) - Supports swing, powerful, econo modes",
         },
         # Gree (1 variant)
         decode_type_t.GREE: {
             "manufacturer": "Gree",
-            "minTemperature": 16,
-            "maxTemperature": 30,
-            "operationModes": ["auto", "cool", "heat", "dry", "fan", "econo"],
-            "fanModes": ["auto", "min", "med", "max"],
+            "min_temperature": 16,
+            "max_temperature": 30,
+            "operation_modes": ["auto", "cool", "heat", "dry", "fan", "econo"],
+            "fan_modes": ["auto", "min", "med", "max"],
             "notes": "Gree AC (64-bit) - Supports iFeelReport, turbo, light, sleep, swing",
         },
         # Daikin (10 variants)
         decode_type_t.DAIKIN: {
             "manufacturer": "Daikin",
-            "minTemperature": 10,
-            "maxTemperature": 32,
-            "operationModes": ["auto", "cool", "heat", "dry", "fan"],
-            "fanModes": ["auto", "quiet", "1", "2", "3", "4", "5"],
+            "min_temperature": 10,
+            "max_temperature": 32,
+            "operation_modes": ["auto", "cool", "heat", "dry", "fan"],
+            "fan_modes": ["auto", "quiet", "1", "2", "3", "4", "5"],
             "notes": "Daikin (280-bit) - Most common variant",
         },
         decode_type_t.DAIKIN2: {
             "manufacturer": "Daikin",
-            "minTemperature": 10,
-            "maxTemperature": 32,
-            "operationModes": ["auto", "cool", "heat", "dry", "fan"],
-            "fanModes": ["auto", "quiet", "1", "2", "3", "4", "5"],
+            "min_temperature": 10,
+            "max_temperature": 32,
+            "operation_modes": ["auto", "cool", "heat", "dry", "fan"],
+            "fan_modes": ["auto", "quiet", "1", "2", "3", "4", "5"],
             "notes": "Daikin2 (312-bit)",
         },
         decode_type_t.DAIKIN216: {
             "manufacturer": "Daikin",
-            "minTemperature": 10,
-            "maxTemperature": 32,
-            "operationModes": ["auto", "cool", "heat", "dry", "fan"],
-            "fanModes": ["auto", "quiet", "1", "2", "3", "4", "5"],
+            "min_temperature": 10,
+            "max_temperature": 32,
+            "operation_modes": ["auto", "cool", "heat", "dry", "fan"],
+            "fan_modes": ["auto", "quiet", "1", "2", "3", "4", "5"],
             "notes": "Daikin216 (216-bit)",
         },
         decode_type_t.DAIKIN160: {
             "manufacturer": "Daikin",
-            "minTemperature": 10,
-            "maxTemperature": 32,
-            "operationModes": ["auto", "cool", "heat", "dry", "fan"],
-            "fanModes": ["auto", "quiet", "1", "2", "3"],
+            "min_temperature": 10,
+            "max_temperature": 32,
+            "operation_modes": ["auto", "cool", "heat", "dry", "fan"],
+            "fan_modes": ["auto", "quiet", "1", "2", "3"],
             "notes": "Daikin160 (160-bit)",
         },
         decode_type_t.DAIKIN176: {
             "manufacturer": "Daikin",
-            "minTemperature": 10,
-            "maxTemperature": 32,
-            "operationModes": ["auto", "cool", "heat", "dry", "fan"],
-            "fanModes": ["auto", "quiet", "1", "2", "3"],
+            "min_temperature": 10,
+            "max_temperature": 32,
+            "operation_modes": ["auto", "cool", "heat", "dry", "fan"],
+            "fan_modes": ["auto", "quiet", "1", "2", "3"],
             "notes": "Daikin176 (176-bit)",
         },
         decode_type_t.DAIKIN128: {
             "manufacturer": "Daikin",
-            "minTemperature": 16,
-            "maxTemperature": 30,
-            "operationModes": ["auto", "cool", "heat", "dry", "fan"],
-            "fanModes": ["auto", "1", "2", "3"],
+            "min_temperature": 16,
+            "max_temperature": 30,
+            "operation_modes": ["auto", "cool", "heat", "dry", "fan"],
+            "fan_modes": ["auto", "1", "2", "3"],
             "notes": "Daikin128 (128-bit)",
         },
         decode_type_t.DAIKIN152: {
             "manufacturer": "Daikin",
-            "minTemperature": 10,
-            "maxTemperature": 32,
-            "operationModes": ["auto", "cool", "heat", "dry", "fan"],
-            "fanModes": ["auto", "quiet", "1", "2", "3", "4", "5"],
+            "min_temperature": 10,
+            "max_temperature": 32,
+            "operation_modes": ["auto", "cool", "heat", "dry", "fan"],
+            "fan_modes": ["auto", "quiet", "1", "2", "3", "4", "5"],
             "notes": "Daikin152 (152-bit)",
         },
         decode_type_t.DAIKIN64: {
             "manufacturer": "Daikin",
-            "minTemperature": 16,
-            "maxTemperature": 32,
-            "operationModes": ["cool", "heat", "fan"],
-            "fanModes": ["1", "2", "3"],
+            "min_temperature": 16,
+            "max_temperature": 32,
+            "operation_modes": ["cool", "heat", "fan"],
+            "fan_modes": ["1", "2", "3"],
             "notes": "Daikin64 (64-bit) - Simplified variant",
         },
         decode_type_t.DAIKIN200: {
             "manufacturer": "Daikin",
-            "minTemperature": 10,
-            "maxTemperature": 32,
-            "operationModes": ["auto", "cool", "heat", "dry", "fan"],
-            "fanModes": ["auto", "quiet", "1", "2", "3", "4", "5"],
+            "min_temperature": 10,
+            "max_temperature": 32,
+            "operation_modes": ["auto", "cool", "heat", "dry", "fan"],
+            "fan_modes": ["auto", "quiet", "1", "2", "3", "4", "5"],
             "notes": "Daikin200 (200-bit)",
         },
         decode_type_t.DAIKIN312: {
             "manufacturer": "Daikin",
-            "minTemperature": 10,
-            "maxTemperature": 32,
-            "operationModes": ["auto", "cool", "heat", "dry", "fan"],
-            "fanModes": ["auto", "quiet", "1", "2", "3", "4", "5"],
+            "min_temperature": 10,
+            "max_temperature": 32,
+            "operation_modes": ["auto", "cool", "heat", "dry", "fan"],
+            "fan_modes": ["auto", "quiet", "1", "2", "3", "4", "5"],
             "notes": "Daikin312 (312-bit)",
         },
     }
@@ -439,10 +439,10 @@ def get_protocol_info(
         protocol_type,
         {
             "manufacturer": "Unknown",
-            "minTemperature": 16,
-            "maxTemperature": 30,
-            "operationModes": ["auto", "cool", "heat", "dry", "fan"],
-            "fanModes": ["auto", "low", "med", "high"],
+            "min_temperature": 16,
+            "max_temperature": 30,
+            "operation_modes": ["auto", "cool", "heat", "dry", "fan"],
+            "fan_modes": ["auto", "low", "med", "high"],
             "notes": f"Protocol {protocol_name} detected - Full details coming soon. All 91+ variants supported.",
         },
     )
@@ -493,11 +493,11 @@ def generate_commands_for_protocol(
             tuya_code = ""
 
         return [
-            CommandInfo(name="power_on", description="Turn power on", tuyaCode=tuya_code),
+            CommandInfo(name="power_on", description="Turn power on", tuya_code=tuya_code),
             CommandInfo(
                 name="power_off",
                 description="Turn power off (state with power bit cleared)",
-                tuyaCode=tuya_code,
+                tuya_code=tuya_code,
             ),
         ]
 
@@ -519,15 +519,15 @@ async def get_manufacturers():
         Response:
         {
             "manufacturers": [
-                {"displayName": "Airton", "code": "airton"},
-                {"displayName": "Airwell", "code": "airwell"},
+                {"display_name": "Airton", "code": "airton"},
+                {"display_name": "Airwell", "code": "airwell"},
                 ...
             ],
             "total": 46
         }
     """
-    # Sort by displayName
-    sorted_manufacturers = sorted(SUPPORTED_MANUFACTURERS, key=lambda x: x["displayName"])
+    # Sort by display_name
+    sorted_manufacturers = sorted(SUPPORTED_MANUFACTURERS, key=lambda x: x["display_name"])
     return ManufacturersResponse(
         manufacturers=[ManufacturerInfo(**m) for m in sorted_manufacturers],
         total=len(SUPPORTED_MANUFACTURERS),
@@ -579,8 +579,8 @@ async def identify(request: IdentifyRequest):
             "manufacturer": "Fujitsu",
             "confidence": 0.99,
             "commands": [...],
-            "minTemperature": 16,
-            "maxTemperature": 30,
+            "min_temperature": 16,
+            "max_temperature": 30,
             ...
         }
     """
@@ -598,18 +598,18 @@ async def identify(request: IdentifyRequest):
             supported_count = len(SUPPORTED_MANUFACTURERS)
             hint_msg = ""
             if request.manufacturer:
-                # Check if manufacturer matches any code or displayName
+                # Check if manufacturer matches any code or display_name
                 manufacturer_lower = request.manufacturer.lower()
                 is_supported = any(
                     manufacturer_lower == m["code"]
-                    or manufacturer_lower == m["displayName"].lower()
+                    or manufacturer_lower == m["display_name"].lower()
                     for m in SUPPORTED_MANUFACTURERS
                 )
 
                 if is_supported:
                     hint_msg = f" Manufacturer hint '{request.manufacturer}' is supported, but the IR code doesn't match any known patterns for this brand."
                 else:
-                    first_10 = [m["displayName"] for m in sorted(SUPPORTED_MANUFACTURERS, key=lambda x: x["displayName"])[:10]]
+                    first_10 = [m["display_name"] for m in sorted(SUPPORTED_MANUFACTURERS, key=lambda x: x["display_name"])[:10]]
                     hint_msg = f" Manufacturer hint '{request.manufacturer}' is not in our supported list. Supported manufacturers: {', '.join(first_10)}... (and {supported_count - 10} more)."
 
             raise HTTPException(
@@ -618,7 +618,7 @@ async def identify(request: IdentifyRequest):
                     "error": "PROTOCOL_NOT_RECOGNIZED",
                     "message": "Could not identify protocol from IR code",
                     "details": f"Tried all 91+ supported protocol variants across {supported_count} manufacturers.{hint_msg} Code may be corrupted or from an unsupported device.",
-                    "supportedManufacturers": [m["displayName"] for m in sorted(SUPPORTED_MANUFACTURERS, key=lambda x: x["displayName"])],
+                    "supported_manufacturers": [m["display_name"] for m in sorted(SUPPORTED_MANUFACTURERS, key=lambda x: x["display_name"])],
                 },
             )
 
@@ -637,13 +637,13 @@ async def identify(request: IdentifyRequest):
             protocol=protocol_info["protocol"],
             manufacturer=protocol_info["manufacturer"],
             commands=commands,
-            minTemperature=protocol_info["minTemperature"],
-            maxTemperature=protocol_info["maxTemperature"],
-            operationModes=protocol_info["operationModes"],
-            fanModes=protocol_info["fanModes"],
+            min_temperature=protocol_info["min_temperature"],
+            max_temperature=protocol_info["max_temperature"],
+            operation_modes=protocol_info["operation_modes"],
+            fan_modes=protocol_info["fan_modes"],
             confidence=protocol_info.get("confidence", 1.0),
             notes=protocol_info.get("notes"),
-            detectedState=protocol_info.get("detectedState"),
+            detected_state=protocol_info.get("detected_state"),
             model=protocol_info.get("model"),
         )
 
