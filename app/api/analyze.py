@@ -586,7 +586,7 @@ async def identify(request: IdentifyRequest):
     """
     try:
         # Step 1: Decode Tuya code to timings
-        timings = decode_ir(request.tuyaCode)
+        timings = decode_ir(request.tuya_code)
 
         # Step 2: Auto-detect protocol using unified IRrecv::decode() dispatcher
         results = decode_results()

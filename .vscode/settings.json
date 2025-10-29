@@ -8,4 +8,12 @@
     ],
     "python.testing.unittestEnabled": false,
     "python.testing.pytestEnabled": true,
+    "cSpell.words": [
+        "ARDB",
+        "ARJW",
+        "ARRAH",
+        "ARREB",
+        "ARREW",
+        "ARRY"
+    ],
 }
