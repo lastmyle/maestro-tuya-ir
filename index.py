@@ -10,7 +10,7 @@ It provides two endpoints:
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import RedirectResponse
-from app.api.analyze import router as analyze_router
+from app.api.identify import router as identify_router
 
 # Create FastAPI app with Swagger UI at root
 app = FastAPI(
@@ -30,8 +30,8 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Register router with both endpoints
-app.include_router(analyze_router, prefix="/api", tags=["analyze"])
+# Register router
+app.include_router(identify_router, prefix="/api", tags=["identify"])
 
 
 # Redirect root to Swagger UI

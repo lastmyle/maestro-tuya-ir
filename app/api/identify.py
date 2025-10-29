@@ -1,5 +1,5 @@
 """
-/api/analyze endpoint - Unified endpoint for IR code analysis and command generation.
+/api/identify endpoint - Unified endpoint for IR code analysis and command generation.
 
 This endpoint accepts a Tuya IR code, auto-detects the protocol using the unified
 IRrecv::decode() dispatcher, and returns the protocol type along with the decoded
@@ -68,74 +68,51 @@ def generate_fujitsu_commands(current_bytes: List[int]) -> List[CommandInfo]:
     """
     Generate all available commands for Fujitsu AC.
 
-    Returns commands for different temperatures, modes, and fan speeds.
+    Returns 3-part commands combining temperature, mode, and fan speed.
+    Format: {temp}_{mode}_{fan} (e.g., "24_heat_auto", "18_cool_quiet")
+    Plus separate power on/off commands.
     """
     commands = []
 
-    # Temperature commands (16-30°C)
-    for temp in range(16, 31):
-        ac = IRFujitsuAC()
-        ac.setRaw(current_bytes, len(current_bytes))
-        ac.setTemp(temp)
-        ac.setPower(True)
-
-        new_bytes = ac.getRaw()
-        signal = sendFujitsuAC(new_bytes, len(new_bytes))
-        tuya_code = encode_ir(signal)
-
-        commands.append(
-            CommandInfo(
-                name=f"set_temp_{temp}c",
-                description=f"Set temperature to {temp}°C",
-                tuya_code=tuya_code,
-            )
-        )
-
-    # Mode commands
+    # Define modes and fan speeds
     modes = [
-        (kFujitsuAcModeAuto, "auto", "Auto mode"),
-        (kFujitsuAcModeCool, "cool", "Cool mode"),
-        (kFujitsuAcModeHeat, "heat", "Heat mode"),
-        (kFujitsuAcModeDry, "dry", "Dry mode"),
-        (kFujitsuAcModeFan, "fan", "Fan mode"),
+        (kFujitsuAcModeAuto, "auto", "Auto"),
+        (kFujitsuAcModeCool, "cool", "Cool"),
+        (kFujitsuAcModeHeat, "heat", "Heat"),
+        (kFujitsuAcModeDry, "dry", "Dry"),
+        (kFujitsuAcModeFan, "fan", "Fan"),
     ]
 
-    for mode_val, mode_name, mode_desc in modes:
-        ac = IRFujitsuAC()
-        ac.setRaw(current_bytes, len(current_bytes))
-        ac.setMode(mode_val)
-        ac.setPower(True)
-
-        new_bytes = ac.getRaw()
-        signal = sendFujitsuAC(new_bytes, len(new_bytes))
-        tuya_code = encode_ir(signal)
-
-        commands.append(
-            CommandInfo(name=f"set_mode_{mode_name}", description=mode_desc, tuya_code=tuya_code)
-        )
-
-    # Fan speed commands
     fan_speeds = [
-        (kFujitsuAcFanAuto, "auto", "Auto fan speed"),
-        (kFujitsuAcFanHigh, "high", "High fan speed"),
-        (kFujitsuAcFanMed, "medium", "Medium fan speed"),
-        (kFujitsuAcFanLow, "low", "Low fan speed"),
-        (kFujitsuAcFanQuiet, "quiet", "Quiet fan speed"),
+        (kFujitsuAcFanAuto, "auto", "Auto fan"),
+        (kFujitsuAcFanQuiet, "quiet", "Quiet fan"),
+        (kFujitsuAcFanLow, "low", "Low fan"),
+        (kFujitsuAcFanMed, "med", "Medium fan"),
+        (kFujitsuAcFanHigh, "high", "High fan"),
     ]
 
-    for fan_val, fan_name, fan_desc in fan_speeds:
-        ac = IRFujitsuAC()
-        ac.setRaw(current_bytes, len(current_bytes))
-        ac.setFanSpeed(fan_val)
-        ac.setPower(True)
+    # Generate all combinations of temp + mode + fan
+    for temp in range(16, 31):  # 16-30°C
+        for mode_val, mode_name, mode_desc in modes:
+            for fan_val, fan_name, fan_desc in fan_speeds:
+                ac = IRFujitsuAC()
+                ac.setRaw(current_bytes, len(current_bytes))
+                ac.setTemp(temp)
+                ac.setMode(mode_val)
+                ac.setFanSpeed(fan_val)
+                ac.setPower(True)
 
-        new_bytes = ac.getRaw()
-        signal = sendFujitsuAC(new_bytes, len(new_bytes))
-        tuya_code = encode_ir(signal)
+                new_bytes = ac.getRaw()
+                signal = sendFujitsuAC(new_bytes, len(new_bytes))
+                tuya_code = encode_ir(signal)
 
-        commands.append(
-            CommandInfo(name=f"set_fan_{fan_name}", description=fan_desc, tuya_code=tuya_code)
-        )
+                commands.append(
+                    CommandInfo(
+                        name=f"{temp}_{mode_name}_{fan_name}",
+                        description=f"{temp}°C, {mode_desc}, {fan_desc}",
+                        tuya_code=tuya_code,
+                    )
+                )
 
     # Power commands
     for power_state in [True, False]:
@@ -163,79 +140,64 @@ def generate_gree_commands(current_bytes: List[int]) -> List[CommandInfo]:
     """
     Generate all available commands for Gree AC.
 
-    Returns commands for different temperatures, modes, and fan speeds.
+    Returns 3-part commands combining temperature, mode, and fan speed.
+    Format: {temp}_{mode}_{fan} (e.g., "24_heat_auto", "18_cool_low")
+    Plus separate power on/off commands.
     """
     commands = []
 
-    # Temperature commands (16-30°C)
-    from app.core.ir_protocols.gree import kGreeMinTempC, kGreeMaxTempC
+    # Import Gree constants
+    from app.core.ir_protocols.gree import (
+        kGreeMinTempC,
+        kGreeMaxTempC,
+        kGreeAuto,
+        kGreeCool,
+        kGreeHeat,
+        kGreeDry,
+        kGreeFan,
+        kGreeFanAuto,
+        kGreeFanMin,
+        kGreeFanMax,
+    )
 
-    for temp in range(kGreeMinTempC, kGreeMaxTempC + 1):
-        ac = IRGreeAC()
-        ac.setRaw(current_bytes)
-        ac.setTemp(temp)
-        ac.setPower(True)
-
-        new_bytes = ac.getRaw()
-        signal = sendGree(new_bytes, len(new_bytes))
-        tuya_code = encode_ir(signal)
-
-        commands.append(
-            CommandInfo(
-                name=f"set_temp_{temp}c",
-                description=f"Set temperature to {temp}°C",
-                tuya_code=tuya_code,
-            )
-        )
-
-    # Mode commands
-    from app.core.ir_protocols.gree import kGreeAuto, kGreeCool, kGreeHeat, kGreeDry, kGreeFan
-
+    # Define modes and fan speeds
     modes = [
-        (kGreeAuto, "auto", "Auto mode"),
-        (kGreeCool, "cool", "Cool mode"),
-        (kGreeHeat, "heat", "Heat mode"),
-        (kGreeDry, "dry", "Dry mode"),
-        (kGreeFan, "fan", "Fan mode"),
+        (kGreeAuto, "auto", "Auto"),
+        (kGreeCool, "cool", "Cool"),
+        (kGreeHeat, "heat", "Heat"),
+        (kGreeDry, "dry", "Dry"),
+        (kGreeFan, "fan", "Fan"),
     ]
-
-    for mode_val, mode_name, mode_desc in modes:
-        ac = IRGreeAC()
-        ac.setRaw(current_bytes)
-        ac.setMode(mode_val)
-        ac.setPower(True)
-
-        new_bytes = ac.getRaw()
-        signal = sendGree(new_bytes, len(new_bytes))
-        tuya_code = encode_ir(signal)
-
-        commands.append(
-            CommandInfo(name=f"set_mode_{mode_name}", description=mode_desc, tuya_code=tuya_code)
-        )
-
-    # Fan speed commands
-    from app.core.ir_protocols.gree import kGreeFanAuto, kGreeFanMin, kGreeFanMax
 
     fan_speeds = [
-        (kGreeFanAuto, "auto", "Auto fan speed"),
-        (kGreeFanMin, "low", "Low fan speed"),
-        (kGreeFanMin + 1, "medium", "Medium fan speed"),
-        (kGreeFanMax, "high", "High fan speed"),
+        (kGreeFanAuto, "auto", "Auto fan"),
+        (kGreeFanMin, "low", "Low fan"),
+        (kGreeFanMin + 1, "med", "Medium fan"),
+        (kGreeFanMax, "high", "High fan"),
     ]
 
-    for fan_val, fan_name, fan_desc in fan_speeds:
-        ac = IRGreeAC()
-        ac.setRaw(current_bytes)
-        ac.setFan(fan_val)
-        ac.setPower(True)
+    # Generate all combinations of temp + mode + fan
+    for temp in range(kGreeMinTempC, kGreeMaxTempC + 1):
+        for mode_val, mode_name, mode_desc in modes:
+            for fan_val, fan_name, fan_desc in fan_speeds:
+                ac = IRGreeAC()
+                ac.setRaw(current_bytes)
+                ac.setTemp(temp)
+                ac.setMode(mode_val)
+                ac.setFan(fan_val)
+                ac.setPower(True)
 
-        new_bytes = ac.getRaw()
-        signal = sendGree(new_bytes, len(new_bytes))
-        tuya_code = encode_ir(signal)
+                new_bytes = ac.getRaw()
+                signal = sendGree(new_bytes, len(new_bytes))
+                tuya_code = encode_ir(signal)
 
-        commands.append(
-            CommandInfo(name=f"set_fan_{fan_name}", description=fan_desc, tuya_code=tuya_code)
-        )
+                commands.append(
+                    CommandInfo(
+                        name=f"{temp}_{mode_name}_{fan_name}",
+                        description=f"{temp}°C, {mode_desc}, {fan_desc}",
+                        tuya_code=tuya_code,
+                    )
+                )
 
     # Power commands
     for power_state in [True, False]:
