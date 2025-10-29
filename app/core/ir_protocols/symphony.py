@@ -70,13 +70,9 @@ def sendSymphony(
         zeromark=kSymphonyZeroMark,
         zerospace=kSymphonyZeroSpace,
         footermark=0,
-        gap=kSymphonyFooterGap,
         data=data,
         nbits=nbits,
-        frequency=38,
         MSBfirst=True,
-        repeat=repeat,
-        dutycycle=50,
     )
 
 

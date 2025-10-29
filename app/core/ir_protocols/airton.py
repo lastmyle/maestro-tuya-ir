@@ -240,13 +240,9 @@ def sendAirton(
         zeromark=kAirtonBitMark,
         zerospace=kAirtonZeroSpace,
         footermark=kAirtonBitMark,
-        gap=20000,  # kDefaultMessageGap
         data=data,
         nbits=nbits,
-        frequency=kAirtonFreq,
         MSBfirst=False,
-        repeat=repeat,
-        dutycycle=50,
     )
 
 

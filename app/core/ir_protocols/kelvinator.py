@@ -274,13 +274,9 @@ def sendKelvinator(data: List[int], nbytes: int, repeat: int = 0) -> List[int]:
             zeromark=kKelvinatorBitMark,
             zerospace=kKelvinatorZeroSpace,
             footermark=0,
-            gap=0,  # No Footer yet
             dataptr=data[:4],
             nbytes=4,
-            frequency=38,
             MSBfirst=False,
-            repeat=0,
-            dutycycle=50,
         )
         all_timings.extend(block1_timings)
 
@@ -293,14 +289,10 @@ def sendKelvinator(data: List[int], nbytes: int, repeat: int = 0) -> List[int]:
             zeromark=kKelvinatorBitMark,
             zerospace=kKelvinatorZeroSpace,
             footermark=kKelvinatorBitMark,
-            gap=kKelvinatorGapSpace,
             dataptr=[kKelvinatorCmdFooter],
             nbytes=0,
             nbits=kKelvinatorCmdFooterBits,
-            frequency=38,
             MSBfirst=False,
-            repeat=0,
-            dutycycle=50,
         )
         all_timings.extend(footer1_timings)
 
@@ -313,13 +305,9 @@ def sendKelvinator(data: List[int], nbytes: int, repeat: int = 0) -> List[int]:
             zeromark=kKelvinatorBitMark,
             zerospace=kKelvinatorZeroSpace,
             footermark=kKelvinatorBitMark,
-            gap=kKelvinatorGapSpace * 2,
             dataptr=data[4:8],
             nbytes=4,
-            frequency=38,
             MSBfirst=False,
-            repeat=0,
-            dutycycle=50,
         )
         all_timings.extend(data1_timings)
 
@@ -332,13 +320,9 @@ def sendKelvinator(data: List[int], nbytes: int, repeat: int = 0) -> List[int]:
             zeromark=kKelvinatorBitMark,
             zerospace=kKelvinatorZeroSpace,
             footermark=0,
-            gap=0,  # No Footer yet
             dataptr=data[8:12],
             nbytes=4,
-            frequency=38,
             MSBfirst=False,
-            repeat=0,
-            dutycycle=50,
         )
         all_timings.extend(block2_timings)
 
@@ -351,14 +335,10 @@ def sendKelvinator(data: List[int], nbytes: int, repeat: int = 0) -> List[int]:
             zeromark=kKelvinatorBitMark,
             zerospace=kKelvinatorZeroSpace,
             footermark=kKelvinatorBitMark,
-            gap=kKelvinatorGapSpace,
             dataptr=[kKelvinatorCmdFooter],
             nbytes=0,
             nbits=kKelvinatorCmdFooterBits,
-            frequency=38,
             MSBfirst=False,
-            repeat=0,
-            dutycycle=50,
         )
         all_timings.extend(footer2_timings)
 
@@ -371,13 +351,9 @@ def sendKelvinator(data: List[int], nbytes: int, repeat: int = 0) -> List[int]:
             zeromark=kKelvinatorBitMark,
             zerospace=kKelvinatorZeroSpace,
             footermark=kKelvinatorBitMark,
-            gap=kKelvinatorGapSpace * 2,
             dataptr=data[12:16],
             nbytes=4,
-            frequency=38,
             MSBfirst=False,
-            repeat=0,
-            dutycycle=50,
         )
         all_timings.extend(data2_timings)
 

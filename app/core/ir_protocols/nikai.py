@@ -56,13 +56,9 @@ def sendNikai(data: int, nbits: int, repeat: int = 0) -> List[int]:
         zeromark=kNikaiBitMark,
         zerospace=kNikaiZeroSpace,
         footermark=kNikaiBitMark,
-        gap=kNikaiMinGap,
         data=data,
         nbits=nbits,
-        frequency=38,
         MSBfirst=True,
-        repeat=repeat,
-        dutycycle=33,
     )
 
 

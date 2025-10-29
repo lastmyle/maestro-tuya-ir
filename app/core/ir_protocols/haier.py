@@ -881,13 +881,9 @@ def sendHaierAC(data: List[int], nbytes: int, repeat: int = 0) -> List[int]:
             zeromark=kHaierAcBitMark,
             zerospace=kHaierAcZeroSpace,
             footermark=kHaierAcBitMark,
-            gap=kHaierAcMinGap,
             dataptr=data,
             nbytes=nbytes,
-            frequency=38,
             MSBfirst=True,
-            repeat=0,
-            dutycycle=50,
         )
         all_timings.extend(block_timings)
 

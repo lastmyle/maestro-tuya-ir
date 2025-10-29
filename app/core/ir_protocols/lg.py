@@ -145,7 +145,7 @@ def sendLG(data: int, nbits: int = kLgBits, repeat: int = 0) -> List[int]:
 
     Returns timing array instead of transmitting via hardware.
     """
-    from app.core.ir_protocols.ir_send import sendGeneric
+    from app.core.ir_protocols.ir_send import sendGeneric, sendGenericUint64
     from app.core.ir_protocols.samsung import sendSAMSUNG
 
     all_timings = []
@@ -162,7 +162,7 @@ def sendLG(data: int, nbits: int = kLgBits, repeat: int = 0) -> List[int]:
     else:
         # LG (28-bit) protocol.
         repeatHeaderMark = kLgHdrMark
-        timings = sendGeneric(
+        timings = sendGenericUint64(
             headermark=kLgHdrMark,
             headerspace=kLgHdrSpace,
             onemark=kLgBitMark,
@@ -170,13 +170,9 @@ def sendLG(data: int, nbits: int = kLgBits, repeat: int = 0) -> List[int]:
             zeromark=kLgBitMark,
             zerospace=kLgZeroSpace,
             footermark=kLgBitMark,
-            gap=kLgMinGap,
-            dataint=data,
+            data=data,
             nbits=nbits,
-            frequency=38,
             MSBfirst=True,
-            repeat=0,  # Repeats are handled later.
-            dutycycle=duty,
         )
         all_timings.extend(timings)
 
@@ -184,7 +180,7 @@ def sendLG(data: int, nbits: int = kLgBits, repeat: int = 0) -> List[int]:
     # Protocol has a mandatory repeat-specific code sent after every command.
     if repeat:
         for _ in range(repeat):
-            rep_timings = sendGeneric(
+            rep_timings = sendGenericUint64(
                 headermark=repeatHeaderMark,
                 headerspace=kLgRptSpace,
                 onemark=0,
@@ -192,13 +188,9 @@ def sendLG(data: int, nbits: int = kLgBits, repeat: int = 0) -> List[int]:
                 zeromark=0,
                 zerospace=0,  # No data is sent.
                 footermark=kLgBitMark,
-                gap=kLgMinGap,
-                dataint=0,
+                data=0,
                 nbits=0,  # No data.
-                frequency=38,
                 MSBfirst=True,
-                repeat=0,
-                dutycycle=duty,
             )
             all_timings.extend(rep_timings)
 
@@ -220,7 +212,7 @@ def sendLG2(data: int, nbits: int = kLgBits, repeat: int = 0) -> List[int]:
 
     Returns timing array instead of transmitting via hardware.
     """
-    from app.core.ir_protocols.ir_send import sendGeneric
+    from app.core.ir_protocols.ir_send import sendGeneric, sendGenericUint64
 
     if nbits >= kLg32Bits:
         # Let the original routine handle it.
@@ -229,7 +221,7 @@ def sendLG2(data: int, nbits: int = kLgBits, repeat: int = 0) -> List[int]:
     all_timings = []
 
     # LGv2 (28-bit) protocol.
-    timings = sendGeneric(
+    timings = sendGenericUint64(
         headermark=kLg2HdrMark,
         headerspace=kLg2HdrSpace,
         onemark=kLg2BitMark,
@@ -237,13 +229,9 @@ def sendLG2(data: int, nbits: int = kLgBits, repeat: int = 0) -> List[int]:
         zeromark=kLg2BitMark,
         zerospace=kLgZeroSpace,
         footermark=kLg2BitMark,
-        gap=kLgMinGap,
-        dataint=data,
+        data=data,
         nbits=nbits,
-        frequency=38,
         MSBfirst=True,
-        repeat=0,  # Repeats are handled later.
-        dutycycle=33,  # Use a duty cycle of 33% (Testing)
     )
     all_timings.extend(timings)
 
@@ -252,7 +240,7 @@ def sendLG2(data: int, nbits: int = kLgBits, repeat: int = 0) -> List[int]:
     # Protocol has a mandatory repeat-specific code sent after every command.
     if repeat:
         for _ in range(repeat):
-            rep_timings = sendGeneric(
+            rep_timings = sendGenericUint64(
                 headermark=kLg2HdrMark,
                 headerspace=kLgRptSpace,
                 onemark=0,
@@ -260,13 +248,9 @@ def sendLG2(data: int, nbits: int = kLgBits, repeat: int = 0) -> List[int]:
                 zeromark=0,
                 zerospace=0,  # No data is sent.
                 footermark=kLgBitMark,
-                gap=kLgMinGap,
-                dataint=0,
+                data=0,
                 nbits=0,  # No data.
-                frequency=38,
                 MSBfirst=True,
-                repeat=0,
-                dutycycle=50,
             )
             all_timings.extend(rep_timings)
 

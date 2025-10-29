@@ -312,13 +312,9 @@ def sendBosch144(data: List[int], nbytes: int, repeat: int = 0) -> List[int]:
                 zeromark=kBoschBitMark,
                 zerospace=kBoschZeroSpace,
                 footermark=kBoschBitMark,
-                gap=kBoschFooterSpace,
                 dataptr=data[offset : offset + kBosch144BytesPerSection],
                 nbytes=kBosch144BytesPerSection,
-                frequency=kBoschFreq,
                 MSBfirst=True,
-                repeat=0,
-                dutycycle=50,
             )
             all_timings.extend(section_timings)
         # space(kDefaultMessageGap);  // Complete guess (from ir_Bosch.cpp line 32)

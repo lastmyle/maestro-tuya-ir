@@ -275,13 +275,9 @@ def sendCoronaAc(data: List[int], nbytes: int = kCoronaAcStateLength, repeat: in
                 zeromark=kCoronaAcBitMark,
                 zerospace=kCoronaAcZeroSpace,
                 footermark=kCoronaAcBitMark,
-                gap=kCoronaAcSpaceGap,
                 dataptr=data[pos:],
                 nbytes=kCoronaAcSectionBytes,
-                frequency=kCoronaAcFreq,
                 MSBfirst=False,
-                repeat=0,
-                dutycycle=50,  # kDutyDefault
             )
             all_timings.extend(section_timings)
             pos += kCoronaAcSectionBytes  # Adjust by how many bytes was sent

@@ -71,14 +71,10 @@ def sendWhynter(data: int, nbits: int = kWhynterBits, repeat: int = 0) -> List[i
             zeromark=kWhynterBitMark,
             zerospace=kWhynterZeroSpace,
             footermark=kWhynterBitMark,
-            gap=kWhynterMinGap,
             minsend=kWhynterMinCommandLength - (kWhynterBitMark + kWhynterZeroSpace),
             data=data,
             nbits=nbits,
-            frequency=38,
             MSBfirst=True,
-            repeat=0,  # Repeats are already handled.
-            dutycycle=50,
         )
         all_timings.extend(generic_timings)
 

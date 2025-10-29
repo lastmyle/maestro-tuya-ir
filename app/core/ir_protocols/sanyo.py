@@ -266,13 +266,9 @@ def sendSanyoAc(data: List[int], nbytes: int = kSanyoAcStateLength, repeat: int 
         zeromark=kSanyoAcBitMark,
         zerospace=kSanyoAcZeroSpace,
         footermark=kSanyoAcBitMark,
-        gap=kSanyoAcGap,
         dataptr=data,
         nbytes=nbytes,
-        frequency=kSanyoAcFreq,
         MSBfirst=False,
-        repeat=repeat,
-        dutycycle=50,
     )
 
 
@@ -981,13 +977,9 @@ def sendSanyoAc88(
             zeromark=kSanyoAc88BitMark,
             zerospace=kSanyoAc88ZeroSpace,
             footermark=kSanyoAc88BitMark,
-            gap=kSanyoAc88Gap,
             dataptr=data,
             nbytes=nbytes,
-            frequency=kSanyoAc88Freq,
             MSBfirst=False,
-            repeat=0,
-            dutycycle=50,
         )
         all_timings.extend(timings)
         if r < repeat:
@@ -1344,13 +1336,9 @@ def sendSanyoAc152(
             zeromark=kSanyoAc152BitMark,
             zerospace=kSanyoAc152ZeroSpace,
             footermark=kSanyoAc152BitMark,
-            gap=100000,  # kDefaultMessageGap
             dataptr=data,
             nbytes=nbytes,
-            frequency=kSanyoAc152Freq,
             MSBfirst=False,
-            repeat=0,
-            dutycycle=50,
         )
         all_timings.extend(timings)
 

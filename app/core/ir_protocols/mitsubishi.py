@@ -420,13 +420,9 @@ def sendMitsubishiAC(data: List[int], nbytes: int, repeat: int = 0) -> List[int]
         zeromark=kMitsubishiAcBitMark,
         zerospace=kMitsubishiAcZeroSpace,
         footermark=kMitsubishiAcRptMark,
-        gap=kMitsubishiAcRptSpace,
         dataptr=data,
         nbytes=nbytes,
-        frequency=38,
         MSBfirst=False,
-        repeat=repeat,
-        dutycycle=50,
     )
 
 
@@ -453,13 +449,9 @@ def sendMitsubishi136(data: List[int], nbytes: int, repeat: int = 0) -> List[int
         zeromark=kMitsubishi136BitMark,
         zerospace=kMitsubishi136ZeroSpace,
         footermark=kMitsubishi136BitMark,
-        gap=kMitsubishi136Gap,
         dataptr=data,
         nbytes=nbytes,
-        frequency=38,
         MSBfirst=False,
-        repeat=repeat,
-        dutycycle=50,
     )
 
 
@@ -486,13 +478,9 @@ def sendMitsubishi112(data: List[int], nbytes: int, repeat: int = 0) -> List[int
         zeromark=kMitsubishi112BitMark,
         zerospace=kMitsubishi112ZeroSpace,
         footermark=kMitsubishi112BitMark,
-        gap=kMitsubishi112Gap,
         dataptr=data,
         nbytes=nbytes,
-        frequency=38,
         MSBfirst=False,
-        repeat=repeat,
-        dutycycle=50,
     )
 
 
@@ -519,13 +507,9 @@ def sendMitsubishiHeavy88(data: List[int], nbytes: int, repeat: int = 0) -> List
         zeromark=kMitsubishiHeavyBitMark,
         zerospace=kMitsubishiHeavyZeroSpace,
         footermark=kMitsubishiHeavyBitMark,
-        gap=kMitsubishiHeavyGap,
         dataptr=data,
         nbytes=nbytes,
-        frequency=38,
         MSBfirst=False,
-        repeat=repeat,
-        dutycycle=50,
     )
 
 

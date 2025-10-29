@@ -323,13 +323,9 @@ def sendNeoclima(data: List[int], nbytes: int, repeat: int = 0) -> List[int]:
             zeromark=kNeoclimaBitMark,
             zerospace=kNeoclimaZeroSpace,
             footermark=kNeoclimaBitMark,
-            gap=kNeoclimaHdrSpace,
             dataptr=data,
             nbytes=nbytes,
-            frequency=38,
             MSBfirst=False,
-            repeat=0,  # Repeats handled by outer loop
-            dutycycle=50,
         )
         all_timings.extend(msg_timings)
 

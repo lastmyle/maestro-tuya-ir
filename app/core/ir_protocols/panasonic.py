@@ -286,14 +286,10 @@ def sendPanasonic64(data: int, nbits: int = kPanasonicBits, repeat: int = 0) -> 
         zeromark=kPanasonicBitMark,
         zerospace=kPanasonicZeroSpace,
         footermark=kPanasonicBitMark,
-        gap=kPanasonicMinGap,
         mesgtime=kPanasonicMinCommandLength,
         data_uint64=data,
         nbits=nbits,
-        frequency=kPanasonicFreq,
         MSBfirst=True,
-        repeat=repeat,
-        dutycycle=50,
     )
 
 
@@ -451,13 +447,9 @@ def sendPanasonicAC(
             zeromark=kPanasonicBitMark,
             zerospace=kPanasonicZeroSpace,
             footermark=kPanasonicBitMark,
-            gap=kPanasonicAcSectionGap,
             dataptr=data,
             nbytes=kPanasonicAcSection1Length,
-            frequency=kPanasonicFreq,
             MSBfirst=False,
-            repeat=0,
-            dutycycle=50,
         )
         all_timings.extend(section1_timings)
 
@@ -470,13 +462,9 @@ def sendPanasonicAC(
             zeromark=kPanasonicBitMark,
             zerospace=kPanasonicZeroSpace,
             footermark=kPanasonicBitMark,
-            gap=kPanasonicAcMessageGap,
             dataptr=data[kPanasonicAcSection1Length:],
             nbytes=nbytes - kPanasonicAcSection1Length,
-            frequency=kPanasonicFreq,
             MSBfirst=False,
-            repeat=0,
-            dutycycle=50,
         )
         all_timings.extend(section2_timings)
 
@@ -1109,13 +1097,9 @@ def sendPanasonicAC32(data: int, nbits: int = kPanasonicAc32Bits, repeat: int = 
                 zeromark=kPanasonicAc32BitMark,
                 zerospace=kPanasonicAc32ZeroSpace,
                 footermark=0,
-                gap=0,  # No Footer
                 data_uint64=expanded_data,
                 nbits=section_bits * 2,
-                frequency=kPanasonicFreq,
                 MSBfirst=False,
-                repeat=blocks - 1,
-                dutycycle=50,
             )
             all_timings.extend(block_timings)
 
@@ -1128,13 +1112,9 @@ def sendPanasonicAC32(data: int, nbits: int = kPanasonicAc32Bits, repeat: int = 
                 zeromark=0,
                 zerospace=0,
                 footermark=kPanasonicAc32BitMark,
-                gap=kPanasonicAc32SectionGap,
                 data_uint64=0,
                 nbits=0,  # No data
-                frequency=kPanasonicFreq,
                 MSBfirst=True,
-                repeat=0,
-                dutycycle=50,
             )
             all_timings.extend(footer_timings)
 

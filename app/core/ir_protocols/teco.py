@@ -226,14 +226,10 @@ def sendTeco(data: int, nbits: int = kTecoBits, repeat: int = 0) -> List[int]:
             zeromark=kTecoBitMark,
             zerospace=kTecoZeroSpace,
             footermark=kTecoBitMark,
-            gap=kTecoGap,
             dataptr=data_bytes,
             nbytes=len(data_bytes),
             nbits=nbits,
-            frequency=38000,
             MSBfirst=False,
-            repeat=0,
-            dutycycle=50,  # kDutyDefault
         )
         all_timings.extend(timings)
 

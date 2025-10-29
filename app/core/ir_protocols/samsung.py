@@ -131,9 +131,9 @@ def sendSAMSUNG(data: int, nbits: int = kSamsungBits, repeat: int = 0) -> List[i
 
     Returns timing array instead of transmitting via hardware.
     """
-    from app.core.ir_protocols.ir_send import sendGeneric
+    from app.core.ir_protocols.ir_send import sendGeneric, sendGenericUint64
 
-    return sendGeneric(
+    return sendGenericUint64(
         headermark=kSamsungHdrMark,
         headerspace=kSamsungHdrSpace,
         onemark=kSamsungBitMark,
@@ -141,13 +141,9 @@ def sendSAMSUNG(data: int, nbits: int = kSamsungBits, repeat: int = 0) -> List[i
         zeromark=kSamsungBitMark,
         zerospace=kSamsungZeroSpace,
         footermark=kSamsungBitMark,
-        gap=kSamsungMinGap,
-        dataint=data,
+        data=data,
         nbits=nbits,
-        frequency=38,
         MSBfirst=True,
-        repeat=repeat,
-        dutycycle=33,
     )
 
 
@@ -257,7 +253,7 @@ def sendSamsung36(data: int, nbits: int = kSamsung36Bits, repeat: int = 0) -> Li
 
     Returns timing array instead of transmitting via hardware.
     """
-    from app.core.ir_protocols.ir_send import sendGeneric
+    from app.core.ir_protocols.ir_send import sendGeneric, sendGenericUint64
 
     if nbits < 16:
         return []  # To small to send.
@@ -266,7 +262,7 @@ def sendSamsung36(data: int, nbits: int = kSamsung36Bits, repeat: int = 0) -> Li
 
     for r in range(repeat + 1):
         # Block #1 (16 bits)
-        block1_timings = sendGeneric(
+        block1_timings = sendGenericUint64(
             headermark=kSamsung36HdrMark,
             headerspace=kSamsung36HdrSpace,
             onemark=kSamsung36BitMark,
@@ -274,18 +270,14 @@ def sendSamsung36(data: int, nbits: int = kSamsung36Bits, repeat: int = 0) -> Li
             zeromark=kSamsung36BitMark,
             zerospace=kSamsung36ZeroSpace,
             footermark=kSamsung36BitMark,
-            gap=kSamsung36HdrSpace,
-            dataint=data >> (nbits - 16),
+            data=data >> (nbits - 16),
             nbits=16,
-            frequency=38,
             MSBfirst=True,
-            repeat=0,
-            dutycycle=50,
         )
         all_timings.extend(block1_timings)
 
         # Block #2 (The rest, typically 20 bits)
-        block2_timings = sendGeneric(
+        block2_timings = sendGenericUint64(
             headermark=0,
             headerspace=0,  # No header
             onemark=kSamsung36BitMark,
@@ -293,14 +285,10 @@ def sendSamsung36(data: int, nbits: int = kSamsung36Bits, repeat: int = 0) -> Li
             zeromark=kSamsung36BitMark,
             zerospace=kSamsung36ZeroSpace,
             footermark=kSamsung36BitMark,
-            gap=kSamsungMinGap,  # Gap is just a guess.
             # Mask off the rest of the bits.
-            dataint=data & ((1 << (nbits - 16)) - 1),
+            data=data & ((1 << (nbits - 16)) - 1),
             nbits=nbits - 16,
-            frequency=38,
             MSBfirst=True,
-            repeat=0,
-            dutycycle=50,
         )
         all_timings.extend(block2_timings)
 
@@ -430,7 +418,7 @@ def sendSamsungAC(data: List[int], nbytes: int, repeat: int = 0) -> List[int]:
 
     Returns timing array instead of transmitting via hardware.
     """
-    from app.core.ir_protocols.ir_send import sendGeneric
+    from app.core.ir_protocols.ir_send import sendGeneric, sendGenericUint64
 
     if nbytes < kSamsungAcStateLength and nbytes % kSamsungAcSectionLength:
         return []  # Not an appropriate number of bytes to send a proper message.
@@ -451,13 +439,9 @@ def sendSamsungAC(data: List[int], nbytes: int, repeat: int = 0) -> List[int]:
                 zeromark=kSamsungAcBitMark,
                 zerospace=kSamsungAcZeroSpace,
                 footermark=kSamsungAcBitMark,
-                gap=kSamsungAcSectionGap,
                 dataptr=data[offset:],
                 nbytes=kSamsungAcSectionLength,  # 7 bytes == 56 bits
-                frequency=38000,
                 MSBfirst=False,
-                repeat=0,
-                dutycycle=50,
             )
             all_timings.extend(section_timings)
         # Complete made up guess at inter-message gap.

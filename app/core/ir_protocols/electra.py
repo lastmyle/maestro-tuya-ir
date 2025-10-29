@@ -241,13 +241,9 @@ def sendElectraAC(data: List[int], nbytes: int, repeat: int = 0) -> List[int]:
             zeromark=kElectraAcBitMark,
             zerospace=kElectraAcZeroSpace,
             footermark=kElectraAcBitMark,
-            gap=kElectraAcMessageGap,
             dataptr=data,
             nbytes=nbytes,
-            frequency=38000,  # Complete guess of the modulation frequency
             MSBfirst=False,  # Send data in LSB order per byte
-            repeat=0,
-            dutycycle=50,
         )
         all_timings.extend(timings)
 

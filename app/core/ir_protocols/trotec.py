@@ -362,13 +362,9 @@ def sendTrotec(data: List[int], nbytes: int, repeat: int = 0) -> List[int]:
             zeromark=kTrotecBitMark,
             zerospace=kTrotecZeroSpace,
             footermark=kTrotecBitMark,
-            gap=kTrotecGap,
             dataptr=data,
             nbytes=nbytes,
-            frequency=36,
             MSBfirst=False,
-            repeat=0,  # Repeats handled by outer loop
-            dutycycle=50,
         )
         all_timings.extend(msg_timings)
 
@@ -400,13 +396,9 @@ def sendTrotec3550(data: List[int], nbytes: int, repeat: int = 0) -> List[int]:
         zeromark=kTrotec3550BitMark,
         zerospace=kTrotec3550ZeroSpace,
         footermark=kTrotec3550BitMark,
-        gap=100000,  # kDefaultMessageGap
         dataptr=data,
         nbytes=nbytes,
-        frequency=38,
         MSBfirst=True,
-        repeat=repeat,
-        dutycycle=50,
     )
 
 

@@ -65,13 +65,9 @@ def sendZepeal(data: int, nbits: int, repeat: int = 0) -> List[int]:
         zeromark=kZepealZeroMark,
         zerospace=kZepealZeroSpace,
         footermark=kZepealFooterMark,
-        gap=kZepealGap,
         dataptr=data,
         nbits=nbits,
-        frequency=38,
         MSBfirst=True,
-        repeat=repeat,
-        dutycycle=50,
     )
 
     return all_timings

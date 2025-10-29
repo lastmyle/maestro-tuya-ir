@@ -332,13 +332,9 @@ def sendTcl112Ac(data: List[int], nbytes: int, repeat: int = 0) -> List[int]:
         zeromark=kTcl112AcBitMark,
         zerospace=kTcl112AcZeroSpace,
         footermark=kTcl112AcBitMark,
-        gap=kTcl112AcGap,
         dataptr=data,
         nbytes=nbytes,
-        frequency=38000,
         MSBfirst=False,
-        repeat=repeat,
-        dutycycle=50,
     )
 
 

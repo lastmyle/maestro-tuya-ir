@@ -1058,10 +1058,10 @@ class IRFujitsuAC:
 ##          kFujitsuAcStateLengthShort - 1
 ## @param[in] repeat The number of times the command is to be repeated.
 ## Direct translation from IRremoteESP8266 IRsend::sendFujitsuAC (lines 53-59)
-def sendFujitsuAC(data: List[int], nbytes: int, repeat: int = 0) -> List[int]:
+def sendFujitsuAC(data: List[int], nbytes: int) -> List[int]:
     """
     Send a Fujitsu A/C formatted message.
-    EXACT translation from IRremoteESP8266 IRsend::sendFujitsuAC
+    Adapted from IRremoteESP8266 IRsend::sendFujitsuAC (hardware params removed).
 
     This is a wrapper around sendGeneric() with Fujitsu-specific timing constants.
     """
@@ -1076,11 +1076,7 @@ def sendFujitsuAC(data: List[int], nbytes: int, repeat: int = 0) -> List[int]:
         zeromark=kFujitsuAcBitMark,
         zerospace=kFujitsuAcZeroSpace,
         footermark=kFujitsuAcBitMark,
-        gap=kFujitsuAcMinGap,
         dataptr=data,
         nbytes=nbytes,
-        frequency=38,  # 38 kHz (kept as int to match C++ exactly)
         MSBfirst=False,  # LSB first
-        repeat=repeat,
-        dutycycle=50,
     )

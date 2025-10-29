@@ -314,14 +314,10 @@ def sendSharpRaw(data: int, nbits: int = kSharpBits, repeat: int = 0) -> List[in
                 zeromark=kSharpBitMark,
                 zerospace=kSharpZeroSpace,
                 footermark=kSharpBitMark,
-                gap=kSharpGap,
                 dataptr=[tempdata],
                 nbytes=0,
                 nbits=nbits,
-                frequency=38,
                 MSBfirst=True,
-                repeat=0,
-                dutycycle=33,
             )
             all_timings.extend(timings)
             # Invert the data per protocol. This is always called twice, so it's
@@ -462,13 +458,9 @@ def sendSharpAc(data: List[int], nbytes: int = kSharpAcStateLength, repeat: int 
         zeromark=kSharpAcBitMark,
         zerospace=kSharpAcZeroSpace,
         footermark=kSharpAcBitMark,
-        gap=kSharpAcGap,
         dataptr=data,
         nbytes=nbytes,
-        frequency=38000,
         MSBfirst=False,
-        repeat=repeat,
-        dutycycle=50,
     )
 
 

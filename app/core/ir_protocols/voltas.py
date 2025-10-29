@@ -315,13 +315,9 @@ def sendVoltas(data: List[int], nbytes: int = kVoltasStateLength, repeat: int = 
         zeromark=kVoltasBitMark,
         zerospace=kVoltasZeroSpace,
         footermark=kVoltasBitMark,
-        gap=kDefaultMessageGap,
         dataptr=data,
         nbytes=nbytes,
-        frequency=kVoltasFreq,
         MSBfirst=True,
-        repeat=repeat,
-        dutycycle=50,
     )
     return timings
 

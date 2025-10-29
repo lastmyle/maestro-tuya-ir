@@ -653,15 +653,11 @@ def sendCoolix48(data: int, nbits: int = kCoolix48Bits, repeat: int = 0) -> List
         zeromark=kCoolixBitMark,
         zerospace=kCoolixZeroSpace,
         footermark=kCoolixBitMark,
-        gap=kCoolixMinGap,
         dataptr=data
         if isinstance(data, list)
         else [(data >> i) & 0xFF for i in range(0, nbits, 8)][::-1],
         nbytes=nbits // 8,
-        frequency=38000,
         MSBfirst=True,
-        repeat=repeat,
-        dutycycle=33,
     )
 
 

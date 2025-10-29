@@ -131,13 +131,9 @@ def sendTruma(data: int, nbits: int, repeat: int = 0) -> List[int]:
             zeromark=kTrumaZeroMark,
             zerospace=kTrumaSpace,
             footermark=kTrumaFooterMark,
-            gap=kTrumaGap,
             dataptr=data,
             nbits=nbits,
-            frequency=38,
             MSBfirst=False,
-            repeat=0,
-            dutycycle=50,
         )
         all_timings.extend(generic_timings)
 

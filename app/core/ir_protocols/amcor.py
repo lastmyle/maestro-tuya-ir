@@ -189,13 +189,9 @@ def sendAmcor(
             zeromark=kAmcorZeroMark,
             zerospace=kAmcorZeroSpace,
             footermark=kAmcorFooterMark,
-            gap=kAmcorGap,
             dataptr=data,
             nbytes=nbytes,
-            frequency=38,
             MSBfirst=False,
-            repeat=0,
-            dutycycle=50,  # kDutyDefault
         )
         all_timings.extend(timings)
 

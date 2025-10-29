@@ -32,7 +32,7 @@ def test_round_trip():
 
     # Re-encode using sendFujitsuAC (EXACT C++ translation)
     new_bytes = command.getRaw()
-    new_signal = sendFujitsuAC(new_bytes, len(new_bytes), repeat=0)
+    new_signal = sendFujitsuAC(new_bytes, len(new_bytes))
 
     # encode_ir automatically removes trailing gap (> 8000µs)
     new_command = encode_ir(new_signal)
@@ -66,7 +66,7 @@ def test_send_code():
 
     # Re-encode using sendFujitsuAC (EXACT C++ translation)
     new_bytes = command.getRaw()
-    new_signal = sendFujitsuAC(new_bytes, len(new_bytes), repeat=0)
+    new_signal = sendFujitsuAC(new_bytes, len(new_bytes))
 
     # encode_ir automatically removes trailing gap (> 8000µs)
     new_command = encode_ir(new_signal)

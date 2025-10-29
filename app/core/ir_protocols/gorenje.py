@@ -51,13 +51,9 @@ def sendGorenje(data: int, nbits: int = kGorenjeBits, repeat: int = 0) -> List[i
         zeromark=kGorenjeBitMark,
         zerospace=kGorenjeZeroSpace,
         footermark=kGorenjeBitMark,
-        gap=kGorenjeMinGap,
         data=data,
         nbits=nbits,
-        frequency=kGorenjeFreq,
         MSBfirst=True,
-        repeat=repeat,
-        dutycycle=50,  # kDutyDefault
     )
 
 

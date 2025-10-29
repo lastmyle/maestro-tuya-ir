@@ -104,7 +104,7 @@ def sendCarrierAC(data: int, nbits: int = kCarrierAcBits, repeat: int = 0) -> Li
 
     Returns timing array instead of transmitting via hardware.
     """
-    from app.core.ir_protocols.ir_send import sendGeneric
+    from app.core.ir_protocols.ir_send import sendGeneric, sendGenericUint64
 
     def invertBits(data, nbits):
         """Invert bits in data"""
@@ -121,7 +121,7 @@ def sendCarrierAC(data: int, nbits: int = kCarrierAcBits, repeat: int = 0) -> Li
         temp_data = data
         # Carrier sends the data block three times. normal + inverted + normal.
         for i in range(3):
-            timings = sendGeneric(
+            timings = sendGenericUint64(
                 headermark=kCarrierAcHdrMark,
                 headerspace=kCarrierAcHdrSpace,
                 onemark=kCarrierAcBitMark,
@@ -129,13 +129,9 @@ def sendCarrierAC(data: int, nbits: int = kCarrierAcBits, repeat: int = 0) -> Li
                 zeromark=kCarrierAcBitMark,
                 zerospace=kCarrierAcZeroSpace,
                 footermark=kCarrierAcBitMark,
-                gap=kCarrierAcGap,
-                dataint=temp_data,
+                data=temp_data,
                 nbits=nbits,
-                frequency=38,
                 MSBfirst=True,
-                repeat=0,
-                dutycycle=50,
             )
             all_timings.extend(timings)
             temp_data = invertBits(temp_data, nbits)
@@ -254,9 +250,9 @@ def sendCarrierAC40(data: int, nbits: int = kCarrierAc40Bits, repeat: int = 0) -
 
     Returns timing array instead of transmitting via hardware.
     """
-    from app.core.ir_protocols.ir_send import sendGeneric
+    from app.core.ir_protocols.ir_send import sendGeneric, sendGenericUint64
 
-    return sendGeneric(
+    return sendGenericUint64(
         headermark=kCarrierAc40HdrMark,
         headerspace=kCarrierAc40HdrSpace,
         onemark=kCarrierAc40BitMark,
@@ -264,13 +260,9 @@ def sendCarrierAC40(data: int, nbits: int = kCarrierAc40Bits, repeat: int = 0) -
         zeromark=kCarrierAc40BitMark,
         zerospace=kCarrierAc40ZeroSpace,
         footermark=kCarrierAc40BitMark,
-        gap=kCarrierAc40Gap,
-        dataint=data,
+        data=data,
         nbits=nbits,
-        frequency=kCarrierAcFreq,
         MSBfirst=True,
-        repeat=repeat,
-        dutycycle=50,
     )
 
 
@@ -344,9 +336,9 @@ def sendCarrierAC64(data: int, nbits: int = kCarrierAc64Bits, repeat: int = 0) -
 
     Returns timing array instead of transmitting via hardware.
     """
-    from app.core.ir_protocols.ir_send import sendGeneric
+    from app.core.ir_protocols.ir_send import sendGeneric, sendGenericUint64
 
-    return sendGeneric(
+    return sendGenericUint64(
         headermark=kCarrierAc64HdrMark,
         headerspace=kCarrierAc64HdrSpace,
         onemark=kCarrierAc64BitMark,
@@ -354,13 +346,9 @@ def sendCarrierAC64(data: int, nbits: int = kCarrierAc64Bits, repeat: int = 0) -
         zeromark=kCarrierAc64BitMark,
         zerospace=kCarrierAc64ZeroSpace,
         footermark=kCarrierAc64BitMark,
-        gap=kCarrierAc64Gap,
-        dataint=data,
+        data=data,
         nbits=nbits,
-        frequency=kCarrierAcFreq,
         MSBfirst=False,
-        repeat=repeat,
-        dutycycle=50,
     )
 
 
@@ -763,7 +751,7 @@ def sendCarrierAC128(data: List[int], nbytes: int, repeat: int = 0) -> List[int]
 
     Returns timing array instead of transmitting via hardware.
     """
-    from app.core.ir_protocols.ir_send import sendGeneric
+    from app.core.ir_protocols.ir_send import sendGeneric, sendGenericUint64
 
     # Min length check.
     if nbytes <= kCarrierAc128StateLength // 2:
@@ -783,13 +771,9 @@ def sendCarrierAC128(data: List[int], nbytes: int, repeat: int = 0) -> List[int]
             zeromark=kCarrierAc128BitMark,
             zerospace=kCarrierAc128ZeroSpace,
             footermark=kCarrierAc128BitMark,
-            gap=kCarrierAc128SectionGap,
             dataptr=data,
             nbytes=nbytes // 2,
-            frequency=kCarrierAcFreq,
             MSBfirst=False,
-            repeat=0,
-            dutycycle=50,
         )
         all_timings.extend(part1_timings)
 
@@ -807,13 +791,9 @@ def sendCarrierAC128(data: List[int], nbytes: int, repeat: int = 0) -> List[int]
             zeromark=kCarrierAc128BitMark,
             zerospace=kCarrierAc128ZeroSpace,
             footermark=kCarrierAc128BitMark,
-            gap=kCarrierAc128SectionGap,
             dataptr=data[nbytes // 2 :],
             nbytes=nbytes // 2,
-            frequency=kCarrierAcFreq,
             MSBfirst=False,
-            repeat=0,
-            dutycycle=50,
         )
         all_timings.extend(part2_timings)
 
@@ -948,7 +928,7 @@ def sendCarrierAC84(data: List[int], nbytes: int, repeat: int = 0) -> List[int]:
 
     Returns timing array instead of transmitting via hardware.
     """
-    from app.core.ir_protocols.ir_send import sendGeneric
+    from app.core.ir_protocols.ir_send import sendGeneric, sendGenericUint64
 
     all_timings = []
 
@@ -956,7 +936,7 @@ def sendCarrierAC84(data: List[int], nbytes: int, repeat: int = 0) -> List[int]:
     for r in range(repeat + 1):
         if nbytes:
             # The least significant `kCarrierAc84ExtraBits` bits of the first byte
-            part1_timings = sendGeneric(
+            part1_timings = sendGenericUint64(
                 headermark=kCarrierAc84HdrMark,
                 headerspace=kCarrierAc84HdrSpace,  # Header
                 onemark=kCarrierAc84Zero,
@@ -964,13 +944,9 @@ def sendCarrierAC84(data: List[int], nbytes: int, repeat: int = 0) -> List[int]:
                 zeromark=kCarrierAc84One,
                 zerospace=kCarrierAc84Zero,
                 footermark=0,
-                gap=0,  # No footer
-                dataint=data[0] & 0x0F,  # GETBITS64(data[0], 0, kCarrierAc84ExtraBits)
+                data=data[0] & 0x0F,  # GETBITS64(data[0], 0, kCarrierAc84ExtraBits)
                 nbits=kCarrierAc84ExtraBits,
-                frequency=38000,
                 MSBfirst=False,
-                repeat=0,
-                dutycycle=33,
             )
             all_timings.extend(part1_timings)
 
@@ -983,13 +959,9 @@ def sendCarrierAC84(data: List[int], nbytes: int, repeat: int = 0) -> List[int]:
                 zeromark=kCarrierAc84One,
                 zerospace=kCarrierAc84Zero,
                 footermark=kCarrierAc84Zero,
-                gap=100000,  # kDefaultMessageGap - Footer
                 dataptr=data[1:],
                 nbytes=nbytes - 1,
-                frequency=38000,
                 MSBfirst=False,
-                repeat=0,
-                dutycycle=33,
             )
             all_timings.extend(part2_timings)
 

@@ -383,13 +383,9 @@ def sendKelon168(data: List[int], nbytes: int, repeat: int = 0) -> List[int]:
             zeromark=kKelonBitMark,
             zerospace=kKelonZeroSpace,
             footermark=kKelonBitMark,
-            gap=kKelon168FooterSpace,
             dataptr=data[0:kKelon168Section1Size],
             nbytes=kKelon168Section1Size,
-            frequency=kKelonFreq,
             MSBfirst=False,  # LSB First
-            repeat=0,
-            dutycycle=50,
         )
         all_timings.extend(section1)
 
@@ -402,13 +398,9 @@ def sendKelon168(data: List[int], nbytes: int, repeat: int = 0) -> List[int]:
             zeromark=kKelonBitMark,
             zerospace=kKelonZeroSpace,
             footermark=kKelonBitMark,
-            gap=kKelon168FooterSpace,
             dataptr=data[kKelon168Section1Size : kKelon168Section1Size + kKelon168Section2Size],
             nbytes=kKelon168Section2Size,
-            frequency=kKelonFreq,
             MSBfirst=False,  # LSB First
-            repeat=0,
-            dutycycle=50,
         )
         all_timings.extend(section2)
 
@@ -421,13 +413,9 @@ def sendKelon168(data: List[int], nbytes: int, repeat: int = 0) -> List[int]:
             zeromark=kKelonBitMark,
             zerospace=kKelonZeroSpace,
             footermark=kKelonBitMark,
-            gap=kKelonGap,
             dataptr=data[kKelon168Section1Size + kKelon168Section2Size :],
             nbytes=nbytes - (kKelon168Section1Size + kKelon168Section2Size),
-            frequency=kKelonFreq,
             MSBfirst=False,  # LSB First
-            repeat=0,
-            dutycycle=50,
         )
         all_timings.extend(section3)
 

@@ -237,14 +237,10 @@ def sendTechnibelAc(data: int, nbits: int, repeat: int = kTechnibelAcDefaultRepe
         zeromark=kTechnibelAcBitMark,
         zerospace=kTechnibelAcZeroSpace,
         footermark=kTechnibelAcBitMark,
-        gap=kTechnibelAcGap,
         dataptr=data,
         nbytes=0,  # Using nbits instead
         nbits=nbits,
-        frequency=kTechnibelAcFreq,
         MSBfirst=True,  # LSB First in C++
-        repeat=repeat,
-        dutycycle=50,
     )
 
 

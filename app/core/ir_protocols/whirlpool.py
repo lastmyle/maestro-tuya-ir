@@ -382,13 +382,9 @@ def sendWhirlpoolAC(
             zeromark=kWhirlpoolAcBitMark,
             zerospace=kWhirlpoolAcZeroSpace,
             footermark=kWhirlpoolAcBitMark,
-            gap=kWhirlpoolAcGap,
             dataptr=data,
             nbytes=6,  # 6 bytes == 48 bits
-            frequency=38000,
             MSBfirst=False,
-            repeat=0,
-            dutycycle=50,
         )
         all_timings.extend(section1_timings)
 
@@ -401,13 +397,9 @@ def sendWhirlpoolAC(
             zeromark=kWhirlpoolAcBitMark,
             zerospace=kWhirlpoolAcZeroSpace,
             footermark=kWhirlpoolAcBitMark,
-            gap=kWhirlpoolAcGap,
             dataptr=data[6:],
             nbytes=8,  # 8 bytes == 64 bits
-            frequency=38000,
             MSBfirst=False,
-            repeat=0,
-            dutycycle=50,
         )
         all_timings.extend(section2_timings)
 
@@ -420,13 +412,9 @@ def sendWhirlpoolAC(
             zeromark=kWhirlpoolAcBitMark,
             zerospace=kWhirlpoolAcZeroSpace,
             footermark=kWhirlpoolAcBitMark,
-            gap=kWhirlpoolAcMinGap,
             dataptr=data[14:],
             nbytes=7,  # 7 bytes == 56 bits
-            frequency=38000,
             MSBfirst=False,
-            repeat=0,
-            dutycycle=50,
         )
         all_timings.extend(section3_timings)
 

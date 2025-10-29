@@ -153,13 +153,9 @@ def sendRhoss(data: List[int], nbytes: int, repeat: int = kRhossDefaultRepeat) -
             zeromark=kRhossBitMark,
             zerospace=kRhossZeroSpace,
             footermark=kRhossBitMark,
-            gap=kRhossZeroSpace,
             dataptr=data,
             nbytes=nbytes,
-            frequency=kRhossFreq,
             MSBfirst=False,
-            repeat=0,
-            dutycycle=50,
         )
         all_timings.extend(block_timings)
         # mark(kRhossBitMark); (ir_Rhoss.cpp line 44)

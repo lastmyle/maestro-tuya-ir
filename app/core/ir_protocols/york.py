@@ -205,13 +205,9 @@ def sendYork(data: List[int], nbytes: int, repeat: int = 0) -> List[int]:
             zeromark=kYorkBitMark,
             zerospace=kYorkZeroSpace,
             footermark=kYorkBitMark,
-            gap=0,  # kDefaultMessageGap
             dataptr=data,
             nbytes=nbytes,
-            frequency=kYorkFreq,
             MSBfirst=False,  # LSB first
-            repeat=0,
-            dutycycle=50,
         )
         all_timings.extend(timings)
 

@@ -400,13 +400,9 @@ def sendGree(data: List[int], nbytes: int, repeat: int = 0) -> List[int]:
             zeromark=kGreeBitMark,
             zerospace=kGreeZeroSpace,
             footermark=0,
-            gap=0,  # No Footer yet
             dataptr=data,
             nbytes=4,
-            frequency=38,
             MSBfirst=False,
-            repeat=0,
-            dutycycle=50,
         )
         all_timings.extend(block1_timings)
 
@@ -433,13 +429,9 @@ def sendGree(data: List[int], nbytes: int, repeat: int = 0) -> List[int]:
             zeromark=kGreeBitMark,
             zerospace=kGreeZeroSpace,
             footermark=kGreeBitMark,
-            gap=kGreeMsgSpace,
             dataptr=data[4:],
             nbytes=nbytes - 4,
-            frequency=38,
             MSBfirst=False,
-            repeat=0,
-            dutycycle=50,
         )
         all_timings.extend(block2_timings)
 

@@ -322,13 +322,9 @@ def sendHitachiAC(data: List[int], nbytes: int, repeat: int = 0) -> List[int]:
         zeromark=kHitachiAcBitMark,
         zerospace=kHitachiAcZeroSpace,
         footermark=kHitachiAcBitMark,
-        gap=kHitachiAcMinGap,
         dataptr=data,
         nbytes=nbytes,
-        frequency=38,
         MSBfirst=MSBfirst,
-        repeat=repeat,
-        dutycycle=50,
     )
 
 
@@ -614,13 +610,9 @@ def sendHitachiAC1(data: List[int], nbytes: int, repeat: int = 0) -> List[int]:
         zeromark=kHitachiAcBitMark,
         zerospace=kHitachiAcZeroSpace,
         footermark=kHitachiAcBitMark,
-        gap=kHitachiAcMinGap,
         dataptr=data,
         nbytes=nbytes,
-        frequency=kHitachiAcFreq,
         MSBfirst=True,
-        repeat=repeat,
-        dutycycle=50,
     )
 
 
@@ -1131,13 +1123,9 @@ def sendHitachiAc424(data: List[int], nbytes: int, repeat: int = 0) -> List[int]
             zeromark=kHitachiAc424BitMark,
             zerospace=kHitachiAc424ZeroSpace,
             footermark=kHitachiAc424BitMark,
-            gap=kHitachiAcMinGap,
             dataptr=data,
             nbytes=nbytes,
-            frequency=kHitachiAcFreq,
             MSBfirst=False,
-            repeat=0,
-            dutycycle=50,
         )
         all_timings.extend(msg_timings)
 
@@ -1351,13 +1339,9 @@ def sendHitachiAc3(data: List[int], nbytes: int, repeat: int = 0) -> List[int]:
         zeromark=kHitachiAc3BitMark,
         zerospace=kHitachiAc3ZeroSpace,
         footermark=kHitachiAc3BitMark,
-        gap=kHitachiAcMinGap,
         dataptr=data,
         nbytes=nbytes,
-        frequency=kHitachiAcFreq,
         MSBfirst=False,
-        repeat=repeat,
-        dutycycle=50,
     )
 
 

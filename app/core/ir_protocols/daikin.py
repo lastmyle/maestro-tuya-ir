@@ -397,13 +397,9 @@ def sendDaikin(data: List[int], nbytes: int, repeat: int = 0) -> List[int]:
             zeromark=kDaikinBitMark,
             zerospace=kDaikinZeroSpace,
             footermark=kDaikinBitMark,
-            gap=kDaikinZeroSpace + kDaikinGap,
             data_value=0b00000,
             nbits=kDaikinHeaderLength,
-            frequency=38,
             MSBfirst=False,
-            repeat=0,
-            dutycycle=50,
         )
         all_timings.extend(header_timings)
 
@@ -418,13 +414,9 @@ def sendDaikin(data: List[int], nbytes: int, repeat: int = 0) -> List[int]:
                 zeromark=kDaikinBitMark,
                 zerospace=kDaikinZeroSpace,
                 footermark=kDaikinBitMark,
-                gap=kDaikinZeroSpace + kDaikinGap,
                 data_value=kDaikinFirstHeader64,
                 nbits=64,
-                frequency=38,
                 MSBfirst=False,
-                repeat=0,
-                dutycycle=50,
             )
             all_timings.extend(data1_timings)
         else:  # We are using the newer/more correct size.
@@ -436,13 +428,9 @@ def sendDaikin(data: List[int], nbytes: int, repeat: int = 0) -> List[int]:
                 zeromark=kDaikinBitMark,
                 zerospace=kDaikinZeroSpace,
                 footermark=kDaikinBitMark,
-                gap=kDaikinZeroSpace + kDaikinGap,
                 dataptr=data,
                 nbytes=kDaikinSection1Length,
-                frequency=38,
                 MSBfirst=False,
-                repeat=0,
-                dutycycle=50,
             )
             all_timings.extend(data1_timings)
             offset += kDaikinSection1Length
@@ -456,13 +444,9 @@ def sendDaikin(data: List[int], nbytes: int, repeat: int = 0) -> List[int]:
             zeromark=kDaikinBitMark,
             zerospace=kDaikinZeroSpace,
             footermark=kDaikinBitMark,
-            gap=kDaikinZeroSpace + kDaikinGap,
             dataptr=data[offset:],
             nbytes=kDaikinSection2Length,
-            frequency=38,
             MSBfirst=False,
-            repeat=0,
-            dutycycle=50,
         )
         all_timings.extend(data2_timings)
         offset += kDaikinSection2Length
@@ -476,13 +460,9 @@ def sendDaikin(data: List[int], nbytes: int, repeat: int = 0) -> List[int]:
             zeromark=kDaikinBitMark,
             zerospace=kDaikinZeroSpace,
             footermark=kDaikinBitMark,
-            gap=kDaikinZeroSpace + kDaikinGap,
             dataptr=data[offset:],
             nbytes=nbytes - offset,
-            frequency=38,
             MSBfirst=False,
-            repeat=0,
-            dutycycle=50,
         )
         all_timings.extend(data3_timings)
 
@@ -519,13 +499,9 @@ def sendDaikin2(data: List[int], nbytes: int, repeat: int = 0) -> List[int]:
             zeromark=kDaikin2BitMark,
             zerospace=kDaikin2ZeroSpace,
             footermark=kDaikin2BitMark,
-            gap=kDaikin2Gap,
             dataptr=data,
             nbytes=kDaikin2Section1Length,
-            frequency=kDaikin2Freq // 1000,
             MSBfirst=False,
-            repeat=0,
-            dutycycle=50,
         )
         all_timings.extend(section1_timings)
 
@@ -538,13 +514,9 @@ def sendDaikin2(data: List[int], nbytes: int, repeat: int = 0) -> List[int]:
             zeromark=kDaikin2BitMark,
             zerospace=kDaikin2ZeroSpace,
             footermark=kDaikin2BitMark,
-            gap=kDaikin2Gap,
             dataptr=data[kDaikin2Section1Length:],
             nbytes=kDaikin2Section2Length,
-            frequency=kDaikin2Freq // 1000,
             MSBfirst=False,
-            repeat=0,
-            dutycycle=50,
         )
         all_timings.extend(section2_timings)
 
@@ -577,13 +549,9 @@ def sendDaikin216(data: List[int], nbytes: int, repeat: int = 0) -> List[int]:
             zeromark=kDaikin216BitMark,
             zerospace=kDaikin216ZeroSpace,
             footermark=kDaikin216BitMark,
-            gap=kDaikin216Gap,
             dataptr=data,
             nbytes=kDaikin216Section1Length,
-            frequency=kDaikin216Freq // 1000,
             MSBfirst=False,
-            repeat=0,
-            dutycycle=50,
         )
         all_timings.extend(section1_timings)
 
@@ -596,13 +564,9 @@ def sendDaikin216(data: List[int], nbytes: int, repeat: int = 0) -> List[int]:
             zeromark=kDaikin216BitMark,
             zerospace=kDaikin216ZeroSpace,
             footermark=kDaikin216BitMark,
-            gap=kDaikin216Gap,
             dataptr=data[kDaikin216Section1Length:],
             nbytes=kDaikin216Section2Length,
-            frequency=kDaikin216Freq // 1000,
             MSBfirst=False,
-            repeat=0,
-            dutycycle=50,
         )
         all_timings.extend(section2_timings)
 
@@ -635,13 +599,9 @@ def sendDaikin160(data: List[int], nbytes: int, repeat: int = 0) -> List[int]:
             zeromark=kDaikin160BitMark,
             zerospace=kDaikin160ZeroSpace,
             footermark=kDaikin160BitMark,
-            gap=kDaikin160Gap,
             dataptr=data,
             nbytes=kDaikin160Section1Length,
-            frequency=kDaikin160Freq // 1000,
             MSBfirst=False,
-            repeat=0,
-            dutycycle=50,
         )
         all_timings.extend(section1_timings)
 
@@ -654,13 +614,9 @@ def sendDaikin160(data: List[int], nbytes: int, repeat: int = 0) -> List[int]:
             zeromark=kDaikin160BitMark,
             zerospace=kDaikin160ZeroSpace,
             footermark=kDaikin160BitMark,
-            gap=kDaikin160Gap,
             dataptr=data[kDaikin160Section1Length:],
             nbytes=kDaikin160Section2Length,
-            frequency=kDaikin160Freq // 1000,
             MSBfirst=False,
-            repeat=0,
-            dutycycle=50,
         )
         all_timings.extend(section2_timings)
 
@@ -693,13 +649,9 @@ def sendDaikin176(data: List[int], nbytes: int, repeat: int = 0) -> List[int]:
             zeromark=kDaikin176BitMark,
             zerospace=kDaikin176ZeroSpace,
             footermark=kDaikin176BitMark,
-            gap=kDaikin176Gap,
             dataptr=data,
             nbytes=kDaikin176Section1Length,
-            frequency=kDaikin176Freq // 1000,
             MSBfirst=False,
-            repeat=0,
-            dutycycle=50,
         )
         all_timings.extend(section1_timings)
 
@@ -712,13 +664,9 @@ def sendDaikin176(data: List[int], nbytes: int, repeat: int = 0) -> List[int]:
             zeromark=kDaikin176BitMark,
             zerospace=kDaikin176ZeroSpace,
             footermark=kDaikin176BitMark,
-            gap=kDaikin176Gap,
             dataptr=data[kDaikin176Section1Length:],
             nbytes=kDaikin176Section2Length,
-            frequency=kDaikin176Freq // 1000,
             MSBfirst=False,
-            repeat=0,
-            dutycycle=50,
         )
         all_timings.extend(section2_timings)
 
@@ -755,13 +703,9 @@ def sendDaikin128(data: List[int], nbytes: int, repeat: int = 0) -> List[int]:
             zeromark=kDaikin128BitMark,
             zerospace=kDaikin128ZeroSpace,
             footermark=kDaikin128FooterMark,
-            gap=kDaikin128Gap,
             dataptr=data,
             nbytes=kDaikin128SectionLength,
-            frequency=kDaikin128Freq // 1000,
             MSBfirst=False,
-            repeat=0,
-            dutycycle=50,
         )
         all_timings.extend(section1_timings)
 
@@ -774,13 +718,9 @@ def sendDaikin128(data: List[int], nbytes: int, repeat: int = 0) -> List[int]:
             zeromark=kDaikin128BitMark,
             zerospace=kDaikin128ZeroSpace,
             footermark=kDaikin128BitMark,
-            gap=kDaikin128Gap,
             dataptr=data[kDaikin128SectionLength:],
             nbytes=kDaikin128SectionLength,
-            frequency=kDaikin128Freq // 1000,
             MSBfirst=False,
-            repeat=0,
-            dutycycle=50,
         )
         all_timings.extend(section2_timings)
 
@@ -814,13 +754,9 @@ def sendDaikin152(data: List[int], nbytes: int, repeat: int = 0) -> List[int]:
             zeromark=kDaikin152BitMark,
             zerospace=kDaikin152ZeroSpace,
             footermark=0,
-            gap=0,
             data_value=0,
             nbits=kDaikin152LeaderBits,
-            frequency=kDaikin152Freq // 1000,
             MSBfirst=False,
-            repeat=0,
-            dutycycle=50,
         )
         all_timings.extend(timings)
 
@@ -833,13 +769,9 @@ def sendDaikin152(data: List[int], nbytes: int, repeat: int = 0) -> List[int]:
             zeromark=kDaikin152BitMark,
             zerospace=kDaikin152ZeroSpace,
             footermark=kDaikin152BitMark,
-            gap=kDaikin152Gap,
             dataptr=data,
             nbytes=nbytes,
-            frequency=kDaikin152Freq // 1000,
             MSBfirst=False,
-            repeat=0,
-            dutycycle=50,
         )
         all_timings.extend(timings)
 
@@ -877,13 +809,9 @@ def sendDaikin64(data: int, nbits: int = kDaikin64Bits, repeat: int = 0) -> List
             zeromark=kDaikin64BitMark,
             zerospace=kDaikin64ZeroSpace,
             footermark=kDaikin64BitMark,
-            gap=kDaikin64Gap,
             data_value=data,
             nbits=nbits,
-            frequency=kDaikin64Freq // 1000,
             MSBfirst=False,
-            repeat=0,
-            dutycycle=50,
         )
         all_timings.extend(timings)
 
@@ -916,13 +844,9 @@ def sendDaikin200(data: List[int], nbytes: int, repeat: int = 0) -> List[int]:
             zeromark=kDaikin200BitMark,
             zerospace=kDaikin200ZeroSpace,
             footermark=kDaikin200BitMark,
-            gap=kDaikin200Gap,
             dataptr=data,
             nbytes=kDaikin200Section1Length,
-            frequency=kDaikin200Freq // 1000,
             MSBfirst=False,
-            repeat=0,
-            dutycycle=50,
         )
         all_timings.extend(section1_timings)
 
@@ -935,13 +859,9 @@ def sendDaikin200(data: List[int], nbytes: int, repeat: int = 0) -> List[int]:
             zeromark=kDaikin200BitMark,
             zerospace=kDaikin200ZeroSpace,
             footermark=kDaikin200BitMark,
-            gap=kDaikin200Gap,
             dataptr=data[kDaikin200Section1Length:],
             nbytes=kDaikin200Section2Length,
-            frequency=kDaikin200Freq // 1000,
             MSBfirst=False,
-            repeat=0,
-            dutycycle=50,
         )
         all_timings.extend(section2_timings)
 
@@ -974,13 +894,9 @@ def sendDaikin312(data: List[int], nbytes: int, repeat: int = 0) -> List[int]:
             zeromark=kDaikin312BitMark,
             zerospace=kDaikin312ZeroSpace,
             footermark=kDaikin312BitMark,
-            gap=kDaikin312HdrGap,
             dataptr=data,
             nbytes=kDaikin312Section1Length,
-            frequency=38,
             MSBfirst=False,
-            repeat=0,
-            dutycycle=50,
         )
         all_timings.extend(section1_timings)
 
@@ -993,13 +909,9 @@ def sendDaikin312(data: List[int], nbytes: int, repeat: int = 0) -> List[int]:
             zeromark=kDaikin312BitMark,
             zerospace=kDaikin312ZeroSpace,
             footermark=kDaikin312BitMark,
-            gap=kDaikin312SectionGap,
             dataptr=data[kDaikin312Section1Length:],
             nbytes=kDaikin312Section2Length,
-            frequency=38,
             MSBfirst=False,
-            repeat=0,
-            dutycycle=50,
         )
         all_timings.extend(section2_timings)
 

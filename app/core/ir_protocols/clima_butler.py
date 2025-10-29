@@ -56,13 +56,9 @@ def sendClimaButler(data: int, nbits: int = kClimaButlerBits, repeat: int = 0) -
             zeromark=kClimaButlerBitMark,
             zerospace=kClimaButlerZeroSpace,
             footermark=kClimaButlerBitMark,
-            gap=kClimaButlerHdrSpace,
             data=data,
             nbits=nbits,
-            frequency=kClimaButlerFreq,
             MSBfirst=True,
-            repeat=0,
-            dutycycle=kDutyDefault,
         )
         all_timings.extend(block_timings)
         # Footer

@@ -329,13 +329,9 @@ def sendVestelAc(data: int, nbits: int = kVestelAcBits, repeat: int = 0) -> List
         zeromark=kVestelAcBitMark,
         zerospace=kVestelAcZeroSpace,
         footermark=kVestelAcBitMark,
-        gap=100000,  # Footer + repeat gap
         dataptr=dataptr,
         nbytes=nbits // 8,
-        frequency=38000,
         MSBfirst=False,
-        repeat=repeat,
-        dutycycle=50,
     )
 
 
