@@ -420,7 +420,9 @@ def decode(results: decode_results, max_skip: int = 0, noise_floor: int = 0) -> 
 
     # Keep looking for protocols until we've run out of entries to skip or we
     # find a valid protocol message.
-    kStartOffset = 1  # Defined in IRrecv.cpp
+    # NOTE: C++ uses kStartOffset=1 for hardware captures with leading noise.
+    # But Tuya codes are clean timing arrays, so we start at 0.
+    kStartOffset = 0
 
     for offset in range(kStartOffset, (max_skip * 2) + kStartOffset + 1, 2):
         # The C++ version tries protocols in a specific order to avoid false positives

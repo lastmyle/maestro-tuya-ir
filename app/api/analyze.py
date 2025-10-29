@@ -13,86 +13,30 @@ from typing import Dict, List, Any, Optional
 
 from app.core.tuya_encoder import decode_ir, encode_ir
 from app.core.ir_protocols import decode, decode_results, decode_type_t, send
-from app.core.ir_protocols.fujitsu import IRFujitsuAC, sendFujitsuAC
+from app.core.ir_protocols.fujitsu import (
+    IRFujitsuAC,
+    sendFujitsuAC,
+    kFujitsuAcModeAuto,
+    kFujitsuAcModeCool,
+    kFujitsuAcModeHeat,
+    kFujitsuAcModeDry,
+    kFujitsuAcModeFan,
+    kFujitsuAcFanAuto,
+    kFujitsuAcFanHigh,
+    kFujitsuAcFanMed,
+    kFujitsuAcFanLow,
+    kFujitsuAcFanQuiet,
+)
 from app.core.ir_protocols.gree import IRGreeAC, sendGree
 from pydantic import BaseModel
 
 router = APIRouter()
 
 
-# Complete list of all supported manufacturers (46 total)
-SUPPORTED_MANUFACTURERS = [
-    {"display_name": "Airton", "code": "airton"},
-    {"display_name": "Airwell", "code": "airwell"},
-    {"display_name": "Amcor", "code": "amcor"},
-    {"display_name": "Argo", "code": "argo"},
-    {"display_name": "Bluestar Heavy", "code": "bluestar_heavy"},
-    {"display_name": "Bosch", "code": "bosch"},
-    {"display_name": "Carrier", "code": "carrier"},
-    {"display_name": "Clima Butler", "code": "clima_butler"},
-    {"display_name": "Coolix", "code": "coolix"},
-    {"display_name": "Corona", "code": "corona"},
-    {"display_name": "Daikin", "code": "daikin"},
-    {"display_name": "Delonghi", "code": "delonghi"},
-    {"display_name": "Doshisha", "code": "doshisha"},
-    {"display_name": "Ecoclim", "code": "ecoclim"},
-    {"display_name": "Electra", "code": "electra"},
-    {"display_name": "Fujitsu", "code": "fujitsu"},
-    {"display_name": "Goodweather", "code": "goodweather"},
-    {"display_name": "Gorenje", "code": "gorenje"},
-    {"display_name": "Gree", "code": "gree"},
-    {"display_name": "Haier", "code": "haier"},
-    {"display_name": "Hitachi", "code": "hitachi"},
-    {"display_name": "Kelon", "code": "kelon"},
-    {"display_name": "Kelvinator", "code": "kelvinator"},
-    {"display_name": "LG", "code": "lg"},
-    {"display_name": "Midea", "code": "midea"},
-    {"display_name": "Mirage", "code": "mirage"},
-    {"display_name": "Mitsubishi", "code": "mitsubishi"},
-    {"display_name": "Neoclima", "code": "neoclima"},
-    {"display_name": "Nikai", "code": "nikai"},
-    {"display_name": "Panasonic", "code": "panasonic"},
-    {"display_name": "Rhoss", "code": "rhoss"},
-    {"display_name": "Samsung", "code": "samsung"},
-    {"display_name": "Sanyo", "code": "sanyo"},
-    {"display_name": "Sharp", "code": "sharp"},
-    {"display_name": "Symphony", "code": "symphony"},
-    {"display_name": "TCL", "code": "tcl"},
-    {"display_name": "Teco", "code": "teco"},
-    {"display_name": "Technibel", "code": "technibel"},
-    {"display_name": "Teknopoint", "code": "teknopoint"},
-    {"display_name": "Toshiba", "code": "toshiba"},
-    {"display_name": "Transcold", "code": "transcold"},
-    {"display_name": "Trotec", "code": "trotec"},
-    {"display_name": "Truma", "code": "truma"},
-    {"display_name": "Vestel", "code": "vestel"},
-    {"display_name": "Voltas", "code": "voltas"},
-    {"display_name": "Whirlpool", "code": "whirlpool"},
-    {"display_name": "Whynter", "code": "whynter"},
-    {"display_name": "York", "code": "york"},
-    {"display_name": "Zepeal", "code": "zepeal"},
-]
-
-
-class ManufacturerInfo(BaseModel):
-    """Manufacturer information"""
-
-    display_name: str
-    code: str
-
-
-class ManufacturersResponse(BaseModel):
-    """Response model for /api/manufacturers"""
-
-    manufacturers: List[ManufacturerInfo]
-    total: int
-
-
 class IdentifyRequest(BaseModel):
     """Request model for /api/identify"""
 
     tuya_code: str
-    manufacturer: Optional[str] = None  # Optional hint to improve detection accuracy
 
 
 class CommandInfo(BaseModel):
@@ -136,7 +80,7 @@ def generate_fujitsu_commands(current_bytes: List[int]) -> List[CommandInfo]:
         ac.setPower(True)
 
         new_bytes = ac.getRaw()
-        signal = sendFujitsuAC(new_bytes, len(new_bytes), repeat=0)
+        signal = sendFujitsuAC(new_bytes, len(new_bytes))
         tuya_code = encode_ir(signal)
 
         commands.append(
@@ -149,11 +93,11 @@ def generate_fujitsu_commands(current_bytes: List[int]) -> List[CommandInfo]:
 
     # Mode commands
     modes = [
-        (IRFujitsuAC.kFujitsuAcModeAuto, "auto", "Auto mode"),
-        (IRFujitsuAC.kFujitsuAcModeCool, "cool", "Cool mode"),
-        (IRFujitsuAC.kFujitsuAcModeHeat, "heat", "Heat mode"),
-        (IRFujitsuAC.kFujitsuAcModeDry, "dry", "Dry mode"),
-        (IRFujitsuAC.kFujitsuAcModeFan, "fan", "Fan mode"),
+        (kFujitsuAcModeAuto, "auto", "Auto mode"),
+        (kFujitsuAcModeCool, "cool", "Cool mode"),
+        (kFujitsuAcModeHeat, "heat", "Heat mode"),
+        (kFujitsuAcModeDry, "dry", "Dry mode"),
+        (kFujitsuAcModeFan, "fan", "Fan mode"),
     ]
 
     for mode_val, mode_name, mode_desc in modes:
@@ -163,7 +107,7 @@ def generate_fujitsu_commands(current_bytes: List[int]) -> List[CommandInfo]:
         ac.setPower(True)
 
         new_bytes = ac.getRaw()
-        signal = sendFujitsuAC(new_bytes, len(new_bytes), repeat=0)
+        signal = sendFujitsuAC(new_bytes, len(new_bytes))
         tuya_code = encode_ir(signal)
 
         commands.append(
@@ -172,11 +116,11 @@ def generate_fujitsu_commands(current_bytes: List[int]) -> List[CommandInfo]:
 
     # Fan speed commands
     fan_speeds = [
-        (IRFujitsuAC.kFujitsuAcFanAuto, "auto", "Auto fan speed"),
-        (IRFujitsuAC.kFujitsuAcFanHigh, "high", "High fan speed"),
-        (IRFujitsuAC.kFujitsuAcFanMed, "medium", "Medium fan speed"),
-        (IRFujitsuAC.kFujitsuAcFanLow, "low", "Low fan speed"),
-        (IRFujitsuAC.kFujitsuAcFanQuiet, "quiet", "Quiet fan speed"),
+        (kFujitsuAcFanAuto, "auto", "Auto fan speed"),
+        (kFujitsuAcFanHigh, "high", "High fan speed"),
+        (kFujitsuAcFanMed, "medium", "Medium fan speed"),
+        (kFujitsuAcFanLow, "low", "Low fan speed"),
+        (kFujitsuAcFanQuiet, "quiet", "Quiet fan speed"),
     ]
 
     for fan_val, fan_name, fan_desc in fan_speeds:
@@ -186,7 +130,7 @@ def generate_fujitsu_commands(current_bytes: List[int]) -> List[CommandInfo]:
         ac.setPower(True)
 
         new_bytes = ac.getRaw()
-        signal = sendFujitsuAC(new_bytes, len(new_bytes), repeat=0)
+        signal = sendFujitsuAC(new_bytes, len(new_bytes))
         tuya_code = encode_ir(signal)
 
         commands.append(
@@ -200,7 +144,7 @@ def generate_fujitsu_commands(current_bytes: List[int]) -> List[CommandInfo]:
         ac.setPower(power_state)
 
         new_bytes = ac.getRaw()
-        signal = sendFujitsuAC(new_bytes, len(new_bytes), repeat=0)
+        signal = sendFujitsuAC(new_bytes, len(new_bytes))
         tuya_code = encode_ir(signal)
 
         power_name = "on" if power_state else "off"
@@ -233,7 +177,7 @@ def generate_gree_commands(current_bytes: List[int]) -> List[CommandInfo]:
         ac.setPower(True)
 
         new_bytes = ac.getRaw()
-        signal = sendGree(new_bytes, len(new_bytes), repeat=0)
+        signal = sendGree(new_bytes, len(new_bytes))
         tuya_code = encode_ir(signal)
 
         commands.append(
@@ -262,7 +206,7 @@ def generate_gree_commands(current_bytes: List[int]) -> List[CommandInfo]:
         ac.setPower(True)
 
         new_bytes = ac.getRaw()
-        signal = sendGree(new_bytes, len(new_bytes), repeat=0)
+        signal = sendGree(new_bytes, len(new_bytes))
         tuya_code = encode_ir(signal)
 
         commands.append(
@@ -286,7 +230,7 @@ def generate_gree_commands(current_bytes: List[int]) -> List[CommandInfo]:
         ac.setPower(True)
 
         new_bytes = ac.getRaw()
-        signal = sendGree(new_bytes, len(new_bytes), repeat=0)
+        signal = sendGree(new_bytes, len(new_bytes))
         tuya_code = encode_ir(signal)
 
         commands.append(
@@ -300,7 +244,7 @@ def generate_gree_commands(current_bytes: List[int]) -> List[CommandInfo]:
         ac.setPower(power_state)
 
         new_bytes = ac.getRaw()
-        signal = sendGree(new_bytes, len(new_bytes), repeat=0)
+        signal = sendGree(new_bytes, len(new_bytes))
         tuya_code = encode_ir(signal)
 
         power_name = "on" if power_state else "off"
@@ -315,16 +259,13 @@ def generate_gree_commands(current_bytes: List[int]) -> List[CommandInfo]:
     return commands
 
 
-def get_protocol_info(
-    protocol_type: decode_type_t, state_bytes: List[int], manufacturer_hint: Optional[str] = None
-) -> Dict[str, Any]:
+def get_protocol_info(protocol_type: decode_type_t, state_bytes: List[int]) -> Dict[str, Any]:
     """
     Get protocol information including manufacturer, temperature ranges, and operation modes.
 
     Args:
         protocol_type: The detected protocol type
         state_bytes: The decoded state bytes from the IR code
-        manufacturer_hint: Optional manufacturer hint to improve confidence
 
     Returns:
         Dictionary with protocol information including manufacturer, modes, temperature ranges
@@ -447,19 +388,7 @@ def get_protocol_info(
         },
     )
 
-    # Calculate confidence based on manufacturer hint
-    confidence = 1.0
-    if manufacturer_hint:
-        detected_manufacturer = info.get("manufacturer", "").lower()
-        if (
-            manufacturer_hint.lower() in detected_manufacturer.lower()
-            or detected_manufacturer.lower() in manufacturer_hint.lower()
-        ):
-            confidence = 0.99  # High confidence if hint matches
-        else:
-            confidence = 0.85  # Lower confidence if hint doesn't match
-
-    return {"protocol": protocol_name, "confidence": confidence, **info}
+    return {"protocol": protocol_name, "confidence": 1.0, **info}
 
 
 def generate_commands_for_protocol(
@@ -502,38 +431,6 @@ def generate_commands_for_protocol(
         ]
 
 
-@router.get("/manufacturers", response_model=ManufacturersResponse)
-async def get_manufacturers():
-    """
-    Get list of all supported HVAC manufacturers.
-
-    Returns a complete list of all 46 manufacturers supported by the
-    Maestro Tuya IR Bridge, sorted alphabetically by display name.
-
-    Returns:
-        ManufacturersResponse with list of manufacturer objects and total count
-
-    Example:
-        GET /api/manufacturers
-
-        Response:
-        {
-            "manufacturers": [
-                {"display_name": "Airton", "code": "airton"},
-                {"display_name": "Airwell", "code": "airwell"},
-                ...
-            ],
-            "total": 46
-        }
-    """
-    # Sort by display_name
-    sorted_manufacturers = sorted(SUPPORTED_MANUFACTURERS, key=lambda x: x["display_name"])
-    return ManufacturersResponse(
-        manufacturers=[ManufacturerInfo(**m) for m in sorted_manufacturers],
-        total=len(SUPPORTED_MANUFACTURERS),
-    )
-
-
 @router.post("/identify", response_model=IdentifyResponse)
 async def identify(request: IdentifyRequest):
     """
@@ -542,17 +439,15 @@ async def identify(request: IdentifyRequest):
     This unified endpoint:
     1. Decodes the Tuya IR code to raw timings
     2. Auto-detects the protocol using IRrecv::decode() (tries all 91+ variants)
-    3. Uses optional manufacturer hint to improve detection accuracy
-    4. Extracts manufacturer and protocol information
-    5. Generates all available commands for that specific protocol variant
-    6. Returns temperature ranges, operation modes, and fan modes
+    3. Extracts manufacturer and protocol information
+    4. Generates all available commands for that specific protocol variant
+    5. Returns temperature ranges, operation modes, and fan modes
 
     Supports 91+ protocol variants across 46 manufacturers.
 
     Args:
         request: IdentifyRequest with:
             - tuyaCode: base64-encoded Tuya IR code (required)
-            - manufacturer: optional manufacturer hint (e.g., "Fujitsu", "Gree")
 
     Returns:
         IdentifyResponse with:
@@ -560,7 +455,7 @@ async def identify(request: IdentifyRequest):
             - manufacturer: Detected manufacturer
             - commands: Complete command set
             - temperature/mode/fan capabilities
-            - confidence: Detection confidence (0.0-1.0)
+            - confidence: Detection confidence (always 1.0)
 
     Raises:
         HTTPException 400: Invalid Tuya code or protocol not recognized
@@ -569,15 +464,14 @@ async def identify(request: IdentifyRequest):
     Example:
         POST /api/identify
         {
-            "tuyaCode": "BpoRmhFfAjFgAQNfAnYGgA",
-            "manufacturer": "Fujitsu"
+            "tuyaCode": "BpoRmhFfAjFgAQNfAnYGgA"
         }
 
         Response:
         {
             "protocol": "FUJITSU_AC",
             "manufacturer": "Fujitsu",
-            "confidence": 0.99,
+            "confidence": 1.0,
             "commands": [...],
             "min_temperature": 16,
             "max_temperature": 30,
@@ -660,11 +554,13 @@ async def identify(request: IdentifyRequest):
             },
         )
     except Exception as e:
+        import traceback
+        traceback.print_exc()  # Print to console for debugging
         raise HTTPException(
             status_code=500,
             detail={
                 "error": "INTERNAL_ERROR",
                 "message": "An unexpected error occurred during protocol analysis",
-                "details": str(e),
+                "details": f"{type(e).__name__}: {str(e)}",
             },
         )

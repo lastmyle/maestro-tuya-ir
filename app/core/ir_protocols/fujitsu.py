@@ -22,7 +22,7 @@ kFujitsuAcBitMark = 448
 kFujitsuAcOneSpace = 1182
 kFujitsuAcZeroSpace = 390
 kFujitsuAcMinGap = 8100
-kFujitsuAcExtraTolerance = 5  # Extra tolerance percentage.
+kFujitsuAcExtraTolerance = 25  # Extra tolerance percentage (increased to handle compressed real-world captures).
 
 # State lengths
 kFujitsuAcStateLength = 16
