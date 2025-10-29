@@ -15,10 +15,10 @@ from typing import List
 #   Brand: Transcold,  Model: M1-F-NO-6 A/C
 
 # Constants - Timing values (from ir_Transcold.cpp lines 21-25)
-kTranscoldHdrMark = 5944    # uSeconds.
-kTranscoldBitMark = 555     # uSeconds.
-kTranscoldHdrSpace = 7563   # uSeconds.
-kTranscoldOneSpace = 3556   # uSeconds.
+kTranscoldHdrMark = 5944  # uSeconds.
+kTranscoldBitMark = 555  # uSeconds.
+kTranscoldHdrSpace = 7563  # uSeconds.
+kTranscoldOneSpace = 3556  # uSeconds.
 kTranscoldZeroSpace = 1526  # uSeconds.
 
 # Mode constants (from ir_Transcold.h lines 87-91)
@@ -133,7 +133,7 @@ def sendTranscold(data: int, nbits: int, repeat: int = 0) -> List[int]:
                 zerospace=kTranscoldZeroSpace,
                 data=both,
                 nbits=16,
-                MSBfirst=True
+                MSBfirst=True,
             )
             all_timings.extend(segment_timings)
 
@@ -231,8 +231,8 @@ class IRTranscoldAc:
         temp = max(temp, kTranscoldTempMin) - kTranscoldTempMin + 1
         # Import here to avoid circular dependency
         from app.core.ir_protocols.ir_recv import reverseBits, invertBits
-        self._.Temp = reverseBits(invertBits(temp, kTranscoldTempSize),
-                                  kTranscoldTempSize)
+
+        self._.Temp = reverseBits(invertBits(temp, kTranscoldTempSize), kTranscoldTempSize)
 
     ## Get the current temperature setting.
     ## @return The current setting for temp. in degrees celsius.
@@ -240,8 +240,12 @@ class IRTranscoldAc:
     def getTemp(self) -> int:
         # Import here to avoid circular dependency
         from app.core.ir_protocols.ir_recv import reverseBits, invertBits
-        return reverseBits(invertBits(self._.Temp, kTranscoldTempSize),
-                          kTranscoldTempSize) + kTranscoldTempMin - 1
+
+        return (
+            reverseBits(invertBits(self._.Temp, kTranscoldTempSize), kTranscoldTempSize)
+            + kTranscoldTempMin
+            - 1
+        )
 
     ## Get the value of the current power setting.
     ## @return true, the setting is on. false, the setting is off.
@@ -334,9 +338,15 @@ class IRTranscoldAc:
                 if speed == kTranscoldFanAuto0:
                     newspeed = kTranscoldFanAuto
 
-        if speed in [kTranscoldFanAuto, kTranscoldFanAuto0, kTranscoldFanMin,
-                     kTranscoldFanMed, kTranscoldFanMax, kTranscoldFanZoneFollow,
-                     kTranscoldFanFixed]:
+        if speed in [
+            kTranscoldFanAuto,
+            kTranscoldFanAuto0,
+            kTranscoldFanMin,
+            kTranscoldFanMed,
+            kTranscoldFanMax,
+            kTranscoldFanZoneFollow,
+            kTranscoldFanFixed,
+        ]:
             pass
         else:  # Unknown speed requested.
             newspeed = kTranscoldFanAuto
@@ -361,7 +371,12 @@ def decodeTranscold(results, offset: int = 1, nbits: int = 24, strict: bool = Tr
     """
     # Import here to avoid circular imports
     from app.core.ir_protocols.ir_recv import (
-        kHeader, kFooter, matchMark, matchSpace, matchAtLeast, invertBits
+        kHeader,
+        kFooter,
+        matchMark,
+        matchSpace,
+        matchAtLeast,
+        invertBits,
     )
 
     # The protocol sends the data normal + inverted, alternating on
@@ -419,8 +434,9 @@ def decodeTranscold(results, offset: int = 1, nbits: int = 24, strict: bool = Tr
     if not matchMark(results.rawbuf[offset], kTranscoldBitMark):
         return False
     offset += 1
-    if offset < results.rawlen and \
-       not matchAtLeast(results.rawbuf[offset], 100000):  # kDefaultMessageGap placeholder
+    if offset < results.rawlen and not matchAtLeast(
+        results.rawbuf[offset], 100000
+    ):  # kDefaultMessageGap placeholder
         return False
 
     # Compliance (line 490)

@@ -21,14 +21,14 @@ def parse_off_command():
     print("=" * 80)
 
     # Step 1: Get Tuya code and decode to bytes using EXACT C++ translation
-    tuya_code = FUJITSU_KNOWN_GOOD_CODES['OFF']
+    tuya_code = FUJITSU_KNOWN_GOOD_CODES["OFF"]
     timings = decode_ir(tuya_code)
     results = decode_results()
     results.rawbuf = timings
     results.rawlen = len(timings)
     success = decodeFujitsuAC(results, offset=0, nbits=kFujitsuAcBits, strict=False)
     assert success
-    bytes_array = results.state[:results.bits // 8]
+    bytes_array = results.state[: results.bits // 8]
 
     print(f"\nBytes (hex): {' '.join(f'{b:02x}' for b in bytes_array)}")
     print(f"Length: {len(bytes_array)} bytes (short format)")
@@ -65,14 +65,14 @@ def parse_24c_high_command():
     print("=" * 80)
 
     # Step 1: Get Tuya code and decode to bytes using EXACT C++ translation
-    tuya_code = FUJITSU_KNOWN_GOOD_CODES['24C_High']
+    tuya_code = FUJITSU_KNOWN_GOOD_CODES["24C_High"]
     timings = decode_ir(tuya_code)
     results = decode_results()
     results.rawbuf = timings
     results.rawlen = len(timings)
     success = decodeFujitsuAC(results, offset=0, nbits=kFujitsuAcBits, strict=False)
     assert success
-    bytes_array = results.state[:results.bits // 8]
+    bytes_array = results.state[: results.bits // 8]
 
     print(f"\nBytes (hex): {' '.join(f'{b:02x}' for b in bytes_array)}")
     print(f"Length: {len(bytes_array)} bytes (long format)")
@@ -115,14 +115,14 @@ def modify_and_encode_example():
     print("=" * 80)
 
     # Parse existing command
-    tuya_code = FUJITSU_KNOWN_GOOD_CODES['24C_High']
+    tuya_code = FUJITSU_KNOWN_GOOD_CODES["24C_High"]
     timings = decode_ir(tuya_code)
     results = decode_results()
     results.rawbuf = timings
     results.rawlen = len(timings)
     success = decodeFujitsuAC(results, offset=0, nbits=kFujitsuAcBits, strict=False)
     assert success
-    bytes_array = results.state[:results.bits // 8]
+    bytes_array = results.state[: results.bits // 8]
 
     ac = IRFujitsuAC()
     ac.setRaw(bytes_array, len(bytes_array))

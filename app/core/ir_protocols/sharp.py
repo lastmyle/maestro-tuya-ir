@@ -53,13 +53,13 @@ kSharpAcMinTemp = 15  # Celsius
 kSharpAcMaxTemp = 30  # Celsius
 
 # Power constants
-kSharpAcPowerUnknown = 0                     # 0b0000
-kSharpAcPowerOnFromOff = 1                   # 0b0001
-kSharpAcPowerOff = 2                         # 0b0010
-kSharpAcPowerOn = 3                          # 0b0011 (Normal)
-kSharpAcPowerSetSpecialOn = 6                # 0b0110
-kSharpAcPowerSetSpecialOff = 7               # 0b0111
-kSharpAcPowerTimerSetting = 8                # 0b1000
+kSharpAcPowerUnknown = 0  # 0b0000
+kSharpAcPowerOnFromOff = 1  # 0b0001
+kSharpAcPowerOff = 2  # 0b0010
+kSharpAcPowerOn = 3  # 0b0011 (Normal)
+kSharpAcPowerSetSpecialOn = 6  # 0b0110
+kSharpAcPowerSetSpecialOff = 7  # 0b0111
+kSharpAcPowerTimerSetting = 8  # 0b1000
 
 # Mode constants
 kSharpAcAuto = 0b00  # A907 only
@@ -110,11 +110,13 @@ SHARP_A907 = 0
 SHARP_A705 = 1
 SHARP_A903 = 2
 
+
 # Bit manipulation helpers
 def GETBITS8(data: int, offset: int, size: int) -> int:
     """Extract bits from uint8"""
     mask = (1 << size) - 1
     return (data >> offset) & mask
+
 
 def GETBITS16(data: int, offset: int, size: int) -> int:
     """Extract bits from uint16"""
@@ -319,7 +321,7 @@ def sendSharpRaw(data: int, nbits: int = kSharpBits, repeat: int = 0) -> List[in
                 frequency=38,
                 MSBfirst=True,
                 repeat=0,
-                dutycycle=33
+                dutycycle=33,
             )
             all_timings.extend(timings)
             # Invert the data per protocol. This is always called twice, so it's
@@ -332,8 +334,9 @@ def sendSharpRaw(data: int, nbits: int = kSharpBits, repeat: int = 0) -> List[in
 ## Encode a (raw) Sharp message from its components.
 ## Status: STABLE / Works okay.
 ## EXACT translation from IRremoteESP8266 IRsend::encodeSharp (ir_Sharp.cpp lines 102-118)
-def encodeSharp(address: int, command: int, expansion: int = 1, check: int = 0,
-                MSBfirst: bool = True) -> int:
+def encodeSharp(
+    address: int, command: int, expansion: int = 1, check: int = 0, MSBfirst: bool = True
+) -> int:
     """
     Encode a (raw) Sharp message from its components.
     EXACT translation from IRremoteESP8266 IRsend::encodeSharp
@@ -349,15 +352,18 @@ def encodeSharp(address: int, command: int, expansion: int = 1, check: int = 0,
         tempcommand = reverseBits(tempcommand, kSharpCommandBits)
 
     # Concatenate all the bits.
-    return (tempaddress << (kSharpCommandBits + 2)) | (tempcommand << 2) | \
-           (tempexpansion << 1) | tempcheck
+    return (
+        (tempaddress << (kSharpCommandBits + 2))
+        | (tempcommand << 2)
+        | (tempexpansion << 1)
+        | tempcheck
+    )
 
 
 ## Send a Sharp message
 ## Status: DEPRECATED / Previously working fine.
 ## EXACT translation from IRremoteESP8266 IRsend::sendSharp (ir_Sharp.cpp lines 137-140)
-def sendSharp(address: int, command: int, nbits: int = kSharpBits,
-              repeat: int = 0) -> List[int]:
+def sendSharp(address: int, command: int, nbits: int = kSharpBits, repeat: int = 0) -> List[int]:
     """
     Send a Sharp message.
     EXACT translation from IRremoteESP8266 IRsend::sendSharp
@@ -368,8 +374,9 @@ def sendSharp(address: int, command: int, nbits: int = kSharpBits,
 ## Decode the supplied Sharp message.
 ## Status: STABLE / Working fine.
 ## EXACT translation from IRremoteESP8266 IRrecv::decodeSharp (ir_Sharp.cpp lines 159-219)
-def decodeSharp(results, offset: int = 1, nbits: int = kSharpBits, strict: bool = True,
-                expansion: bool = True) -> bool:
+def decodeSharp(
+    results, offset: int = 1, nbits: int = kSharpBits, strict: bool = True, expansion: bool = True
+) -> bool:
     """
     Decode the supplied Sharp message.
     EXACT translation from IRremoteESP8266 IRrecv::decodeSharp
@@ -406,7 +413,7 @@ def decodeSharp(results, offset: int = 1, nbits: int = kSharpBits, strict: bool 
         atleast=True,
         tolerance=35,
         excess=kMarkExcess,
-        MSBfirst=True
+        MSBfirst=True,
     )
     if used == 0:
         return False
@@ -435,8 +442,7 @@ def decodeSharp(results, offset: int = 1, nbits: int = kSharpBits, strict: bool 
 ## Send a Sharp A/C message.
 ## Status: Alpha / Untested.
 ## EXACT translation from IRremoteESP8266 IRsend::sendSharpAc (ir_Sharp.cpp lines 230-240)
-def sendSharpAc(data: List[int], nbytes: int = kSharpAcStateLength,
-                repeat: int = 0) -> List[int]:
+def sendSharpAc(data: List[int], nbytes: int = kSharpAcStateLength, repeat: int = 0) -> List[int]:
     """
     Send a Sharp A/C message.
     EXACT translation from IRremoteESP8266 IRsend::sendSharpAc
@@ -462,7 +468,7 @@ def sendSharpAc(data: List[int], nbytes: int = kSharpAcStateLength,
         frequency=38000,
         MSBfirst=False,
         repeat=repeat,
-        dutycycle=50
+        dutycycle=50,
     )
 
 
@@ -540,7 +546,7 @@ class IRSharpAc:
             self._model = SHARP_A907
             self._.Model = False
 
-        self._.Model2 = (self._model != SHARP_A907)
+        self._.Model2 = self._model != SHARP_A907
         # Redo the operating mode as some models don't support all modes.
         self.setMode(self._.Mode)
 
@@ -575,8 +581,11 @@ class IRSharpAc:
     ## Is one of the special power states in use?
     ## EXACT translation from ir_Sharp.cpp lines 369-376
     def isPowerSpecial(self) -> bool:
-        if self._.PowerSpecial in [kSharpAcPowerSetSpecialOff, kSharpAcPowerSetSpecialOn,
-                                    kSharpAcPowerTimerSetting]:
+        if self._.PowerSpecial in [
+            kSharpAcPowerSetSpecialOff,
+            kSharpAcPowerSetSpecialOn,
+            kSharpAcPowerTimerSetting,
+        ]:
             return True
         return False
 
@@ -613,9 +622,15 @@ class IRSharpAc:
     ## Set the value of the Special (button/command?) setting.
     ## EXACT translation from ir_Sharp.cpp lines 407-421
     def setSpecial(self, mode: int) -> None:
-        if mode in [kSharpAcSpecialPower, kSharpAcSpecialTurbo, kSharpAcSpecialTempEcono,
-                    kSharpAcSpecialFan, kSharpAcSpecialSwing, kSharpAcSpecialTimer,
-                    kSharpAcSpecialTimerHalfHour]:
+        if mode in [
+            kSharpAcSpecialPower,
+            kSharpAcSpecialTurbo,
+            kSharpAcSpecialTempEcono,
+            kSharpAcSpecialFan,
+            kSharpAcSpecialSwing,
+            kSharpAcSpecialTimer,
+            kSharpAcSpecialTimerHalfHour,
+        ]:
             self._.Special = mode
         else:
             self._.Special = kSharpAcSpecialPower
@@ -687,8 +702,13 @@ class IRSharpAc:
     ## Set the speed of the fan.
     ## EXACT translation from ir_Sharp.cpp lines 509-525
     def setFan(self, speed: int, save: bool = True) -> None:
-        if speed in [kSharpAcFanAuto, kSharpAcFanMin, kSharpAcFanMed,
-                     kSharpAcFanHigh, kSharpAcFanMax]:
+        if speed in [
+            kSharpAcFanAuto,
+            kSharpAcFanMin,
+            kSharpAcFanMed,
+            kSharpAcFanHigh,
+            kSharpAcFanMax,
+        ]:
             self._.Fan = speed
             if save:
                 self._fan = speed
@@ -707,8 +727,9 @@ class IRSharpAc:
     ## Get the Turbo setting of the A/C.
     ## EXACT translation from ir_Sharp.cpp lines 535-538
     def getTurbo(self) -> bool:
-        return (self._.PowerSpecial == kSharpAcPowerSetSpecialOn) and \
-               (self._.Special == kSharpAcSpecialTurbo)
+        return (self._.PowerSpecial == kSharpAcPowerSetSpecialOn) and (
+            self._.Special == kSharpAcSpecialTurbo
+        )
 
     ## Set the Turbo setting of the A/C.
     ## EXACT translation from ir_Sharp.cpp lines 545-549
@@ -732,15 +753,28 @@ class IRSharpAc:
                 self.setSwingV(kSharpAcSwingVLow)  # Use the next lowest setting.
                 return
 
-        if position in [kSharpAcSwingVHigh, kSharpAcSwingVMid, kSharpAcSwingVLow,
-                        kSharpAcSwingVToggle, kSharpAcSwingVOff, kSharpAcSwingVLast,
-                        kSharpAcSwingVCoanda]:
+        if position in [
+            kSharpAcSwingVHigh,
+            kSharpAcSwingVMid,
+            kSharpAcSwingVLow,
+            kSharpAcSwingVToggle,
+            kSharpAcSwingVOff,
+            kSharpAcSwingVLast,
+            kSharpAcSwingVCoanda,
+        ]:
             # All expected non-positions set the special bits.
             self._.Special = kSharpAcSpecialSwing
 
-        if position in [kSharpAcSwingVIgnore, kSharpAcSwingVHigh, kSharpAcSwingVMid,
-                        kSharpAcSwingVLow, kSharpAcSwingVToggle, kSharpAcSwingVOff,
-                        kSharpAcSwingVLast, kSharpAcSwingVCoanda]:
+        if position in [
+            kSharpAcSwingVIgnore,
+            kSharpAcSwingVHigh,
+            kSharpAcSwingVMid,
+            kSharpAcSwingVLow,
+            kSharpAcSwingVToggle,
+            kSharpAcSwingVOff,
+            kSharpAcSwingVLast,
+            kSharpAcSwingVCoanda,
+        ]:
             self._.Swing = position
 
     ## Get the (vertical) Swing Toggle setting of the A/C.
@@ -771,8 +805,9 @@ class IRSharpAc:
     ## Get the Economical mode toggle setting of the A/C.
     ## EXACT translation from ir_Sharp.cpp lines 630-633
     def _getEconoToggle(self) -> bool:
-        return (self._.PowerSpecial == kSharpAcPowerSetSpecialOn) and \
-               (self._.Special == kSharpAcSpecialTempEcono)
+        return (self._.PowerSpecial == kSharpAcPowerSetSpecialOn) and (
+            self._.Special == kSharpAcSpecialTempEcono
+        )
 
     ## Set the Economical mode toggle setting of the A/C.
     ## EXACT translation from ir_Sharp.cpp lines 639-642
@@ -806,8 +841,9 @@ class IRSharpAc:
     ## Get how long the timer is set for, in minutes.
     ## EXACT translation from ir_Sharp.cpp lines 676-680
     def getTimerTime(self) -> int:
-        return self._.TimerHours * kSharpAcTimerIncrement * 2 + \
-               (kSharpAcTimerIncrement if self._.Special == kSharpAcSpecialTimerHalfHour else 0)
+        return self._.TimerHours * kSharpAcTimerIncrement * 2 + (
+            kSharpAcTimerIncrement if self._.Special == kSharpAcSpecialTimerHalfHour else 0
+        )
 
     ## Is the Timer enabled?
     ## EXACT translation from ir_Sharp.cpp line 684
@@ -860,8 +896,7 @@ class IRSharpAc:
 ## Decode the supplied Sharp A/C message.
 ## Status: STABLE / Known working.
 ## EXACT translation from IRremoteESP8266 IRrecv::decodeSharpAc (ir_Sharp.cpp lines 949-977)
-def decodeSharpAc(results, offset: int = 1, nbits: int = kSharpAcBits,
-                  strict: bool = True) -> bool:
+def decodeSharpAc(results, offset: int = 1, nbits: int = kSharpAcBits, strict: bool = True) -> bool:
     """
     Decode the supplied Sharp A/C message.
     EXACT translation from IRremoteESP8266 IRrecv::decodeSharpAc
@@ -891,7 +926,7 @@ def decodeSharpAc(results, offset: int = 1, nbits: int = kSharpAcBits,
         atleast=True,
         tolerance=25,
         excess=kMarkExcess,
-        MSBfirst=False
+        MSBfirst=False,
     )
     if used == 0:
         return False

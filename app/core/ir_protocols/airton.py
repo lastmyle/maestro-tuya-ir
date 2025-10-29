@@ -92,7 +92,7 @@ class AirtonProtocol:
     @Power.setter
     def Power(self, value: bool) -> None:
         if value:
-            self.raw |= (1 << 19)
+            self.raw |= 1 << 19
         else:
             self.raw &= ~(1 << 19)
 
@@ -111,7 +111,7 @@ class AirtonProtocol:
     @Turbo.setter
     def Turbo(self, value: bool) -> None:
         if value:
-            self.raw |= (1 << 23)
+            self.raw |= 1 << 23
         else:
             self.raw &= ~(1 << 23)
 
@@ -132,7 +132,7 @@ class AirtonProtocol:
     @SwingV.setter
     def SwingV(self, value: bool) -> None:
         if value:
-            self.raw |= (1 << 32)
+            self.raw |= 1 << 32
         else:
             self.raw &= ~(1 << 32)
 
@@ -144,7 +144,7 @@ class AirtonProtocol:
     @Econo.setter
     def Econo(self, value: bool) -> None:
         if value:
-            self.raw |= (1 << 40)
+            self.raw |= 1 << 40
         else:
             self.raw &= ~(1 << 40)
 
@@ -155,7 +155,7 @@ class AirtonProtocol:
     @Sleep.setter
     def Sleep(self, value: bool) -> None:
         if value:
-            self.raw |= (1 << 41)
+            self.raw |= 1 << 41
         else:
             self.raw &= ~(1 << 41)
 
@@ -166,7 +166,7 @@ class AirtonProtocol:
     @NotAutoOn.setter
     def NotAutoOn(self, value: bool) -> None:
         if value:
-            self.raw |= (1 << 42)
+            self.raw |= 1 << 42
         else:
             self.raw &= ~(1 << 42)
 
@@ -177,7 +177,7 @@ class AirtonProtocol:
     @HeatOn.setter
     def HeatOn(self, value: bool) -> None:
         if value:
-            self.raw |= (1 << 44)
+            self.raw |= 1 << 44
         else:
             self.raw &= ~(1 << 44)
 
@@ -188,7 +188,7 @@ class AirtonProtocol:
     @Health.setter
     def Health(self, value: bool) -> None:
         if value:
-            self.raw |= (1 << 46)
+            self.raw |= 1 << 46
         else:
             self.raw &= ~(1 << 46)
 
@@ -199,7 +199,7 @@ class AirtonProtocol:
     @Light.setter
     def Light(self, value: bool) -> None:
         if value:
-            self.raw |= (1 << 47)
+            self.raw |= 1 << 47
         else:
             self.raw &= ~(1 << 47)
 
@@ -220,7 +220,9 @@ class AirtonProtocol:
 ## @param[in] nbits Nr. of bits to send. usually kAirtonBits
 ## @param[in] repeat Nr. of times the message is to be repeated.
 ## Direct translation from IRremoteESP8266 IRsend::sendAirton (ir_Airton.cpp lines 28-40)
-def sendAirton(data: int, nbits: int = kAirtonBits, repeat: int = kAirtonDefaultRepeat) -> List[int]:
+def sendAirton(
+    data: int, nbits: int = kAirtonBits, repeat: int = kAirtonDefaultRepeat
+) -> List[int]:
     """
     Send a Airton formatted message.
     EXACT translation from IRremoteESP8266 IRsend::sendAirton
@@ -244,7 +246,7 @@ def sendAirton(data: int, nbits: int = kAirtonBits, repeat: int = kAirtonDefault
         frequency=kAirtonFreq,
         MSBfirst=False,
         repeat=repeat,
-        dutycycle=50
+        dutycycle=50,
     )
 
 
@@ -289,7 +291,7 @@ def decodeAirton(results, offset: int = 1, nbits: int = kAirtonBits, strict: boo
         atleast=True,
         tolerance=25,  # kUseDefTol
         excess=50,  # kMarkExcess
-        MSBfirst=False
+        MSBfirst=False,
     ):
         return False
 

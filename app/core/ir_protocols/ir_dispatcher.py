@@ -15,6 +15,7 @@ from app.core.ir_protocols.ir_recv import decode_results
 # EXACT translation from IRremoteESP8266.h line 1018
 class decode_type_t(IntEnum):
     """Protocol type enumeration - EXACT translation from C++"""
+
     UNKNOWN = -1
     UNUSED = 0
     RC5 = 1
@@ -147,7 +148,9 @@ class decode_type_t(IntEnum):
 
 
 # EXACT translation from IRsend.cpp line 1160
-def send(protocol_type: decode_type_t, state: List[int], nbytes: int, repeat: int = 0) -> Optional[List[int]]:
+def send(
+    protocol_type: decode_type_t, state: List[int], nbytes: int, repeat: int = 0
+) -> Optional[List[int]]:
     """
     EXACT translation of IRsend::send() from IRsend.cpp
 
@@ -167,113 +170,147 @@ def send(protocol_type: decode_type_t, state: List[int], nbytes: int, repeat: in
     # Fujitsu AC
     if protocol_type == decode_type_t.FUJITSU_AC:
         from app.core.ir_protocols.fujitsu import sendFujitsuAC
+
         return sendFujitsuAC(state, nbytes, repeat)
 
     # Gree
     elif protocol_type == decode_type_t.GREE:
         from app.core.ir_protocols.gree import sendGree
+
         return sendGree(state, nbytes, repeat)
 
     # Daikin variants (10 total)
     elif protocol_type == decode_type_t.DAIKIN:
         from app.core.ir_protocols.daikin import sendDaikin
+
         return sendDaikin(state, nbytes, repeat)
     elif protocol_type == decode_type_t.DAIKIN2:
         from app.core.ir_protocols.daikin import sendDaikin2
+
         return sendDaikin2(state, nbytes, repeat)
     elif protocol_type == decode_type_t.DAIKIN216:
         from app.core.ir_protocols.daikin import sendDaikin216
+
         return sendDaikin216(state, nbytes, repeat)
     elif protocol_type == decode_type_t.DAIKIN160:
         from app.core.ir_protocols.daikin import sendDaikin160
+
         return sendDaikin160(state, nbytes, repeat)
     elif protocol_type == decode_type_t.DAIKIN176:
         from app.core.ir_protocols.daikin import sendDaikin176
+
         return sendDaikin176(state, nbytes, repeat)
     elif protocol_type == decode_type_t.DAIKIN128:
         from app.core.ir_protocols.daikin import sendDaikin128
+
         return sendDaikin128(state, nbytes, repeat)
     elif protocol_type == decode_type_t.DAIKIN152:
         from app.core.ir_protocols.daikin import sendDaikin152
+
         return sendDaikin152(state, nbytes, repeat)
     elif protocol_type == decode_type_t.DAIKIN64:
         from app.core.ir_protocols.daikin import sendDaikin64
+
         # Daikin64 takes a 64-bit integer, not byte array
         if nbytes >= 8:
-            data64 = int.from_bytes(state[:8], byteorder='little')
+            data64 = int.from_bytes(state[:8], byteorder="little")
             return sendDaikin64(data64, repeat)
         return None
     elif protocol_type == decode_type_t.DAIKIN200:
         from app.core.ir_protocols.daikin import sendDaikin200
+
         return sendDaikin200(state, nbytes, repeat)
     elif protocol_type == decode_type_t.DAIKIN312:
         from app.core.ir_protocols.daikin import sendDaikin312
+
         return sendDaikin312(state, nbytes, repeat)
 
     # Mitsubishi variants (5 total)
     elif protocol_type == decode_type_t.MITSUBISHI_AC:
         from app.core.ir_protocols.mitsubishi import sendMitsubishiAC
+
         return sendMitsubishiAC(state, nbytes, repeat)
     elif protocol_type == decode_type_t.MITSUBISHI136:
         from app.core.ir_protocols.mitsubishi import sendMitsubishi136
+
         return sendMitsubishi136(state, nbytes, repeat)
     elif protocol_type == decode_type_t.MITSUBISHI112:
         from app.core.ir_protocols.mitsubishi import sendMitsubishi112
+
         return sendMitsubishi112(state, nbytes, repeat)
     elif protocol_type == decode_type_t.MITSUBISHI_HEAVY_88:
         from app.core.ir_protocols.mitsubishi import sendMitsubishiHeavy88
+
         return sendMitsubishiHeavy88(state, nbytes, repeat)
     elif protocol_type == decode_type_t.MITSUBISHI_HEAVY_152:
         from app.core.ir_protocols.mitsubishi import sendMitsubishiHeavy152
+
         return sendMitsubishiHeavy152(state, nbytes, repeat)
 
     # Hitachi variants (7 send functions for 8 variants)
     elif protocol_type == decode_type_t.HITACHI_AC:
         from app.core.ir_protocols.hitachi import sendHitachiAC
+
         return sendHitachiAC(state, nbytes, repeat)
     elif protocol_type == decode_type_t.HITACHI_AC1:
         from app.core.ir_protocols.hitachi import sendHitachiAC1
+
         return sendHitachiAC1(state, nbytes, repeat)
     elif protocol_type == decode_type_t.HITACHI_AC424:
         from app.core.ir_protocols.hitachi import sendHitachiAc424
+
         return sendHitachiAc424(state, nbytes, repeat)
     elif protocol_type == decode_type_t.HITACHI_AC2:
         # HITACHI_AC2 is an alias for HITACHI_AC424
         from app.core.ir_protocols.hitachi import sendHitachiAc424
+
         return sendHitachiAc424(state, nbytes, repeat)
     elif protocol_type == decode_type_t.HITACHI_AC344:
         from app.core.ir_protocols.hitachi import sendHitachiAc344
+
         return sendHitachiAc344(state, nbytes, repeat)
     elif protocol_type == decode_type_t.HITACHI_AC264:
         from app.core.ir_protocols.hitachi import sendHitachiAc264
+
         return sendHitachiAc264(state, nbytes, repeat)
     elif protocol_type == decode_type_t.HITACHI_AC296:
         from app.core.ir_protocols.hitachi import sendHitachiAc296
+
         return sendHitachiAc296(state, nbytes, repeat)
     elif protocol_type == decode_type_t.HITACHI_AC3:
         from app.core.ir_protocols.hitachi import sendHitachiAc3
+
         return sendHitachiAc3(state, nbytes, repeat)
 
     # Panasonic variants (3 total)
     elif protocol_type == decode_type_t.PANASONIC:
         from app.core.ir_protocols.panasonic import sendPanasonic64
+
         # Panasonic TV protocol uses 64-bit encoding
         if nbytes >= 6:
             # Extract manufacturer (2 bytes), device (1 byte), subdevice (1 byte), function (1 byte)
             manufacturer = (state[1] << 8) | state[0]
-            data = (state[4] << 24) | (state[3] << 16) | (state[2] << 8) | (state[5] if nbytes > 5 else 0)
+            data = (
+                (state[4] << 24)
+                | (state[3] << 16)
+                | (state[2] << 8)
+                | (state[5] if nbytes > 5 else 0)
+            )
             return sendPanasonic64(manufacturer, data, repeat)
         return None
     elif protocol_type == decode_type_t.PANASONIC_AC:
         from app.core.ir_protocols.panasonic import sendPanasonicAC
+
         return sendPanasonicAC(state, nbytes, repeat)
     elif protocol_type == decode_type_t.PANASONIC_AC32:
         from app.core.ir_protocols.panasonic import sendPanasonicAC32
+
         return sendPanasonicAC32(state, nbytes, repeat)
 
     # Samsung variants (3 total)
     elif protocol_type == decode_type_t.SAMSUNG:
         from app.core.ir_protocols.samsung import sendSAMSUNG
+
         # Samsung TV protocol uses 32-bit encoding
         if nbytes >= 4:
             data = (state[3] << 24) | (state[2] << 16) | (state[1] << 8) | state[0]
@@ -281,6 +318,7 @@ def send(protocol_type: decode_type_t, state: List[int], nbytes: int, repeat: in
         return None
     elif protocol_type == decode_type_t.SAMSUNG36:
         from app.core.ir_protocols.samsung import sendSamsung36
+
         # Samsung36 uses special encoding with 2 values
         if nbytes >= 5:
             address = (state[1] << 8) | state[0]
@@ -289,11 +327,13 @@ def send(protocol_type: decode_type_t, state: List[int], nbytes: int, repeat: in
         return None
     elif protocol_type == decode_type_t.SAMSUNG_AC:
         from app.core.ir_protocols.samsung import sendSamsungAC
+
         return sendSamsungAC(state, nbytes, repeat)
 
     # LG variants (2 total)
     elif protocol_type == decode_type_t.LG:
         from app.core.ir_protocols.lg import sendLG
+
         # LG uses 28 or 32-bit encoding
         if nbytes >= 4:
             data = (state[3] << 24) | (state[2] << 16) | (state[1] << 8) | state[0]
@@ -302,6 +342,7 @@ def send(protocol_type: decode_type_t, state: List[int], nbytes: int, repeat: in
         return None
     elif protocol_type == decode_type_t.LG2:
         from app.core.ir_protocols.lg import sendLG2
+
         # LG2 uses 28-bit encoding
         if nbytes >= 4:
             data = (state[3] << 24) | (state[2] << 16) | (state[1] << 8) | state[0]
@@ -311,6 +352,7 @@ def send(protocol_type: decode_type_t, state: List[int], nbytes: int, repeat: in
     # Carrier variants (5 total)
     elif protocol_type == decode_type_t.CARRIER_AC:
         from app.core.ir_protocols.carrier import sendCarrierAC
+
         # Carrier AC uses 32-bit encoding
         if nbytes >= 4:
             data = (state[3] << 24) | (state[2] << 16) | (state[1] << 8) | state[0]
@@ -318,19 +360,25 @@ def send(protocol_type: decode_type_t, state: List[int], nbytes: int, repeat: in
         return None
     elif protocol_type == decode_type_t.CARRIER_AC40:
         from app.core.ir_protocols.carrier import sendCarrierAC40
+
         # Carrier AC40 uses 40-bit encoding
         if nbytes >= 5:
-            data = (state[4] << 32) | (state[3] << 24) | (state[2] << 16) | (state[1] << 8) | state[0]
+            data = (
+                (state[4] << 32) | (state[3] << 24) | (state[2] << 16) | (state[1] << 8) | state[0]
+            )
             return sendCarrierAC40(data, repeat)
         return None
     elif protocol_type == decode_type_t.CARRIER_AC64:
         from app.core.ir_protocols.carrier import sendCarrierAC64
+
         return sendCarrierAC64(state, nbytes, repeat)
     elif protocol_type == decode_type_t.CARRIER_AC84:
         from app.core.ir_protocols.carrier import sendCarrierAC84
+
         return sendCarrierAC84(state, nbytes, repeat)
     elif protocol_type == decode_type_t.CARRIER_AC128:
         from app.core.ir_protocols.carrier import sendCarrierAC128
+
         return sendCarrierAC128(state, nbytes, repeat)
 
     # Protocol not supported
@@ -381,17 +429,21 @@ def decode(results: decode_results, max_skip: int = 0, noise_floor: int = 0) -> 
         # Fujitsu A/C needs to precede Panasonic and Denon as it has a short
         # message which looks exactly the same as a Panasonic/Denon message.
         # DECODE_FUJITSU_AC
-        from app.core.ir_protocols.fujitsu import decodeFujitsuAC
-        from app.core.ir_protocols.ir_recv import kFujitsuAcBits
+        from app.core.ir_protocols.ir_recv import decodeFujitsuAC, kFujitsuAcBits
+
         if decodeFujitsuAC(results, offset, kFujitsuAcBits, strict=False):
             results.decode_type = decode_type_t.FUJITSU_AC
             return True
 
         # DECODE_CARRIER_AC (all variants)
         from app.core.ir_protocols.carrier import (
-            decodeCarrierAC, decodeCarrierAC40, decodeCarrierAC64,
-            decodeCarrierAC84, decodeCarrierAC128
+            decodeCarrierAC,
+            decodeCarrierAC40,
+            decodeCarrierAC64,
+            decodeCarrierAC84,
+            decodeCarrierAC128,
         )
+
         if decodeCarrierAC128(results, offset):
             results.decode_type = decode_type_t.CARRIER_AC128
             return True
@@ -410,8 +462,12 @@ def decode(results: decode_results, max_skip: int = 0, noise_floor: int = 0) -> 
 
         # DECODE_HITACHI_AC (all variants - order matters!)
         from app.core.ir_protocols.hitachi import (
-            decodeHitachiAC, decodeHitachiAc424, decodeHitachiAc296, decodeHitachiAc3
+            decodeHitachiAC,
+            decodeHitachiAc424,
+            decodeHitachiAc296,
+            decodeHitachiAc3,
         )
+
         # HitachiAC424 must come before HitachiAC (it's more specific)
         if decodeHitachiAc424(results, offset):
             results.decode_type = decode_type_t.HITACHI_AC424
@@ -430,6 +486,7 @@ def decode(results: decode_results, max_skip: int = 0, noise_floor: int = 0) -> 
 
         # DECODE_SAMSUNG_AC
         from app.core.ir_protocols.samsung import decodeSamsungAC, decodeSamsung36, decodeSAMSUNG
+
         if decodeSamsungAC(results, offset):
             results.decode_type = decode_type_t.SAMSUNG_AC
             return True
@@ -442,10 +499,18 @@ def decode(results: decode_results, max_skip: int = 0, noise_floor: int = 0) -> 
 
         # DECODE_DAIKIN (all variants - order matters!)
         from app.core.ir_protocols.daikin import (
-            decodeDaikin312, decodeDaikin200, decodeDaikin216, decodeDaikin176,
-            decodeDaikin160, decodeDaikin152, decodeDaikin128, decodeDaikin64,
-            decodeDaikin2, decodeDaikin
+            decodeDaikin312,
+            decodeDaikin200,
+            decodeDaikin216,
+            decodeDaikin176,
+            decodeDaikin160,
+            decodeDaikin152,
+            decodeDaikin128,
+            decodeDaikin64,
+            decodeDaikin2,
+            decodeDaikin,
         )
+
         if decodeDaikin312(results, offset):
             results.decode_type = decode_type_t.DAIKIN312
             return True
@@ -478,7 +543,12 @@ def decode(results: decode_results, max_skip: int = 0, noise_floor: int = 0) -> 
             return True
 
         # DECODE_PANASONIC_AC (must come before PANASONIC to avoid conflicts)
-        from app.core.ir_protocols.panasonic import decodePanasonicAC, decodePanasonicAC32, decodePanasonic
+        from app.core.ir_protocols.panasonic import (
+            decodePanasonicAC,
+            decodePanasonicAC32,
+            decodePanasonic,
+        )
+
         if decodePanasonicAC(results, offset):
             results.decode_type = decode_type_t.PANASONIC_AC
             return True
@@ -491,15 +561,19 @@ def decode(results: decode_results, max_skip: int = 0, noise_floor: int = 0) -> 
 
         # DECODE_LG (handles both LG and LG2)
         from app.core.ir_protocols.lg import decodeLG
+
         if decodeLG(results, offset):
             # decodeLG sets decode_type to either LG or LG2
             return True
 
         # DECODE_MITSUBISHI (all variants)
         from app.core.ir_protocols.mitsubishi import (
-            decodeMitsubishiHeavy, decodeMitsubishiAC,
-            decodeMitsubishi136, decodeMitsubishi112
+            decodeMitsubishiHeavy,
+            decodeMitsubishiAC,
+            decodeMitsubishi136,
+            decodeMitsubishi112,
         )
+
         # MitsubishiHeavy handles both 88 and 152-bit variants
         if decodeMitsubishiHeavy(results, offset):
             # decode_type is set by decoder (MITSUBISHI_HEAVY_88 or MITSUBISHI_HEAVY_152)
@@ -519,6 +593,7 @@ def decode(results: decode_results, max_skip: int = 0, noise_floor: int = 0) -> 
         # matches this needs to happen after decodeKelvinator() (not yet imported).
         # DECODE_GREE
         from app.core.ir_protocols.gree import decodeGree
+
         if decodeGree(results, offset):
             results.decode_type = decode_type_t.GREE
             return True

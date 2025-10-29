@@ -28,27 +28,27 @@ kDoshishaBits = 40
 kDefaultMessageGap = 100000
 
 # basic structure of bits, and mask (from ir_Doshisha.cpp lines 23-27)
-kRcz01SignatureMask = 0xffffffff00
-kRcz01Signature =     0x800B304800
-kRcz01CommandMask =           0xFE
-kRcz01ChannelMask =           0x01
+kRcz01SignatureMask = 0xFFFFFFFF00
+kRcz01Signature = 0x800B304800
+kRcz01CommandMask = 0xFE
+kRcz01ChannelMask = 0x01
 
 # Known commands - Here for documentation rather than actual usage (from ir_Doshisha.cpp lines 29-45)
-kRcz01CommandSwitchChannel =  0xD2
-kRcz01CommandTimmer60 =       0x52
-kRcz01CommandTimmer30 =       0x92
-kRcz01CommandOff =            0xA0
+kRcz01CommandSwitchChannel = 0xD2
+kRcz01CommandTimmer60 = 0x52
+kRcz01CommandTimmer30 = 0x92
+kRcz01CommandOff = 0xA0
 
-kRcz01CommandLevelDown =      0x2C
-kRcz01CommandLevelUp =        0xCC
+kRcz01CommandLevelDown = 0x2C
+kRcz01CommandLevelUp = 0xCC
 # below are the only ones that turns it on
-kRcz01CommandLevel1 =         0xA4
-kRcz01CommandLevel2 =         0x24
-kRcz01CommandLevel3 =         0xC4
-kRcz01CommandLevel4 =         0xD0
+kRcz01CommandLevel1 = 0xA4
+kRcz01CommandLevel2 = 0x24
+kRcz01CommandLevel3 = 0xC4
+kRcz01CommandLevel4 = 0xD0
 
-kRcz01CommandOn =             0xC0
-kRcz01CommandNightLight =     0xC8
+kRcz01CommandOn = 0xC0
+kRcz01CommandNightLight = 0xC8
 # end Known commands
 
 
@@ -84,7 +84,7 @@ def sendDoshisha(data: int, nbits: int = kDoshishaBits, repeat: int = 0) -> List
         frequency=38,
         MSBfirst=True,
         repeat=repeat,
-        dutycycle=kDutyDefault
+        dutycycle=kDutyDefault,
     )
 
 
@@ -99,9 +99,7 @@ def encodeDoshisha(command: int, channel: int) -> int:
     Encode Doshisha combining constant values with command and channel.
     EXACT translation from IRremoteESP8266 IRsend::encodeDoshisha
     """
-    data = kRcz01Signature | \
-        (command & kRcz01CommandMask) | \
-        (channel & kRcz01ChannelMask)
+    data = kRcz01Signature | (command & kRcz01CommandMask) | (channel & kRcz01ChannelMask)
     return data
 
 
@@ -115,8 +113,9 @@ def encodeDoshisha(command: int, channel: int) -> int:
 ## @param[in] strict Flag indicating if we should perform strict matching.
 ## @return A boolean. True if it can decode it, false if it can't.
 ## Direct translation from IRremoteESP8266 IRrecv::decodeDoshisha (ir_Doshisha.cpp lines 75-124)
-def decodeDoshisha(results, offset: int = 1, nbits: int = kDoshishaBits,
-                   strict: bool = True) -> bool:
+def decodeDoshisha(
+    results, offset: int = 1, nbits: int = kDoshishaBits, strict: bool = True
+) -> bool:
     """
     Decode a Doshisha IR message.
     EXACT translation from IRremoteESP8266 IRrecv::decodeDoshisha
@@ -124,7 +123,13 @@ def decodeDoshisha(results, offset: int = 1, nbits: int = kDoshishaBits,
     This is the ACTUAL C++ decoder function, not a wrapper.
     """
     # Import here to avoid circular imports
-    from app.core.ir_protocols.ir_recv import kHeader, kFooter, kMarkExcess, kTolerance, _matchGeneric
+    from app.core.ir_protocols.ir_recv import (
+        kHeader,
+        kFooter,
+        kMarkExcess,
+        kTolerance,
+        _matchGeneric,
+    )
 
     if results.rawlen < 2 * nbits + kHeader + kFooter - 1 + offset:
         return False  # Can't possibly be a valid message.
@@ -151,7 +156,7 @@ def decodeDoshisha(results, offset: int = 1, nbits: int = kDoshishaBits,
         atleast=False,
         tolerance=kTolerance,
         excess=kMarkExcess,
-        MSBfirst=True
+        MSBfirst=True,
     ):
         return False
 

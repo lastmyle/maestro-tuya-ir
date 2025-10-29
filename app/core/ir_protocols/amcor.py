@@ -139,8 +139,8 @@ def calcChecksumAmcor(state: List[int], length: int = kAmcorStateLength) -> int:
     # Uses irutils::sumNibbles - sum lower and upper nibbles
     result = 0
     for i in range(length - 1):
-        result += (state[i] & 0x0F)  # Lower nibble
-        result += (state[i] >> 4)     # Upper nibble
+        result += state[i] & 0x0F  # Lower nibble
+        result += state[i] >> 4  # Upper nibble
     return result & 0xFF
 
 
@@ -154,7 +154,7 @@ def validChecksumAmcor(state: List[int], length: int = kAmcorStateLength) -> boo
     Verify the checksum is valid for a given state.
     EXACT translation from IRremoteESP8266 IRAmcorAc::validChecksum
     """
-    return (state[length - 1] == calcChecksumAmcor(state, length))
+    return state[length - 1] == calcChecksumAmcor(state, length)
 
 
 ## Send a Amcor HVAC formatted message.
@@ -163,8 +163,9 @@ def validChecksumAmcor(state: List[int], length: int = kAmcorStateLength) -> boo
 ## @param[in] nbytes The number of bytes of message to be sent.
 ## @param[in] repeat The number of times the command is to be repeated.
 ## Direct translation from ir_Amcor.cpp lines 32-45
-def sendAmcor(data: List[int], nbytes: int = kAmcorStateLength,
-              repeat: int = kAmcorDefaultRepeat) -> List[int]:
+def sendAmcor(
+    data: List[int], nbytes: int = kAmcorStateLength, repeat: int = kAmcorDefaultRepeat
+) -> List[int]:
     """
     Send a Amcor HVAC formatted message.
     EXACT translation from IRremoteESP8266 IRsend::sendAmcor
@@ -194,7 +195,7 @@ def sendAmcor(data: List[int], nbytes: int = kAmcorStateLength,
             frequency=38,
             MSBfirst=False,
             repeat=0,
-            dutycycle=50  # kDutyDefault
+            dutycycle=50,  # kDutyDefault
         )
         all_timings.extend(timings)
 
@@ -209,15 +210,12 @@ def sendAmcor(data: List[int], nbytes: int = kAmcorStateLength,
 ## @param[in] strict Flag indicating if we should perform strict matching.
 ## @return A boolean. True if it can decode it, false if it can't.
 ## Direct translation from ir_Amcor.cpp lines 48-89
-def decodeAmcor(results, offset: int = 1, nbits: int = kAmcorBits,
-                strict: bool = True) -> bool:
+def decodeAmcor(results, offset: int = 1, nbits: int = kAmcorBits, strict: bool = True) -> bool:
     """
     Decode the supplied Amcor HVAC message.
     EXACT translation from IRremoteESP8266 IRrecv::decodeAmcor
     """
-    from app.core.ir_protocols.ir_recv import (
-        kHeader, _matchGeneric
-    )
+    from app.core.ir_protocols.ir_recv import kHeader, _matchGeneric
 
     if results.rawlen <= 2 * nbits + kHeader - 1 + offset:
         return False  # Can't possibly be a valid Amcor message.
@@ -243,7 +241,7 @@ def decodeAmcor(results, offset: int = 1, nbits: int = kAmcorBits,
         atleast=True,
         tolerance=kAmcorTolerance,
         excess=0,  # kMarkExcess
-        MSBfirst=False
+        MSBfirst=False,
     )
     if not used:
         return False
@@ -318,7 +316,7 @@ class IRAmcorAc:
     ## @param[in] on The desired power state.
     ## Direct translation from ir_Amcor.cpp lines 160-164
     def setPower(self, on: bool) -> None:
-        self._.Power = (kAmcorPowerOn if on else kAmcorPowerOff)
+        self._.Power = kAmcorPowerOn if on else kAmcorPowerOff
 
     ## Get the power setting from the internal state.
     ## @return A boolean indicating the power setting.
@@ -353,7 +351,7 @@ class IRAmcorAc:
             else:
                 # Not allowed in all other operating modes.
                 return
-        self._.Max = (kAmcorMax if on else 0)
+        self._.Max = kAmcorMax if on else 0
 
     ## Is the Maximum Cooling or Heating setting (i.e. Turbo) setting on?
     ## @return The current value.
@@ -387,7 +385,7 @@ class IRAmcorAc:
     ## Direct translation from ir_Amcor.cpp lines 234-251
     def setMode(self, mode: int) -> None:
         if mode in [kAmcorFan, kAmcorCool, kAmcorHeat, kAmcorDry, kAmcorAuto]:
-            self._.Vent = (kAmcorVentOn if mode == kAmcorFan else 0)
+            self._.Vent = kAmcorVentOn if mode == kAmcorFan else 0
             self._.Mode = mode
             return
         else:
@@ -496,7 +494,7 @@ class IRAmcorAc:
         """Convert the internal state to a human readable string"""
         result = ""
         result += "Power: "
-        result += ("On" if self.getPower() else "Off")
+        result += "On" if self.getPower() else "Off"
         result += ", Mode: "
         result += str(self._.Mode)
         result += ", Fan: "
@@ -504,5 +502,5 @@ class IRAmcorAc:
         result += ", Temp: "
         result += str(self._.Temp) + "C"
         result += ", Max: "
-        result += ("On" if self.getMax() else "Off")
+        result += "On" if self.getMax() else "Off"
         return result

@@ -57,14 +57,14 @@ def parse_and_access_protocol():
     print("=" * 80)
 
     # Parse a real Fujitsu code using EXACT C++ translation
-    tuya_code = FUJITSU_KNOWN_GOOD_CODES['24C_High']
+    tuya_code = FUJITSU_KNOWN_GOOD_CODES["24C_High"]
     timings = decode_ir(tuya_code)
     results = decode_results()
     results.rawbuf = timings
     results.rawlen = len(timings)
     success = decodeFujitsuAC(results, offset=0, nbits=kFujitsuAcBits, strict=False)
     assert success
-    bytes_array = results.state[:results.bits // 8]
+    bytes_array = results.state[: results.bits // 8]
 
     print(f"\nParsed bytes: {' '.join(f'{b:02x}' for b in bytes_array)}")
 
@@ -78,7 +78,9 @@ def parse_and_access_protocol():
     print(f"\nProtocol object after parsing:")
     print(f"  protocol.longcode: {' '.join(f'{b:02x}' for b in protocol.longcode)}")
     print(f"\nDecoded fields:")
-    print(f"  Header:      0x{protocol.longcode[0]:02x} 0x{protocol.longcode[1]:02x} (should be 0x14 0x63)")
+    print(
+        f"  Header:      0x{protocol.longcode[0]:02x} 0x{protocol.longcode[1]:02x} (should be 0x14 0x63)"
+    )
     print(f"  Cmd:         0x{protocol.Cmd:02x}")
     print(f"  RestLength:  {protocol.RestLength}")
     print(f"  Protocol:    0x{protocol.Protocol:02x}")

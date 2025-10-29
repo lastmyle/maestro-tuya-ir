@@ -14,13 +14,13 @@ from typing import List
 #   Brand: Clima-Butler,  Model: RCS-SD43UWI A/C
 
 # Constants - Timing values (from ir_ClimaButler.cpp lines 16-22)
-kClimaButlerBitMark = 511    # uSeconds
+kClimaButlerBitMark = 511  # uSeconds
 kClimaButlerHdrMark = kClimaButlerBitMark
 kClimaButlerHdrSpace = 3492  # uSeconds
 kClimaButlerOneSpace = 1540  # uSeconds
 kClimaButlerZeroSpace = 548  # uSeconds
 kClimaButlerGap = 100000  # kDefaultMessageGap  # uSeconds (A guess.)
-kClimaButlerFreq = 38000     # Hz. (Guess.)
+kClimaButlerFreq = 38000  # Hz. (Guess.)
 
 # State length constants (from IRremoteESP8266.h)
 kClimaButlerBits = 52
@@ -62,7 +62,7 @@ def sendClimaButler(data: int, nbits: int = kClimaButlerBits, repeat: int = 0) -
             frequency=kClimaButlerFreq,
             MSBfirst=True,
             repeat=0,
-            dutycycle=kDutyDefault
+            dutycycle=kDutyDefault,
         )
         all_timings.extend(block_timings)
         # Footer
@@ -81,8 +81,9 @@ def sendClimaButler(data: int, nbits: int = kClimaButlerBits, repeat: int = 0) -
 ## @param[in] strict Flag indicating if we should perform strict matching.
 ## @return A boolean. True if it can decode it, false if it can't.
 ## Direct translation from IRremoteESP8266 IRrecv::decodeClimaButler (ir_ClimaButler.cpp lines 47-86)
-def decodeClimaButler(results, offset: int = 1, nbits: int = kClimaButlerBits,
-                      strict: bool = True) -> bool:
+def decodeClimaButler(
+    results, offset: int = 1, nbits: int = kClimaButlerBits, strict: bool = True
+) -> bool:
     """
     Decode a ClimaButler IR message.
     EXACT translation from IRremoteESP8266 IRrecv::decodeClimaButler
@@ -90,7 +91,14 @@ def decodeClimaButler(results, offset: int = 1, nbits: int = kClimaButlerBits,
     This is the ACTUAL C++ decoder function, not a wrapper.
     """
     # Import here to avoid circular imports
-    from app.core.ir_protocols.ir_recv import kHeader, kFooter, kMarkExcess, _matchGeneric, matchMark, matchAtLeast
+    from app.core.ir_protocols.ir_recv import (
+        kHeader,
+        kFooter,
+        kMarkExcess,
+        _matchGeneric,
+        matchMark,
+        matchAtLeast,
+    )
 
     if results.rawlen < 2 * nbits + kHeader + 2 * kFooter - offset:
         return False  # Too short a message to match.
@@ -116,7 +124,7 @@ def decodeClimaButler(results, offset: int = 1, nbits: int = kClimaButlerBits,
         atleast=False,
         tolerance=25,
         excess=kMarkExcess,
-        MSBfirst=True
+        MSBfirst=True,
     )
     if not used:
         return False  # Didn't matched.
@@ -126,8 +134,7 @@ def decodeClimaButler(results, offset: int = 1, nbits: int = kClimaButlerBits,
         offset += 1
         return False
     offset += 1
-    if results.rawlen <= offset and not matchAtLeast(results.rawbuf[offset],
-                                                      kClimaButlerGap):
+    if results.rawlen <= offset and not matchAtLeast(results.rawbuf[offset], kClimaButlerGap):
         return False
 
     # Success

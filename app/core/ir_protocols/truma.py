@@ -31,13 +31,13 @@ kTrumaChecksumInit = 5
 # Mode constants (from ir_Truma.h lines 53-55)
 kTrumaAuto = 0  # 0b00
 kTrumaCool = 2  # 0b10
-kTrumaFan = 3   # 0b11
+kTrumaFan = 3  # 0b11
 
 # Fan constants (from ir_Truma.h lines 57-60)
 kTrumaFanQuiet = 3  # 0b011
-kTrumaFanHigh = 4   # 0b100
-kTrumaFanMed = 5    # 0b101
-kTrumaFanLow = 6    # 0b110
+kTrumaFanHigh = 4  # 0b100
+kTrumaFanMed = 5  # 0b101
+kTrumaFanLow = 6  # 0b110
 
 # Temperature constants (from ir_Truma.h lines 62-64)
 kTrumaTempOffset = 10
@@ -68,7 +68,7 @@ class TrumaProtocol:
     @PowerOff.setter
     def PowerOff(self, value: bool) -> None:
         if value:
-            self.raw |= (1 << 10)
+            self.raw |= 1 << 10
         else:
             self.raw &= ~(1 << 10)
 
@@ -137,7 +137,7 @@ def sendTruma(data: int, nbits: int, repeat: int = 0) -> List[int]:
             frequency=38,
             MSBfirst=False,
             repeat=0,
-            dutycycle=50
+            dutycycle=50,
         )
         all_timings.extend(generic_timings)
 
@@ -156,7 +156,7 @@ class IRTrumaAc:
         self._: TrumaProtocol = TrumaProtocol()
         # Internal state (from ir_Truma.h lines 120-121)
         self._lastfan: int = kTrumaFanHigh  # Last user chosen/valid fan speed.
-        self._lastmode: int = kTrumaAuto    # Last user chosen operation mode.
+        self._lastmode: int = kTrumaAuto  # Last user chosen operation mode.
         self.stateReset()
 
     ## Reset the state of the remote to a known good state/sequence.
@@ -284,7 +284,7 @@ class IRTrumaAc:
         # for (uint16_t i = 8; i < kTrumaBits; i += 8)
         # kTrumaBits = 56
         for i in range(8, 56, 8):
-            sum_val += (to_checksum & 0xFF)
+            sum_val += to_checksum & 0xFF
             to_checksum >>= 8
         return sum_val & 0xFF
 
@@ -320,9 +320,7 @@ def decodeTruma(results, offset: int = 1, nbits: int = 56, strict: bool = True) 
     This is the ACTUAL C++ decoder function, not a wrapper.
     """
     # Import here to avoid circular imports
-    from app.core.ir_protocols.ir_recv import (
-        kHeader, matchMark, matchSpace, _matchGeneric
-    )
+    from app.core.ir_protocols.ir_recv import kHeader, matchMark, matchSpace, _matchGeneric
 
     # lines 67-70
     if results.rawlen < 2 * nbits + kHeader - 1 + offset:
@@ -358,7 +356,7 @@ def decodeTruma(results, offset: int = 1, nbits: int = 56, strict: bool = True) 
         atleast=True,
         tolerance=25,
         excess=50,  # kMarkExcess
-        MSBfirst=False
+        MSBfirst=False,
     )
     if not used:
         return False
@@ -382,7 +380,7 @@ def decodeTruma(results, offset: int = 1, nbits: int = 56, strict: bool = True) 
         tolerance=25,
         excess=50,
         MSBfirst=False,
-        expectlastspace=False
+        expectlastspace=False,
     )
     if not data_result.success:
         return False

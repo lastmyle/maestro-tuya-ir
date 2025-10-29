@@ -282,6 +282,7 @@ def calcChecksum(state: List[int], length: int = kNeoclimaStateLength) -> int:
         return state[0]
     # Import here to avoid circular import
     from app.core.ir_protocols.ir_recv import sumBytes
+
     return sumBytes(state, length - 1)
 
 
@@ -328,7 +329,7 @@ def sendNeoclima(data: List[int], nbytes: int, repeat: int = 0) -> List[int]:
             frequency=38,
             MSBfirst=False,
             repeat=0,  # Repeats handled by outer loop
-            dutycycle=50
+            dutycycle=50,
         )
         all_timings.extend(msg_timings)
 
@@ -375,12 +376,26 @@ class IRNeoclimaAc:
     ## Set the Button/Command pressed setting of the A/C.
     ## Direct translation from ir_Neoclima.cpp lines 130-155
     def setButton(self, button: int) -> None:
-        if button in [kNeoclimaButtonPower, kNeoclimaButtonMode, kNeoclimaButtonTempUp,
-                      kNeoclimaButtonTempDown, kNeoclimaButtonSwing, kNeoclimaButtonFanSpeed,
-                      kNeoclimaButtonAirFlow, kNeoclimaButtonHold, kNeoclimaButtonSleep,
-                      kNeoclimaButtonLight, kNeoclimaButtonEye, kNeoclimaButtonFollow,
-                      kNeoclimaButtonIon, kNeoclimaButtonFresh, kNeoclimaButton8CHeat,
-                      kNeoclimaButtonTurbo, kNeoclimaButtonEcono, kNeoclimaButtonTempUnit]:
+        if button in [
+            kNeoclimaButtonPower,
+            kNeoclimaButtonMode,
+            kNeoclimaButtonTempUp,
+            kNeoclimaButtonTempDown,
+            kNeoclimaButtonSwing,
+            kNeoclimaButtonFanSpeed,
+            kNeoclimaButtonAirFlow,
+            kNeoclimaButtonHold,
+            kNeoclimaButtonSleep,
+            kNeoclimaButtonLight,
+            kNeoclimaButtonEye,
+            kNeoclimaButtonFollow,
+            kNeoclimaButtonIon,
+            kNeoclimaButtonFresh,
+            kNeoclimaButton8CHeat,
+            kNeoclimaButtonTurbo,
+            kNeoclimaButtonEcono,
+            kNeoclimaButtonTempUnit,
+        ]:
             self._.Button = button
         else:
             self._.Button = kNeoclimaButtonPower
@@ -606,8 +621,9 @@ class IRNeoclimaAc:
 ## Decode the supplied Neoclima message.
 ## Status: STABLE / Known working
 ## EXACT translation from IRremoteESP8266 IRrecv::decodeNeoclima (ir_Neoclima.cpp lines 571-607)
-def decodeNeoclima(results, offset: int = 1, nbits: int = kNeoclimaBits,
-                   strict: bool = True) -> bool:
+def decodeNeoclima(
+    results, offset: int = 1, nbits: int = kNeoclimaBits, strict: bool = True
+) -> bool:
     """
     Decode a Neoclima HVAC IR message.
     EXACT translation from IRremoteESP8266 IRrecv::decodeNeoclima
@@ -640,7 +656,7 @@ def decodeNeoclima(results, offset: int = 1, nbits: int = kNeoclimaBits,
         atleast=False,
         tolerance=25,
         excess=0,
-        MSBfirst=False
+        MSBfirst=False,
     )
     if not used:
         return False
@@ -648,6 +664,7 @@ def decodeNeoclima(results, offset: int = 1, nbits: int = kNeoclimaBits,
 
     # Extra footer
     from app.core.ir_protocols.ir_recv import matchGeneric
+
     if not matchGeneric(
         data_ptr=results.rawbuf[offset:],
         result_bits_ptr=None,
@@ -666,7 +683,7 @@ def decodeNeoclima(results, offset: int = 1, nbits: int = kNeoclimaBits,
         atleast=True,
         tolerance=25,
         excess=0,
-        MSBfirst=False
+        MSBfirst=False,
     ):
         return False
 

@@ -243,6 +243,7 @@ def calcChecksum(state: List[int], length: int = kArgoStateLength) -> int:
     # Only add up bytes to 9. byte 10 is 0b01 constant anyway.
     # Assume that argo array is MSB first (left)
     from app.core.ir_protocols.ir_recv import sumBytes
+
     return sumBytes(state, length - 2, 2)
 
 
@@ -272,8 +273,7 @@ def getChecksum(state: List[int], length: int = kArgoStateLength) -> int:
 ## Send an Argo A/C formatted message (WREM-2).
 ## Status: BETA / Probably works.
 ## EXACT translation from IRremoteESP8266 IRsend::sendArgo (ir_Argo.cpp lines 65-83)
-def sendArgo(data: List[int], nbytes: int, repeat: int = 0,
-             sendFooter: bool = False) -> List[int]:
+def sendArgo(data: List[int], nbytes: int, repeat: int = 0, sendFooter: bool = False) -> List[int]:
     """
     Send an Argo A/C formatted message (WREM-2).
     EXACT translation from IRremoteESP8266 IRsend::sendArgo
@@ -304,7 +304,7 @@ def sendArgo(data: List[int], nbytes: int, repeat: int = 0,
         frequency=38,
         MSBfirst=False,
         repeat=repeat,
-        dutycycle=50
+        dutycycle=50,
     )
 
 
@@ -466,8 +466,7 @@ class IRArgoAC:
 ## Decode the supplied Argo message (WREM-2).
 ## Status: BETA / Probably works.
 ## EXACT translation from IRremoteESP8266 IRrecv::decodeArgo (ir_Argo.cpp lines 1694-1720)
-def decodeArgo(results, offset: int = 1, nbits: int = kArgoBits,
-               strict: bool = True) -> bool:
+def decodeArgo(results, offset: int = 1, nbits: int = kArgoBits, strict: bool = True) -> bool:
     """
     Decode an Argo HVAC IR message (WREM-2).
     EXACT translation from IRremoteESP8266 IRrecv::decodeArgo
@@ -499,7 +498,7 @@ def decodeArgo(results, offset: int = 1, nbits: int = kArgoBits,
         atleast=False,
         tolerance=25,
         excess=0,
-        MSBfirst=False
+        MSBfirst=False,
     ):
         return False
 

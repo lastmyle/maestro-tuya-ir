@@ -89,7 +89,7 @@ class DelonghiProtocol:
     @Fahrenheit.setter
     def Fahrenheit(self, value: bool) -> None:
         if value:
-            self.raw |= (1 << 15)
+            self.raw |= 1 << 15
         else:
             self.raw &= ~(1 << 15)
 
@@ -101,7 +101,7 @@ class DelonghiProtocol:
     @Power.setter
     def Power(self, value: bool) -> None:
         if value:
-            self.raw |= (1 << 16)
+            self.raw |= 1 << 16
         else:
             self.raw &= ~(1 << 16)
 
@@ -120,7 +120,7 @@ class DelonghiProtocol:
     @Boost.setter
     def Boost(self, value: bool) -> None:
         if value:
-            self.raw |= (1 << 20)
+            self.raw |= 1 << 20
         else:
             self.raw &= ~(1 << 20)
 
@@ -131,7 +131,7 @@ class DelonghiProtocol:
     @Sleep.setter
     def Sleep(self, value: bool) -> None:
         if value:
-            self.raw |= (1 << 21)
+            self.raw |= 1 << 21
         else:
             self.raw &= ~(1 << 21)
 
@@ -143,7 +143,7 @@ class DelonghiProtocol:
     @OnTimer.setter
     def OnTimer(self, value: bool) -> None:
         if value:
-            self.raw |= (1 << 24)
+            self.raw |= 1 << 24
         else:
             self.raw &= ~(1 << 24)
 
@@ -172,7 +172,7 @@ class DelonghiProtocol:
     @OffTimer.setter
     def OffTimer(self, value: bool) -> None:
         if value:
-            self.raw |= (1 << 40)
+            self.raw |= 1 << 40
         else:
             self.raw &= ~(1 << 40)
 
@@ -233,7 +233,7 @@ def sendDelonghiAc(data: int, nbits: int = kDelonghiAcBits, repeat: int = 0) -> 
         frequency=kDelonghiAcFreq,
         MSBfirst=False,  # LSB First
         repeat=repeat,
-        dutycycle=50
+        dutycycle=50,
     )
     return timings
 
@@ -565,25 +565,25 @@ class IRDelonghiAc:
     ## Direct translation from ir_Delonghi.cpp lines 421-445
     def toCommon(self) -> dict:
         result = {}
-        result['protocol'] = 'DELONGHI_AC'
-        result['power'] = bool(self._.Power)
+        result["protocol"] = "DELONGHI_AC"
+        result["power"] = bool(self._.Power)
         # result['mode'] = self.toCommonMode(self.getMode())
-        result['celsius'] = not bool(self._.Fahrenheit)
-        result['degrees'] = self.getTemp()
-        result['fanspeed'] = self.toCommonFanSpeed(self._.Fan)
-        result['turbo'] = bool(self._.Boost)
-        result['sleep'] = 0 if self._.Sleep else -1
+        result["celsius"] = not bool(self._.Fahrenheit)
+        result["degrees"] = self.getTemp()
+        result["fanspeed"] = self.toCommonFanSpeed(self._.Fan)
+        result["turbo"] = bool(self._.Boost)
+        result["sleep"] = 0 if self._.Sleep else -1
         # Not supported.
-        result['model'] = -1
-        result['swingv'] = 0  # stdAc::swingv_t::kOff
-        result['swingh'] = 0  # stdAc::swingh_t::kOff
-        result['light'] = False
-        result['filter'] = False
-        result['econo'] = False
-        result['quiet'] = False
-        result['clean'] = False
-        result['beep'] = False
-        result['clock'] = -1
+        result["model"] = -1
+        result["swingv"] = 0  # stdAc::swingv_t::kOff
+        result["swingh"] = 0  # stdAc::swingh_t::kOff
+        result["light"] = False
+        result["filter"] = False
+        result["econo"] = False
+        result["quiet"] = False
+        result["clean"] = False
+        result["beep"] = False
+        result["clock"] = -1
         return result
 
     ## Convert the current internal state into a human readable string.
@@ -613,8 +613,9 @@ class IRDelonghiAc:
 ## @param[in] strict Flag indicating if we should perform strict matching.
 ## @return A boolean. True if it can decode it, false if it can't.
 ## Direct translation from IRremoteESP8266 IRrecv::decodeDelonghiAc (ir_Delonghi.cpp lines 47-86)
-def decodeDelonghiAc(results, offset: int = 1, nbits: int = kDelonghiAcBits,
-                     strict: bool = True) -> bool:
+def decodeDelonghiAc(
+    results, offset: int = 1, nbits: int = kDelonghiAcBits, strict: bool = True
+) -> bool:
     """
     Decode a Delonghi A/C IR message.
     EXACT translation from IRremoteESP8266 IRrecv::decodeDelonghiAc
@@ -651,7 +652,7 @@ def decodeDelonghiAc(results, offset: int = 1, nbits: int = kDelonghiAcBits,
         atleast=True,
         tolerance=25,
         excess=kMarkExcess,
-        MSBfirst=False
+        MSBfirst=False,
     ):
         return False
 

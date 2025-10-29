@@ -2,6 +2,7 @@
 """
 Script to translate C++ test files from IRremoteESP8266 to Python pytest format.
 """
+
 import re
 import os
 from typing import List, Tuple, Dict
@@ -33,10 +34,7 @@ PROTOCOL_MAP = {
 def extract_test_functions(cpp_content: str) -> List[Tuple[str, str]]:
     """Extract TEST and TEST_F functions from C++ code."""
     # Pattern to match TEST(TestName, FunctionName) { ... }
-    test_pattern = re.compile(
-        r'TEST(?:_F)?\s*\(\s*(\w+)\s*,\s*(\w+)\s*\)\s*\{',
-        re.MULTILINE
-    )
+    test_pattern = re.compile(r"TEST(?:_F)?\s*\(\s*(\w+)\s*,\s*(\w+)\s*\)\s*\{", re.MULTILINE)
 
     tests = []
     for match in test_pattern.finditer(cpp_content):
@@ -49,9 +47,9 @@ def extract_test_functions(cpp_content: str) -> List[Tuple[str, str]]:
         end = start
 
         for i in range(start, len(cpp_content)):
-            if cpp_content[i] == '{':
+            if cpp_content[i] == "{":
                 brace_count += 1
-            elif cpp_content[i] == '}':
+            elif cpp_content[i] == "}":
                 brace_count -= 1
                 if brace_count == 0:
                     end = i
@@ -66,64 +64,56 @@ def extract_test_functions(cpp_content: str) -> List[Tuple[str, str]]:
 def convert_test_name(cpp_name: str) -> str:
     """Convert C++ test name to Python snake_case."""
     # Convert CamelCase to snake_case
-    name = re.sub('(.)([A-Z][a-z]+)', r'\1_\2', cpp_name)
-    name = re.sub('([a-z0-9])([A-Z])', r'\1_\2', name).lower()
+    name = re.sub("(.)([A-Z][a-z]+)", r"\1_\2", cpp_name)
+    name = re.sub("([a-z0-9])([A-Z])", r"\1_\2", name).lower()
     return f"test_{name}"
 
 
 def convert_assertions(cpp_code: str) -> str:
     """Convert C++ assertions to Python assertions."""
-    lines = cpp_code.split('\n')
+    lines = cpp_code.split("\n")
     converted = []
 
     for line in lines:
         # Skip empty lines and comments
-        if not line.strip() or line.strip().startswith('//'):
-            if line.strip().startswith('//'):
-                converted.append(line.replace('//', '#'))
+        if not line.strip() or line.strip().startswith("//"):
+            if line.strip().startswith("//"):
+                converted.append(line.replace("//", "#"))
             continue
 
         # ASSERT_TRUE / EXPECT_TRUE
-        line = re.sub(r'ASSERT_TRUE\s*\((.*?)\)', r'assert \1', line)
-        line = re.sub(r'EXPECT_TRUE\s*\((.*?)\)', r'assert \1', line)
+        line = re.sub(r"ASSERT_TRUE\s*\((.*?)\)", r"assert \1", line)
+        line = re.sub(r"EXPECT_TRUE\s*\((.*?)\)", r"assert \1", line)
 
         # ASSERT_FALSE / EXPECT_FALSE
-        line = re.sub(r'ASSERT_FALSE\s*\((.*?)\)', r'assert not \1', line)
-        line = re.sub(r'EXPECT_FALSE\s*\((.*?)\)', r'assert not \1', line)
+        line = re.sub(r"ASSERT_FALSE\s*\((.*?)\)", r"assert not \1", line)
+        line = re.sub(r"EXPECT_FALSE\s*\((.*?)\)", r"assert not \1", line)
 
         # ASSERT_EQ / EXPECT_EQ
-        line = re.sub(r'ASSERT_EQ\s*\((.*?),\s*(.*?)\)', r'assert \1 == \2', line)
-        line = re.sub(r'EXPECT_EQ\s*\((.*?),\s*(.*?)\)', r'assert \1 == \2', line)
+        line = re.sub(r"ASSERT_EQ\s*\((.*?),\s*(.*?)\)", r"assert \1 == \2", line)
+        line = re.sub(r"EXPECT_EQ\s*\((.*?),\s*(.*?)\)", r"assert \1 == \2", line)
 
         # ASSERT_NE / EXPECT_NE
-        line = re.sub(r'ASSERT_NE\s*\((.*?),\s*(.*?)\)', r'assert \1 != \2', line)
-        line = re.sub(r'EXPECT_NE\s*\((.*?),\s*(.*?)\)', r'assert \1 != \2', line)
+        line = re.sub(r"ASSERT_NE\s*\((.*?),\s*(.*?)\)", r"assert \1 != \2", line)
+        line = re.sub(r"EXPECT_NE\s*\((.*?),\s*(.*?)\)", r"assert \1 != \2", line)
 
         # EXPECT_STATE_EQ - special case for state comparison
-        if 'EXPECT_STATE_EQ' in line:
+        if "EXPECT_STATE_EQ" in line:
             continue  # Skip for now, needs custom handling
 
         converted.append(line)
 
-    return '\n'.join(converted)
+    return "\n".join(converted)
 
 
 def convert_arrays(cpp_code: str) -> str:
     """Convert C++ arrays to Python lists."""
     # uint8_t array[] = {...} -> array = [...]
-    cpp_code = re.sub(
-        r'uint8_t\s+(\w+)\s*\[\s*\d*\s*\]\s*=\s*\{',
-        r'\1 = [',
-        cpp_code
-    )
-    cpp_code = re.sub(r'\};', '];', cpp_code)
+    cpp_code = re.sub(r"uint8_t\s+(\w+)\s*\[\s*\d*\s*\]\s*=\s*\{", r"\1 = [", cpp_code)
+    cpp_code = re.sub(r"\};", "];", cpp_code)
 
     # uint16_t array[] = {...} -> array = [...]
-    cpp_code = re.sub(
-        r'uint16_t\s+(\w+)\s*\[\s*\d*\s*\]\s*=\s*\{',
-        r'\1 = [',
-        cpp_code
-    )
+    cpp_code = re.sub(r"uint16_t\s+(\w+)\s*\[\s*\d*\s*\]\s*=\s*\{", r"\1 = [", cpp_code)
 
     return cpp_code
 
@@ -165,7 +155,7 @@ from app.core.ir_protocols.constants import *
 '''
         test_functions.append(test_func)
 
-    return header + ''.join(test_functions)
+    return header + "".join(test_functions)
 
 
 def process_protocol(protocol: str) -> Tuple[int, int]:
@@ -179,7 +169,7 @@ def process_protocol(protocol: str) -> Tuple[int, int]:
 
     print(f"Processing {protocol}...")
 
-    with open(cpp_file, 'r', encoding='utf-8', errors='ignore') as f:
+    with open(cpp_file, "r", encoding="utf-8", errors="ignore") as f:
         cpp_content = f.read()
 
     # Extract tests
@@ -193,7 +183,7 @@ def process_protocol(protocol: str) -> Tuple[int, int]:
     pytest_content = generate_pytest_file(protocol, tests)
 
     # Write the file
-    with open(py_file, 'w') as f:
+    with open(py_file, "w") as f:
         f.write(pytest_content)
 
     print(f"  Created {py_file} with {len(tests)} tests")
@@ -212,14 +202,14 @@ def main():
         total_files += files
         total_tests += tests
 
-    print(f"\n{'='*60}")
+    print(f"\n{'=' * 60}")
     print(f"Translation complete!")
     print(f"  Files translated: {total_files}")
     print(f"  Total tests: {total_tests}")
-    print(f"{'='*60}")
+    print(f"{'=' * 60}")
     print("\nNote: All test files need manual review and adjustment.")
     print("The translation is a starting point and may not be fully functional.")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

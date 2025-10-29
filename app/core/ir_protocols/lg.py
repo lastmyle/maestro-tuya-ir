@@ -32,90 +32,90 @@ from typing import List
 # Constants
 # EXACT translation from IRremoteESP8266 ir_LG.cpp:30-48
 # Common timings
-kLgBitMark = 550              # uSeconds.
-kLgOneSpace = 1600            # uSeconds.
-kLgZeroSpace = 550            # uSeconds.
-kLgRptSpace = 2250            # uSeconds.
-kLgMinGap = 39750             # uSeconds.
+kLgBitMark = 550  # uSeconds.
+kLgOneSpace = 1600  # uSeconds.
+kLgZeroSpace = 550  # uSeconds.
+kLgRptSpace = 2250  # uSeconds.
+kLgMinGap = 39750  # uSeconds.
 kLgMinMessageLength = 108050  # uSeconds.
 # LG (28 Bit)
-kLgHdrMark = 8500             # uSeconds.
-kLgHdrSpace = 4250            # uSeconds.
+kLgHdrMark = 8500  # uSeconds.
+kLgHdrSpace = 4250  # uSeconds.
 # LG (32 Bit)
-kLg32HdrMark = 4500           # uSeconds.
-kLg32HdrSpace = 4450          # uSeconds.
-kLg32RptHdrMark = 8950        # uSeconds.
+kLg32HdrMark = 4500  # uSeconds.
+kLg32HdrSpace = 4450  # uSeconds.
+kLg32RptHdrMark = 8950  # uSeconds.
 # LG2 (28 Bit)
-kLg2HdrMark = 3200            # uSeconds.
-kLg2HdrSpace = 9900           # uSeconds.
-kLg2BitMark = 480             # uSeconds.
+kLg2HdrMark = 3200  # uSeconds.
+kLg2HdrSpace = 9900  # uSeconds.
+kLg2BitMark = 480  # uSeconds.
 
 # EXACT translation from IRremoteESP8266 ir_LG.cpp:50-60
 kLgAcAKB74955603DetectionMask = 0x0000080
 kLgAcChecksumSize = 4  # Size in bits.
 # Signature has the checksum removed, and another bit to match both Auto & Off.
 kLgAcSwingHOffsetSize = kLgAcChecksumSize + 1
-kLgAcSwingHSignature  = 0x881317C >> kLgAcSwingHOffsetSize  # kLgAcSwingHOff >> kLgAcSwingHOffsetSize
+kLgAcSwingHSignature = 0x881317C >> kLgAcSwingHOffsetSize  # kLgAcSwingHOff >> kLgAcSwingHOffsetSize
 kLgAcVaneSwingVBase = 0x8813200
 
 # EXACT translation from IRremoteESP8266 ir_LG.h:53-96
 kLgAcFanLowest = 0  # 0b0000
-kLgAcFanLow = 1     # 0b0001
+kLgAcFanLow = 1  # 0b0001
 kLgAcFanMedium = 2  # 0b0010
-kLgAcFanMax = 4     # 0b0100
-kLgAcFanAuto = 5    # 0b0101
+kLgAcFanMax = 4  # 0b0100
+kLgAcFanAuto = 5  # 0b0101
 kLgAcFanLowAlt = 9  # 0b1001
-kLgAcFanHigh = 10   # 0b1010
+kLgAcFanHigh = 10  # 0b1010
 # Nr. of slots in the look-up table
 kLgAcFanEntries = kLgAcFanHigh + 1
 kLgAcTempAdjust = 15
 kLgAcMinTemp = 16  # Celsius
 kLgAcMaxTemp = 30  # Celsius
 kLgAcCool = 0  # 0b000
-kLgAcDry = 1   # 0b001
-kLgAcFan = 2   # 0b010
+kLgAcDry = 1  # 0b001
+kLgAcFan = 2  # 0b010
 kLgAcAuto = 3  # 0b011
 kLgAcHeat = 4  # 0b100
 kLgAcPowerOff = 3  # 0b11
-kLgAcPowerOn = 0   # 0b00
+kLgAcPowerOn = 0  # 0b00
 kLgAcSignature = 0x88
 
-kLgAcOffCommand          = 0x88C0051
-kLgAcLightToggle         = 0x88C00A6
+kLgAcOffCommand = 0x88C0051
+kLgAcLightToggle = 0x88C00A6
 
-kLgAcSwingVToggle        = 0x8810001
-kLgAcSwingSignature      = 0x8813
-kLgAcSwingVLowest        = 0x8813048
-kLgAcSwingVLow           = 0x8813059
-kLgAcSwingVMiddle        = 0x881306A
-kLgAcSwingVUpperMiddle   = 0x881307B
-kLgAcSwingVHigh          = 0x881308C
-kLgAcSwingVHighest       = 0x881309D
-kLgAcSwingVSwing         = 0x8813149
-kLgAcSwingVAuto          = kLgAcSwingVSwing
-kLgAcSwingVOff           = 0x881315A
-kLgAcSwingVLowest_Short      = 0x04
-kLgAcSwingVLow_Short         = 0x05
-kLgAcSwingVMiddle_Short      = 0x06
+kLgAcSwingVToggle = 0x8810001
+kLgAcSwingSignature = 0x8813
+kLgAcSwingVLowest = 0x8813048
+kLgAcSwingVLow = 0x8813059
+kLgAcSwingVMiddle = 0x881306A
+kLgAcSwingVUpperMiddle = 0x881307B
+kLgAcSwingVHigh = 0x881308C
+kLgAcSwingVHighest = 0x881309D
+kLgAcSwingVSwing = 0x8813149
+kLgAcSwingVAuto = kLgAcSwingVSwing
+kLgAcSwingVOff = 0x881315A
+kLgAcSwingVLowest_Short = 0x04
+kLgAcSwingVLow_Short = 0x05
+kLgAcSwingVMiddle_Short = 0x06
 kLgAcSwingVUpperMiddle_Short = 0x07
-kLgAcSwingVHigh_Short        = 0x08
-kLgAcSwingVHighest_Short     = 0x09
-kLgAcSwingVSwing_Short       = 0x14
-kLgAcSwingVAuto_Short        = kLgAcSwingVSwing_Short
-kLgAcSwingVOff_Short         = 0x15
+kLgAcSwingVHigh_Short = 0x08
+kLgAcSwingVHighest_Short = 0x09
+kLgAcSwingVSwing_Short = 0x14
+kLgAcSwingVAuto_Short = kLgAcSwingVSwing_Short
+kLgAcSwingVOff_Short = 0x15
 
 # AKB73757604 Constants
 # SwingH
-kLgAcSwingHAuto            = 0x881316B
-kLgAcSwingHOff             = 0x881317C
+kLgAcSwingHAuto = 0x881316B
+kLgAcSwingHOff = 0x881317C
 # SwingV
-kLgAcVaneSwingVHighest     = 1  # 0b001
-kLgAcVaneSwingVHigh        = 2  # 0b010
+kLgAcVaneSwingVHighest = 1  # 0b001
+kLgAcVaneSwingVHigh = 2  # 0b010
 kLgAcVaneSwingVUpperMiddle = 3  # 0b011
-kLgAcVaneSwingVMiddle      = 4  # 0b100
-kLgAcVaneSwingVLow         = 5  # 0b101
-kLgAcVaneSwingVLowest      = 6  # 0b110
-kLgAcVaneSwingVSize        = 8
+kLgAcVaneSwingVMiddle = 4  # 0b100
+kLgAcVaneSwingVLow = 5  # 0b101
+kLgAcVaneSwingVLowest = 6  # 0b110
+kLgAcVaneSwingVSize = 8
 kLgAcSwingVMaxVanes = 4  # Max Nr. of Vanes
 
 # State length constants
@@ -176,7 +176,7 @@ def sendLG(data: int, nbits: int = kLgBits, repeat: int = 0) -> List[int]:
             frequency=38,
             MSBfirst=True,
             repeat=0,  # Repeats are handled later.
-            dutycycle=duty
+            dutycycle=duty,
         )
         all_timings.extend(timings)
 
@@ -198,7 +198,7 @@ def sendLG(data: int, nbits: int = kLgBits, repeat: int = 0) -> List[int]:
                 frequency=38,
                 MSBfirst=True,
                 repeat=0,
-                dutycycle=duty
+                dutycycle=duty,
             )
             all_timings.extend(rep_timings)
 
@@ -243,7 +243,7 @@ def sendLG2(data: int, nbits: int = kLgBits, repeat: int = 0) -> List[int]:
         frequency=38,
         MSBfirst=True,
         repeat=0,  # Repeats are handled later.
-        dutycycle=33  # Use a duty cycle of 33% (Testing)
+        dutycycle=33,  # Use a duty cycle of 33% (Testing)
     )
     all_timings.extend(timings)
 
@@ -266,7 +266,7 @@ def sendLG2(data: int, nbits: int = kLgBits, repeat: int = 0) -> List[int]:
                 frequency=38,
                 MSBfirst=True,
                 repeat=0,
-                dutycycle=50
+                dutycycle=50,
             )
             all_timings.extend(rep_timings)
 
@@ -285,6 +285,7 @@ def encodeLG(address: int, command: int) -> int:
     Construct a raw 28-bit LG message code from the supplied address & command.
     EXACT translation from IRremoteESP8266 IRsend::encodeLG (ir_LG.cpp:132-135)
     """
+
     def sumNibbles(data, nibbles):
         """Sum nibbles (4-bit chunks)"""
         total = 0
@@ -293,8 +294,7 @@ def encodeLG(address: int, command: int) -> int:
             data >>= 4
         return total & 0xF
 
-    return ((address << 20) | (command << kLgAcChecksumSize) |
-            sumNibbles(command, 4))
+    return (address << 20) | (command << kLgAcChecksumSize) | sumNibbles(command, 4)
 
 
 ## Decode the supplied LG message.
@@ -315,8 +315,7 @@ def encodeLG(address: int, command: int) -> int:
 ##   They possibly differ on how they repeat and initial HDR mark.
 ## @see https://funembedded.wordpress.com/2014/11/08/ir-remote-control-for-lg-conditioner-using-stm32f302-mcu-on-mbed-platform/
 ## EXACT translation from IRremoteESP8266 ir_LG.cpp:138-224
-def decodeLG(results, offset: int = 1, nbits: int = kLgBits,
-             strict: bool = True) -> bool:
+def decodeLG(results, offset: int = 1, nbits: int = kLgBits, strict: bool = True) -> bool:
     """
     Decode the supplied LG message.
     EXACT translation from IRremoteESP8266 IRrecv::decodeLG (ir_LG.cpp:156-223)
@@ -376,7 +375,7 @@ def decodeLG(results, offset: int = 1, nbits: int = kLgBits,
         atleast=True,
         tolerance=25,
         excess=50,
-        MSBfirst=True
+        MSBfirst=True,
     )
     if not data:
         return False
@@ -398,7 +397,7 @@ def decodeLG(results, offset: int = 1, nbits: int = kLgBits,
         atleast=True,
         tolerance=25,
         excess=50,
-        MSBfirst=True
+        MSBfirst=True,
     )
 
     # Repeat
@@ -423,12 +422,12 @@ def decodeLG(results, offset: int = 1, nbits: int = kLgBits,
             atleast=True,
             tolerance=25,
             excess=50,
-            MSBfirst=True
+            MSBfirst=True,
         ):
             return False
 
     # The 16 bits before the checksum.
-    command = (data >> kLgAcChecksumSize)
+    command = data >> kLgAcChecksumSize
 
     # Compliance
     if strict and (data & 0xF) != sumNibbles(command, 4):
@@ -566,8 +565,11 @@ class IRLgAc:
     ## @note Internal use only.
     ## EXACT translation from IRremoteESP8266 ir_LG.cpp:331-337
     def _isAKB74955603(self) -> bool:
-        return ((self._.raw & kLgAcAKB74955603DetectionMask) and self._isNormal()) or \
-               (self.isSwingV() and not self.isSwingVToggle()) or self.isLightToggle()
+        return (
+            ((self._.raw & kLgAcAKB74955603DetectionMask) and self._isNormal())
+            or (self.isSwingV() and not self.isSwingVToggle())
+            or self.isLightToggle()
+        )
 
     ## Check if the stored code must belong to a AKB73757604 model.
     ## @return true, if it is AKB73757604 message. Otherwise, false.
@@ -620,7 +622,7 @@ class IRLgAc:
                 vanecode = self.getVaneCode(self._.raw)
                 self._vaneswingv[vanecode // kLgAcVaneSwingVSize] = vanecode % kLgAcVaneSwingVSize
             elif self.isSwingH():
-                self._swingh = (self._.raw == kLgAcSwingHAuto)
+                self._swingh = self._.raw == kLgAcSwingHAuto
         self._temp = 15  # Ensure there is a "sane" previous temp.
         self._temp = self.getTemp()
 
@@ -637,6 +639,7 @@ class IRLgAc:
                 total += data & 0xF
                 data >>= 4
             return total & 0xF
+
         return sumNibbles(state >> kLgAcChecksumSize, 4)
 
     ## Verify the checksum is valid for a given state.
@@ -788,8 +791,10 @@ class IRLgAc:
     ## EXACT translation from IRremoteESP8266 ir_LG.cpp:545-551
     def isSwingV(self) -> bool:
         code = self._.raw >> kLgAcChecksumSize
-        return (code >= (kLgAcSwingVLowest >> kLgAcChecksumSize) and
-                code < (kLgAcSwingHAuto >> kLgAcChecksumSize)) or self.isSwingVToggle()
+        return (
+            code >= (kLgAcSwingVLowest >> kLgAcChecksumSize)
+            and code < (kLgAcSwingHAuto >> kLgAcChecksumSize)
+        ) or self.isSwingVToggle()
 
     ## Check if the stored code is a SwingH message.
     ## @return true, if it is. Otherwise, false.
@@ -813,10 +818,9 @@ class IRLgAc:
     ## @return true, if it is. Otherwise, false.
     ## EXACT translation from IRremoteESP8266 ir_LG.cpp:567-574
     def isVaneSwingV(self) -> bool:
-        return self._.raw > kLgAcVaneSwingVBase and \
-               self._.raw < (kLgAcVaneSwingVBase +
-                           ((kLgAcSwingVMaxVanes *
-                             kLgAcVaneSwingVSize) << kLgAcChecksumSize))
+        return self._.raw > kLgAcVaneSwingVBase and self._.raw < (
+            kLgAcVaneSwingVBase + ((kLgAcSwingVMaxVanes * kLgAcVaneSwingVSize) << kLgAcChecksumSize)
+        )
 
     ## Set the Vertical Swing mode of the A/C.
     ## @param[in] position The position/mode to set the vanes to.
@@ -883,7 +887,7 @@ class IRLgAc:
         result = kLgAcVaneSwingVBase
         if vane < kLgAcSwingVMaxVanes:  # It's a valid vane nr.
             if position and position <= kLgAcVaneSwingVLowest:  # Valid position
-                result += ((vane * kLgAcVaneSwingVSize + position) << kLgAcChecksumSize)
+                result += (vane * kLgAcVaneSwingVSize + position) << kLgAcChecksumSize
         return result | IRLgAc.calcChecksum(result)
 
     ## Check if the internal state looks like a valid LG A/C message.

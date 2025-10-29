@@ -71,7 +71,7 @@ def sendZepeal(data: int, nbits: int, repeat: int = 0) -> List[int]:
         frequency=38,
         MSBfirst=True,
         repeat=repeat,
-        dutycycle=50
+        dutycycle=50,
     )
 
     return all_timings
@@ -121,7 +121,7 @@ def decodeZepeal(results, offset: int = 1, nbits: int = 16, strict: bool = True)
         atleast=True,
         tolerance=kZepealTolerance,
         excess=50,  # kMarkExcess placeholder
-        MSBfirst=True
+        MSBfirst=True,
     )
     if not used:
         return False
@@ -140,7 +140,7 @@ def decodeZepeal(results, offset: int = 1, nbits: int = 16, strict: bool = True)
         tolerance=kZepealTolerance,
         excess=50,
         MSBfirst=True,
-        expectlastspace=False
+        expectlastspace=False,
     )
     if not data_result.success:
         return False

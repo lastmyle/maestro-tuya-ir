@@ -29,13 +29,13 @@ kTecoHeat = 4
 
 # Fan speed constants (from ir_Teco.h lines 51-54)
 kTecoFanAuto = 0  # 0b00
-kTecoFanLow = 1   # 0b01
-kTecoFanMed = 2   # 0b10
+kTecoFanLow = 1  # 0b01
+kTecoFanMed = 2  # 0b10
 kTecoFanHigh = 3  # 0b11
 
 # Temperature constants (from ir_Teco.h lines 55-56)
-kTecoMinTemp = 16   # 16C
-kTecoMaxTemp = 30   # 30C
+kTecoMinTemp = 16  # 16C
+kTecoMaxTemp = 30  # 30C
 
 # Reset state constant (from ir_Teco.h line 58)
 kTecoReset = 0b01001010000000000000010000000000000
@@ -66,7 +66,7 @@ class TecoProtocol:
     @Power.setter
     def Power(self, value: bool) -> None:
         if value:
-            self.raw |= (1 << 3)
+            self.raw |= 1 << 3
         else:
             self.raw &= ~(1 << 3)
 
@@ -87,7 +87,7 @@ class TecoProtocol:
     @Swing.setter
     def Swing(self, value: bool) -> None:
         if value:
-            self.raw |= (1 << 6)
+            self.raw |= 1 << 6
         else:
             self.raw &= ~(1 << 6)
 
@@ -99,7 +99,7 @@ class TecoProtocol:
     @Sleep.setter
     def Sleep(self, value: bool) -> None:
         if value:
-            self.raw |= (1 << 7)
+            self.raw |= 1 << 7
         else:
             self.raw &= ~(1 << 7)
 
@@ -120,7 +120,7 @@ class TecoProtocol:
     @HalfHour.setter
     def HalfHour(self, value: bool) -> None:
         if value:
-            self.raw |= (1 << 12)
+            self.raw |= 1 << 12
         else:
             self.raw &= ~(1 << 12)
 
@@ -141,7 +141,7 @@ class TecoProtocol:
     @TimerOn.setter
     def TimerOn(self, value: bool) -> None:
         if value:
-            self.raw |= (1 << 15)
+            self.raw |= 1 << 15
         else:
             self.raw &= ~(1 << 15)
 
@@ -162,7 +162,7 @@ class TecoProtocol:
     @Humid.setter
     def Humid(self, value: bool) -> None:
         if value:
-            self.raw |= (1 << 20)
+            self.raw |= 1 << 20
         else:
             self.raw &= ~(1 << 20)
 
@@ -174,7 +174,7 @@ class TecoProtocol:
     @Light.setter
     def Light(self, value: bool) -> None:
         if value:
-            self.raw |= (1 << 21)
+            self.raw |= 1 << 21
         else:
             self.raw &= ~(1 << 21)
 
@@ -186,7 +186,7 @@ class TecoProtocol:
     @Save.setter
     def Save(self, value: bool) -> None:
         if value:
-            self.raw |= (1 << 23)
+            self.raw |= 1 << 23
         else:
             self.raw &= ~(1 << 23)
 
@@ -233,7 +233,7 @@ def sendTeco(data: int, nbits: int = kTecoBits, repeat: int = 0) -> List[int]:
             frequency=38000,
             MSBfirst=False,
             repeat=0,
-            dutycycle=50  # kDutyDefault
+            dutycycle=50,  # kDutyDefault
         )
         all_timings.extend(timings)
 
@@ -437,8 +437,7 @@ class IRTecoAc:
 ## @param[in] strict Flag indicating if we should perform strict matching.
 ## @return True if it can decode it, false if it can't.
 ## Direct translation from IRremoteESP8266 IRrecv::decodeTeco (ir_Teco.cpp lines 354-375)
-def decodeTeco(results, offset: int = 1, nbits: int = kTecoBits,
-               strict: bool = True) -> bool:
+def decodeTeco(results, offset: int = 1, nbits: int = kTecoBits, strict: bool = True) -> bool:
     """
     Decode a Teco HVAC IR message.
     EXACT translation from IRremoteESP8266 IRrecv::decodeTeco
@@ -470,7 +469,7 @@ def decodeTeco(results, offset: int = 1, nbits: int = kTecoBits,
         tolerance=25,
         excess=kMarkExcess,
         MSBfirst=False,
-        get_value=True  # Special flag to get uint64 value
+        get_value=True,  # Special flag to get uint64 value
     ):
         return False
 

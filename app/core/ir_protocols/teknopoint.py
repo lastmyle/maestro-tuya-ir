@@ -70,7 +70,7 @@ def sendTeknopoint(data: List[int], nbytes: int, repeat: int = 0) -> List[int]:
         frequency=kTeknopointFreq,
         MSBfirst=False,
         repeat=repeat,
-        dutycycle=50
+        dutycycle=50,
     )
 
 
@@ -82,8 +82,9 @@ def sendTeknopoint(data: List[int], nbytes: int, repeat: int = 0) -> List[int]:
 ## @param[in] strict Flag indicating if we should perform strict matching.
 ## @return A boolean. True if it can decode it, false if it can't.
 ## Direct translation from IRremoteESP8266 IRrecv::decodeTeknopoint (ir_Teknopoint.cpp lines 41-76)
-def decodeTeknopoint(results, offset: int = 1, nbits: int = kTeknopointBits,
-                     strict: bool = True) -> bool:
+def decodeTeknopoint(
+    results, offset: int = 1, nbits: int = kTeknopointBits, strict: bool = True
+) -> bool:
     """
     Decode a Teknopoint IR message.
     EXACT translation from IRremoteESP8266 IRrecv::decodeTeknopoint
@@ -91,9 +92,7 @@ def decodeTeknopoint(results, offset: int = 1, nbits: int = kTeknopointBits,
     This is the ACTUAL C++ decoder function, not a wrapper.
     """
     # Import here to avoid circular imports
-    from app.core.ir_protocols.ir_recv import (
-        kHeader, kFooter, kMarkExcess, _matchGeneric
-    )
+    from app.core.ir_protocols.ir_recv import kHeader, kFooter, kMarkExcess, _matchGeneric
 
     if results.rawlen < 2 * nbits + kHeader + kFooter - 1 - offset:
         return False  # Too short a message to match.
@@ -118,14 +117,17 @@ def decodeTeknopoint(results, offset: int = 1, nbits: int = kTeknopointBits,
         atleast=True,
         tolerance=25 + kTeknopointExtraTol,
         excess=kMarkExcess,
-        MSBfirst=False
+        MSBfirst=False,
     ):
         return False
 
     # Compliance
     if strict:
         # Is the checksum valid?
-        if sumBytes(results.state, kTeknopointStateLength - 1) != results.state[kTeknopointStateLength - 1]:
+        if (
+            sumBytes(results.state, kTeknopointStateLength - 1)
+            != results.state[kTeknopointStateLength - 1]
+        ):
             return False
 
     # Success

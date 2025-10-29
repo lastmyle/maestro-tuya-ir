@@ -159,7 +159,7 @@ def sendRhoss(data: List[int], nbytes: int, repeat: int = kRhossDefaultRepeat) -
             frequency=kRhossFreq,
             MSBfirst=False,
             repeat=0,
-            dutycycle=50
+            dutycycle=50,
         )
         all_timings.extend(block_timings)
         # mark(kRhossBitMark); (ir_Rhoss.cpp line 44)
@@ -181,7 +181,7 @@ def calcChecksum(state: List[int], length: int = kRhossStateLength) -> int:
     EXACT translation from IRremoteESP8266 IRRhossAc::calcChecksum
     """
     # sumBytes helper function - direct translation
-    return sum(state[:length - 1]) & 0xFF
+    return sum(state[: length - 1]) & 0xFF
 
 
 ## Verify the checksum is valid for a given state.
@@ -205,8 +205,7 @@ def validChecksum(state: List[int], length: int = kRhossStateLength) -> bool:
 ## @param[in] nbits The number of data bits to expect.
 ## @param[in] strict Flag indicating if we should perform strict matching.
 ## Direct translation from IRremoteESP8266 IRrecv::decodeRhoss (ir_Rhoss.cpp lines 59-99)
-def decodeRhoss(results, offset: int = 1, nbits: int = kRhossBits,
-                strict: bool = True) -> bool:
+def decodeRhoss(results, offset: int = 1, nbits: int = kRhossBits, strict: bool = True) -> bool:
     """
     Decode a Rhoss HVAC IR message.
     EXACT translation from IRremoteESP8266 IRrecv::decodeRhoss
@@ -215,7 +214,12 @@ def decodeRhoss(results, offset: int = 1, nbits: int = kRhossBits,
     """
     # Import here to avoid circular imports
     from app.core.ir_protocols.ir_recv import (
-        kHeader, kFooter, kMarkExcess, _matchGeneric, matchMark, matchAtLeast
+        kHeader,
+        kFooter,
+        kMarkExcess,
+        _matchGeneric,
+        matchMark,
+        matchAtLeast,
     )
 
     # Direct translation from ir_Rhoss.cpp line 61
@@ -245,7 +249,7 @@ def decodeRhoss(results, offset: int = 1, nbits: int = kRhossBits,
         atleast=False,
         tolerance=25,
         excess=kMarkExcess,
-        MSBfirst=False
+        MSBfirst=False,
     )
 
     # Direct translation from ir_Rhoss.cpp lines 77-78
@@ -260,8 +264,7 @@ def decodeRhoss(results, offset: int = 1, nbits: int = kRhossBits,
         offset += 1
 
     # Direct translation from ir_Rhoss.cpp lines 85-88
-    if offset < results.rawlen and \
-       not matchAtLeast(results.rawbuf[offset], kRhossGap):
+    if offset < results.rawlen and not matchAtLeast(results.rawbuf[offset], kRhossGap):
         return False
 
     # Direct translation from ir_Rhoss.cpp line 90
@@ -397,8 +400,7 @@ class IRRhossAc:
     ## @param[in] mode The desired operation mode.
     ## Direct translation from ir_Rhoss.cpp lines 243-256
     def setMode(self, mode: int) -> None:
-        if mode in [kRhossModeFan, kRhossModeCool, kRhossModeDry,
-                   kRhossModeHeat, kRhossModeAuto]:
+        if mode in [kRhossModeFan, kRhossModeCool, kRhossModeDry, kRhossModeHeat, kRhossModeAuto]:
             self._.Mode = mode
             return
         else:
@@ -414,15 +416,15 @@ class IRRhossAc:
         Convert common mode to Rhoss native mode.
         mode: 'cool', 'heat', 'dry', 'fan', 'auto'
         """
-        if mode == 'cool':
+        if mode == "cool":
             return kRhossModeCool
-        elif mode == 'heat':
+        elif mode == "heat":
             return kRhossModeHeat
-        elif mode == 'dry':
+        elif mode == "dry":
             return kRhossModeDry
-        elif mode == 'fan':
+        elif mode == "fan":
             return kRhossModeFan
-        elif mode == 'auto':
+        elif mode == "auto":
             return kRhossModeAuto
         else:
             return kRhossDefaultMode
@@ -437,11 +439,11 @@ class IRRhossAc:
         Convert common fan speed to Rhoss native fan speed.
         speed: 'min', 'low', 'medium', 'high', 'max', 'auto'
         """
-        if speed in ['min', 'low']:
+        if speed in ["min", "low"]:
             return kRhossFanMin
-        elif speed == 'medium':
+        elif speed == "medium":
             return kRhossFanMed
-        elif speed in ['high', 'max']:
+        elif speed in ["high", "max"]:
             return kRhossFanMax
         else:
             return kRhossDefaultFan
@@ -456,17 +458,17 @@ class IRRhossAc:
         Convert Rhoss native mode to common mode string.
         """
         if mode == kRhossModeCool:
-            return 'cool'
+            return "cool"
         elif mode == kRhossModeHeat:
-            return 'heat'
+            return "heat"
         elif mode == kRhossModeDry:
-            return 'dry'
+            return "dry"
         elif mode == kRhossModeFan:
-            return 'fan'
+            return "fan"
         elif mode == kRhossModeAuto:
-            return 'auto'
+            return "auto"
         else:
-            return 'auto'
+            return "auto"
 
     ## Convert a native fan speed into its stdAc equivalent.
     ## @param[in] speed The native setting to be converted.
@@ -478,12 +480,12 @@ class IRRhossAc:
         Convert Rhoss native fan speed to common fan speed string.
         """
         if speed == kRhossFanMax:
-            return 'max'
+            return "max"
         elif speed == kRhossFanMed:
-            return 'medium'
+            return "medium"
         elif speed == kRhossFanMin:
-            return 'min'
+            return "min"
         elif speed == kRhossFanAuto:
-            return 'auto'
+            return "auto"
         else:
-            return 'auto'
+            return "auto"

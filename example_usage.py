@@ -22,7 +22,7 @@ def demonstrate_decoding():
     print("=" * 80)
 
     # Get a known good code
-    tuya_code = FUJITSU_KNOWN_GOOD_CODES['OFF']
+    tuya_code = FUJITSU_KNOWN_GOOD_CODES["OFF"]
     print(f"\n1. Original Tuya code (base64):")
     print(f"   {tuya_code[:60]}...")
 
@@ -80,7 +80,7 @@ def demonstrate_round_trip():
     print("=" * 80)
 
     # Original code
-    original_code = FUJITSU_KNOWN_GOOD_CODES['OFF']
+    original_code = FUJITSU_KNOWN_GOOD_CODES["OFF"]
     print(f"\nOriginal Tuya code: {original_code[:40]}...")
 
     # Decode path
@@ -90,7 +90,7 @@ def demonstrate_round_trip():
     results1.rawlen = len(timings1)
     success1 = decodeFujitsuAC(results1, offset=0, nbits=kFujitsuAcBits, strict=False)
     assert success1
-    bytes1 = results1.state[:results1.bits // 8]
+    bytes1 = results1.state[: results1.bits // 8]
     print(f"Decoded bytes: {' '.join(f'{b:02x}' for b in bytes1)}")
 
     # Encode path
@@ -105,7 +105,7 @@ def demonstrate_round_trip():
     results2.rawlen = len(timings3)
     success2 = decodeFujitsuAC(results2, offset=0, nbits=kFujitsuAcBits, strict=False)
     assert success2
-    bytes2 = results2.state[:results2.bits // 8]
+    bytes2 = results2.state[: results2.bits // 8]
     print(f"Re-decoded bytes: {' '.join(f'{b:02x}' for b in bytes2)}")
 
     # Check results

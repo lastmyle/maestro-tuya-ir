@@ -92,10 +92,10 @@ def calcBlockChecksum(block: List[int], length: int = 8) -> int:
     sum_val = kKelvinatorChecksumStart
     # Sum the lower half of the first 4 bytes of this block.
     for i in range(min(4, length - 1)):
-        sum_val += (block[i] & 0b1111)
+        sum_val += block[i] & 0b1111
     # then sum the upper half of the next 3 bytes.
     for i in range(4, length - 1):
-        sum_val += (block[i] >> 4)
+        sum_val += block[i] >> 4
     # Trim it down to fit into the 4 bits allowed. i.e. Mod 16.
     return sum_val & 0b1111
 
@@ -406,7 +406,7 @@ def sendGree(data: List[int], nbytes: int, repeat: int = 0) -> List[int]:
             frequency=38,
             MSBfirst=False,
             repeat=0,
-            dutycycle=50
+            dutycycle=50,
         )
         all_timings.extend(block1_timings)
 
@@ -418,7 +418,7 @@ def sendGree(data: List[int], nbytes: int, repeat: int = 0) -> List[int]:
             zerospace=kGreeZeroSpace,
             data=kGreeBlockFooter,
             nbits=kGreeBlockFooterBits,
-            MSBfirst=False
+            MSBfirst=False,
         )
         all_timings.extend(footer1_timings)
         all_timings.append(kGreeBitMark)
@@ -439,7 +439,7 @@ def sendGree(data: List[int], nbytes: int, repeat: int = 0) -> List[int]:
             frequency=38,
             MSBfirst=False,
             repeat=0,
-            dutycycle=50
+            dutycycle=50,
         )
         all_timings.extend(block2_timings)
 
@@ -523,7 +523,7 @@ class IRGreeAC:
     def setPower(self, on: bool) -> None:
         self._.Power = on
         # May not be needed. See #814
-        self._.ModelA = (on and self._model == GREE_YAW1F)
+        self._.ModelA = on and self._model == GREE_YAW1F
 
     ## Get the value of the current power setting.
     ## @return true, the setting is on. false, the setting is off.
@@ -566,7 +566,7 @@ class IRGreeAC:
         # Set the "main" Celsius degrees.
         self._.Temp = int(safecelsius - kGreeMinTempC)
         # Deal with the extra degree fahrenheit difference.
-        self._.TempExtraDegreeF = (int(safecelsius * 2) & 1)
+        self._.TempExtraDegreeF = int(safecelsius * 2) & 1
 
     ## Get the set temperature
     ## @return The temperature in degrees in the current units (C/F) set.
@@ -715,14 +715,24 @@ class IRGreeAC:
         self._.SwingAuto = automatic
         new_position = position
         if not automatic:
-            if position in [kGreeSwingLastPos, kGreeSwingUp, kGreeSwingMiddleUp,
-                           kGreeSwingMiddle, kGreeSwingMiddleDown, kGreeSwingDown]:
+            if position in [
+                kGreeSwingLastPos,
+                kGreeSwingUp,
+                kGreeSwingMiddleUp,
+                kGreeSwingMiddle,
+                kGreeSwingMiddleDown,
+                kGreeSwingDown,
+            ]:
                 pass
             else:
                 new_position = kGreeSwingLastPos
         else:
-            if position in [kGreeSwingAuto, kGreeSwingDownAuto,
-                           kGreeSwingMiddleAuto, kGreeSwingUpAuto]:
+            if position in [
+                kGreeSwingAuto,
+                kGreeSwingDownAuto,
+                kGreeSwingMiddleAuto,
+                kGreeSwingUpAuto,
+            ]:
                 pass
             else:
                 new_position = kGreeSwingAuto
@@ -833,8 +843,9 @@ class IRGreeAC:
 ## @param[in] _tolerance The tolerance percentage for matching (default 25%)
 ## @return A boolean. True if it can decode it, false if it can't.
 ## Direct translation from IRremoteESP8266 IRrecv::decodeGree (ir_Gree.cpp lines 697-751)
-def decodeGree(results, offset: int = 1, nbits: int = kGreeBits, strict: bool = True,
-               _tolerance: int = 25) -> bool:
+def decodeGree(
+    results, offset: int = 1, nbits: int = kGreeBits, strict: bool = True, _tolerance: int = 25
+) -> bool:
     """
     Decode a Gree HVAC IR message.
     EXACT translation from IRremoteESP8266 IRrecv::decodeGree
@@ -843,11 +854,15 @@ def decodeGree(results, offset: int = 1, nbits: int = kGreeBits, strict: bool = 
     """
     # Import here to avoid circular imports
     from app.core.ir_protocols.ir_recv import (
-        kHeader, kFooter, kMarkExcess, _matchGeneric, matchData, match_result_t
+        kHeader,
+        kFooter,
+        kMarkExcess,
+        _matchGeneric,
+        matchData,
+        match_result_t,
     )
 
-    if results.rawlen <= \
-       2 * (nbits + kGreeBlockFooterBits) + (kHeader + kFooter + 1) - 1 + offset:
+    if results.rawlen <= 2 * (nbits + kGreeBlockFooterBits) + (kHeader + kFooter + 1) - 1 + offset:
         return False  # Can't possibly be a valid Gree message.
     if strict and nbits != kGreeBits:
         return False  # Not strictly a Gree message.
@@ -873,7 +888,7 @@ def decodeGree(results, offset: int = 1, nbits: int = kGreeBits, strict: bool = 
         atleast=False,
         tolerance=_tolerance,
         excess=kMarkExcess,
-        MSBfirst=False
+        MSBfirst=False,
     )
     if used == 0:
         return False
@@ -891,7 +906,7 @@ def decodeGree(results, offset: int = 1, nbits: int = kGreeBits, strict: bool = 
         tolerance=_tolerance,
         excess=kMarkExcess,
         MSBfirst=False,
-        expectlastspace=True
+        expectlastspace=True,
     )
     if data_result.success == False:
         return False
@@ -918,7 +933,7 @@ def decodeGree(results, offset: int = 1, nbits: int = kGreeBits, strict: bool = 
         atleast=True,
         tolerance=_tolerance,
         excess=kMarkExcess,
-        MSBfirst=False
+        MSBfirst=False,
     ):
         return False
 

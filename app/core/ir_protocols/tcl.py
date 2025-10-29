@@ -338,7 +338,7 @@ def sendTcl112Ac(data: List[int], nbytes: int, repeat: int = 0) -> List[int]:
         frequency=38000,
         MSBfirst=False,
         repeat=repeat,
-        dutycycle=50
+        dutycycle=50,
     )
 
 
@@ -357,10 +357,7 @@ class IRTcl112Ac:
     ## Direct translation from ir_Tcl.cpp lines 141-150
     def stateReset(self) -> None:
         # A known good state. (On, Cool, 24C)
-        reset = [
-            0x23, 0xCB, 0x26, 0x01, 0x00, 0x24, 0x03, 0x07, 0x40, 0x00, 0x00, 0x00,
-            0x00, 0x03
-        ]
+        reset = [0x23, 0xCB, 0x26, 0x01, 0x00, 0x24, 0x03, 0x07, 0x40, 0x00, 0x00, 0x00, 0x00, 0x03]
         for i in range(len(reset)):
             self._.raw[i] = reset[i]
         self._quiet = False
@@ -397,7 +394,7 @@ class IRTcl112Ac:
     ## Direct translation from ir_Tcl.cpp lines 121-127
     @staticmethod
     def validChecksum(state: List[int], length: int = kTcl112AcStateLength) -> bool:
-        return (length > 1 and state[length - 1] == IRTcl112Ac.calcChecksum(state, length))
+        return length > 1 and state[length - 1] == IRTcl112Ac.calcChecksum(state, length)
 
     ## Check the supplied state looks like a TCL112AC message.
     ## @param[in] state The array to verify the checksum of.
@@ -425,7 +422,7 @@ class IRTcl112Ac:
     ## Direct translation from ir_Tcl.cpp lines 159-163
     def setModel(self, model: int) -> None:
         # tcl_ac_remote_model_t::GZ055BE1 = 1
-        self._.isTcl = (model != 1)
+        self._.isTcl = model != 1
 
     ## Get a PTR to the internal state/code for this protocol.
     ## @return PTR to a code for this protocol based on the current internal state.
@@ -514,8 +511,13 @@ class IRTcl112Ac:
     ## @note Unknown speeds will default to Auto.
     ## Direct translation from ir_Tcl.cpp lines 241-256
     def setFan(self, speed: int) -> None:
-        if speed in [kTcl112AcFanAuto, kTcl112AcFanMin, kTcl112AcFanLow,
-                    kTcl112AcFanMed, kTcl112AcFanHigh]:
+        if speed in [
+            kTcl112AcFanAuto,
+            kTcl112AcFanMin,
+            kTcl112AcFanLow,
+            kTcl112AcFanMed,
+            kTcl112AcFanHigh,
+        ]:
             self._.Fan = speed
         else:
             self._.Fan = kTcl112AcFanAuto
@@ -578,9 +580,15 @@ class IRTcl112Ac:
     ## @param[in] setting The value of the desired setting.
     ## Direct translation from ir_Tcl.cpp lines 294-307
     def setSwingVertical(self, setting: int) -> None:
-        if setting in [kTcl112AcSwingVOff, kTcl112AcSwingVHighest, kTcl112AcSwingVHigh,
-                      kTcl112AcSwingVMiddle, kTcl112AcSwingVLow, kTcl112AcSwingVLowest,
-                      kTcl112AcSwingVOn]:
+        if setting in [
+            kTcl112AcSwingVOff,
+            kTcl112AcSwingVHighest,
+            kTcl112AcSwingVHigh,
+            kTcl112AcSwingVMiddle,
+            kTcl112AcSwingVLow,
+            kTcl112AcSwingVLowest,
+            kTcl112AcSwingVOn,
+        ]:
             self._.SwingV = setting
 
     ## Get the vertical swing setting of the A/C.
@@ -635,7 +643,7 @@ class IRTcl112Ac:
     ## Direct translation from ir_Tcl.cpp lines 351-358
     def setOnTimer(self, mins: int) -> None:
         self._.OnTimer = min(mins, kTcl112AcTimerMax) // kTcl112AcTimerResolution
-        self._.OnTimerEnabled = (self._.OnTimer > 0)
+        self._.OnTimerEnabled = self._.OnTimer > 0
         self._.TimerIndicator = bool(self._.OnTimerEnabled or self._.OffTimerEnabled)
 
     ## Get how long the Off Timer is set for, in minutes.
@@ -650,7 +658,7 @@ class IRTcl112Ac:
     ## Direct translation from ir_Tcl.cpp lines 366-373
     def setOffTimer(self, mins: int) -> None:
         self._.OffTimer = min(mins, kTcl112AcTimerMax) // kTcl112AcTimerResolution
-        self._.OffTimerEnabled = (self._.OffTimer > 0)
+        self._.OffTimerEnabled = self._.OffTimer > 0
         self._.TimerIndicator = bool(self._.OnTimerEnabled or self._.OffTimerEnabled)
 
 
@@ -659,8 +667,9 @@ class IRTcl112Ac:
 ##   It's the same as `decodeMitsubishi112()`. A shared routine is used.
 ##   You can find it in: ir_Mitsubishi.cpp
 ## Direct translation from ir_Tcl.cpp lines 533-538
-def decodeTcl112Ac(results, offset: int = 1, nbits: int = kTcl112AcBits,
-                   strict: bool = True) -> bool:
+def decodeTcl112Ac(
+    results, offset: int = 1, nbits: int = kTcl112AcBits, strict: bool = True
+) -> bool:
     """
     Decode a TCL 112-bit A/C IR message.
     EXACT translation from IRremoteESP8266 IRrecv::decodeTcl112Ac
@@ -720,16 +729,13 @@ def sendTcl96Ac(data: List[int], nbytes: int, repeat: int = 0) -> List[int]:
 ## @param[in] strict Flag indicating if we should perform strict matching.
 ## @return True if it can decode it, false if it can't.
 ## Direct translation from IRremoteESP8266 IRrecv::decodeTcl96Ac (ir_Tcl.cpp lines 569-616)
-def decodeTcl96Ac(results, offset: int = 1, nbits: int = kTcl96AcBits,
-                  strict: bool = True) -> bool:
+def decodeTcl96Ac(results, offset: int = 1, nbits: int = kTcl96AcBits, strict: bool = True) -> bool:
     """
     Decode a TCL 96-bit A/C IR message.
     EXACT translation from IRremoteESP8266 IRrecv::decodeTcl96Ac
     """
     # Import here to avoid circular imports
-    from app.core.ir_protocols.ir_recv import (
-        kHeader, kFooter, matchMark, matchSpace, matchAtLeast
-    )
+    from app.core.ir_protocols.ir_recv import kHeader, kFooter, matchMark, matchSpace, matchAtLeast
 
     if results.rawlen < nbits + kHeader + kFooter - 1 + offset:
         return False  # Message is smaller than we expected

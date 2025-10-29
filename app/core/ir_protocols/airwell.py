@@ -32,17 +32,17 @@ kAirwellMinTemp = 16  # Celsius
 kAirwellMaxTemp = 30  # Celsius
 
 # Fan constants (from ir_Airwell.h lines 46-49)
-kAirwellFanLow = 0     # 0b00
+kAirwellFanLow = 0  # 0b00
 kAirwellFanMedium = 1  # 0b01
-kAirwellFanHigh = 2    # 0b10
-kAirwellFanAuto = 3    # 0b11
+kAirwellFanHigh = 2  # 0b10
+kAirwellFanAuto = 3  # 0b11
 
 # Mode constants (from ir_Airwell.h lines 51-55)
 kAirwellCool = 1  # 0b001
 kAirwellHeat = 2  # 0b010
 kAirwellAuto = 3  # 0b011
-kAirwellDry = 4   # 0b100
-kAirwellFan = 5   # 0b101
+kAirwellDry = 4  # 0b100
+kAirwellFan = 5  # 0b101
 
 
 ## Native representation of a Airwell A/C message.
@@ -90,7 +90,7 @@ class AirwellProtocol:
     @PowerToggle.setter
     def PowerToggle(self, value: bool) -> None:
         if value:
-            self.raw |= (1 << 33)
+            self.raw |= 1 << 33
         else:
             self.raw &= ~(1 << 33)
 
@@ -102,7 +102,9 @@ class AirwellProtocol:
 ## @param[in] repeat The number of times the command is to be repeated.
 ## @see https://github.com/crankyoldgit/IRremoteESP8266/issues/1069
 ## Direct translation from IRremoteESP8266 IRsend::sendAirwell (ir_Airwell.cpp lines 24-38)
-def sendAirwell(data: int, nbits: int = kAirwellBits, repeat: int = kAirwellMinRepeats) -> List[int]:
+def sendAirwell(
+    data: int, nbits: int = kAirwellBits, repeat: int = kAirwellMinRepeats
+) -> List[int]:
     """
     Send an Airwell Manchester Code formatted message.
     EXACT translation from IRremoteESP8266 IRsend::sendAirwell
@@ -127,7 +129,7 @@ def sendAirwell(data: int, nbits: int = kAirwellBits, repeat: int = kAirwellMinR
             frequency=38000,
             MSBfirst=True,
             dutycycle=50,
-            leadingzero=False
+            leadingzero=False,
         )
         all_timings.extend(timings)
 
@@ -150,8 +152,9 @@ def sendAirwell(data: int, nbits: int = kAirwellBits, repeat: int = kAirwellMinR
 ## @return A boolean. True if it can decode it, false if it can't.
 ## @see https://github.com/crankyoldgit/IRremoteESP8266/issues/1069
 ## Direct translation from IRremoteESP8266 IRrecv::decodeAirwell (ir_Airwell.cpp lines 41-78)
-def decodeAirwell(results, offset: int = 1, nbits: int = kAirwellBits, strict: bool = True,
-                  _tolerance: int = 25) -> bool:
+def decodeAirwell(
+    results, offset: int = 1, nbits: int = kAirwellBits, strict: bool = True, _tolerance: int = 25
+) -> bool:
     """
     Decode an Airwell "Manchester code" HVAC IR message.
     EXACT translation from IRremoteESP8266 IRrecv::decodeAirwell
@@ -183,7 +186,7 @@ def decodeAirwell(results, offset: int = 1, nbits: int = kAirwellBits, strict: b
         tolerance=_tolerance,
         excess=kMarkExcess,
         MSBfirst=True,
-        GEThomas=False
+        GEThomas=False,
     )
     if match_result.used == 0:
         return False
@@ -262,13 +265,13 @@ class IRAirwellAc:
     @staticmethod
     def convertMode(mode: str) -> int:
         """Convert common mode to Airwell mode"""
-        if mode == 'cool':
+        if mode == "cool":
             return kAirwellCool
-        elif mode == 'heat':
+        elif mode == "heat":
             return kAirwellHeat
-        elif mode == 'dry':
+        elif mode == "dry":
             return kAirwellDry
-        elif mode == 'fan':
+        elif mode == "fan":
             return kAirwellFan
         else:
             return kAirwellAuto
@@ -281,15 +284,15 @@ class IRAirwellAc:
     def toCommonMode(mode: int) -> str:
         """Convert Airwell mode to common mode"""
         if mode == kAirwellCool:
-            return 'cool'
+            return "cool"
         elif mode == kAirwellHeat:
-            return 'heat'
+            return "heat"
         elif mode == kAirwellDry:
-            return 'dry'
+            return "dry"
         elif mode == kAirwellFan:
-            return 'fan'
+            return "fan"
         else:
-            return 'auto'
+            return "auto"
 
     ## Set the speed of the fan.
     ## @param[in] speed The desired setting.
@@ -314,11 +317,11 @@ class IRAirwellAc:
     @staticmethod
     def convertFan(speed: str) -> int:
         """Convert common fan speed to Airwell fan speed"""
-        if speed in ['min', 'low']:
+        if speed in ["min", "low"]:
             return kAirwellFanLow
-        elif speed == 'medium':
+        elif speed == "medium":
             return kAirwellFanMedium
-        elif speed in ['high', 'max']:
+        elif speed in ["high", "max"]:
             return kAirwellFanHigh
         else:
             return kAirwellFanAuto
@@ -331,13 +334,13 @@ class IRAirwellAc:
     def toCommonFanSpeed(speed: int) -> str:
         """Convert Airwell fan speed to common fan speed"""
         if speed == kAirwellFanHigh:
-            return 'max'
+            return "max"
         elif speed == kAirwellFanMedium:
-            return 'medium'
+            return "medium"
         elif speed == kAirwellFanLow:
-            return 'min'
+            return "min"
         else:
-            return 'auto'
+            return "auto"
 
     ## Set the temperature.
     ## @param[in] degrees The temperature in degrees celsius.
@@ -367,28 +370,28 @@ class IRAirwellAc:
             # Set defaults for non-zero values that are not implicitly set for when
             # there is no previous state.
             # e.g. Any setting that toggles should probably go here.
-            result['power'] = False
+            result["power"] = False
 
-        result['protocol'] = 'AIRWELL'
+        result["protocol"] = "AIRWELL"
         if self._.PowerToggle:
-            result['power'] = not result['power']
-        result['mode'] = self.toCommonMode(self._.Mode)
-        result['celsius'] = True
-        result['degrees'] = self.getTemp()
-        result['fanspeed'] = self.toCommonFanSpeed(self._.Fan)
+            result["power"] = not result["power"]
+        result["mode"] = self.toCommonMode(self._.Mode)
+        result["celsius"] = True
+        result["degrees"] = self.getTemp()
+        result["fanspeed"] = self.toCommonFanSpeed(self._.Fan)
         # Not supported.
-        result['model'] = -1
-        result['turbo'] = False
-        result['swingv'] = 'off'
-        result['swingh'] = 'off'
-        result['light'] = False
-        result['filter'] = False
-        result['econo'] = False
-        result['quiet'] = False
-        result['clean'] = False
-        result['beep'] = False
-        result['sleep'] = -1
-        result['clock'] = -1
+        result["model"] = -1
+        result["turbo"] = False
+        result["swingv"] = "off"
+        result["swingh"] = "off"
+        result["light"] = False
+        result["filter"] = False
+        result["econo"] = False
+        result["quiet"] = False
+        result["clean"] = False
+        result["beep"] = False
+        result["sleep"] = -1
+        result["clock"] = -1
         return result
 
     ## Convert the current internal state into a human readable string.

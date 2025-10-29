@@ -321,7 +321,7 @@ def sendVoltas(data: List[int], nbytes: int = kVoltasStateLength, repeat: int = 
         frequency=kVoltasFreq,
         MSBfirst=True,
         repeat=repeat,
-        dutycycle=50
+        dutycycle=50,
     )
     return timings
 
@@ -692,7 +692,7 @@ class IRVoltas:
         self._.OnTimerMins = mins % 60
         self._.OnTimer12Hr = hrs // 12
         self._.OnTimerHrs = hrs % 12
-        self._.OnTimerEnable = (mins > 0)  # Is the timer is to be enabled?
+        self._.OnTimerEnable = mins > 0  # Is the timer is to be enabled?
 
     ## Get the value of the On Timer time.
     ## @return Number of minutes before the timer activates.
@@ -711,7 +711,7 @@ class IRVoltas:
         self._.OffTimerMins = mins % 60
         self._.OffTimer12Hr = hrs // 12
         self._.OffTimerHrs = hrs % 12
-        self._.OffTimerEnable = (mins > 0)  # Is the timer is to be enabled?
+        self._.OffTimerEnable = mins > 0  # Is the timer is to be enabled?
 
     ## Convert the current internal state into its stdAc::state_t equivalent.
     ## @param[in] prev Ptr to the previous state if available.
@@ -725,27 +725,27 @@ class IRVoltas:
         else:
             # Set defaults for non-zero values that are not implicitly set for when
             # there is no previous state.
-            result['swingh'] = 0  # stdAc::swingh_t::kOff
-        result['model'] = self.getModel()
-        result['protocol'] = 'VOLTAS'
-        result['power'] = bool(self._.Power)
-        result['mode'] = self.toCommonMode(self._.Mode)
-        result['celsius'] = True
-        result['degrees'] = self.getTemp()
-        result['fanspeed'] = self.toCommonFanSpeed(self._.FanSpeed)
-        result['swingv'] = 1 if self.getSwingV() else 0  # kAuto : kOff
+            result["swingh"] = 0  # stdAc::swingh_t::kOff
+        result["model"] = self.getModel()
+        result["protocol"] = "VOLTAS"
+        result["power"] = bool(self._.Power)
+        result["mode"] = self.toCommonMode(self._.Mode)
+        result["celsius"] = True
+        result["degrees"] = self.getTemp()
+        result["fanspeed"] = self.toCommonFanSpeed(self._.FanSpeed)
+        result["swingv"] = 1 if self.getSwingV() else 0  # kAuto : kOff
         if self.getSwingHChange():
-            result['swingh'] = 1 if self._.SwingH else 0  # kAuto : kOff
-        result['turbo'] = bool(self._.Turbo)
-        result['econo'] = bool(self._.Econo)
-        result['light'] = bool(self._.Light)
-        result['sleep'] = 0 if self._.Sleep else -1
+            result["swingh"] = 1 if self._.SwingH else 0  # kAuto : kOff
+        result["turbo"] = bool(self._.Turbo)
+        result["econo"] = bool(self._.Econo)
+        result["light"] = bool(self._.Light)
+        result["sleep"] = 0 if self._.Sleep else -1
         # Not supported.
-        result['quiet'] = False
-        result['filter'] = False
-        result['clean'] = False
-        result['beep'] = False
-        result['clock'] = -1
+        result["quiet"] = False
+        result["filter"] = False
+        result["clean"] = False
+        result["beep"] = False
+        result["clock"] = -1
         return result
 
     ## Convert the current internal state into a human readable string.
@@ -768,7 +768,9 @@ class IRVoltas:
         result += "Wifi: " + ("On" if self._.Wifi else "Off") + ", "
         result += "Light: " + ("On" if self._.Light else "Off") + ", "
         result += "Sleep: " + ("On" if self._.Sleep else "Off") + ", "
-        result += "On Timer: " + (str(self.getOnTime()) + "m" if self._.OnTimerEnable else "Off") + ", "
+        result += (
+            "On Timer: " + (str(self.getOnTime()) + "m" if self._.OnTimerEnable else "Off") + ", "
+        )
         result += "Off Timer: " + (str(self.getOffTime()) + "m" if self._.OffTimerEnable else "Off")
         return result
 
@@ -781,8 +783,7 @@ class IRVoltas:
 ## @param[in] strict Flag indicating if we should perform strict matching.
 ## @return A boolean. True if it can decode it, false if it can't.
 ## Direct translation from IRremoteESP8266 IRrecv::decodeVoltas (ir_Voltas.cpp lines 52-81)
-def decodeVoltas(results, offset: int = 1, nbits: int = kVoltasBits,
-                 strict: bool = True) -> bool:
+def decodeVoltas(results, offset: int = 1, nbits: int = kVoltasBits, strict: bool = True) -> bool:
     """
     Decode a Voltas IR message.
     EXACT translation from IRremoteESP8266 IRrecv::decodeVoltas
@@ -814,7 +815,7 @@ def decodeVoltas(results, offset: int = 1, nbits: int = kVoltasBits,
         atleast=True,
         tolerance=25,
         excess=kMarkExcess,
-        MSBfirst=True
+        MSBfirst=True,
     ):
         return False
 

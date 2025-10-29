@@ -49,26 +49,25 @@ kSanyoLc7461AddressMask = (1 << kSanyoLC7461AddressBits) - 1
 kSanyoLc7461CommandMask = (1 << kSanyoLC7461CommandBits) - 1
 kSanyoLc7461HdrMark = 9000
 kSanyoLc7461HdrSpace = 4500
-kSanyoLc7461BitMark = 560    # 1T
+kSanyoLc7461BitMark = 560  # 1T
 kSanyoLc7461OneSpace = 1690  # 3T
 kSanyoLc7461ZeroSpace = 560  # 1T
 kSanyoLc7461MinCommandLength = 108000
 
-kSanyoLc7461MinGap = (
-    kSanyoLc7461MinCommandLength -
-    (kSanyoLc7461HdrMark + kSanyoLc7461HdrSpace +
-     kSanyoLC7461Bits * (kSanyoLc7461BitMark +
-                         (kSanyoLc7461OneSpace + kSanyoLc7461ZeroSpace) // 2) +
-     kSanyoLc7461BitMark)
+kSanyoLc7461MinGap = kSanyoLc7461MinCommandLength - (
+    kSanyoLc7461HdrMark
+    + kSanyoLc7461HdrSpace
+    + kSanyoLC7461Bits * (kSanyoLc7461BitMark + (kSanyoLc7461OneSpace + kSanyoLc7461ZeroSpace) // 2)
+    + kSanyoLc7461BitMark
 )
 
 # Sanyo AC
 # ir_Sanyo.cpp:63-69
 kSanyoAcStateLength = 9
 kSanyoAcBits = kSanyoAcStateLength * 8
-kSanyoAcHdrMark = 8500   # uSeconds
+kSanyoAcHdrMark = 8500  # uSeconds
 kSanyoAcHdrSpace = 4200  # uSeconds
-kSanyoAcBitMark = 500    # uSeconds
+kSanyoAcBitMark = 500  # uSeconds
 kSanyoAcOneSpace = 1600  # uSeconds
 kSanyoAcZeroSpace = 550  # uSeconds
 kSanyoAcGap = 100000  # kDefaultMessageGap uSeconds (Guess only)
@@ -78,13 +77,13 @@ kSanyoAcFreq = 38000  # Hz. (Guess only)
 # ir_Sanyo.cpp:71-78
 kSanyoAc88StateLength = 11
 kSanyoAc88Bits = kSanyoAc88StateLength * 8
-kSanyoAc88HdrMark = 5400   # uSeconds
+kSanyoAc88HdrMark = 5400  # uSeconds
 kSanyoAc88HdrSpace = 2000  # uSeconds
-kSanyoAc88BitMark = 500    # uSeconds
+kSanyoAc88BitMark = 500  # uSeconds
 kSanyoAc88OneSpace = 1500  # uSeconds
 kSanyoAc88ZeroSpace = 750  # uSeconds
-kSanyoAc88Gap = 3675       # uSeconds
-kSanyoAc88Freq = 38000     # Hz. (Guess only)
+kSanyoAc88Gap = 3675  # uSeconds
+kSanyoAc88Freq = 38000  # Hz. (Guess only)
 kSanyoAc88ExtraTolerance = 5  # (%) Extra tolerance to use.
 kSanyoAc88MinRepeat = 1  # Minimum number of repeats required
 
@@ -92,58 +91,58 @@ kSanyoAc88MinRepeat = 1  # Minimum number of repeats required
 # ir_Sanyo.cpp:80-86
 kSanyoAc152StateLength = 19
 kSanyoAc152Bits = kSanyoAc152StateLength * 8
-kSanyoAc152HdrMark = 3300   # uSeconds
-kSanyoAc152BitMark = 440    # uSeconds
+kSanyoAc152HdrMark = 3300  # uSeconds
+kSanyoAc152BitMark = 440  # uSeconds
 kSanyoAc152HdrSpace = 1725  # uSeconds
 kSanyoAc152OneSpace = 1290  # uSeconds
 kSanyoAc152ZeroSpace = 405  # uSeconds
-kSanyoAc152Freq = 38000     # Hz. (Guess only)
+kSanyoAc152Freq = 38000  # Hz. (Guess only)
 kSanyoAc152ExtraTolerance = 13  # (%) Extra tolerance to use.
 
 # Sanyo AC constants
 # ir_Sanyo.h:83-107
-kSanyoAcTempMin = 16    # Celsius
-kSanyoAcTempMax = 30    # Celsius
-kSanyoAcTempDelta = 4   # Celsius to Native Temp difference.
+kSanyoAcTempMin = 16  # Celsius
+kSanyoAcTempMax = 30  # Celsius
+kSanyoAcTempDelta = 4  # Celsius to Native Temp difference.
 
-kSanyoAcHourMax = 15       # 0b1111
+kSanyoAcHourMax = 15  # 0b1111
 
-kSanyoAcHeat = 1        # 0b001
-kSanyoAcCool = 2        # 0b010
-kSanyoAcDry = 3         # 0b011
-kSanyoAcAuto = 4        # 0b100
-kSanyoAcFanAuto = 0     # 0b00
-kSanyoAcFanHigh = 1     # 0b01
-kSanyoAcFanLow = 2      # 0b10
-kSanyoAcFanMedium = 3   # 0b11
+kSanyoAcHeat = 1  # 0b001
+kSanyoAcCool = 2  # 0b010
+kSanyoAcDry = 3  # 0b011
+kSanyoAcAuto = 4  # 0b100
+kSanyoAcFanAuto = 0  # 0b00
+kSanyoAcFanHigh = 1  # 0b01
+kSanyoAcFanLow = 2  # 0b10
+kSanyoAcFanMedium = 3  # 0b11
 
 # const uint8_t kSanyoAcPowerStandby = 0b00;  # Standby?
 kSanyoAcPowerOff = 0b01  # Off
-kSanyoAcPowerOn = 0b10   # On
-kSanyoAcSwingVAuto = 0          # 0b000
-kSanyoAcSwingVLowest = 2        # 0b010
-kSanyoAcSwingVLow = 3           # 0b011
-kSanyoAcSwingVLowerMiddle = 4   # 0b100
-kSanyoAcSwingVUpperMiddle = 5   # 0b101
-kSanyoAcSwingVHigh = 6          # 0b110
-kSanyoAcSwingVHighest = 7       # 0b111
+kSanyoAcPowerOn = 0b10  # On
+kSanyoAcSwingVAuto = 0  # 0b000
+kSanyoAcSwingVLowest = 2  # 0b010
+kSanyoAcSwingVLow = 3  # 0b011
+kSanyoAcSwingVLowerMiddle = 4  # 0b100
+kSanyoAcSwingVUpperMiddle = 5  # 0b101
+kSanyoAcSwingVHigh = 6  # 0b110
+kSanyoAcSwingVHighest = 7  # 0b111
 
 # Sanyo AC88 constants
 # ir_Sanyo.h:174-187
-kSanyoAc88Auto = 0      # 0b000
+kSanyoAc88Auto = 0  # 0b000
 kSanyoAc88FeelCool = 1  # 0b001
-kSanyoAc88Cool = 2      # 0b010
+kSanyoAc88Cool = 2  # 0b010
 kSanyoAc88FeelHeat = 3  # 0b011
-kSanyoAc88Heat = 4      # 0b100
-kSanyoAc88Fan = 5       # 0b101
+kSanyoAc88Heat = 4  # 0b100
+kSanyoAc88Fan = 5  # 0b101
 
 kSanyoAc88TempMin = 10  # Celsius
 kSanyoAc88TempMax = 30  # Celsius
 
-kSanyoAc88FanAuto = 0   # 0b00
-kSanyoAc88FanLow = 1    # 0b01
-kSanyoAc88FanMedium = 2 # 0b10
-kSanyoAc88FanHigh = 3   # 0b11
+kSanyoAc88FanAuto = 0  # 0b00
+kSanyoAc88FanLow = 1  # 0b01
+kSanyoAc88FanMedium = 2  # 0b10
+kSanyoAc88FanHigh = 3  # 0b11
 
 
 ## Construct a Sanyo LC7461 message.
@@ -190,6 +189,7 @@ def encodeSanyoLC7461(address: int, command: int) -> int:
 def sendSanyoLC7461(data: int, nbits: int = kSanyoLC7461Bits, repeat: int = 0) -> List[int]:
     # This protocol appears to be another 42-bit variant of the NEC protocol.
     from app.core.ir_protocols.ir_send import sendNEC
+
     return sendNEC(data, nbits, repeat)
 
 
@@ -210,7 +210,9 @@ def sendSanyoLC7461(data: int, nbits: int = kSanyoLC7461Bits, repeat: int = 0) -
 ## @see https://github.com/marcosamarinho/IRremoteESP8266/blob/master/ir_Sanyo.cpp
 ## @see http://pdf.datasheetcatalog.com/datasheet/sanyo/LC7461.pdf
 ## ir_Sanyo.cpp:154-188
-def decodeSanyoLC7461(results, offset: int = 1, nbits: int = kSanyoLC7461Bits, strict: bool = True) -> bool:
+def decodeSanyoLC7461(
+    results, offset: int = 1, nbits: int = kSanyoLC7461Bits, strict: bool = True
+) -> bool:
     from app.core.ir_protocols.ir_recv import decodeNEC
 
     if strict and nbits != kSanyoLC7461Bits:
@@ -229,9 +231,8 @@ def decodeSanyoLC7461(results, offset: int = 1, nbits: int = kSanyoLC7461Bits, s
             return False
         # Bits 17 to 29.
         inverted_address = (
-            (results.value >> (kSanyoLC7461CommandBits * 2)) &
-            kSanyoLc7461AddressMask
-        )
+            results.value >> (kSanyoLC7461CommandBits * 2)
+        ) & kSanyoLc7461AddressMask
         # Bits 1-8.
         inverted_command = results.value & kSanyoLc7461CommandMask
         if (address ^ kSanyoLc7461AddressMask) != inverted_address:
@@ -271,7 +272,7 @@ def sendSanyoAc(data: List[int], nbytes: int = kSanyoAcStateLength, repeat: int 
         frequency=kSanyoAcFreq,
         MSBfirst=False,
         repeat=repeat,
-        dutycycle=50
+        dutycycle=50,
     )
 
 
@@ -308,7 +309,7 @@ def decodeSanyoAc(results, offset: int = 1, nbits: int = kSanyoAcBits, strict: b
         atleast=True,
         tolerance=kUseDefTol,
         excess=kMarkExcess,
-        MSBfirst=False
+        MSBfirst=False,
     ):
         return False
     # Compliance
@@ -479,6 +480,7 @@ class IRSanyoAc:
     @staticmethod
     def calcChecksum(state: List[int], length: int = kSanyoAcStateLength) -> int:
         from app.core.ir_protocols.ir_utils import sumNibbles
+
         return sumNibbles(state, length - 1) if length else 0
 
     ## Verify the checksum is valid for a given state.
@@ -644,8 +646,9 @@ class IRSanyoAc:
     ## @param[in] setting The value of the desired setting.
     ## ir_Sanyo.cpp:519-525
     def setSwingV(self, setting: int) -> None:
-        if (setting == kSanyoAcSwingVAuto or
-            (setting >= kSanyoAcSwingVLowest and setting <= kSanyoAcSwingVHighest)):
+        if setting == kSanyoAcSwingVAuto or (
+            setting >= kSanyoAcSwingVLowest and setting <= kSanyoAcSwingVHighest
+        ):
             self._.SwingV = setting
         else:
             self._.SwingV = kSanyoAcSwingVAuto
@@ -744,7 +747,7 @@ class IRSanyoAc:
     ## ir_Sanyo.cpp:609-613
     def setOffTimer(self, mins: int) -> None:
         hours = min(mins // 60, kSanyoAcHourMax)
-        self._.OffTimer = (hours > 0)
+        self._.OffTimer = hours > 0
         self._.OffHour = hours
 
     ## Get a PTR to the internal state/code for this protocol with all integrity
@@ -962,7 +965,9 @@ class SanyoAc88Protocol:
 ## @param[in] repeat Nr. of times the message is to be repeated.
 ## @see https://github.com/crankyoldgit/IRremoteESP8266/issues/1503
 ## ir_Sanyo.cpp:687-696
-def sendSanyoAc88(data: List[int], nbytes: int = kSanyoAc88StateLength, repeat: int = kSanyoAc88MinRepeat) -> List[int]:
+def sendSanyoAc88(
+    data: List[int], nbytes: int = kSanyoAc88StateLength, repeat: int = kSanyoAc88MinRepeat
+) -> List[int]:
     from app.core.ir_protocols.ir_send import sendGeneric
 
     all_timings = []
@@ -982,7 +987,7 @@ def sendSanyoAc88(data: List[int], nbytes: int = kSanyoAc88StateLength, repeat: 
             frequency=kSanyoAc88Freq,
             MSBfirst=False,
             repeat=0,
-            dutycycle=50
+            dutycycle=50,
         )
         all_timings.extend(timings)
         if r < repeat:
@@ -1003,7 +1008,9 @@ def sendSanyoAc88(data: List[int], nbytes: int = kSanyoAc88StateLength, repeat: 
 ## @return A boolean. True if it can decode it, false if it can't.
 ## @see https://github.com/crankyoldgit/IRremoteESP8266/issues/1503
 ## ir_Sanyo.cpp:710-745
-def decodeSanyoAc88(results, offset: int = 1, nbits: int = kSanyoAc88Bits, strict: bool = True) -> bool:
+def decodeSanyoAc88(
+    results, offset: int = 1, nbits: int = kSanyoAc88Bits, strict: bool = True
+) -> bool:
     from app.core.ir_protocols.ir_recv import matchGeneric, kMarkExcess
 
     if strict and nbits != kSanyoAc88Bits:
@@ -1033,7 +1040,7 @@ def decodeSanyoAc88(results, offset: int = 1, nbits: int = kSanyoAc88Bits, stric
             atleast=(r == expected_repeats),
             tolerance=25 + kSanyoAc88ExtraTolerance,
             excess=kMarkExcess,
-            MSBfirst=False
+            MSBfirst=False,
         )
         if not used:
             return False  # No match!
@@ -1111,8 +1118,14 @@ class IRSanyoAc88:
     ## @note If we get an unexpected mode, default to AUTO.
     ## ir_Sanyo.cpp:809-821
     def setMode(self, mode: int) -> None:
-        if mode in [kSanyoAc88Auto, kSanyoAc88FeelCool, kSanyoAc88Cool,
-                    kSanyoAc88FeelHeat, kSanyoAc88Heat, kSanyoAc88Fan]:
+        if mode in [
+            kSanyoAc88Auto,
+            kSanyoAc88FeelCool,
+            kSanyoAc88Cool,
+            kSanyoAc88FeelHeat,
+            kSanyoAc88Heat,
+            kSanyoAc88Fan,
+        ]:
             self._.Mode = mode
         else:
             self._.Mode = kSanyoAc88Auto
@@ -1315,7 +1328,9 @@ class IRSanyoAc88:
 ## @param[in] repeat Nr. of times the message is to be repeated.
 ## @see https://github.com/crankyoldgit/IRremoteESP8266/issues/1826
 ## ir_Sanyo.cpp:999-1008
-def sendSanyoAc152(data: List[int], nbytes: int = kSanyoAc152StateLength, repeat: int = 0) -> List[int]:
+def sendSanyoAc152(
+    data: List[int], nbytes: int = kSanyoAc152StateLength, repeat: int = 0
+) -> List[int]:
     from app.core.ir_protocols.ir_send import sendGeneric
 
     all_timings = []
@@ -1335,7 +1350,7 @@ def sendSanyoAc152(data: List[int], nbytes: int = kSanyoAc152StateLength, repeat
             frequency=kSanyoAc152Freq,
             MSBfirst=False,
             repeat=0,
-            dutycycle=50
+            dutycycle=50,
         )
         all_timings.extend(timings)
 
@@ -1354,7 +1369,9 @@ def sendSanyoAc152(data: List[int], nbytes: int = kSanyoAc152StateLength, repeat
 ## @return A boolean. True if it can decode it, false if it can't.
 ## @see https://github.com/crankyoldgit/IRremoteESP8266/issues/1503
 ## ir_Sanyo.cpp:1022-1046
-def decodeSanyoAc152(results, offset: int = 1, nbits: int = kSanyoAc152Bits, strict: bool = True) -> bool:
+def decodeSanyoAc152(
+    results, offset: int = 1, nbits: int = kSanyoAc152Bits, strict: bool = True
+) -> bool:
     from app.core.ir_protocols.ir_recv import matchGeneric, kMarkExcess
 
     if strict and nbits != kSanyoAc152Bits:
@@ -1377,7 +1394,7 @@ def decodeSanyoAc152(results, offset: int = 1, nbits: int = kSanyoAc152Bits, str
         atleast=False,
         tolerance=25 + kSanyoAc152ExtraTolerance,
         excess=kMarkExcess,
-        MSBfirst=False
+        MSBfirst=False,
     ):
         return False  # No match!
 

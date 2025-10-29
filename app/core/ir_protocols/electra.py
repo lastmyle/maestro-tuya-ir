@@ -22,8 +22,8 @@ kElectraAcStateLength = 13
 kElectraAcBits = kElectraAcStateLength * 8  # 104 bits
 
 # Temperature constants (from ir_Electra.h lines 82-84)
-kElectraAcMinTemp = 16   # 16C
-kElectraAcMaxTemp = 32   # 32C
+kElectraAcMinTemp = 16  # 16C
+kElectraAcMaxTemp = 32  # 32C
 kElectraAcTempDelta = 8
 
 # Swing constants (from ir_Electra.h lines 85-86)
@@ -56,8 +56,8 @@ kElectraAcLightToggleOff = 0x08
 # Re: Byte[7]. Or Delta == 0xA and Temperature are stored in last 6 bits,
 # and bit 7 stores Unknown flag
 kElectraAcSensorTempDelta = 0x4A
-kElectraAcSensorMinTemp = 0    # 0C
-kElectraAcSensorMaxTemp = 50   # 50C
+kElectraAcSensorMinTemp = 0  # 0C
+kElectraAcSensorMaxTemp = 50  # 50C
 
 
 ## Helper function for checksum calculation
@@ -247,7 +247,7 @@ def sendElectraAC(data: List[int], nbytes: int, repeat: int = 0) -> List[int]:
             frequency=38000,  # Complete guess of the modulation frequency
             MSBfirst=False,  # Send data in LSB order per byte
             repeat=0,
-            dutycycle=50
+            dutycycle=50,
         )
         all_timings.extend(timings)
 
@@ -327,8 +327,7 @@ class IRElectraAc:
     ## @param[in] mode The desired operating mode.
     ## Direct translation from ir_Electra.cpp lines 142-155
     def setMode(self, mode: int) -> None:
-        if mode in [kElectraAcAuto, kElectraAcDry, kElectraAcCool,
-                   kElectraAcHeat, kElectraAcFan]:
+        if mode in [kElectraAcAuto, kElectraAcDry, kElectraAcCool, kElectraAcHeat, kElectraAcFan]:
             self._.Mode = mode
         else:
             # If we get an unexpected mode, default to AUTO.
@@ -359,8 +358,7 @@ class IRElectraAc:
     ## @note 0 is auto, 1-3 is the speed
     ## Direct translation from ir_Electra.cpp lines 206-218
     def setFan(self, speed: int) -> None:
-        if speed in [kElectraAcFanAuto, kElectraAcFanHigh,
-                    kElectraAcFanMed, kElectraAcFanLow]:
+        if speed in [kElectraAcFanAuto, kElectraAcFanHigh, kElectraAcFanMed, kElectraAcFanLow]:
             self._.Fan = speed
         else:
             # If we get an unexpected speed, default to Auto.
@@ -376,7 +374,7 @@ class IRElectraAc:
     ## @param[in] on true, the setting is on. false, the setting is off.
     ## Direct translation from ir_Electra.cpp lines 254-256
     def setSwingV(self, on: bool) -> None:
-        self._.SwingV = (kElectraAcSwingOn if on else kElectraAcSwingOff)
+        self._.SwingV = kElectraAcSwingOn if on else kElectraAcSwingOff
 
     ## Get the Vertical Swing mode of the A/C.
     ## @return true, the setting is on. false, the setting is off.
@@ -388,7 +386,7 @@ class IRElectraAc:
     ## @param[in] on true, the setting is on. false, the setting is off.
     ## Direct translation from ir_Electra.cpp lines 266-268
     def setSwingH(self, on: bool) -> None:
-        self._.SwingH = (kElectraAcSwingOn if on else kElectraAcSwingOff)
+        self._.SwingH = kElectraAcSwingOn if on else kElectraAcSwingOff
 
     ## Get the Horizontal Swing mode of the A/C.
     ## @return true, the setting is on. false, the setting is off.
@@ -400,7 +398,7 @@ class IRElectraAc:
     ## @param[in] on true, the setting is on. false, the setting is off.
     ## Direct translation from ir_Electra.cpp lines 278-280
     def setLightToggle(self, on: bool) -> None:
-        self._.LightToggle = (kElectraAcLightToggleOn if on else kElectraAcLightToggleOff)
+        self._.LightToggle = kElectraAcLightToggleOn if on else kElectraAcLightToggleOff
 
     ## Get the Light (LED) Toggle mode of the A/C.
     ## @return true, the setting is on. false, the setting is off.
@@ -485,16 +483,16 @@ class IRElectraAc:
     ## @param[in] temp The temperature in degrees celsius.
     ## Direct translation from ir_Electra.cpp lines 358-362
     def setSensorTemp(self, temp: int) -> None:
-        self._.SensorTemp = min(kElectraAcSensorMaxTemp,
-                                max(kElectraAcSensorMinTemp, temp)) + \
-                            kElectraAcSensorTempDelta
+        self._.SensorTemp = (
+            min(kElectraAcSensorMaxTemp, max(kElectraAcSensorMinTemp, temp))
+            + kElectraAcSensorTempDelta
+        )
 
     ## Get the current sensor temperature setting for the IFeel mode.
     ## @return The current setting for temp. in degrees celsius.
     ## Direct translation from ir_Electra.cpp lines 366-369
     def getSensorTemp(self) -> int:
-        return max(kElectraAcSensorTempDelta, self._.SensorTemp) - \
-               kElectraAcSensorTempDelta
+        return max(kElectraAcSensorTempDelta, self._.SensorTemp) - kElectraAcSensorTempDelta
 
     ## Get a PTR to the internal state/code for this protocol.
     ## @return PTR to a code for this protocol based on the current internal state.
@@ -520,8 +518,9 @@ class IRElectraAc:
 ## @param[in] strict Flag indicating if we should perform strict matching.
 ## @return A boolean. True if it can decode it, false if it can't.
 ## Direct translation from IRremoteESP8266 IRrecv::decodeElectraAC (ir_Electra.cpp lines 439-469)
-def decodeElectraAC(results, offset: int = 1, nbits: int = kElectraAcBits,
-                    strict: bool = True) -> bool:
+def decodeElectraAC(
+    results, offset: int = 1, nbits: int = kElectraAcBits, strict: bool = True
+) -> bool:
     """
     Decode an Electra A/C IR message.
     EXACT translation from IRremoteESP8266 IRrecv::decodeElectraAC
@@ -552,7 +551,7 @@ def decodeElectraAC(results, offset: int = 1, nbits: int = kElectraAcBits,
         atleast=True,
         tolerance=25,
         excess=0,
-        MSBfirst=False
+        MSBfirst=False,
     ):
         return False
 

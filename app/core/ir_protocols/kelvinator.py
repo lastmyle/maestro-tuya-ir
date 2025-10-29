@@ -46,8 +46,8 @@ kKelvinatorFanMin = 1
 kKelvinatorFanMax = 5
 
 # Temperature constants (from ir_Kelvinator.h lines 102-104)
-kKelvinatorMinTemp = 16   # 16C
-kKelvinatorMaxTemp = 30   # 30C
+kKelvinatorMinTemp = 16  # 16C
+kKelvinatorMaxTemp = 30  # 30C
 kKelvinatorAutoTemp = 25  # 25C
 
 # Vertical swing constants (from ir_Kelvinator.h lines 106-115)
@@ -75,10 +75,10 @@ def calcBlockChecksum(block: List[int], length: int = 8) -> int:
     sum_val = kKelvinatorChecksumStart
     # Sum the lower half of the first 4 bytes of this block.
     for i in range(min(4, length - 1)):
-        sum_val += (block[i] & 0b1111)
+        sum_val += block[i] & 0b1111
     # then sum the upper half of the next 3 bytes.
     for i in range(4, length - 1):
-        sum_val += (block[i] >> 4)
+        sum_val += block[i] >> 4
     # Trim it down to fit into the 4 bits allowed. i.e. Mod 16.
     return sum_val & 0b1111
 
@@ -280,7 +280,7 @@ def sendKelvinator(data: List[int], nbytes: int, repeat: int = 0) -> List[int]:
             frequency=38,
             MSBfirst=False,
             repeat=0,
-            dutycycle=50
+            dutycycle=50,
         )
         all_timings.extend(block1_timings)
 
@@ -300,7 +300,7 @@ def sendKelvinator(data: List[int], nbytes: int, repeat: int = 0) -> List[int]:
             frequency=38,
             MSBfirst=False,
             repeat=0,
-            dutycycle=50
+            dutycycle=50,
         )
         all_timings.extend(footer1_timings)
 
@@ -319,7 +319,7 @@ def sendKelvinator(data: List[int], nbytes: int, repeat: int = 0) -> List[int]:
             frequency=38,
             MSBfirst=False,
             repeat=0,
-            dutycycle=50
+            dutycycle=50,
         )
         all_timings.extend(data1_timings)
 
@@ -338,7 +338,7 @@ def sendKelvinator(data: List[int], nbytes: int, repeat: int = 0) -> List[int]:
             frequency=38,
             MSBfirst=False,
             repeat=0,
-            dutycycle=50
+            dutycycle=50,
         )
         all_timings.extend(block2_timings)
 
@@ -358,7 +358,7 @@ def sendKelvinator(data: List[int], nbytes: int, repeat: int = 0) -> List[int]:
             frequency=38,
             MSBfirst=False,
             repeat=0,
-            dutycycle=50
+            dutycycle=50,
         )
         all_timings.extend(footer2_timings)
 
@@ -377,7 +377,7 @@ def sendKelvinator(data: List[int], nbytes: int, repeat: int = 0) -> List[int]:
             frequency=38,
             MSBfirst=False,
             repeat=0,
-            dutycycle=50
+            dutycycle=50,
         )
         all_timings.extend(data2_timings)
 
@@ -428,7 +428,9 @@ class IRKelvinatorAC:
         for offset in range(0, length, 8):
             if offset + 7 < length:
                 # Top 4 bits of the last byte in the block is the block's checksum.
-                if ((state[offset + 7] >> 4) & 0x0F) != calcBlockChecksum(state[offset:offset + 8]):
+                if ((state[offset + 7] >> 4) & 0x0F) != calcBlockChecksum(
+                    state[offset : offset + 8]
+                ):
                     return False
         return True
 
@@ -514,18 +516,26 @@ class IRKelvinatorAC:
     ## @param[in] position The position/mode to set the vanes to.
     ## Direct translation from ir_Kelvinator.cpp lines 281-308
     def setSwingVertical(self, automatic: bool, position: int) -> None:
-        self._.SwingAuto = (automatic or self._.SwingH)
+        self._.SwingAuto = automatic or self._.SwingH
         new_position = position
         if not automatic:
-            if position in [kKelvinatorSwingVHighest, kKelvinatorSwingVUpperMiddle,
-                           kKelvinatorSwingVMiddle, kKelvinatorSwingVLowerMiddle,
-                           kKelvinatorSwingVLowest]:
+            if position in [
+                kKelvinatorSwingVHighest,
+                kKelvinatorSwingVUpperMiddle,
+                kKelvinatorSwingVMiddle,
+                kKelvinatorSwingVLowerMiddle,
+                kKelvinatorSwingVLowest,
+            ]:
                 pass
             else:
                 new_position = kKelvinatorSwingVOff
         else:
-            if position in [kKelvinatorSwingVAuto, kKelvinatorSwingVLowAuto,
-                           kKelvinatorSwingVMiddleAuto, kKelvinatorSwingVHighAuto]:
+            if position in [
+                kKelvinatorSwingVAuto,
+                kKelvinatorSwingVLowAuto,
+                kKelvinatorSwingVMiddleAuto,
+                kKelvinatorSwingVHighAuto,
+            ]:
                 pass
             else:
                 new_position = kKelvinatorSwingVAuto
@@ -548,7 +558,7 @@ class IRKelvinatorAC:
     ## Direct translation from ir_Kelvinator.cpp lines 324-327
     def setSwingHorizontal(self, on: bool) -> None:
         self._.SwingH = on
-        self._.SwingAuto = (on or (self._.SwingV & 0b0001))
+        self._.SwingAuto = on or (self._.SwingV & 0b0001)
 
     ## Is the horizontal swing setting on?
     ## @return The current value.
@@ -652,11 +662,18 @@ def decodeKelvinator(results, offset: int = 1, nbits: int = 128, strict: bool = 
     """
     # Import here to avoid circular imports
     from app.core.ir_protocols.ir_recv import (
-        kHeader, kFooter, kMarkExcess, matchGeneric, matchData, match_result_t
+        kHeader,
+        kFooter,
+        kMarkExcess,
+        matchGeneric,
+        matchData,
+        match_result_t,
     )
 
-    if results.rawlen <= \
-       2 * (nbits + kKelvinatorCmdFooterBits) + (kHeader + kFooter + 1) * 2 - 1 + offset:
+    if (
+        results.rawlen
+        <= 2 * (nbits + kKelvinatorCmdFooterBits) + (kHeader + kFooter + 1) * 2 - 1 + offset
+    ):
         return False  # Can't possibly be a valid Kelvinator message.
     if strict and nbits != 128:
         return False  # Not strictly a Kelvinator message.
@@ -681,7 +698,7 @@ def decodeKelvinator(results, offset: int = 1, nbits: int = 128, strict: bool = 
             atleast=False,
             tolerance=25,
             excess=kMarkExcess,
-            MSBfirst=False
+            MSBfirst=False,
         )
         if used == 0:
             return False
@@ -700,7 +717,7 @@ def decodeKelvinator(results, offset: int = 1, nbits: int = 128, strict: bool = 
             tolerance=25,
             excess=kMarkExcess,
             MSBfirst=False,
-            expectlastspace=False
+            expectlastspace=False,
         )
         if data_result.success == False:
             return False
@@ -725,7 +742,7 @@ def decodeKelvinator(results, offset: int = 1, nbits: int = 128, strict: bool = 
             atleast=(s > 0),
             tolerance=25,
             excess=kMarkExcess,
-            MSBfirst=False
+            MSBfirst=False,
         )
         if used == 0:
             return False

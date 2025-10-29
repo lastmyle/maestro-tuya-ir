@@ -442,7 +442,9 @@ class Mirage120Protocol:
 ## @param[in] nbytes Nr. of bytes of data in the array. (>=kMirageStateLength)
 ## @param[in] repeat Nr. of times the message is to be repeated.
 ## Direct translation from IRremoteESP8266 IRsend::sendMirage (ir_Mirage.cpp lines 47-62)
-def sendMirage(data: List[int], nbytes: int = kMirageStateLength, repeat: int = kMirageMinRepeat) -> List[int]:
+def sendMirage(
+    data: List[int], nbytes: int = kMirageStateLength, repeat: int = kMirageMinRepeat
+) -> List[int]:
     """
     Send a Mirage formatted message.
     EXACT translation from IRremoteESP8266 IRsend::sendMirage
@@ -466,7 +468,7 @@ def sendMirage(data: List[int], nbytes: int = kMirageStateLength, repeat: int = 
         frequency=kMirageFreq,
         MSBfirst=False,
         repeat=repeat,
-        dutycycle=50
+        dutycycle=50,
     )
 
 
@@ -508,7 +510,7 @@ def decodeMirage(results, offset: int = 1, nbits: int = kMirageBits, strict: boo
         atleast=True,
         tolerance=25,  # kUseDefTol
         excess=50,  # kMarkExcess
-        MSBfirst=False
+        MSBfirst=False,
     ):
         return False
 
@@ -544,8 +546,23 @@ class IRMirageAc:
     ## Direct translation from ir_Mirage.cpp lines 106-114
     def stateReset(self) -> None:
         # The state of the IR remote in IR code form.
-        kReset = [0x56, 0x6C, 0x00, 0x00, 0x20, 0x1A, 0x00, 0x00,
-                  0x0C, 0x00, 0x0C, 0x00, 0x00, 0x00, 0x42]
+        kReset = [
+            0x56,
+            0x6C,
+            0x00,
+            0x00,
+            0x20,
+            0x1A,
+            0x00,
+            0x00,
+            0x0C,
+            0x00,
+            0x0C,
+            0x00,
+            0x00,
+            0x00,
+            0x42,
+        ]
         self.setRaw(kReset)
         self._model = MIRAGE_KKG9AC1
 
@@ -576,13 +593,22 @@ class IRMirageAc:
         for i in range(min(len(state), kMirageStateLength)):
             p.raw[i] = state[i]
         # Check for KKG29AC1 specific settings.
-        if p.RecycleHeat or p.Filter or p.Sleep_Kkg29ac1 or p.CleanToggle or \
-           p.IFeel or p.OffTimerEnable or p.OnTimerEnable:
+        if (
+            p.RecycleHeat
+            or p.Filter
+            or p.Sleep_Kkg29ac1
+            or p.CleanToggle
+            or p.IFeel
+            or p.OffTimerEnable
+            or p.OnTimerEnable
+        ):
             return MIRAGE_KKG29AC1
         # Check for things specific to KKG9AC1
-        if (p.Minutes or p.Seconds) or \
-           (p.OffTimerHours or p.OffTimerMins) or \
-           (p.OnTimerHours or p.OnTimerMins):
+        if (
+            (p.Minutes or p.Seconds)
+            or (p.OffTimerHours or p.OffTimerMins)
+            or (p.OnTimerHours or p.OnTimerMins)
+        ):
             return MIRAGE_KKG9AC1
         # As the above test has a 1 in 3600+ (for 1 second an hour) chance of a false
         # negative in theory, we are going assume that anything left should be a
@@ -787,8 +813,9 @@ class IRMirageAc:
         if self._model == MIRAGE_KKG29AC1:
             return 0
         else:
-            return ((bcdToUint8(self._.Hours) * 60) + bcdToUint8(self._.Minutes)) * 60 + \
-                   bcdToUint8(self._.Seconds)
+            return ((bcdToUint8(self._.Hours) * 60) + bcdToUint8(self._.Minutes)) * 60 + bcdToUint8(
+                self._.Seconds
+            )
 
     ## Set the clock time on the A/C unit.
     ## @param[in] nr_of_seconds Nr. of seconds past midnight.
@@ -809,11 +836,17 @@ class IRMirageAc:
     ## @param[in] position The desired swing setting.
     ## Direct translation from ir_Mirage.cpp lines 403-428
     def setSwingV(self, position: int) -> None:
-        if position in [kMirageAcSwingVOff, kMirageAcSwingVLowest, kMirageAcSwingVLow,
-                        kMirageAcSwingVMiddle, kMirageAcSwingVHigh, kMirageAcSwingVHighest,
-                        kMirageAcSwingVAuto]:
+        if position in [
+            kMirageAcSwingVOff,
+            kMirageAcSwingVLowest,
+            kMirageAcSwingVLow,
+            kMirageAcSwingVMiddle,
+            kMirageAcSwingVHigh,
+            kMirageAcSwingVHighest,
+            kMirageAcSwingVAuto,
+        ]:
             if self._model == MIRAGE_KKG29AC1:
-                self._.SwingV = (position != kMirageAcSwingVOff)
+                self._.SwingV = position != kMirageAcSwingVOff
             else:
                 power = self.getPower()
                 self._.SwingAndPower = position
@@ -923,8 +956,7 @@ class IRMirageAc:
     ## Direct translation from ir_Mirage.cpp lines 552-563
     def setSensorTemp(self, degrees: int) -> None:
         if self._model == MIRAGE_KKG29AC1:
-            self._.SensorTemp = min(kMirageAcSensorTempMax, degrees) + \
-                                kMirageAcSensorTempOffset
+            self._.SensorTemp = min(kMirageAcSensorTempMax, degrees) + kMirageAcSensorTempOffset
 
     ## Get the Sensor Temp setting of the A/C's remote.
     ## @return The current setting for the sensor temp. in degrees celsius.
@@ -950,7 +982,7 @@ class IRMirageAc:
     def setOnTimer(self, nr_of_mins: int) -> None:
         mins = min(nr_of_mins, 24 * 60)
         if self._model == MIRAGE_KKG29AC1:
-            self._.OnTimerEnable = (mins > 0)
+            self._.OnTimerEnable = mins > 0
             self._.OnTimerHours = mins // 60
             self._.OnTimerMins = mins % 60
 
@@ -969,7 +1001,7 @@ class IRMirageAc:
     def setOffTimer(self, nr_of_mins: int) -> None:
         mins = min(nr_of_mins, 24 * 60)
         if self._model == MIRAGE_KKG29AC1:
-            self._.OffTimerEnable = (mins > 0)
+            self._.OffTimerEnable = mins > 0
             self._.OffTimerHours = mins // 60
             self._.OffTimerMins = mins % 60
 

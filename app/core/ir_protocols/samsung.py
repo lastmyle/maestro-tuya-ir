@@ -50,11 +50,11 @@ kSamsungRptSpaceTicks = 4
 kSamsungRptSpace = kSamsungRptSpaceTicks * kSamsungTick
 kSamsungMinMessageLengthTicks = 193
 kSamsungMinMessageLength = kSamsungMinMessageLengthTicks * kSamsungTick
-kSamsungMinGapTicks = (
-    kSamsungMinMessageLengthTicks -
-    (kSamsungHdrMarkTicks + kSamsungHdrSpaceTicks +
-     32 * (kSamsungBitMarkTicks + kSamsungOneSpaceTicks) +  # kSamsungBits = 32
-     kSamsungBitMarkTicks)
+kSamsungMinGapTicks = kSamsungMinMessageLengthTicks - (
+    kSamsungHdrMarkTicks
+    + kSamsungHdrSpaceTicks
+    + 32 * (kSamsungBitMarkTicks + kSamsungOneSpaceTicks)  # kSamsungBits = 32
+    + kSamsungBitMarkTicks
 )
 kSamsungMinGap = kSamsungMinGapTicks * kSamsungTick
 
@@ -72,27 +72,27 @@ kSamsungAcZeroSpace = 436
 # EXACT translation from IRremoteESP8266 ir_Samsung.cpp:57-63
 # Data from https://github.com/crankyoldgit/IRremoteESP8266/issues/1220
 # Values calculated based on the average of ten messages.
-kSamsung36HdrMark = 4515   # uSeconds
+kSamsung36HdrMark = 4515  # uSeconds
 kSamsung36HdrSpace = 4438  # uSeconds
-kSamsung36BitMark = 512    # uSeconds
+kSamsung36BitMark = 512  # uSeconds
 kSamsung36OneSpace = 1468  # uSeconds
 kSamsung36ZeroSpace = 490  # uSeconds
 
 # EXACT translation from IRremoteESP8266 ir_Samsung.cpp:65-74
 # _.Swing
-kSamsungAcSwingV =        0b010
-kSamsungAcSwingH =        0b011
-kSamsungAcSwingBoth =     0b100
-kSamsungAcSwingOff =      0b111
+kSamsungAcSwingV = 0b010
+kSamsungAcSwingH = 0b011
+kSamsungAcSwingBoth = 0b100
+kSamsungAcSwingOff = 0b111
 # _.FanSpecial
 kSamsungAcFanSpecialOff = 0b000
-kSamsungAcPowerfulOn =    0b011
-kSamsungAcBreezeOn =      0b101
-kSamsungAcEconoOn =       0b111
+kSamsungAcPowerfulOn = 0b011
+kSamsungAcBreezeOn = 0b101
+kSamsungAcEconoOn = 0b111
 
 # EXACT translation from IRremoteESP8266 ir_Samsung.h:167-183
-kSamsungAcMinTemp  = 16  # C   Mask 0b11110000
-kSamsungAcMaxTemp  = 30  # C   Mask 0b11110000
+kSamsungAcMinTemp = 16  # C   Mask 0b11110000
+kSamsungAcMaxTemp = 30  # C   Mask 0b11110000
 kSamsungAcAutoTemp = 25  # C   Mask 0b11110000
 kSamsungAcAuto = 0
 kSamsungAcCool = 1
@@ -147,7 +147,7 @@ def sendSAMSUNG(data: int, nbits: int = kSamsungBits, repeat: int = 0) -> List[i
         frequency=38,
         MSBfirst=True,
         repeat=repeat,
-        dutycycle=33
+        dutycycle=33,
     )
 
 
@@ -166,8 +166,7 @@ def encodeSAMSUNG(customer: int, command: int) -> int:
 
     revcustomer = reverseBits(customer, 8)
     revcommand = reverseBits(command, 8)
-    return ((revcommand ^ 0xFF) | (revcommand << 8) | (revcustomer << 16) |
-            (revcustomer << 24))
+    return (revcommand ^ 0xFF) | (revcommand << 8) | (revcustomer << 16) | (revcustomer << 24)
 
 
 ## Decode the supplied Samsung 32-bit message.
@@ -185,8 +184,7 @@ def encodeSAMSUNG(customer: int, command: int) -> int:
 ##   They differ on their compliance criteria and how they repeat.
 ## @see http://elektrolab.wz.cz/katalog/samsung_protocol.pdf
 ## EXACT translation from IRremoteESP8266 ir_Samsung.cpp:118-166
-def decodeSAMSUNG(results, offset: int = 1, nbits: int = kSamsungBits,
-                  strict: bool = True) -> bool:
+def decodeSAMSUNG(results, offset: int = 1, nbits: int = kSamsungBits, strict: bool = True) -> bool:
     """
     Decode the supplied Samsung 32-bit message.
     EXACT translation from IRremoteESP8266 IRrecv::decodeSAMSUNG (ir_Samsung.cpp:133-165)
@@ -217,7 +215,7 @@ def decodeSAMSUNG(results, offset: int = 1, nbits: int = kSamsungBits,
         atleast=True,
         tolerance=25,
         excess=50,
-        MSBfirst=True
+        MSBfirst=True,
     )
     if not used:
         return False
@@ -282,7 +280,7 @@ def sendSamsung36(data: int, nbits: int = kSamsung36Bits, repeat: int = 0) -> Li
             frequency=38,
             MSBfirst=True,
             repeat=0,
-            dutycycle=50
+            dutycycle=50,
         )
         all_timings.extend(block1_timings)
 
@@ -302,7 +300,7 @@ def sendSamsung36(data: int, nbits: int = kSamsung36Bits, repeat: int = 0) -> Li
             frequency=38,
             MSBfirst=True,
             repeat=0,
-            dutycycle=50
+            dutycycle=50,
         )
         all_timings.extend(block2_timings)
 
@@ -319,8 +317,9 @@ def sendSamsung36(data: int, nbits: int = kSamsung36Bits, repeat: int = 0) -> Li
 ## @return True if it can decode it, false if it can't.
 ## @see https://github.com/crankyoldgit/IRremoteESP8266/issues/621
 ## EXACT translation from IRremoteESP8266 ir_Samsung.cpp:197-247
-def decodeSamsung36(results, offset: int = 1, nbits: int = kSamsung36Bits,
-                    strict: bool = True) -> bool:
+def decodeSamsung36(
+    results, offset: int = 1, nbits: int = kSamsung36Bits, strict: bool = True
+) -> bool:
     """
     Decode the supplied Samsung36 message.
     EXACT translation from IRremoteESP8266 IRrecv::decodeSamsung36 (ir_Samsung.cpp:207-246)
@@ -356,7 +355,7 @@ def decodeSamsung36(results, offset: int = 1, nbits: int = kSamsung36Bits,
         atleast=False,
         tolerance=25,
         excess=50,
-        MSBfirst=True
+        MSBfirst=True,
     )
     if not used:
         return False
@@ -379,7 +378,7 @@ def decodeSamsung36(results, offset: int = 1, nbits: int = kSamsung36Bits,
         atleast=False,
         tolerance=25,
         excess=50,
-        MSBfirst=True
+        MSBfirst=True,
     )
 
     # Data (Block #2)
@@ -401,11 +400,11 @@ def decodeSamsung36(results, offset: int = 1, nbits: int = kSamsung36Bits,
         atleast=True,
         tolerance=25,
         excess=50,
-        MSBfirst=True
+        MSBfirst=True,
     )
     if not data2:
         return False
-    data <<= (nbits - 16)
+    data <<= nbits - 16
     data += data2
 
     # Success
@@ -458,7 +457,7 @@ def sendSamsungAC(data: List[int], nbytes: int, repeat: int = 0) -> List[int]:
                 frequency=38000,
                 MSBfirst=False,
                 repeat=0,
-                dutycycle=50
+                dutycycle=50,
             )
             all_timings.extend(section_timings)
         # Complete made up guess at inter-message gap.
@@ -812,8 +811,20 @@ class IRSamsungAc:
     ## EXACT translation from IRremoteESP8266 ir_Samsung.cpp:291-308
     def stateReset(self, extended: bool = True, initialPower: bool = True) -> None:
         kReset = [
-            0x02, 0x92, 0x0F, 0x00, 0x00, 0x00, 0xF0,
-            0x01, 0x02, 0xAE, 0x71, 0x00, 0x15, 0xF0
+            0x02,
+            0x92,
+            0x0F,
+            0x00,
+            0x00,
+            0x00,
+            0xF0,
+            0x01,
+            0x02,
+            0xAE,
+            0x71,
+            0x00,
+            0x15,
+            0xF0,
         ]
         for i in range(kSamsungAcExtendedStateLength):
             if i < len(kReset):
@@ -839,8 +850,9 @@ class IRSamsungAc:
         kLowNibble = 0
         kNibbleSize = 4
         kHighNibble = 4
-        return (((section[2] >> kLowNibble) & 0x0F) << kNibbleSize) + \
-               ((section[1] >> kHighNibble) & 0x0F)
+        return (((section[2] >> kLowNibble) & 0x0F) << kNibbleSize) + (
+            (section[1] >> kHighNibble) & 0x0F
+        )
 
     ## Calculate the checksum for a given state section.
     ## @param[in] section The array to calc the checksum of.
@@ -882,11 +894,14 @@ class IRSamsungAc:
     @staticmethod
     def validChecksum(state: List[int], length: int = kSamsungAcStateLength) -> bool:
         result = True
-        maxlength = kSamsungAcExtendedStateLength if length > kSamsungAcExtendedStateLength else length
+        maxlength = (
+            kSamsungAcExtendedStateLength if length > kSamsungAcExtendedStateLength else length
+        )
         offset = 0
         while offset + kSamsungAcSectionLength <= maxlength:
-            result &= (IRSamsungAc.getSectionChecksum(state[offset:]) ==
-                      IRSamsungAc.calcSectionChecksum(state[offset:]))
+            result &= IRSamsungAc.getSectionChecksum(
+                state[offset:]
+            ) == IRSamsungAc.calcSectionChecksum(state[offset:])
             offset += kSamsungAcSectionLength
         return result
 
@@ -903,7 +918,7 @@ class IRSamsungAc:
         sectionsum = self.calcSectionChecksum(self._.raw[kSamsungAcSectionLength:])
         self._.Sum2Upper = (sectionsum >> kHighNibble) & 0x0F
         self._.Sum2Lower = (sectionsum >> kLowNibble) & 0x0F
-        sectionsum = self.calcSectionChecksum(self._.raw[kSamsungAcSectionLength * 2:])
+        sectionsum = self.calcSectionChecksum(self._.raw[kSamsungAcSectionLength * 2 :])
         self._.Sum3Upper = (sectionsum >> kHighNibble) & 0x0F
         self._.Sum3Lower = (sectionsum >> kLowNibble) & 0x0F
 
@@ -996,8 +1011,13 @@ class IRSamsungAc:
     ## @param[in] speed The desired setting.
     ## EXACT translation from IRremoteESP8266 ir_Samsung.cpp:523-541
     def setFan(self, speed: int) -> None:
-        if speed in [kSamsungAcFanAuto, kSamsungAcFanLow, kSamsungAcFanMed,
-                     kSamsungAcFanHigh, kSamsungAcFanTurbo]:
+        if speed in [
+            kSamsungAcFanAuto,
+            kSamsungAcFanLow,
+            kSamsungAcFanMed,
+            kSamsungAcFanHigh,
+            kSamsungAcFanTurbo,
+        ]:
             if self._.Mode == kSamsungAcAuto:
                 return  # Not valid in Auto mode.
         elif speed == kSamsungAcFanAuto2:  # Special fan setting for when in Auto mode.
@@ -1092,14 +1112,15 @@ class IRSamsungAc:
     ## @return true, the setting is on. false, the setting is off.
     ## EXACT translation from IRremoteESP8266 ir_Samsung.cpp:631-636
     def getPowerful(self) -> bool:
-        return (self._.FanSpecial == kSamsungAcPowerfulOn) and \
-               (self._.Fan == kSamsungAcFanTurbo)
+        return (self._.FanSpecial == kSamsungAcPowerfulOn) and (self._.Fan == kSamsungAcFanTurbo)
 
     ## Set the Powerful (Turbo) setting of the A/C.
     ## @param[in] on true, the setting is on. false, the setting is off.
     ## EXACT translation from IRremoteESP8266 ir_Samsung.cpp:638-649
     def setPowerful(self, on: bool) -> None:
-        off_value = self._.FanSpecial if (self.getBreeze() or self.getEcono()) else kSamsungAcFanSpecialOff
+        off_value = (
+            self._.FanSpecial if (self.getBreeze() or self.getEcono()) else kSamsungAcFanSpecialOff
+        )
         self._.FanSpecial = kSamsungAcPowerfulOn if on else off_value
         if on:
             # Powerful mode sets fan speed to Turbo.
@@ -1111,15 +1132,20 @@ class IRSamsungAc:
     ## @see https://github.com/crankyoldgit/IRremoteESP8266/issues/1062
     ## EXACT translation from IRremoteESP8266 ir_Samsung.cpp:651-657
     def getBreeze(self) -> bool:
-        return (self._.FanSpecial == kSamsungAcBreezeOn) and \
-               (self._.Fan == kSamsungAcFanAuto and not self.getSwing())
+        return (self._.FanSpecial == kSamsungAcBreezeOn) and (
+            self._.Fan == kSamsungAcFanAuto and not self.getSwing()
+        )
 
     ## Closes the vanes over the fan outlet, to stop direct wind. Aka. WindFree
     ## @param[in] on true, the setting is on. false, the setting is off.
     ## @see https://github.com/crankyoldgit/IRremoteESP8266/issues/1062
     ## EXACT translation from IRremoteESP8266 ir_Samsung.cpp:659-671
     def setBreeze(self, on: bool) -> None:
-        off_value = self._.FanSpecial if (self.getPowerful() or self.getEcono()) else kSamsungAcFanSpecialOff
+        off_value = (
+            self._.FanSpecial
+            if (self.getPowerful() or self.getEcono())
+            else kSamsungAcFanSpecialOff
+        )
         self._.FanSpecial = kSamsungAcBreezeOn if on else off_value
         if on:
             self.setFan(kSamsungAcFanAuto)
@@ -1129,14 +1155,19 @@ class IRSamsungAc:
     ## @return true, the setting is on. false, the setting is off.
     ## EXACT translation from IRremoteESP8266 ir_Samsung.cpp:673-678
     def getEcono(self) -> bool:
-        return (self._.FanSpecial == kSamsungAcEconoOn) and \
-               (self._.Fan == kSamsungAcFanAuto and self.getSwing())
+        return (self._.FanSpecial == kSamsungAcEconoOn) and (
+            self._.Fan == kSamsungAcFanAuto and self.getSwing()
+        )
 
     ## Set the current Economy (Eco) setting of the A/C.
     ## @param[in] on true, the setting is on. false, the setting is off.
     ## EXACT translation from IRremoteESP8266 ir_Samsung.cpp:680-691
     def setEcono(self, on: bool) -> None:
-        off_value = self._.FanSpecial if (self.getBreeze() or self.getPowerful()) else kSamsungAcFanSpecialOff
+        off_value = (
+            self._.FanSpecial
+            if (self.getBreeze() or self.getPowerful())
+            else kSamsungAcFanSpecialOff
+        )
         self._.FanSpecial = kSamsungAcEconoOn if on else off_value
         if on:
             self.setFan(kSamsungAcFanAuto)
@@ -1177,8 +1208,8 @@ class IRSamsungAc:
     ## Set the current On Timer value of the A/C into the raw extended state.
     ## EXACT translation from IRremoteESP8266 ir_Samsung.cpp:716-728
     def _setOnTimer(self) -> None:
-        self._.OnTimerEnable = self._OnTimerEnable = (self._OnTimer > 0)
-        self._.OnTimeDay = (self._OnTimer >= 24 * 60)
+        self._.OnTimerEnable = self._OnTimerEnable = self._OnTimer > 0
+        self._.OnTimeDay = self._OnTimer >= 24 * 60
         if self._.OnTimeDay:
             self._.OnTimeHrs2 = self._.OnTimeHrs1 = self._.OnTimeMins = 0
             return
@@ -1198,8 +1229,8 @@ class IRSamsungAc:
     ## Set the current Off Timer value of the A/C into the raw extended state.
     ## EXACT translation from IRremoteESP8266 ir_Samsung.cpp:737-749
     def _setOffTimer(self) -> None:
-        self._.OffTimerEnable = self._OffTimerEnable = (self._OffTimer > 0)
-        self._.OffTimeDay = (self._OffTimer >= 24 * 60)
+        self._.OffTimerEnable = self._OffTimerEnable = self._OffTimer > 0
+        self._.OffTimeDay = self._OffTimer >= 24 * 60
         if self._.OffTimeDay:
             self._.OffTimeHrs2 = self._.OffTimeHrs1 = self._.OffTimeMins = 0
             return
@@ -1284,9 +1315,9 @@ class IRSamsungAc:
 ## @return True if it can decode it, false if it can't.
 ## @see https://github.com/crankyoldgit/IRremoteESP8266/issues/505
 ## EXACT translation from IRremoteESP8266 ir_Samsung.cpp:945-996
-def decodeSamsungAC(results, offset: int = 1,
-                    nbits: int = kSamsungAcStateLength * 8,
-                    strict: bool = True) -> bool:
+def decodeSamsungAC(
+    results, offset: int = 1, nbits: int = kSamsungAcStateLength * 8, strict: bool = True
+) -> bool:
     """
     Decode the supplied Samsung A/C message.
     EXACT translation from IRremoteESP8266 IRrecv::decodeSamsungAC (ir_Samsung.cpp:955-995)
@@ -1328,7 +1359,7 @@ def decodeSamsungAC(results, offset: int = 1,
             atleast=pos + kSamsungAcSectionLength >= nbits // 8,
             tolerance=25,
             excess=0,
-            MSBfirst=False
+            MSBfirst=False,
         )
         if used == 0:
             return False

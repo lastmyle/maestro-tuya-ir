@@ -41,9 +41,9 @@ kWhirlpoolAcFanMedium = 2
 kWhirlpoolAcFanLow = 3
 
 # Temperature constants
-kWhirlpoolAcMinTemp = 18     # 18C (DG11J1-3A), 16C (DG11J1-91)
-kWhirlpoolAcMaxTemp = 32     # 32C (DG11J1-3A), 30C (DG11J1-91)
-kWhirlpoolAcAutoTemp = 23    # 23C
+kWhirlpoolAcMinTemp = 18  # 18C (DG11J1-3A), 16C (DG11J1-91)
+kWhirlpoolAcMaxTemp = 32  # 32C (DG11J1-3A), 30C (DG11J1-91)
+kWhirlpoolAcAutoTemp = 23  # 23C
 
 # Command constants
 kWhirlpoolAcCommandLight = 0x00
@@ -63,6 +63,7 @@ kWhirlpoolAcCommandOffTimer = 0x1D
 WHIRLPOOL_DG11J13A = 0
 WHIRLPOOL_DG11J191 = 1
 
+
 # Macros for time handling
 def GETTIME_HOURS(state: List[int], prefix: str) -> int:
     """Get hours from timer state"""
@@ -74,6 +75,7 @@ def GETTIME_HOURS(state: List[int], prefix: str) -> int:
         return state[10] & 0x1F
     return 0
 
+
 def GETTIME_MINS(state: List[int], prefix: str) -> int:
     """Get minutes from timer state"""
     if prefix == "Clock":
@@ -84,9 +86,11 @@ def GETTIME_MINS(state: List[int], prefix: str) -> int:
         return state[11] & 0x3F
     return 0
 
+
 def GETTIME(state: List[int], prefix: str) -> int:
     """Get total minutes from timer state"""
     return GETTIME_HOURS(state, prefix) * 60 + GETTIME_MINS(state, prefix)
+
 
 def SETTIME_HOURS(state: List[int], prefix: str, value: int) -> None:
     """Set hours in timer state"""
@@ -97,6 +101,7 @@ def SETTIME_HOURS(state: List[int], prefix: str, value: int) -> None:
     elif prefix == "On":
         state[10] = (state[10] & 0xE0) | (value & 0x1F)
 
+
 def SETTIME_MINS(state: List[int], prefix: str, value: int) -> None:
     """Set minutes in timer state"""
     if prefix == "Clock":
@@ -105,6 +110,7 @@ def SETTIME_MINS(state: List[int], prefix: str, value: int) -> None:
         state[9] = (state[9] & 0xC0) | (value & 0x3F)
     elif prefix == "On":
         state[11] = (state[11] & 0xC0) | (value & 0x3F)
+
 
 def SETTIME(state: List[int], prefix: str, mins: int) -> None:
     """Set time from total minutes"""
@@ -350,8 +356,9 @@ class WhirlpoolProtocol:
 ## Send a Whirlpool A/C message.
 ## Status: BETA / Probably works.
 ## EXACT translation from IRremoteESP8266 IRsend::sendWhirlpoolAC (ir_Whirlpool.cpp lines 55-80)
-def sendWhirlpoolAC(data: List[int], nbytes: int = kWhirlpoolAcStateLength,
-                    repeat: int = 0) -> List[int]:
+def sendWhirlpoolAC(
+    data: List[int], nbytes: int = kWhirlpoolAcStateLength, repeat: int = 0
+) -> List[int]:
     """
     Send a Whirlpool A/C message.
     EXACT translation from IRremoteESP8266 IRsend::sendWhirlpoolAC
@@ -381,7 +388,7 @@ def sendWhirlpoolAC(data: List[int], nbytes: int = kWhirlpoolAcStateLength,
             frequency=38000,
             MSBfirst=False,
             repeat=0,
-            dutycycle=50
+            dutycycle=50,
         )
         all_timings.extend(section1_timings)
 
@@ -400,7 +407,7 @@ def sendWhirlpoolAC(data: List[int], nbytes: int = kWhirlpoolAcStateLength,
             frequency=38000,
             MSBfirst=False,
             repeat=0,
-            dutycycle=50
+            dutycycle=50,
         )
         all_timings.extend(section2_timings)
 
@@ -419,7 +426,7 @@ def sendWhirlpoolAC(data: List[int], nbytes: int = kWhirlpoolAcStateLength,
             frequency=38000,
             MSBfirst=False,
             repeat=0,
-            dutycycle=50
+            dutycycle=50,
         )
         all_timings.extend(section3_timings)
 
@@ -434,14 +441,16 @@ def validChecksumWhirlpoolAc(state: List[int], length: int = kWhirlpoolAcStateLe
     EXACT translation from IRremoteESP8266 IRWhirlpoolAc::validChecksum
     """
     if length > kWhirlpoolAcChecksumByte1:
-        if state[kWhirlpoolAcChecksumByte1] != \
-           xorBytes(state[2:kWhirlpoolAcChecksumByte1], kWhirlpoolAcChecksumByte1 - 1 - 2):
+        if state[kWhirlpoolAcChecksumByte1] != xorBytes(
+            state[2:kWhirlpoolAcChecksumByte1], kWhirlpoolAcChecksumByte1 - 1 - 2
+        ):
             return False
 
     if length > kWhirlpoolAcChecksumByte2:
-        if state[kWhirlpoolAcChecksumByte2] != \
-           xorBytes(state[kWhirlpoolAcChecksumByte1 + 1:kWhirlpoolAcChecksumByte2],
-                    kWhirlpoolAcChecksumByte2 - kWhirlpoolAcChecksumByte1 - 1):
+        if state[kWhirlpoolAcChecksumByte2] != xorBytes(
+            state[kWhirlpoolAcChecksumByte1 + 1 : kWhirlpoolAcChecksumByte2],
+            kWhirlpoolAcChecksumByte2 - kWhirlpoolAcChecksumByte1 - 1,
+        ):
             return False
 
     # State is too short to have a checksum or everything checked out.
@@ -472,11 +481,14 @@ class IRWhirlpoolAc:
     ## EXACT translation from ir_Whirlpool.cpp lines 130-136
     def checksum(self, length: int = kWhirlpoolAcStateLength) -> None:
         if length >= kWhirlpoolAcChecksumByte1:
-            self._.Sum1 = xorBytes(self._.raw[2:kWhirlpoolAcChecksumByte1],
-                                   kWhirlpoolAcChecksumByte1 - 1 - 2)
+            self._.Sum1 = xorBytes(
+                self._.raw[2:kWhirlpoolAcChecksumByte1], kWhirlpoolAcChecksumByte1 - 1 - 2
+            )
         if length >= kWhirlpoolAcChecksumByte2:
-            self._.Sum2 = xorBytes(self._.raw[kWhirlpoolAcChecksumByte1 + 1:kWhirlpoolAcChecksumByte2],
-                                   kWhirlpoolAcChecksumByte2 - kWhirlpoolAcChecksumByte1 - 1)
+            self._.Sum2 = xorBytes(
+                self._.raw[kWhirlpoolAcChecksumByte1 + 1 : kWhirlpoolAcChecksumByte2],
+                kWhirlpoolAcChecksumByte2 - kWhirlpoolAcChecksumByte1 - 1,
+            )
 
     ## Get a copy of the internal state/code for this protocol.
     ## EXACT translation from ir_Whirlpool.cpp lines 151-154
@@ -569,8 +581,12 @@ class IRWhirlpoolAc:
     ## Set the speed of the fan.
     ## EXACT translation from ir_Whirlpool.cpp lines 260-271
     def setFan(self, speed: int) -> None:
-        if speed in [kWhirlpoolAcFanAuto, kWhirlpoolAcFanLow,
-                     kWhirlpoolAcFanMedium, kWhirlpoolAcFanHigh]:
+        if speed in [
+            kWhirlpoolAcFanAuto,
+            kWhirlpoolAcFanLow,
+            kWhirlpoolAcFanMedium,
+            kWhirlpoolAcFanHigh,
+        ]:
             self._.Fan = speed
             self.setSuper(False)  # Changing fan speed cancels Super/Jet mode.
             self._.Cmd = kWhirlpoolAcCommandFanSpeed
@@ -718,14 +734,20 @@ class IRWhirlpoolAc:
 ## Decode the supplied Whirlpool A/C message.
 ## Status: STABLE / Working as intended.
 ## EXACT translation from IRremoteESP8266 IRrecv::decodeWhirlpoolAC (ir_Whirlpool.cpp lines 607-656)
-def decodeWhirlpoolAC(results, offset: int = 1, nbits: int = kWhirlpoolAcBits,
-                      strict: bool = True) -> bool:
+def decodeWhirlpoolAC(
+    results, offset: int = 1, nbits: int = kWhirlpoolAcBits, strict: bool = True
+) -> bool:
     """
     Decode the supplied Whirlpool A/C message.
     EXACT translation from IRremoteESP8266 IRrecv::decodeWhirlpoolAC
     """
     from app.core.ir_protocols.ir_recv import (
-        kHeader, kFooter, kMarkExcess, matchMark, matchSpace, _matchGeneric
+        kHeader,
+        kFooter,
+        kMarkExcess,
+        matchMark,
+        matchSpace,
+        _matchGeneric,
     )
 
     if results.rawlen < 2 * nbits + 4 + kHeader + kFooter - 1 + offset:
@@ -767,7 +789,7 @@ def decodeWhirlpoolAC(results, offset: int = 1, nbits: int = kWhirlpoolAcBits,
             atleast=(section >= kWhirlpoolAcSections - 1),
             tolerance=25,
             excess=kMarkExcess,
-            MSBfirst=False
+            MSBfirst=False,
         )
         if used == 0:
             return False

@@ -33,13 +33,13 @@ kTechnibelAcTempMinF = 61  # Deg F
 kTechnibelAcTempMaxF = 88  # Deg F
 
 kTechnibelAcFanSize = 4
-kTechnibelAcFanLow =    0b0001
+kTechnibelAcFanLow = 0b0001
 kTechnibelAcFanMedium = 0b0010
-kTechnibelAcFanHigh =   0b0100
+kTechnibelAcFanHigh = 0b0100
 
 kTechnibelAcCool = 0b0001
-kTechnibelAcDry =  0b0010
-kTechnibelAcFan =  0b0100
+kTechnibelAcDry = 0b0010
+kTechnibelAcFan = 0b0100
 kTechnibelAcHeat = 0b1000
 
 kTechnibelAcHeaderOffset = 48
@@ -113,7 +113,7 @@ class TechnibelProtocol:
     @Sleep.setter
     def Sleep(self, value: bool) -> None:
         if value:
-            self.raw |= (1 << 36)
+            self.raw |= 1 << 36
         else:
             self.raw &= ~(1 << 36)
 
@@ -124,7 +124,7 @@ class TechnibelProtocol:
     @Swing.setter
     def Swing(self, value: bool) -> None:
         if value:
-            self.raw |= (1 << 37)
+            self.raw |= 1 << 37
         else:
             self.raw &= ~(1 << 37)
 
@@ -135,7 +135,7 @@ class TechnibelProtocol:
     @UseFah.setter
     def UseFah(self, value: bool) -> None:
         if value:
-            self.raw |= (1 << 38)
+            self.raw |= 1 << 38
         else:
             self.raw &= ~(1 << 38)
 
@@ -146,7 +146,7 @@ class TechnibelProtocol:
     @TimerEnable.setter
     def TimerEnable(self, value: bool) -> None:
         if value:
-            self.raw |= (1 << 39)
+            self.raw |= 1 << 39
         else:
             self.raw &= ~(1 << 39)
 
@@ -166,7 +166,7 @@ class TechnibelProtocol:
     @FanChange.setter
     def FanChange(self, value: bool) -> None:
         if value:
-            self.raw |= (1 << 44)
+            self.raw |= 1 << 44
         else:
             self.raw &= ~(1 << 44)
 
@@ -177,7 +177,7 @@ class TechnibelProtocol:
     @TempChange.setter
     def TempChange(self, value: bool) -> None:
         if value:
-            self.raw |= (1 << 45)
+            self.raw |= 1 << 45
         else:
             self.raw &= ~(1 << 45)
 
@@ -188,7 +188,7 @@ class TechnibelProtocol:
     @TimerChange.setter
     def TimerChange(self, value: bool) -> None:
         if value:
-            self.raw |= (1 << 46)
+            self.raw |= 1 << 46
         else:
             self.raw &= ~(1 << 46)
 
@@ -199,7 +199,7 @@ class TechnibelProtocol:
     @Power.setter
     def Power(self, value: bool) -> None:
         if value:
-            self.raw |= (1 << 47)
+            self.raw |= 1 << 47
         else:
             self.raw &= ~(1 << 47)
 
@@ -244,7 +244,7 @@ def sendTechnibelAc(data: int, nbits: int, repeat: int = kTechnibelAcDefaultRepe
         frequency=kTechnibelAcFreq,
         MSBfirst=True,  # LSB First in C++
         repeat=repeat,
-        dutycycle=50
+        dutycycle=50,
     )
 
 
@@ -263,8 +263,9 @@ def GETBITS64(value: int, offset: int, nbits: int) -> int:
 ## @param[in] strict Flag indicating if we should perform strict matching.
 ## @return A boolean. True if it can decode it, false if it can't.
 ## Direct translation from IRremoteESP8266 IRrecv::decodeTechnibelAc (ir_Technibel.cpp lines 46-83)
-def decodeTechnibelAc(results, offset: int = 1, nbits: int = kTechnibelAcBits,
-                      strict: bool = True) -> bool:
+def decodeTechnibelAc(
+    results, offset: int = 1, nbits: int = kTechnibelAcBits, strict: bool = True
+) -> bool:
     """
     Decode a Technibel AC IR message.
     EXACT translation from IRremoteESP8266 IRrecv::decodeTechnibelAc
@@ -297,7 +298,7 @@ def decodeTechnibelAc(results, offset: int = 1, nbits: int = kTechnibelAcBits,
         atleast=True,
         tolerance=25,
         excess=kMarkExcess,
-        MSBfirst=True
+        MSBfirst=True,
     ):
         return False
 
@@ -322,8 +323,7 @@ class IRTechnibelAc:
     ## @param[in] inverted Is the output signal to be inverted?
     ## @param[in] use_modulation Is frequency modulation to be used?
     ## Direct translation from ir_Technibel.cpp lines 85-91
-    def __init__(self, pin: int = 0, inverted: bool = False,
-                 use_modulation: bool = True) -> None:
+    def __init__(self, pin: int = 0, inverted: bool = False, use_modulation: bool = True) -> None:
         self._: TechnibelProtocol = TechnibelProtocol()
         self._saved_temp: int = 20  # DegC (Random reasonable default value)
         self._saved_temp_units: int = 0  # Celsius

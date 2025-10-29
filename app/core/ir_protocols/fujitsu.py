@@ -37,14 +37,14 @@ kFujitsuAcModeDry = 0x2  # 0b010
 kFujitsuAcModeFan = 0x3  # 0b011
 kFujitsuAcModeHeat = 0x4  # 0b100
 
-kFujitsuAcCmdStayOn = 0x00            # b00000000
-kFujitsuAcCmdTurnOn = 0x01            # b00000001
-kFujitsuAcCmdTurnOff = 0x02           # b00000010
-kFujitsuAcCmdEcono = 0x09             # b00001001
-kFujitsuAcCmdPowerful = 0x39          # b00111001
-kFujitsuAcCmdStepVert = 0x6C          # b01101100
-kFujitsuAcCmdToggleSwingVert = 0x6D   # b01101101
-kFujitsuAcCmdStepHoriz = 0x79         # b01111001
+kFujitsuAcCmdStayOn = 0x00  # b00000000
+kFujitsuAcCmdTurnOn = 0x01  # b00000001
+kFujitsuAcCmdTurnOff = 0x02  # b00000010
+kFujitsuAcCmdEcono = 0x09  # b00001001
+kFujitsuAcCmdPowerful = 0x39  # b00111001
+kFujitsuAcCmdStepVert = 0x6C  # b01101100
+kFujitsuAcCmdToggleSwingVert = 0x6D  # b01101101
+kFujitsuAcCmdStepHoriz = 0x79  # b01111001
 kFujitsuAcCmdToggleSwingHoriz = 0x7A  # b01111010
 
 kFujitsuAcFanAuto = 0x00
@@ -360,22 +360,22 @@ class IRFujitsuAC:
     ## @return true, if use long codes; false, use short codes.
     def updateUseLongOrShort(self) -> bool:
         fullCmd = False
-        if self._cmd == kFujitsuAcCmdTurnOff:     # 0x02
+        if self._cmd == kFujitsuAcCmdTurnOff:  # 0x02
             self._.Cmd = self._cmd
             self._rawstatemodified = True
-        elif self._cmd == kFujitsuAcCmdEcono:       # 0x09
+        elif self._cmd == kFujitsuAcCmdEcono:  # 0x09
             self._.Cmd = self._cmd
             self._rawstatemodified = True
-        elif self._cmd == kFujitsuAcCmdPowerful:    # 0x39
+        elif self._cmd == kFujitsuAcCmdPowerful:  # 0x39
             self._.Cmd = self._cmd
             self._rawstatemodified = True
-        elif self._cmd == kFujitsuAcCmdStepVert:    # 0x6C
+        elif self._cmd == kFujitsuAcCmdStepVert:  # 0x6C
             self._.Cmd = self._cmd
             self._rawstatemodified = True
-        elif self._cmd == kFujitsuAcCmdToggleSwingVert:   # 0x6D
+        elif self._cmd == kFujitsuAcCmdToggleSwingVert:  # 0x6D
             self._.Cmd = self._cmd
             self._rawstatemodified = True
-        elif self._cmd == kFujitsuAcCmdStepHoriz:   # 0x79
+        elif self._cmd == kFujitsuAcCmdStepHoriz:  # 0x79
             self._.Cmd = self._cmd
             self._rawstatemodified = True
         elif self._cmd == kFujitsuAcCmdToggleSwingHoriz:  # 0x7A
@@ -457,19 +457,27 @@ class IRFujitsuAC:
                 checksum_complement = 0x9B
             elif self._model == ARREB1E:
                 self._.unknown = 1
-                checksum = sumBytes(self._.longcode[self._state_length_short:],
-                                  self._state_length - self._state_length_short - 1)
+                checksum = sumBytes(
+                    self._.longcode[self._state_length_short :],
+                    self._state_length - self._state_length_short - 1,
+                )
             elif self._model == ARRAH2E:
                 self._.unknown = 1
-                checksum = sumBytes(self._.longcode[self._state_length_short:],
-                                  self._state_length - self._state_length_short - 1)
+                checksum = sumBytes(
+                    self._.longcode[self._state_length_short :],
+                    self._state_length - self._state_length_short - 1,
+                )
             elif self._model == ARRY4:
                 self._.unknown = 1
-                checksum = sumBytes(self._.longcode[self._state_length_short:],
-                                  self._state_length - self._state_length_short - 1)
+                checksum = sumBytes(
+                    self._.longcode[self._state_length_short :],
+                    self._state_length - self._state_length_short - 1,
+                )
             else:
-                checksum = sumBytes(self._.longcode[self._state_length_short:],
-                                  self._state_length - self._state_length_short - 1)
+                checksum = sumBytes(
+                    self._.longcode[self._state_length_short :],
+                    self._state_length - self._state_length_short - 1,
+                )
             # and negate the checksum and store it in the last byte.
             self._.longcode[self._state_length - 1] = (checksum_complement - checksum) & 0xFF
         else:  # short codes
@@ -477,20 +485,24 @@ class IRFujitsuAC:
                 self._.shortcode[i] = self._.longcode[i]
             if self._model == ARRY4:
                 # The last byte is the inverse of penultimate byte
-                self._.shortcode[self._state_length_short - 1] = \
-                    (~self._.shortcode[self._state_length_short - 2]) & 0xFF
+                self._.shortcode[self._state_length_short - 1] = (
+                    ~self._.shortcode[self._state_length_short - 2]
+                ) & 0xFF
             elif self._model == ARRAH2E:
                 # The last byte is the inverse of penultimate byte
-                self._.shortcode[self._state_length_short - 1] = \
-                    (~self._.shortcode[self._state_length_short - 2]) & 0xFF
+                self._.shortcode[self._state_length_short - 1] = (
+                    ~self._.shortcode[self._state_length_short - 2]
+                ) & 0xFF
             elif self._model == ARREB1E:
                 # The last byte is the inverse of penultimate byte
-                self._.shortcode[self._state_length_short - 1] = \
-                    (~self._.shortcode[self._state_length_short - 2]) & 0xFF
+                self._.shortcode[self._state_length_short - 1] = (
+                    ~self._.shortcode[self._state_length_short - 2]
+                ) & 0xFF
             elif self._model == ARREW4E:
                 # The last byte is the inverse of penultimate byte
-                self._.shortcode[self._state_length_short - 1] = \
-                    (~self._.shortcode[self._state_length_short - 2]) & 0xFF
+                self._.shortcode[self._state_length_short - 1] = (
+                    ~self._.shortcode[self._state_length_short - 2]
+                ) & 0xFF
             else:
                 pass  # We don't need to do anything for the others.
 
@@ -891,11 +903,21 @@ class IRFujitsuAC:
     ## @return true, the setting is on. false, the setting is off.
     def get10CHeat(self) -> bool:
         if self._model == ARRAH2E:
-            return (self._.Clean and self._.Power and self._.Mode == kFujitsuAcModeFan and
-                    self._.Fan == kFujitsuAcFanAuto and self._.Swing == kFujitsuAcSwingOff)
+            return (
+                self._.Clean
+                and self._.Power
+                and self._.Mode == kFujitsuAcModeFan
+                and self._.Fan == kFujitsuAcFanAuto
+                and self._.Swing == kFujitsuAcSwingOff
+            )
         elif self._model == ARREW4E:
-            return (self._.Clean and self._.Power and self._.Mode == kFujitsuAcModeFan and
-                    self._.Fan == kFujitsuAcFanAuto and self._.Swing == kFujitsuAcSwingOff)
+            return (
+                self._.Clean
+                and self._.Power
+                and self._.Mode == kFujitsuAcModeFan
+                and self._.Fan == kFujitsuAcFanAuto
+                and self._.Swing == kFujitsuAcSwingOff
+            )
         else:
             return False
 
@@ -995,9 +1017,10 @@ class IRFujitsuAC:
             sum_val = sumBytes(state, length - 1)
             sum_complement = 0x9B
         elif length == kFujitsuAcStateLength:  # ARRAH2E, ARRY4, & ARREB1E
-            sum_val = sumBytes(state[kFujitsuAcStateLengthShort:],
-                             length - 1 - kFujitsuAcStateLengthShort)
-        else:        # Includes ARDB1 & ARJW2 short.
+            sum_val = sumBytes(
+                state[kFujitsuAcStateLengthShort:], length - 1 - kFujitsuAcStateLengthShort
+            )
+        else:  # Includes ARDB1 & ARJW2 short.
             return True  # Assume the checksum is valid for other lengths.
         return checksum == ((sum_complement - sum_val) & 0xFF)  # Does it match?
 
@@ -1059,5 +1082,5 @@ def sendFujitsuAC(data: List[int], nbytes: int, repeat: int = 0) -> List[int]:
         frequency=38,  # 38 kHz (kept as int to match C++ exactly)
         MSBfirst=False,  # LSB first
         repeat=repeat,
-        dutycycle=50
+        dutycycle=50,
     )

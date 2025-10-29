@@ -65,7 +65,7 @@ kCoolixTempMap = [
     0b1001,  # 27C
     0b1000,  # 28C
     0b1010,  # 29C
-    0b1011   # 30C
+    0b1011,  # 30C
 ]
 
 kCoolixSensorTempMax = 30  # Celsius
@@ -100,7 +100,7 @@ class CoolixProtocol:
     @ZoneFollow1.setter
     def ZoneFollow1(self, value: bool) -> None:
         if value:
-            self.raw |= (1 << 1)
+            self.raw |= 1 << 1
         else:
             self.raw &= ~(1 << 1)
 
@@ -148,7 +148,7 @@ class CoolixProtocol:
     @ZoneFollow2.setter
     def ZoneFollow2(self, value: bool) -> None:
         if value:
-            self.raw |= (1 << 19)
+            self.raw |= 1 << 19
         else:
             self.raw &= ~(1 << 19)
 
@@ -188,7 +188,7 @@ def sendCOOLIX(data: int, nbits: int = kCoolixBits, repeat: int = 0) -> List[int
                 zerospace=kCoolixZeroSpace,
                 data=segment,
                 nbits=8,
-                MSBfirst=True
+                MSBfirst=True,
             )
             all_timings.extend(normal_timings)
             # Inverted
@@ -199,7 +199,7 @@ def sendCOOLIX(data: int, nbits: int = kCoolixBits, repeat: int = 0) -> List[int
                 zerospace=kCoolixZeroSpace,
                 data=segment ^ 0xFF,
                 nbits=8,
-                MSBfirst=True
+                MSBfirst=True,
             )
             all_timings.extend(inverted_timings)
 
@@ -261,8 +261,15 @@ class IRCoolixAC:
     ## Is the current state is a special state?
     ## Direct translation from ir_Coolix.cpp lines 145-155
     def isSpecialState(self) -> bool:
-        return self._.raw in [kCoolixClean, kCoolixLed, kCoolixOff, kCoolixSwing,
-                             kCoolixSwingV, kCoolixSleep, kCoolixTurbo]
+        return self._.raw in [
+            kCoolixClean,
+            kCoolixLed,
+            kCoolixOff,
+            kCoolixSwing,
+            kCoolixSwingV,
+            kCoolixSleep,
+            kCoolixTurbo,
+        ]
 
     ## Adjust any internal settings based on the type of special state.
     ## Direct translation from ir_Coolix.cpp lines 165-189
@@ -499,8 +506,13 @@ class IRCoolixAC:
             if modecheck:
                 if self.getMode() not in [kCoolixAuto, kCoolixDry]:
                     newspeed = kCoolixFanAuto
-        elif speed in [kCoolixFanMin, kCoolixFanMed, kCoolixFanMax,
-                      kCoolixFanZoneFollow, kCoolixFanFixed]:
+        elif speed in [
+            kCoolixFanMin,
+            kCoolixFanMed,
+            kCoolixFanMax,
+            kCoolixFanZoneFollow,
+            kCoolixFanFixed,
+        ]:
             pass
         else:  # Unknown speed requested
             newspeed = kCoolixFanAuto
@@ -518,14 +530,21 @@ def GETBITS64(data: int, offset: int, nbits: int) -> int:
 ## Decode the supplied Coolix 24-bit A/C message.
 ## Status: STABLE / Known Working.
 ## Direct translation from IRremoteESP8266 IRrecv::decodeCOOLIX (ir_Coolix.cpp lines 638-704)
-def decodeCOOLIX(results, offset: int = 1, nbits: int = kCoolixBits,
-                 strict: bool = True, _tolerance: int = 25) -> bool:
+def decodeCOOLIX(
+    results, offset: int = 1, nbits: int = kCoolixBits, strict: bool = True, _tolerance: int = 25
+) -> bool:
     """
     Decode a Coolix IR message.
     EXACT translation from IRremoteESP8266 IRrecv::decodeCOOLIX
     """
     from app.core.ir_protocols.ir_recv import (
-        kHeader, kFooter, kMarkExcess, matchMark, matchSpace, matchAtLeast, _matchGeneric
+        kHeader,
+        kFooter,
+        kMarkExcess,
+        matchMark,
+        matchSpace,
+        matchAtLeast,
+        _matchGeneric,
     )
 
     # The protocol sends the data normal + inverted, alternating on
@@ -574,7 +593,7 @@ def decodeCOOLIX(results, offset: int = 1, nbits: int = kCoolixBits,
             atleast=False,
             tolerance=_tolerance + kCoolixExtraTolerance,
             excess=0,
-            MSBfirst=True
+            MSBfirst=True,
         )
         if used == 0:
             return False  # Didn't match a bytes worth of data
@@ -592,7 +611,9 @@ def decodeCOOLIX(results, offset: int = 1, nbits: int = kCoolixBits,
         return False
     offset += 1
     if offset < results.rawlen:
-        if not matchAtLeast(results.rawbuf[offset], kCoolixMinGap, _tolerance + kCoolixExtraTolerance):
+        if not matchAtLeast(
+            results.rawbuf[offset], kCoolixMinGap, _tolerance + kCoolixExtraTolerance
+        ):
             return False
 
     # Compliance
@@ -633,20 +654,23 @@ def sendCoolix48(data: int, nbits: int = kCoolix48Bits, repeat: int = 0) -> List
         zerospace=kCoolixZeroSpace,
         footermark=kCoolixBitMark,
         gap=kCoolixMinGap,
-        dataptr=data if isinstance(data, list) else [(data >> i) & 0xFF for i in range(0, nbits, 8)][::-1],
+        dataptr=data
+        if isinstance(data, list)
+        else [(data >> i) & 0xFF for i in range(0, nbits, 8)][::-1],
         nbytes=nbits // 8,
         frequency=38000,
         MSBfirst=True,
         repeat=repeat,
-        dutycycle=33
+        dutycycle=33,
     )
 
 
 ## Decode the supplied Coolix 48-bit A/C message.
 ## Status: BETA / Probably Working.
 ## Direct translation from IRremoteESP8266 IRrecv::decodeCoolix48 (ir_Coolix.cpp lines 738-759)
-def decodeCoolix48(results, offset: int = 1, nbits: int = kCoolix48Bits,
-                   strict: bool = True, _tolerance: int = 25) -> bool:
+def decodeCoolix48(
+    results, offset: int = 1, nbits: int = kCoolix48Bits, strict: bool = True, _tolerance: int = 25
+) -> bool:
     """
     Decode a Coolix48 IR message.
     EXACT translation from IRremoteESP8266 IRrecv::decodeCoolix48
@@ -659,7 +683,7 @@ def decodeCoolix48(results, offset: int = 1, nbits: int = kCoolix48Bits,
     # Header + Data + Footer
     used = _matchGeneric(
         data_ptr=results.rawbuf[offset:],
-        result_bits_ptr=[results.value] if hasattr(results, 'value') else None,
+        result_bits_ptr=[results.value] if hasattr(results, "value") else None,
         result_bytes_ptr=None,
         use_bits=True,
         remaining=results.rawlen - offset,
@@ -675,7 +699,7 @@ def decodeCoolix48(results, offset: int = 1, nbits: int = kCoolix48Bits,
         atleast=True,
         tolerance=_tolerance + kCoolixExtraTolerance,
         excess=0,
-        MSBfirst=True
+        MSBfirst=True,
     )
     if used == 0:
         return False

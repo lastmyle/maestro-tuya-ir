@@ -296,6 +296,7 @@ def calcChecksumTrotec(state: List[int], length: int = kTrotecStateLength) -> in
     EXACT translation from IRremoteESP8266 IRTrotecESP::calcChecksum
     """
     from app.core.ir_protocols.ir_recv import sumBytes
+
     return sumBytes(state, 2, length - 3)
 
 
@@ -319,6 +320,7 @@ def calcChecksumTrotec3550(state: List[int], length: int = kTrotecStateLength) -
     if length == 0:
         return 0
     from app.core.ir_protocols.ir_recv import sumBytes
+
     return sumBytes(state, 0, length - 1)
 
 
@@ -366,7 +368,7 @@ def sendTrotec(data: List[int], nbytes: int, repeat: int = 0) -> List[int]:
             frequency=36,
             MSBfirst=False,
             repeat=0,  # Repeats handled by outer loop
-            dutycycle=50
+            dutycycle=50,
         )
         all_timings.extend(msg_timings)
 
@@ -404,7 +406,7 @@ def sendTrotec3550(data: List[int], nbytes: int, repeat: int = 0) -> List[int]:
         frequency=38,
         MSBfirst=True,
         repeat=repeat,
-        dutycycle=50
+        dutycycle=50,
     )
 
 
@@ -653,8 +655,7 @@ class IRTrotec3550:
 ## Decode the supplied Trotec message.
 ## Status: STABLE / Works. Untested on real devices.
 ## EXACT translation from IRremoteESP8266 IRrecv::decodeTrotec (ir_Trotec.cpp lines 316-348)
-def decodeTrotec(results, offset: int = 1, nbits: int = kTrotecBits,
-                 strict: bool = True) -> bool:
+def decodeTrotec(results, offset: int = 1, nbits: int = kTrotecBits, strict: bool = True) -> bool:
     """
     Decode a Trotec HVAC IR message.
     EXACT translation from IRremoteESP8266 IRrecv::decodeTrotec
@@ -662,7 +663,13 @@ def decodeTrotec(results, offset: int = 1, nbits: int = kTrotecBits,
     This is the ACTUAL C++ decoder function, not a wrapper.
     """
     # Import here to avoid circular imports
-    from app.core.ir_protocols.ir_recv import kHeader, kFooter, _matchGeneric, matchMark, matchAtLeast
+    from app.core.ir_protocols.ir_recv import (
+        kHeader,
+        kFooter,
+        _matchGeneric,
+        matchMark,
+        matchAtLeast,
+    )
 
     if results.rawlen <= 2 * nbits + kHeader + 2 * kFooter - 1 + offset:
         return False  # Can't possibly be a valid Trotec A/C message.
@@ -688,7 +695,7 @@ def decodeTrotec(results, offset: int = 1, nbits: int = kTrotecBits,
         atleast=True,
         tolerance=25,
         excess=0,
-        MSBfirst=False
+        MSBfirst=False,
     )
     if used == 0:
         return False
@@ -717,8 +724,9 @@ def decodeTrotec(results, offset: int = 1, nbits: int = kTrotecBits,
 ## Decode the supplied Trotec 3550 message.
 ## Status: STABLE / Known to be working.
 ## EXACT translation from IRremoteESP8266 IRrecv::decodeTrotec3550 (ir_Trotec.cpp lines 376-397)
-def decodeTrotec3550(results, offset: int = 1, nbits: int = kTrotecBits,
-                     strict: bool = True) -> bool:
+def decodeTrotec3550(
+    results, offset: int = 1, nbits: int = kTrotecBits, strict: bool = True
+) -> bool:
     """
     Decode a Trotec3550 HVAC IR message.
     EXACT translation from IRremoteESP8266 IRrecv::decodeTrotec3550
@@ -750,7 +758,7 @@ def decodeTrotec3550(results, offset: int = 1, nbits: int = kTrotecBits,
         atleast=False,
         tolerance=25,
         excess=0,
-        MSBfirst=True
+        MSBfirst=True,
     ):
         return False
 

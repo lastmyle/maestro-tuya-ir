@@ -8,13 +8,14 @@ from app.core.ir_protocols.ir_recv import decode_results, decodeFujitsuAC, kFuji
 from app.core.ir_protocols.test_codes import FUJITSU_KNOWN_GOOD_CODES
 from app.core.tuya_encoder import decode_ir, encode_ir
 
+
 def test_off_code():
     """Test the OFF code - should be 7 bytes (short format)"""
     print("=" * 80)
     print("Testing OFF code (short 7-byte format)")
     print("=" * 80)
 
-    code = FUJITSU_KNOWN_GOOD_CODES['OFF']
+    code = FUJITSU_KNOWN_GOOD_CODES["OFF"]
     print(f"\nOriginal Tuya code: {code[:60]}...")
 
     # Decode: Tuya → Timings
@@ -30,7 +31,7 @@ def test_off_code():
     if not success:
         print("❌ FAILED: decodeFujitsuAC returned False")
         return False
-    bytes_decoded = results.state[:results.bits // 8]
+    bytes_decoded = results.state[: results.bits // 8]
 
     print(f"\nDecoded to {len(bytes_decoded)} bytes")
     print(f"Bytes (hex): {' '.join(f'{b:02x}' for b in bytes_decoded)}")
@@ -51,7 +52,7 @@ def test_off_code():
     print(f"\nRe-encoded Tuya code: {code_encoded[:60]}...")
 
     # Compare round-trip
-    print(f"\n{'='*80}")
+    print(f"\n{'=' * 80}")
     print("Round-trip validation:")
     print(f"Original timings count: {len(timings)}")
     print(f"Re-encoded timings count: {len(timings_encoded)}")
@@ -69,7 +70,7 @@ def test_off_code():
     results2.rawlen = len(timings2)
     success2 = decodeFujitsuAC(results2, offset=0, nbits=kFujitsuAcBits, strict=False)
     assert success2
-    bytes_decoded2 = results2.state[:results2.bits // 8]
+    bytes_decoded2 = results2.state[: results2.bits // 8]
 
     if bytes_decoded == bytes_decoded2:
         print("✓ Round-trip successful: Bytes match perfectly")
@@ -87,7 +88,7 @@ def test_24c_high_code():
     print("Testing 24C_High code (long 16-byte format)")
     print("=" * 80)
 
-    code = FUJITSU_KNOWN_GOOD_CODES['24C_High']
+    code = FUJITSU_KNOWN_GOOD_CODES["24C_High"]
     print(f"\nOriginal Tuya code: {code[:60]}...")
 
     # Decode: Tuya → Timings
@@ -103,7 +104,7 @@ def test_24c_high_code():
     if not success:
         print("❌ FAILED: decodeFujitsuAC returned False")
         return False
-    bytes_decoded = results.state[:results.bits // 8]
+    bytes_decoded = results.state[: results.bits // 8]
 
     print(f"\nDecoded to {len(bytes_decoded)} bytes")
     print(f"Bytes (hex): {' '.join(f'{b:02x}' for b in bytes_decoded)}")
@@ -124,7 +125,7 @@ def test_24c_high_code():
     print(f"\nRe-encoded Tuya code: {code_encoded[:60]}...")
 
     # Compare round-trip
-    print(f"\n{'='*80}")
+    print(f"\n{'=' * 80}")
     print("Round-trip validation:")
     print(f"Original timings count: {len(timings)}")
     print(f"Re-encoded timings count: {len(timings_encoded)}")
@@ -136,7 +137,7 @@ def test_24c_high_code():
     results2.rawlen = len(timings2)
     success2 = decodeFujitsuAC(results2, offset=0, nbits=kFujitsuAcBits, strict=False)
     assert success2
-    bytes_decoded2 = results2.state[:results2.bits // 8]
+    bytes_decoded2 = results2.state[: results2.bits // 8]
 
     if bytes_decoded == bytes_decoded2:
         print("✓ Round-trip successful: Bytes match perfectly")

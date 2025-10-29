@@ -67,18 +67,32 @@ kBosch144TempMap = [
     0b10010,  # 27C
     0b10000,  # 28C
     0b10100,  # 29C
-    0b10110   # 30C
+    0b10110,  # 30C
 ]
 
 # "OFF" is a 96bit-message    the same as Coolix protocol (from ir_Bosch.h lines 90-92)
-kBosch144Off = [0xB2, 0x4D, 0x7B, 0x84, 0xE0, 0x1F,
-                0xB2, 0x4D, 0x7B, 0x84, 0xE0, 0x1F]
+kBosch144Off = [0xB2, 0x4D, 0x7B, 0x84, 0xE0, 0x1F, 0xB2, 0x4D, 0x7B, 0x84, 0xE0, 0x1F]
 
 # On, 25C, Mode: Auto (from ir_Bosch.h lines 94-98)
 kBosch144DefaultState = [
-    0xB2, 0x4D, 0x1F, 0xE0, 0xC8, 0x37,
-    0xB2, 0x4D, 0x1F, 0xE0, 0xC8, 0x37,
-    0xD5, 0x65, 0x00, 0x00, 0x00, 0x3A
+    0xB2,
+    0x4D,
+    0x1F,
+    0xE0,
+    0xC8,
+    0x37,
+    0xB2,
+    0x4D,
+    0x1F,
+    0xE0,
+    0xC8,
+    0x37,
+    0xD5,
+    0x65,
+    0x00,
+    0x00,
+    0x00,
+    0x3A,
 ]
 
 
@@ -299,12 +313,12 @@ def sendBosch144(data: List[int], nbytes: int, repeat: int = 0) -> List[int]:
                 zerospace=kBoschZeroSpace,
                 footermark=kBoschBitMark,
                 gap=kBoschFooterSpace,
-                dataptr=data[offset:offset + kBosch144BytesPerSection],
+                dataptr=data[offset : offset + kBosch144BytesPerSection],
                 nbytes=kBosch144BytesPerSection,
                 frequency=kBoschFreq,
                 MSBfirst=True,
                 repeat=0,
-                dutycycle=50
+                dutycycle=50,
             )
             all_timings.extend(section_timings)
         # space(kDefaultMessageGap);  // Complete guess (from ir_Bosch.cpp line 32)
@@ -347,7 +361,7 @@ class IRBosch144AC:
         len_copy = min(length, kBosch144StateLength)
         lenOff = len(kBosch144Off)
         # Is it an off message? (from ir_Bosch.cpp lines 81-82)
-        if new_code[:min(lenOff, len_copy)] == kBosch144Off[:min(lenOff, len_copy)]:
+        if new_code[: min(lenOff, len_copy)] == kBosch144Off[: min(lenOff, len_copy)]:
             self.setPower(False)  # It is.
         else:
             self.setPower(True)
@@ -515,25 +529,25 @@ class IRBosch144AC:
     ## Direct translation from ir_Bosch.cpp lines 223-247
     def toCommon(self) -> dict:
         result = {}
-        result['protocol'] = 'BOSCH144'
-        result['power'] = self.getPower()
-        result['mode'] = self.toCommonMode(self.getMode())
-        result['celsius'] = True
-        result['degrees'] = self.getTemp()
-        result['fanspeed'] = self.toCommonFanSpeed(self.getFan())
-        result['quiet'] = self.getQuiet()
+        result["protocol"] = "BOSCH144"
+        result["power"] = self.getPower()
+        result["mode"] = self.toCommonMode(self.getMode())
+        result["celsius"] = True
+        result["degrees"] = self.getTemp()
+        result["fanspeed"] = self.toCommonFanSpeed(self.getFan())
+        result["quiet"] = self.getQuiet()
         # Not supported.
-        result['model'] = -1
-        result['turbo'] = False
-        result['swingv'] = 0  # stdAc::swingv_t::kOff
-        result['swingh'] = 0  # stdAc::swingh_t::kOff
-        result['light'] = False
-        result['filter'] = False
-        result['econo'] = False
-        result['clean'] = False
-        result['beep'] = False
-        result['clock'] = -1
-        result['sleep'] = -1
+        result["model"] = -1
+        result["turbo"] = False
+        result["swingv"] = 0  # stdAc::swingv_t::kOff
+        result["swingh"] = 0  # stdAc::swingh_t::kOff
+        result["light"] = False
+        result["filter"] = False
+        result["econo"] = False
+        result["clean"] = False
+        result["beep"] = False
+        result["clock"] = -1
+        result["sleep"] = -1
         return result
 
     ## Convert the current internal state into a human readable string.
@@ -585,7 +599,9 @@ def decodeBosch144(results, offset: int = 1, nbits: int = 144, strict: bool = Tr
         return False
     if strict and nbits != 144:  # kBosch144Bits
         return False
-    if nbits % 8 != 0:  # nbits has to be a multiple of nr. of bits in a byte. (from ir_Bosch.cpp lines 297-298)
+    if (
+        nbits % 8 != 0
+    ):  # nbits has to be a multiple of nr. of bits in a byte. (from ir_Bosch.cpp lines 297-298)
         return False
     if nbits % kBosch144NrOfSections != 0:  # (from ir_Bosch.cpp lines 299-300)
         return False
@@ -616,7 +632,7 @@ def decodeBosch144(results, offset: int = 1, nbits: int = 144, strict: bool = Tr
             atleast=section >= kBosch144NrOfSections - 1,
             tolerance=25,
             excess=kMarkExcess,
-            MSBfirst=True
+            MSBfirst=True,
         )
         if not used:
             return False  # Didn't match.

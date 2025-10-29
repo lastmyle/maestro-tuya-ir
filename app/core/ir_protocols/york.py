@@ -42,10 +42,23 @@ kYorkAuto = 8
 
 # Known good state (from ir_York.h lines 67-71)
 kYorkKnownGoodState = [
-    0x08, 0x10, 0x07, 0x02, 0x40, 0x08,
-    0x03, 0x18, 0x01, 0x60, 0x00, 0x00, 0x00, 0x00,
+    0x08,
+    0x10,
+    0x07,
+    0x02,
+    0x40,
+    0x08,
+    0x03,
+    0x18,
+    0x01,
+    0x60,
+    0x00,
+    0x00,
+    0x00,
+    0x00,
     0xEC,
-    0xF5, 0xF2  # Mode "Heat", Fan Speed "auto", Temp: 24, Power: on
+    0xF5,
+    0xF2,  # Mode "Heat", Fan Speed "auto", Temp: 24, Power: on
 ]
 
 
@@ -198,7 +211,7 @@ def sendYork(data: List[int], nbytes: int, repeat: int = 0) -> List[int]:
             frequency=kYorkFreq,
             MSBfirst=False,  # LSB first
             repeat=0,
-            dutycycle=50
+            dutycycle=50,
         )
         all_timings.extend(timings)
 
@@ -214,8 +227,9 @@ def sendYork(data: List[int], nbytes: int, repeat: int = 0) -> List[int]:
 ## @param[in] strict Flag indicating if we should perform strict matching.
 ## @return A boolean. True if it can decode it, false if it can't.
 ## Direct translation from IRremoteESP8266 IRrecv::decodeYork (ir_York.cpp lines 60-92)
-def decodeYork(results, offset: int = 1, nbits: int = kYorkBits, strict: bool = True,
-               _tolerance: int = 25) -> bool:
+def decodeYork(
+    results, offset: int = 1, nbits: int = kYorkBits, strict: bool = True, _tolerance: int = 25
+) -> bool:
     """
     Decode a York HVAC IR message.
     EXACT translation from IRremoteESP8266 IRrecv::decodeYork
@@ -246,7 +260,7 @@ def decodeYork(results, offset: int = 1, nbits: int = kYorkBits, strict: bool = 
         atleast=False,
         tolerance=_tolerance,
         excess=kMarkExcess,
-        MSBfirst=False
+        MSBfirst=False,
     )
     if used == 0:
         return False  # We failed to find any data.
@@ -280,8 +294,8 @@ def calcChecksum(data: List[int]) -> tuple:
                 reg_crc = reg_crc >> 1
         length -= 1
 
-    chk1 = reg_crc & 0xff
-    chk2 = (reg_crc >> 8) & 0x00ff
+    chk1 = reg_crc & 0xFF
+    chk2 = (reg_crc >> 8) & 0x00FF
     return (chk1, chk2)
 
 
@@ -342,13 +356,13 @@ class IRYorkAc:
     @staticmethod
     def convertMode(mode: str) -> int:
         """Convert common mode to York mode"""
-        if mode == 'cool':
+        if mode == "cool":
             return kYorkCool
-        elif mode == 'heat':
+        elif mode == "heat":
             return kYorkHeat
-        elif mode == 'dry':
+        elif mode == "dry":
             return kYorkDry
-        elif mode == 'fan':
+        elif mode == "fan":
             return kYorkFan
         else:
             return kYorkAuto
@@ -361,15 +375,15 @@ class IRYorkAc:
     def toCommonMode(mode: int) -> str:
         """Convert York mode to common mode"""
         if mode == kYorkCool:
-            return 'cool'
+            return "cool"
         elif mode == kYorkHeat:
-            return 'heat'
+            return "heat"
         elif mode == kYorkDry:
-            return 'dry'
+            return "dry"
         elif mode == kYorkFan:
-            return 'fan'
+            return "fan"
         else:
-            return 'auto'
+            return "auto"
 
     ## Set the speed of the fan.
     ## @param[in] speed The desired setting.
@@ -400,11 +414,11 @@ class IRYorkAc:
     @staticmethod
     def convertFan(speed: str) -> int:
         """Convert common fan speed to York fan speed"""
-        if speed in ['min', 'low']:
+        if speed in ["min", "low"]:
             return kYorkFanLow
-        elif speed == 'medium':
+        elif speed == "medium":
             return kYorkFanMedium
-        elif speed in ['high', 'max']:
+        elif speed in ["high", "max"]:
             return kYorkFanHigh
         else:
             return kYorkFanAuto
@@ -417,13 +431,13 @@ class IRYorkAc:
     def toCommonFanSpeed(speed: int) -> str:
         """Convert York fan speed to common fan speed"""
         if speed == kYorkFanHigh:
-            return 'max'
+            return "max"
         elif speed == kYorkFanMedium:
-            return 'medium'
+            return "medium"
         elif speed == kYorkFanLow:
-            return 'min'
+            return "min"
         else:
-            return 'auto'
+            return "auto"
 
     ## Set the temperature.
     ## @param[in] degrees The temperature in degrees celsius.
@@ -489,26 +503,26 @@ class IRYorkAc:
             # Set defaults for non-zero values that are not implicitly set for when
             # there is no previous state.
             # e.g. Any setting that toggles should probably go here.
-            result['power'] = False
+            result["power"] = False
 
-        result['protocol'] = 'YORK'
-        result['mode'] = self.toCommonMode(self._.Mode)
-        result['celsius'] = True
-        result['degrees'] = self.getTemp()
-        result['fanspeed'] = self.toCommonFanSpeed(self._.Fan)
-        result['swingv'] = 'auto' if self._.SwingV else 'off'
-        result['sleep'] = self.getOffTimer()
+        result["protocol"] = "YORK"
+        result["mode"] = self.toCommonMode(self._.Mode)
+        result["celsius"] = True
+        result["degrees"] = self.getTemp()
+        result["fanspeed"] = self.toCommonFanSpeed(self._.Fan)
+        result["swingv"] = "auto" if self._.SwingV else "off"
+        result["sleep"] = self.getOffTimer()
         # Not supported.
-        result['model'] = -1
-        result['turbo'] = False
-        result['swingh'] = 'off'
-        result['light'] = False
-        result['filter'] = False
-        result['econo'] = False
-        result['quiet'] = False
-        result['clean'] = False
-        result['beep'] = False
-        result['clock'] = -1
+        result["model"] = -1
+        result["turbo"] = False
+        result["swingh"] = "off"
+        result["light"] = False
+        result["filter"] = False
+        result["econo"] = False
+        result["quiet"] = False
+        result["clean"] = False
+        result["beep"] = False
+        result["clock"] = -1
         return result
 
     ## Convert the current internal state into a human readable string.

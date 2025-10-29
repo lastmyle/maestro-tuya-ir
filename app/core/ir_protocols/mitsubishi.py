@@ -272,6 +272,7 @@ kMitsubishiHeavy88SwingVLowest = 0b111  # 7
 # HELPER FUNCTIONS
 # ===============================================================================
 
+
 ## Calculate checksum for Mitsubishi AC (144-bit)
 ## EXACT translation from IRremoteESP8266 ir_Mitsubishi.cpp:368-370
 def calculateChecksum(data: List[int]) -> int:
@@ -279,7 +280,7 @@ def calculateChecksum(data: List[int]) -> int:
     Calculate the checksum for a given state.
     EXACT translation from IRremoteESP8266 IRMitsubishiAC::calculateChecksum
     """
-    return sum(data[:kMitsubishiACStateLength - 1]) & 0xFF
+    return sum(data[: kMitsubishiACStateLength - 1]) & 0xFF
 
 
 ## Verify checksum for Mitsubishi AC (144-bit)
@@ -363,7 +364,9 @@ def checkInvertedBytePairs(data: List[int], length: int) -> bool:
 
 ## Verify checksum for Mitsubishi Heavy 152-bit
 ## EXACT translation from IRremoteESP8266 ir_MitsubishiHeavy.cpp:331-337
-def validChecksumMitsubishiHeavy152(state: List[int], length: int = kMitsubishiHeavy152StateLength) -> bool:
+def validChecksumMitsubishiHeavy152(
+    state: List[int], length: int = kMitsubishiHeavy152StateLength
+) -> bool:
     """
     Verify the checksum is valid for a given state.
     Note: Technically it has no checksum, but does have inverted byte pairs.
@@ -378,7 +381,9 @@ def validChecksumMitsubishiHeavy152(state: List[int], length: int = kMitsubishiH
 
 ## Verify checksum for Mitsubishi Heavy 88-bit
 ## EXACT translation from IRremoteESP8266 ir_MitsubishiHeavy.cpp:798-801
-def validChecksumMitsubishiHeavy88(state: List[int], length: int = kMitsubishiHeavy88StateLength) -> bool:
+def validChecksumMitsubishiHeavy88(
+    state: List[int], length: int = kMitsubishiHeavy88StateLength
+) -> bool:
     """
     Verify the checksum is valid for a given state.
     Note: Technically it has no checksum, but does have inverted byte pairs.
@@ -390,6 +395,7 @@ def validChecksumMitsubishiHeavy88(state: List[int], length: int = kMitsubishiHe
 # ===============================================================================
 # SEND FUNCTIONS
 # ===============================================================================
+
 
 ## Send a Mitsubishi 144-bit A/C formatted message.
 ## EXACT translation from IRremoteESP8266 ir_Mitsubishi.cpp:236-245
@@ -420,7 +426,7 @@ def sendMitsubishiAC(data: List[int], nbytes: int, repeat: int = 0) -> List[int]
         frequency=38,
         MSBfirst=False,
         repeat=repeat,
-        dutycycle=50
+        dutycycle=50,
     )
 
 
@@ -453,7 +459,7 @@ def sendMitsubishi136(data: List[int], nbytes: int, repeat: int = 0) -> List[int
         frequency=38,
         MSBfirst=False,
         repeat=repeat,
-        dutycycle=50
+        dutycycle=50,
     )
 
 
@@ -486,7 +492,7 @@ def sendMitsubishi112(data: List[int], nbytes: int, repeat: int = 0) -> List[int
         frequency=38,
         MSBfirst=False,
         repeat=repeat,
-        dutycycle=50
+        dutycycle=50,
     )
 
 
@@ -519,7 +525,7 @@ def sendMitsubishiHeavy88(data: List[int], nbytes: int, repeat: int = 0) -> List
         frequency=38,
         MSBfirst=False,
         repeat=repeat,
-        dutycycle=50
+        dutycycle=50,
     )
 
 
@@ -542,10 +548,12 @@ def sendMitsubishiHeavy152(data: List[int], nbytes: int, repeat: int = 0) -> Lis
 # DECODE FUNCTIONS
 # ===============================================================================
 
+
 ## Decode the supplied Mitsubishi 144-bit A/C message.
 ## EXACT translation from IRremoteESP8266 ir_Mitsubishi.cpp:257-303
-def decodeMitsubishiAC(results, offset: int = 1, nbits: int = 144, strict: bool = True,
-                       _tolerance: int = 25) -> bool:
+def decodeMitsubishiAC(
+    results, offset: int = 1, nbits: int = 144, strict: bool = True, _tolerance: int = 25
+) -> bool:
     """
     Decode the supplied Mitsubishi 144-bit A/C message.
     Status: BETA / Probably works
@@ -584,14 +592,14 @@ def decodeMitsubishiAC(results, offset: int = 1, nbits: int = 144, strict: bool 
             atleast=r < expected_repeats,  # At least?
             tolerance=_tolerance + kMitsubishiAcExtraTolerance,
             excess=kMarkExcess,
-            MSBfirst=False
+            MSBfirst=False,
         )
         if used == 0:
             return False  # No match.
         offset += used
         if r:  # Is this a repeat?
             # Repeats are expected to be exactly the same.
-            if save[:nbits // 8] != results.state[:nbits // 8]:
+            if save[: nbits // 8] != results.state[: nbits // 8]:
                 return False
         else:  # It is the first message.
             # Compliance
@@ -614,8 +622,9 @@ def decodeMitsubishiAC(results, offset: int = 1, nbits: int = 144, strict: bool 
 
 ## Decode the supplied Mitsubishi 136-bit A/C message.
 ## EXACT translation from IRremoteESP8266 ir_Mitsubishi.cpp:917-942
-def decodeMitsubishi136(results, offset: int = 1, nbits: int = 136, strict: bool = True,
-                        _tolerance: int = 25) -> bool:
+def decodeMitsubishi136(
+    results, offset: int = 1, nbits: int = 136, strict: bool = True, _tolerance: int = 25
+) -> bool:
     """
     Decode the supplied Mitsubishi 136-bit A/C message. (MITSUBISHI136)
     Status: STABLE / Reported as working.
@@ -647,7 +656,7 @@ def decodeMitsubishi136(results, offset: int = 1, nbits: int = 136, strict: bool
         atleast=True,
         tolerance=_tolerance,
         excess=kMarkExcess,
-        MSBfirst=False
+        MSBfirst=False,
     )
     if not used:
         return False
@@ -663,8 +672,9 @@ def decodeMitsubishi136(results, offset: int = 1, nbits: int = 136, strict: bool
 
 ## Decode the supplied Mitsubishi/TCL 112-bit A/C message.
 ## EXACT translation from IRremoteESP8266 ir_Mitsubishi.cpp:1291-1356
-def decodeMitsubishi112(results, offset: int = 1, nbits: int = 112, strict: bool = True,
-                        _tolerance: int = 25) -> bool:
+def decodeMitsubishi112(
+    results, offset: int = 1, nbits: int = 112, strict: bool = True, _tolerance: int = 25
+) -> bool:
     """
     Decode the supplied Mitsubishi/TCL 112-bit A/C message.
     Status: STABLE / Reported as working.
@@ -672,7 +682,13 @@ def decodeMitsubishi112(results, offset: int = 1, nbits: int = 112, strict: bool
 
     Note: Mitsubishi112 & Tcl112Ac are basically the same protocol.
     """
-    from app.core.ir_protocols.ir_recv import kHeader, kFooter, kMarkExcess, _matchGeneric, matchMark
+    from app.core.ir_protocols.ir_recv import (
+        kHeader,
+        kFooter,
+        kMarkExcess,
+        _matchGeneric,
+        matchMark,
+    )
 
     if results.rawlen < (2 * nbits) + kHeader + kFooter - 1 + offset:
         return False
@@ -691,8 +707,7 @@ def decodeMitsubishi112(results, offset: int = 1, nbits: int = 112, strict: bool
     tolerance = _tolerance
 
     # Header - Check if it's Mitsubishi112
-    if matchMark(results.rawbuf[offset], kMitsubishi112HdrMark,
-                 kMitsubishi112HdrMarkTolerance, 0):
+    if matchMark(results.rawbuf[offset], kMitsubishi112HdrMark, kMitsubishi112HdrMarkTolerance, 0):
         typeguess = "MITSUBISHI112"
         hdrspace = kMitsubishi112HdrSpace
         bitmark = kMitsubishi112BitMark
@@ -722,7 +737,7 @@ def decodeMitsubishi112(results, offset: int = 1, nbits: int = 112, strict: bool
         atleast=True,
         tolerance=tolerance,
         excess=kMarkExcess,
-        MSBfirst=False
+        MSBfirst=False,
     )
     if not used:
         return False
@@ -742,8 +757,9 @@ def decodeMitsubishi112(results, offset: int = 1, nbits: int = 112, strict: bool
 
 ## Decode the supplied Mitsubishi Heavy Industries A/C message.
 ## EXACT translation from IRremoteESP8266 ir_MitsubishiHeavy.cpp:1003-1049
-def decodeMitsubishiHeavy(results, offset: int = 1, nbits: int = 152, strict: bool = True,
-                          _tolerance: int = 25) -> bool:
+def decodeMitsubishiHeavy(
+    results, offset: int = 1, nbits: int = 152, strict: bool = True, _tolerance: int = 25
+) -> bool:
     """
     Decode the supplied Mitsubishi Heavy Industries A/C message.
     Status: BETA / Appears to be working. Needs testing against a real device.
@@ -773,7 +789,7 @@ def decodeMitsubishiHeavy(results, offset: int = 1, nbits: int = 152, strict: bo
         atleast=True,
         tolerance=_tolerance,
         excess=kMarkExcess,
-        MSBfirst=False
+        MSBfirst=False,
     )
     if used == 0:
         return False
@@ -781,13 +797,15 @@ def decodeMitsubishiHeavy(results, offset: int = 1, nbits: int = 152, strict: bo
 
     # Compliance
     if nbits == 88:  # kMitsubishiHeavy88Bits
-        if strict and not (checkZjsSig(results.state) and
-                          validChecksumMitsubishiHeavy88(results.state)):
+        if strict and not (
+            checkZjsSig(results.state) and validChecksumMitsubishiHeavy88(results.state)
+        ):
             return False
         # results.decode_type = MITSUBISHI_HEAVY_88
     elif nbits == 152:  # kMitsubishiHeavy152Bits
-        if strict and not (checkZmsSig(results.state) and
-                          validChecksumMitsubishiHeavy152(results.state)):
+        if strict and not (
+            checkZmsSig(results.state) and validChecksumMitsubishiHeavy152(results.state)
+        ):
             return False
         # results.decode_type = MITSUBISHI_HEAVY_152
     else:

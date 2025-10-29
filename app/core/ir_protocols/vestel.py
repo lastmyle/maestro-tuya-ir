@@ -172,7 +172,7 @@ class VestelProtocol:
     @Ion.setter
     def Ion(self, value: bool) -> None:
         if value:
-            self.cmdState |= (1 << 50)
+            self.cmdState |= 1 << 50
         else:
             self.cmdState &= ~(1 << 50)
 
@@ -193,7 +193,7 @@ class VestelProtocol:
     @UseCmd.setter
     def UseCmd(self, value: bool) -> None:
         if value:
-            self.cmdState |= (1 << 54)
+            self.cmdState |= 1 << 54
         else:
             self.cmdState &= ~(1 << 54)
 
@@ -260,7 +260,7 @@ class VestelProtocol:
     @OnTimer.setter
     def OnTimer(self, value: bool) -> None:
         if value:
-            self.timeState |= (1 << 41)
+            self.timeState |= 1 << 41
         else:
             self.timeState &= ~(1 << 41)
 
@@ -272,7 +272,7 @@ class VestelProtocol:
     @OffTimer.setter
     def OffTimer(self, value: bool) -> None:
         if value:
-            self.timeState |= (1 << 42)
+            self.timeState |= 1 << 42
         else:
             self.timeState &= ~(1 << 42)
 
@@ -284,7 +284,7 @@ class VestelProtocol:
     @Timer.setter
     def Timer(self, value: bool) -> None:
         if value:
-            self.timeState |= (1 << 43)
+            self.timeState |= 1 << 43
         else:
             self.timeState &= ~(1 << 43)
 
@@ -335,7 +335,7 @@ def sendVestelAc(data: int, nbits: int = kVestelAcBits, repeat: int = 0) -> List
         frequency=38000,
         MSBfirst=False,
         repeat=repeat,
-        dutycycle=50
+        dutycycle=50,
     )
 
 
@@ -421,7 +421,7 @@ class IRVestelAc:
     ## @param[in] on true, the setting is on. false, the setting is off.
     ## Direct translation from ir_Vestel.cpp lines 110-115
     def setPower(self, on: bool) -> None:
-        self._.Power = (0b11 if on else 0b00)
+        self._.Power = 0b11 if on else 0b00
         self._.UseCmd = True
 
     ## Get the value of the current power setting.
@@ -449,8 +449,14 @@ class IRVestelAc:
     ## @param[in] fan The desired setting.
     ## Direct translation from ir_Vestel.cpp lines 138-154
     def setFan(self, fan: int) -> None:
-        if fan in [kVestelAcFanLow, kVestelAcFanMed, kVestelAcFanHigh,
-                  kVestelAcFanAutoCool, kVestelAcFanAutoHot, kVestelAcFanAuto]:
+        if fan in [
+            kVestelAcFanLow,
+            kVestelAcFanMed,
+            kVestelAcFanHigh,
+            kVestelAcFanAutoCool,
+            kVestelAcFanAutoHot,
+            kVestelAcFanAuto,
+        ]:
             self._.Fan = fan
         else:
             self._.Fan = kVestelAcFanAuto
@@ -473,8 +479,7 @@ class IRVestelAc:
     ## @note If we get an unexpected mode, default to AUTO.
     ## Direct translation from ir_Vestel.cpp lines 168-184
     def setMode(self, mode: int) -> None:
-        if mode in [kVestelAcAuto, kVestelAcCool, kVestelAcHeat,
-                   kVestelAcDry, kVestelAcFan]:
+        if mode in [kVestelAcAuto, kVestelAcCool, kVestelAcHeat, kVestelAcDry, kVestelAcFan]:
             self._.Mode = mode
         else:
             self._.Mode = kVestelAcAuto
@@ -487,7 +492,7 @@ class IRVestelAc:
         if autoLevel < -2 or autoLevel > 2:
             return
         self._.Mode = kVestelAcAuto
-        self._.Fan = (kVestelAcFanAutoCool if autoLevel < 0 else kVestelAcFanAutoHot)
+        self._.Fan = kVestelAcFanAutoCool if autoLevel < 0 else kVestelAcFanAutoHot
         if autoLevel == 2:
             self.setTemp(30)
         elif autoLevel == 1:
@@ -609,7 +614,7 @@ class IRVestelAc:
     ## @param[in] on true, the setting is on. false, the setting is off.
     ## Direct translation from ir_Vestel.cpp lines 308-313
     def setSleep(self, on: bool) -> None:
-        self._.TurboSleep = (kVestelAcSleep if on else kVestelAcNormal)
+        self._.TurboSleep = kVestelAcSleep if on else kVestelAcNormal
         self._.UseCmd = True
 
     ## Get the Sleep setting of the A/C.
@@ -622,7 +627,7 @@ class IRVestelAc:
     ## @param[in] on true, the setting is on. false, the setting is off.
     ## Direct translation from ir_Vestel.cpp lines 321-326
     def setTurbo(self, on: bool) -> None:
-        self._.TurboSleep = (kVestelAcTurbo if on else kVestelAcNormal)
+        self._.TurboSleep = kVestelAcTurbo if on else kVestelAcNormal
         self._.UseCmd = True
 
     ## Get the Turbo setting of the A/C.
@@ -648,7 +653,7 @@ class IRVestelAc:
     ## @param[in] on true, the setting is on. false, the setting is off.
     ## Direct translation from ir_Vestel.cpp lines 347-352
     def setSwing(self, on: bool) -> None:
-        self._.Swing = (kVestelAcSwing if on else 0xF)
+        self._.Swing = kVestelAcSwing if on else 0xF
         self._.UseCmd = True
 
     ## Get the Swing Roaming setting of the A/C.
@@ -667,8 +672,9 @@ class IRVestelAc:
 ## @param[in] strict Flag indicating if we should perform strict matching.
 ## @return True if it can decode it, false if it can't.
 ## Direct translation from IRremoteESP8266 IRrecv::decodeVestelAc (ir_Vestel.cpp lines 528-572)
-def decodeVestelAc(results, offset: int = 1, nbits: int = kVestelAcBits,
-                   strict: bool = True) -> bool:
+def decodeVestelAc(
+    results, offset: int = 1, nbits: int = kVestelAcBits, strict: bool = True
+) -> bool:
     """
     Decode a Vestel AC IR message.
     EXACT translation from IRremoteESP8266 IRrecv::decodeVestelAc
@@ -708,7 +714,7 @@ def decodeVestelAc(results, offset: int = 1, nbits: int = kVestelAcBits,
         atleast=False,
         tolerance=kVestelAcTolerance,
         excess=kMarkExcess,
-        MSBfirst=False
+        MSBfirst=False,
     )
 
     if not used:

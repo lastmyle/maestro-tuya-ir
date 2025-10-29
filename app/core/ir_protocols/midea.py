@@ -29,11 +29,11 @@ kMideaBits = 48
 kMidea24Bits = 24
 
 # Temperature constants (from ir_Midea.h lines 110-118)
-kMideaACMinTempF = 62        # Fahrenheit
-kMideaACMaxTempF = 86        # Fahrenheit
-kMideaACMinTempC = 17        # Celsius
-kMideaACMaxTempC = 30        # Celsius
-kMideaACMinSensorTempC = 0   # Celsius
+kMideaACMinTempF = 62  # Fahrenheit
+kMideaACMaxTempF = 86  # Fahrenheit
+kMideaACMinTempC = 17  # Celsius
+kMideaACMaxTempC = 30  # Celsius
+kMideaACMinSensorTempC = 0  # Celsius
 kMideaACMaxSensorTempC = 37  # Celsius
 kMideaACMinSensorTempF = 32  # Fahrenheit
 kMideaACMaxSensorTempF = 99  # Fahrenheit (Guess only!)
@@ -42,15 +42,15 @@ kMideaACTimerOff = 0b111111
 
 # Mode constants (from ir_Midea.h lines 120-124)
 kMideaACCool = 0  # 0b000
-kMideaACDry = 1   # 0b001
+kMideaACDry = 1  # 0b001
 kMideaACAuto = 2  # 0b010
 kMideaACHeat = 3  # 0b011
-kMideaACFan = 4   # 0b100
+kMideaACFan = 4  # 0b100
 
 # Fan speed constants (from ir_Midea.h lines 125-128)
 kMideaACFanAuto = 0  # 0b00
-kMideaACFanLow = 1   # 0b01
-kMideaACFanMed = 2   # 0b10
+kMideaACFanLow = 1  # 0b01
+kMideaACFanMed = 2  # 0b10
 kMideaACFanHigh = 3  # 0b11
 
 # Special toggle commands (from ir_Midea.h lines 131-150)
@@ -74,7 +74,7 @@ def reverseBits(data: int, nbits: int) -> int:
     result = 0
     for i in range(nbits):
         result <<= 1
-        result |= (data & 1)
+        result |= data & 1
         data >>= 1
     return result & ((1 << nbits) - 1)
 
@@ -128,7 +128,7 @@ class MideaProtocol:
     @disableSensor.setter
     def disableSensor(self, value: bool) -> None:
         if value:
-            self.remote_state |= (1 << 15)
+            self.remote_state |= 1 << 15
         else:
             self.remote_state &= ~(1 << 15)
 
@@ -149,7 +149,7 @@ class MideaProtocol:
     @BeepDisable.setter
     def BeepDisable(self, value: bool) -> None:
         if value:
-            self.remote_state |= (1 << 23)
+            self.remote_state |= 1 << 23
         else:
             self.remote_state &= ~(1 << 23)
 
@@ -170,7 +170,7 @@ class MideaProtocol:
     @useFahrenheit.setter
     def useFahrenheit(self, value: bool) -> None:
         if value:
-            self.remote_state |= (1 << 29)
+            self.remote_state |= 1 << 29
         else:
             self.remote_state &= ~(1 << 29)
 
@@ -200,7 +200,7 @@ class MideaProtocol:
     @Sleep.setter
     def Sleep(self, value: bool) -> None:
         if value:
-            self.remote_state |= (1 << 38)
+            self.remote_state |= 1 << 38
         else:
             self.remote_state &= ~(1 << 38)
 
@@ -212,7 +212,7 @@ class MideaProtocol:
     @Power.setter
     def Power(self, value: bool) -> None:
         if value:
-            self.remote_state |= (1 << 39)
+            self.remote_state |= 1 << 39
         else:
             self.remote_state &= ~(1 << 39)
 
@@ -272,7 +272,7 @@ def sendMidea(data: int, nbits: int = kMideaBits, repeat: int = 0) -> List[int]:
                     zerospace=kMideaZeroSpace,
                     data=segment,
                     nbits=8,
-                    MSBfirst=True
+                    MSBfirst=True,
                 )
                 all_timings.extend(segment_timings)
 
@@ -601,8 +601,7 @@ class IRMideaAC:
     ## Is the current state a Quiet(Silent) message?
     ## Direct translation from ir_Midea.cpp lines 473-476
     def isQuiet(self) -> bool:
-        return (self._.remote_state == kMideaACQuietOff or
-                self._.remote_state == kMideaACQuietOn)
+        return self._.remote_state == kMideaACQuietOff or self._.remote_state == kMideaACQuietOn
 
     ## Set the Quiet (Silent) mode for the next send.
     ## Direct translation from ir_Midea.cpp line 480
@@ -620,8 +619,10 @@ class IRMideaAC:
     ## Is the OnTimer enabled?
     ## Direct translation from ir_Midea.cpp lines 549-552
     def isOnTimerEnabled(self) -> bool:
-        return (self.getType() == kMideaACTypeCommand and
-                self._.SensorTemp != kMideaACSensorTempOnTimerOff)
+        return (
+            self.getType() == kMideaACTypeCommand
+            and self._.SensorTemp != kMideaACSensorTempOnTimerOff
+        )
 
     ## Get the value of the OnTimer is currently set to.
     ## Direct translation from ir_Midea.cpp lines 556-558
@@ -672,8 +673,9 @@ class IRMideaAC:
 ## Decode the supplied Midea message.
 ## Status: Alpha / Needs testing against a real device.
 ## Direct translation from IRremoteESP8266 IRrecv::decodeMidea (ir_Midea.cpp lines 756-808)
-def decodeMidea(results, offset: int = 1, nbits: int = kMideaBits,
-                strict: bool = True, _tolerance: int = 25) -> bool:
+def decodeMidea(
+    results, offset: int = 1, nbits: int = kMideaBits, strict: bool = True, _tolerance: int = 25
+) -> bool:
     """
     Decode a Midea IR message.
     EXACT translation from IRremoteESP8266 IRrecv::decodeMidea
@@ -718,7 +720,7 @@ def decodeMidea(results, offset: int = 1, nbits: int = kMideaBits,
             atleast=(i % 2 == 1),  # No "atleast" on 1st part, but yes on the 2nd
             tolerance=_tolerance,
             excess=kMarkExcess,
-            MSBfirst=True
+            MSBfirst=True,
         )
         if used == 0:
             return False
@@ -762,18 +764,20 @@ def sendMidea24(data: int, nbits: int = kMidea24Bits, repeat: int = 0) -> List[i
         # Shuffle the data to be sent so far
         newdata <<= 16
         next_byte = GETBITS64(data, i, 8)
-        newdata |= ((next_byte << 8) | (next_byte ^ 0xFF))
+        newdata |= (next_byte << 8) | (next_byte ^ 0xFF)
 
     # Use NEC protocol for sending
     from app.core.ir_protocols.nec import sendNEC
+
     return sendNEC(newdata, nbits * 2, repeat)
 
 
 ## Decode the supplied Midea24 message.
 ## Status: STABLE / Confirmed working on a real device.
 ## Direct translation from IRremoteESP8266 IRrecv::decodeMidea24 (ir_Midea.cpp lines 849-885)
-def decodeMidea24(results, offset: int = 1, nbits: int = kMidea24Bits,
-                  strict: bool = True, _tolerance: int = 25) -> bool:
+def decodeMidea24(
+    results, offset: int = 1, nbits: int = kMidea24Bits, strict: bool = True, _tolerance: int = 25
+) -> bool:
     """
     Decode a Midea24 IR message (48-bit NEC with inverted byte pairs).
     EXACT translation from IRremoteESP8266 IRrecv::decodeMidea24
@@ -812,7 +816,7 @@ def decodeMidea24(results, offset: int = 1, nbits: int = kMidea24Bits,
         atleast=True,
         tolerance=_tolerance,
         excess=kMarkExcess,
-        MSBfirst=True
+        MSBfirst=True,
     )
     if used == 0:
         return False

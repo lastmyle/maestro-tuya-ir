@@ -15,11 +15,11 @@ from typing import List
 # Constants (from ir_Ecoclim.cpp lines 17-25)
 kEcoclimSections = 3
 kEcoclimExtraTolerance = 5  # Percentage (extra)
-kEcoclimHdrMark = 5730     # uSeconds
-kEcoclimHdrSpace = 1935    # uSeconds
-kEcoclimBitMark = 440      # uSeconds
-kEcoclimOneSpace = 1739    # uSeconds
-kEcoclimZeroSpace = 637    # uSeconds
+kEcoclimHdrMark = 5730  # uSeconds
+kEcoclimHdrSpace = 1935  # uSeconds
+kEcoclimBitMark = 440  # uSeconds
+kEcoclimOneSpace = 1739  # uSeconds
+kEcoclimZeroSpace = 637  # uSeconds
 kEcoclimFooterMark = 7820  # uSeconds
 kEcoclimGap = 100000  # kDefaultMessageGap - Just a guess.
 
@@ -28,23 +28,23 @@ kEcoclimBits = 56
 kEcoclimShortBits = 15
 
 # Modes (from ir_Ecoclim.h lines 27-33)
-kEcoclimAuto =    0b000  # 0. a.k.a Slave
-kEcoclimCool =    0b001  # 1
-kEcoclimDry =     0b010  # 2
+kEcoclimAuto = 0b000  # 0. a.k.a Slave
+kEcoclimCool = 0b001  # 1
+kEcoclimDry = 0b010  # 2
 kEcoclimRecycle = 0b011  # 3
-kEcoclimFan =     0b100  # 4
-kEcoclimHeat =    0b101  # 5
-kEcoclimSleep =   0b111  # 7
+kEcoclimFan = 0b100  # 4
+kEcoclimHeat = 0b101  # 5
+kEcoclimSleep = 0b111  # 7
 
 # Fan Control (from ir_Ecoclim.h lines 35-38)
-kEcoclimFanMin =  0b00  # 0
-kEcoclimFanMed =  0b01  # 1
-kEcoclimFanMax =  0b10  # 2
+kEcoclimFanMin = 0b00  # 0
+kEcoclimFanMed = 0b01  # 1
+kEcoclimFanMax = 0b10  # 2
 kEcoclimFanAuto = 0b11  # 3
 
 # DIP settings (from ir_Ecoclim.h lines 40-41)
 kEcoclimDipMaster = 0b0000
-kEcoclimDipSlave =  0b0111
+kEcoclimDipSlave = 0b0111
 
 # Temperature (from ir_Ecoclim.h lines 43-44)
 kEcoclimTempMin = 5  # Celsius
@@ -135,7 +135,7 @@ class EcoclimProtocol:
     @Power.setter
     def Power(self, value: bool) -> None:
         if value:
-            self.raw |= (1 << 38)
+            self.raw |= 1 << 38
         else:
             self.raw &= ~(1 << 38)
 
@@ -146,7 +146,7 @@ class EcoclimProtocol:
     @Clear.setter
     def Clear(self, value: bool) -> None:
         if value:
-            self.raw |= (1 << 39)
+            self.raw |= 1 << 39
         else:
             self.raw &= ~(1 << 39)
 
@@ -215,7 +215,7 @@ def sendEcoclim(data: int, nbits: int, repeat: int = 0) -> List[int]:
                 frequency=38,
                 MSBfirst=True,
                 repeat=0,
-                dutycycle=50
+                dutycycle=50,
             )
             all_timings.extend(section_timings)
 
@@ -233,8 +233,7 @@ def sendEcoclim(data: int, nbits: int, repeat: int = 0) -> List[int]:
 ## @param[in] nbits The number of data bits to expect.
 ## @param[in] strict Flag indicating if we should perform strict matching.
 ## Direct translation from IRremoteESP8266 IRrecv::decodeEcoclim (ir_Ecoclim.cpp lines 58-119)
-def decodeEcoclim(results, offset: int = 1, nbits: int = kEcoclimBits,
-                  strict: bool = True) -> bool:
+def decodeEcoclim(results, offset: int = 1, nbits: int = kEcoclimBits, strict: bool = True) -> bool:
     """
     Decode a Ecoclim A/C IR message.
     EXACT translation from IRremoteESP8266 IRrecv::decodeEcoclim
@@ -242,9 +241,7 @@ def decodeEcoclim(results, offset: int = 1, nbits: int = kEcoclimBits,
     This is the ACTUAL C++ decoder function, not a wrapper.
     """
     # Import here to avoid circular imports
-    from app.core.ir_protocols.ir_recv import (
-        kHeader, kFooter, kMarkExcess, _matchGeneric
-    )
+    from app.core.ir_protocols.ir_recv import kHeader, kFooter, kMarkExcess, _matchGeneric
 
     if results.rawlen < (2 * nbits + kHeader) * kEcoclimSections + kFooter - 1 + offset:
         return False  # Can't possibly be a valid Ecoclim message.
@@ -273,7 +270,7 @@ def decodeEcoclim(results, offset: int = 1, nbits: int = kEcoclimBits,
             atleast=False,
             tolerance=25 + kEcoclimExtraTolerance,
             excess=kMarkExcess,
-            MSBfirst=True
+            MSBfirst=True,
         )
         if used == 0:
             return False
@@ -289,13 +286,12 @@ def decodeEcoclim(results, offset: int = 1, nbits: int = kEcoclimBits,
 
     # Footer
     from app.core.ir_protocols.ir_recv import matchMark, matchAtLeast
-    if not matchMark(results.rawbuf[offset], kEcoclimFooterMark,
-                     25 + kEcoclimExtraTolerance):
+
+    if not matchMark(results.rawbuf[offset], kEcoclimFooterMark, 25 + kEcoclimExtraTolerance):
         offset += 1
         return False
     offset += 1
-    if results.rawlen <= offset and not matchAtLeast(results.rawbuf[offset],
-                                                      kEcoclimGap):
+    if results.rawlen <= offset and not matchAtLeast(results.rawbuf[offset], kEcoclimGap):
         return False
 
     # Success
@@ -314,8 +310,7 @@ class IREcoclimAc:
     ## @param[in] inverted Is the output signal to be inverted?
     ## @param[in] use_modulation Is frequency modulation to be used?
     ## Direct translation from ir_Ecoclim.cpp lines 122-128
-    def __init__(self, pin: int = 0, inverted: bool = False,
-                 use_modulation: bool = True) -> None:
+    def __init__(self, pin: int = 0, inverted: bool = False, use_modulation: bool = True) -> None:
         self._: EcoclimProtocol = EcoclimProtocol()
         # _irsend not needed for Python implementation
         self.stateReset()
@@ -444,8 +439,15 @@ class IREcoclimAc:
     ## @param[in] mode The desired operating mode.
     ## Direct translation from ir_Ecoclim.cpp lines 236-250
     def setMode(self, mode: int) -> None:
-        if mode in [kEcoclimAuto, kEcoclimCool, kEcoclimDry,
-                    kEcoclimRecycle, kEcoclimFan, kEcoclimHeat, kEcoclimSleep]:
+        if mode in [
+            kEcoclimAuto,
+            kEcoclimCool,
+            kEcoclimDry,
+            kEcoclimRecycle,
+            kEcoclimFan,
+            kEcoclimHeat,
+            kEcoclimSleep,
+        ]:
             self._.Mode = mode
         else:
             # Anything else, go with Auto mode.

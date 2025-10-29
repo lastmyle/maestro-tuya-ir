@@ -57,7 +57,7 @@ def sendGorenje(data: int, nbits: int = kGorenjeBits, repeat: int = 0) -> List[i
         frequency=kGorenjeFreq,
         MSBfirst=True,
         repeat=repeat,
-        dutycycle=50  # kDutyDefault
+        dutycycle=50,  # kDutyDefault
     )
 
 
@@ -72,8 +72,13 @@ def sendGorenje(data: int, nbits: int = kGorenjeBits, repeat: int = 0) -> List[i
 ## @param[in] _tolerance The tolerance percentage for matching (default kGorenjeTolerance)
 ## @return A boolean. True if it can decode it, false if it can't.
 ## Direct translation from IRremoteESP8266 IRrecv::decodeGorenje (ir_Gorenje.cpp lines 39-71)
-def decodeGorenje(results, offset: int = 1, nbits: int = kGorenjeBits,
-                  strict: bool = True, _tolerance: int = kGorenjeTolerance) -> bool:
+def decodeGorenje(
+    results,
+    offset: int = 1,
+    nbits: int = kGorenjeBits,
+    strict: bool = True,
+    _tolerance: int = kGorenjeTolerance,
+) -> bool:
     """
     Decode the supplied Gorenje Cooker Hood message.
     EXACT translation from IRremoteESP8266 IRrecv::decodeGorenje
@@ -105,7 +110,7 @@ def decodeGorenje(results, offset: int = 1, nbits: int = kGorenjeBits,
         footermark=kGorenjeBitMark,
         footerspace=kGorenjeMinGap,
         atleast=True,
-        tolerance=_tolerance
+        tolerance=_tolerance,
     ):
         return False
 

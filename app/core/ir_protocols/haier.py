@@ -50,22 +50,22 @@ kHaierAcPrefix = 0b10100101
 kHaierAcMinTemp = 16
 kHaierAcDefTemp = 25
 kHaierAcMaxTemp = 30
-kHaierAcCmdOff =         0b0000
-kHaierAcCmdOn =          0b0001
-kHaierAcCmdMode =        0b0010
-kHaierAcCmdFan =         0b0011
-kHaierAcCmdTempUp =      0b0110
-kHaierAcCmdTempDown =    0b0111
-kHaierAcCmdSleep =       0b1000
-kHaierAcCmdTimerSet =    0b1001
+kHaierAcCmdOff = 0b0000
+kHaierAcCmdOn = 0b0001
+kHaierAcCmdMode = 0b0010
+kHaierAcCmdFan = 0b0011
+kHaierAcCmdTempUp = 0b0110
+kHaierAcCmdTempDown = 0b0111
+kHaierAcCmdSleep = 0b1000
+kHaierAcCmdTimerSet = 0b1001
 kHaierAcCmdTimerCancel = 0b1010
-kHaierAcCmdHealth =      0b1100
-kHaierAcCmdSwing =       0b1101
+kHaierAcCmdHealth = 0b1100
+kHaierAcCmdSwing = 0b1101
 
-kHaierAcSwingVOff =  0b00
-kHaierAcSwingVUp =   0b01
+kHaierAcSwingVOff = 0b00
+kHaierAcSwingVUp = 0b01
 kHaierAcSwingVDown = 0b10
-kHaierAcSwingVChg =  0b11
+kHaierAcSwingVChg = 0b11
 
 kHaierAcAuto = 0
 kHaierAcCool = 1
@@ -101,14 +101,14 @@ kHaierAcYrw02SwingVBottom = 0x3  # Only available in heat mode.
 kHaierAcYrw02SwingVDown = 0xA
 kHaierAcYrw02SwingVAuto = 0xC  # Airflow
 
-kHaierAc160SwingVOff =     0b0000
-kHaierAc160SwingVTop =     0b0001
+kHaierAc160SwingVOff = 0b0000
+kHaierAc160SwingVTop = 0b0001
 kHaierAc160SwingVHighest = 0b0010
-kHaierAc160SwingVHigh =    0b0100
-kHaierAc160SwingVMiddle =  0b0110
-kHaierAc160SwingVLow =     0b1000
-kHaierAc160SwingVLowest =  0b0011
-kHaierAc160SwingVAuto =    0b1100  # Airflow
+kHaierAc160SwingVHigh = 0b0100
+kHaierAc160SwingVMiddle = 0b0110
+kHaierAc160SwingVLow = 0b1000
+kHaierAc160SwingVLowest = 0b0011
+kHaierAc160SwingVAuto = 0b1100  # Airflow
 
 kHaierAcYrw02SwingHMiddle = 0x0
 kHaierAcYrw02SwingHLeftMax = 0x3
@@ -118,36 +118,36 @@ kHaierAcYrw02SwingHRightMax = 0x6
 kHaierAcYrw02SwingHAuto = 0x7
 
 kHaierAcYrw02FanHigh = 0b001
-kHaierAcYrw02FanMed =  0b010
-kHaierAcYrw02FanLow =  0b011
+kHaierAcYrw02FanMed = 0b010
+kHaierAcYrw02FanLow = 0b011
 kHaierAcYrw02FanAuto = 0b101  # HAIER_AC176 uses `0` in Fan2
 
 kHaierAcYrw02Auto = 0b000  # 0
 kHaierAcYrw02Cool = 0b001  # 1
-kHaierAcYrw02Dry =  0b010  # 2
+kHaierAcYrw02Dry = 0b010  # 2
 kHaierAcYrw02Heat = 0b100  # 4
-kHaierAcYrw02Fan =  0b110  # 5
+kHaierAcYrw02Fan = 0b110  # 5
 
-kHaierAcYrw02ButtonTempUp =   0b00000
+kHaierAcYrw02ButtonTempUp = 0b00000
 kHaierAcYrw02ButtonTempDown = 0b00001
-kHaierAcYrw02ButtonSwingV =   0b00010
-kHaierAcYrw02ButtonSwingH =   0b00011
-kHaierAcYrw02ButtonFan =      0b00100
-kHaierAcYrw02ButtonPower =    0b00101
-kHaierAcYrw02ButtonMode =     0b00110
-kHaierAcYrw02ButtonHealth =   0b00111
-kHaierAcYrw02ButtonTurbo =    0b01000
-kHaierAcYrw02ButtonSleep =    0b01011
-kHaierAcYrw02ButtonTimer =    0b10000
-kHaierAcYrw02ButtonLock =     0b10100
-kHaierAc160ButtonLight =      0b10101
+kHaierAcYrw02ButtonSwingV = 0b00010
+kHaierAcYrw02ButtonSwingH = 0b00011
+kHaierAcYrw02ButtonFan = 0b00100
+kHaierAcYrw02ButtonPower = 0b00101
+kHaierAcYrw02ButtonMode = 0b00110
+kHaierAcYrw02ButtonHealth = 0b00111
+kHaierAcYrw02ButtonTurbo = 0b01000
+kHaierAcYrw02ButtonSleep = 0b01011
+kHaierAcYrw02ButtonTimer = 0b10000
+kHaierAcYrw02ButtonLock = 0b10100
+kHaierAc160ButtonLight = 0b10101
 kHaierAc160ButtonAuxHeating = 0b10110
-kHaierAc160ButtonClean =      0b11001
-kHaierAcYrw02ButtonCFAB =     0b11010
+kHaierAc160ButtonClean = 0b11001
+kHaierAcYrw02ButtonCFAB = 0b11010
 
-kHaierAcYrw02NoTimers       = 0b000
-kHaierAcYrw02OffTimer       = 0b001
-kHaierAcYrw02OnTimer        = 0b010
+kHaierAcYrw02NoTimers = 0b000
+kHaierAcYrw02OffTimer = 0b001
+kHaierAcYrw02OnTimer = 0b010
 kHaierAcYrw02OnThenOffTimer = 0b100
 kHaierAcYrw02OffThenOnTimer = 0b101
 
@@ -887,7 +887,7 @@ def sendHaierAC(data: List[int], nbytes: int, repeat: int = 0) -> List[int]:
             frequency=38,
             MSBfirst=True,
             repeat=0,
-            dutycycle=50
+            dutycycle=50,
         )
         all_timings.extend(block_timings)
 
@@ -968,7 +968,7 @@ class IRHaierAC:
     def validChecksum(state: List[int], length: int = kHaierACStateLength) -> bool:
         if length < 2:
             return False  # 1 byte of data can't have a checksum.
-        return (state[length - 1] == sumBytes(state, length - 1))
+        return state[length - 1] == sumBytes(state, length - 1)
 
     ## Get a PTR to the internal state/code for this protocol.
     ## @return PTR to a code for this protocol based on the current internal state.
@@ -988,10 +988,19 @@ class IRHaierAC:
     ## @param[in] command The value of the command/button that was pressed.
     ## EXACT translation from ir_Haier.cpp:168-183
     def setCommand(self, command: int) -> None:
-        if command in [kHaierAcCmdOff, kHaierAcCmdOn, kHaierAcCmdMode, kHaierAcCmdFan,
-                       kHaierAcCmdTempUp, kHaierAcCmdTempDown, kHaierAcCmdSleep,
-                       kHaierAcCmdTimerSet, kHaierAcCmdTimerCancel, kHaierAcCmdHealth,
-                       kHaierAcCmdSwing]:
+        if command in [
+            kHaierAcCmdOff,
+            kHaierAcCmdOn,
+            kHaierAcCmdMode,
+            kHaierAcCmdFan,
+            kHaierAcCmdTempUp,
+            kHaierAcCmdTempDown,
+            kHaierAcCmdSleep,
+            kHaierAcCmdTimerSet,
+            kHaierAcCmdTimerCancel,
+            kHaierAcCmdHealth,
+            kHaierAcCmdSwing,
+        ]:
             self._.Command = command
 
     ## Get the Command/Button setting of the A/C.
@@ -1181,8 +1190,7 @@ class IRHaierAC:
     def setSwingV(self, state: int) -> None:
         if state == self._.SwingV:
             return  # Nothing to do.
-        if state in [kHaierAcSwingVOff, kHaierAcSwingVUp, kHaierAcSwingVDown,
-                     kHaierAcSwingVChg]:
+        if state in [kHaierAcSwingVOff, kHaierAcSwingVUp, kHaierAcSwingVDown, kHaierAcSwingVChg]:
             self._.Command = kHaierAcCmdSwing
             self._.SwingV = state
 
@@ -1213,8 +1221,10 @@ class IRHaierAC176:
     ## EXACT translation from ir_Haier.cpp:572-576
     def checksum(self) -> None:
         self._.Sum = sumBytes(self._.raw, kHaierACYRW02StateLength - 1)
-        self._.Sum2 = sumBytes(self._.raw[kHaierACYRW02StateLength:],
-                               kHaierAC176StateLength - kHaierACYRW02StateLength - 1)
+        self._.Sum2 = sumBytes(
+            self._.raw[kHaierACYRW02StateLength:],
+            kHaierAC176StateLength - kHaierACYRW02StateLength - 1,
+        )
 
     ## Verify the checksum is valid for a given state.
     ## @param[in] state The array to verify the checksum of.
@@ -1227,13 +1237,14 @@ class IRHaierAC176:
             return False  # 1 byte of data can't have a checksum.
         if length < kHaierAC160StateLength:  # Is it too short?
             # Then it is just a checksum of the whole thing.
-            return (state[length - 1] == sumBytes(state, length - 1))
+            return state[length - 1] == sumBytes(state, length - 1)
         else:  # It is long enough for two checksums.
-            return ((state[kHaierACYRW02StateLength - 1] ==
-                     sumBytes(state, kHaierACYRW02StateLength - 1)) and
-                    (state[length - 1] ==
-                     sumBytes(state[kHaierACYRW02StateLength:],
-                              length - kHaierACYRW02StateLength - 1)))
+            return (
+                state[kHaierACYRW02StateLength - 1] == sumBytes(state, kHaierACYRW02StateLength - 1)
+            ) and (
+                state[length - 1]
+                == sumBytes(state[kHaierACYRW02StateLength:], length - kHaierACYRW02StateLength - 1)
+            )
 
     ## Get a PTR to the internal state/code for this protocol.
     ## @return PTR to a code for this protocol based on the current internal state.
@@ -1253,12 +1264,20 @@ class IRHaierAC176:
     ## @param[in] button The value of the button/command that was pressed.
     ## EXACT translation from ir_Haier.cpp:623-639
     def setButton(self, button: int) -> None:
-        if button in [kHaierAcYrw02ButtonTempUp, kHaierAcYrw02ButtonTempDown,
-                      kHaierAcYrw02ButtonSwingV, kHaierAcYrw02ButtonSwingH,
-                      kHaierAcYrw02ButtonFan, kHaierAcYrw02ButtonPower,
-                      kHaierAcYrw02ButtonMode, kHaierAcYrw02ButtonHealth,
-                      kHaierAcYrw02ButtonTurbo, kHaierAcYrw02ButtonSleep,
-                      kHaierAcYrw02ButtonLock, kHaierAcYrw02ButtonCFAB]:
+        if button in [
+            kHaierAcYrw02ButtonTempUp,
+            kHaierAcYrw02ButtonTempDown,
+            kHaierAcYrw02ButtonSwingV,
+            kHaierAcYrw02ButtonSwingH,
+            kHaierAcYrw02ButtonFan,
+            kHaierAcYrw02ButtonPower,
+            kHaierAcYrw02ButtonMode,
+            kHaierAcYrw02ButtonHealth,
+            kHaierAcYrw02ButtonTurbo,
+            kHaierAcYrw02ButtonSleep,
+            kHaierAcYrw02ButtonLock,
+            kHaierAcYrw02ButtonCFAB,
+        ]:
             self._.Button = button
 
     ## Get/Detect the model of the A/C.
@@ -1472,8 +1491,12 @@ class IRHaierAC176:
     ## @param[in] speed The desired setting.
     ## EXACT translation from ir_Haier.cpp:870-880
     def setFan(self, speed: int) -> None:
-        if speed in [kHaierAcYrw02FanLow, kHaierAcYrw02FanMed, kHaierAcYrw02FanHigh,
-                     kHaierAcYrw02FanAuto]:
+        if speed in [
+            kHaierAcYrw02FanLow,
+            kHaierAcYrw02FanMed,
+            kHaierAcYrw02FanHigh,
+            kHaierAcYrw02FanAuto,
+        ]:
             self._.Fan = speed
             self._.Fan2 = 0 if (speed == kHaierAcYrw02FanAuto) else speed
             self._.Button = kHaierAcYrw02ButtonFan
@@ -1503,9 +1526,14 @@ class IRHaierAC176:
     ## EXACT translation from ir_Haier.cpp:900-918
     def setSwingV(self, pos: int) -> None:
         newpos = pos
-        if pos in [kHaierAcYrw02SwingVOff, kHaierAcYrw02SwingVAuto,
-                   kHaierAcYrw02SwingVTop, kHaierAcYrw02SwingVMiddle,
-                   kHaierAcYrw02SwingVBottom, kHaierAcYrw02SwingVDown]:
+        if pos in [
+            kHaierAcYrw02SwingVOff,
+            kHaierAcYrw02SwingVAuto,
+            kHaierAcYrw02SwingVTop,
+            kHaierAcYrw02SwingVMiddle,
+            kHaierAcYrw02SwingVBottom,
+            kHaierAcYrw02SwingVDown,
+        ]:
             self._.Button = kHaierAcYrw02ButtonSwingV
         else:
             return  # Unexpected value so don't do anything.
@@ -1527,9 +1555,14 @@ class IRHaierAC176:
     ## @param[in] pos The position/mode to set the vanes to.
     ## EXACT translation from ir_Haier.cpp:926-937
     def setSwingH(self, pos: int) -> None:
-        if pos in [kHaierAcYrw02SwingHMiddle, kHaierAcYrw02SwingHLeftMax,
-                   kHaierAcYrw02SwingHLeft, kHaierAcYrw02SwingHRight,
-                   kHaierAcYrw02SwingHRightMax, kHaierAcYrw02SwingHAuto]:
+        if pos in [
+            kHaierAcYrw02SwingHMiddle,
+            kHaierAcYrw02SwingHLeftMax,
+            kHaierAcYrw02SwingHLeft,
+            kHaierAcYrw02SwingHRight,
+            kHaierAcYrw02SwingHRightMax,
+            kHaierAcYrw02SwingHAuto,
+        ]:
             self._.Button = kHaierAcYrw02ButtonSwingH
         else:
             return  # Unexpected value so don't do anything.
@@ -1562,7 +1595,7 @@ class IRHaierAC176:
         self._.OnTimerHrs = nr_mins // 60
         self._.OnTimerMins = nr_mins % 60
 
-        enabled = (nr_mins > 0)
+        enabled = nr_mins > 0
         mode = self.getTimerMode()
         if mode == kHaierAcYrw02OffTimer:
             mode = kHaierAcYrw02OffThenOnTimer if enabled else mode
@@ -1587,7 +1620,7 @@ class IRHaierAC176:
         self._.OffTimerHrs = nr_mins // 60
         self._.OffTimerMins = nr_mins % 60
 
-        enabled = (nr_mins > 0)
+        enabled = nr_mins > 0
         mode = self.getTimerMode()
         if mode == kHaierAcYrw02OnTimer:
             mode = kHaierAcYrw02OnThenOffTimer if enabled else mode
@@ -1670,8 +1703,10 @@ class IRHaierAC160:
     ## EXACT translation from ir_Haier.cpp:1511-1515
     def checksum(self) -> None:
         self._.Sum = sumBytes(self._.raw, kHaierACYRW02StateLength - 1)
-        self._.Sum2 = sumBytes(self._.raw[kHaierACYRW02StateLength:],
-                               kHaierAC160StateLength - kHaierACYRW02StateLength - 1)
+        self._.Sum2 = sumBytes(
+            self._.raw[kHaierACYRW02StateLength:],
+            kHaierAC160StateLength - kHaierACYRW02StateLength - 1,
+        )
 
     ## Verify the checksum is valid for a given state.
     ## @param[in] state The array to verify the checksum of.
@@ -1700,13 +1735,21 @@ class IRHaierAC160:
     ## @param[in] button The value of the button/command that was pressed.
     ## EXACT translation from ir_Haier.cpp:1544-1561
     def setButton(self, button: int) -> None:
-        if button in [kHaierAcYrw02ButtonTempUp, kHaierAcYrw02ButtonTempDown,
-                      kHaierAcYrw02ButtonSwingV, kHaierAcYrw02ButtonSwingH,
-                      kHaierAcYrw02ButtonFan, kHaierAcYrw02ButtonPower,
-                      kHaierAcYrw02ButtonMode, kHaierAcYrw02ButtonHealth,
-                      kHaierAcYrw02ButtonTurbo, kHaierAcYrw02ButtonSleep,
-                      kHaierAcYrw02ButtonLock, kHaierAc160ButtonClean,
-                      kHaierAcYrw02ButtonCFAB]:
+        if button in [
+            kHaierAcYrw02ButtonTempUp,
+            kHaierAcYrw02ButtonTempDown,
+            kHaierAcYrw02ButtonSwingV,
+            kHaierAcYrw02ButtonSwingH,
+            kHaierAcYrw02ButtonFan,
+            kHaierAcYrw02ButtonPower,
+            kHaierAcYrw02ButtonMode,
+            kHaierAcYrw02ButtonHealth,
+            kHaierAcYrw02ButtonTurbo,
+            kHaierAcYrw02ButtonSleep,
+            kHaierAcYrw02ButtonLock,
+            kHaierAc160ButtonClean,
+            kHaierAcYrw02ButtonCFAB,
+        ]:
             self._.Button = button
 
     ## Get the Button/Command setting of the A/C.
@@ -1730,7 +1773,7 @@ class IRHaierAC160:
             self._.Mode = mode
         else:
             self.setMode(kHaierAcYrw02Auto)  # Unexpected, default to auto mode.
-        self._.AuxHeating = (self._.Mode == kHaierAcYrw02Heat)  # Set only if heat mode.
+        self._.AuxHeating = self._.Mode == kHaierAcYrw02Heat  # Set only if heat mode.
 
     ## Get the operating mode setting of the A/C.
     ## @return The current operating mode setting.
@@ -1930,8 +1973,12 @@ class IRHaierAC160:
     ## @param[in] speed The desired setting.
     ## EXACT translation from ir_Haier.cpp:1795-1805
     def setFan(self, speed: int) -> None:
-        if speed in [kHaierAcYrw02FanLow, kHaierAcYrw02FanMed, kHaierAcYrw02FanHigh,
-                     kHaierAcYrw02FanAuto]:
+        if speed in [
+            kHaierAcYrw02FanLow,
+            kHaierAcYrw02FanMed,
+            kHaierAcYrw02FanHigh,
+            kHaierAcYrw02FanAuto,
+        ]:
             self._.Fan = speed
             self._.Fan2 = 0 if (speed == kHaierAcYrw02FanAuto) else speed
             self._.Button = kHaierAcYrw02ButtonFan
@@ -1959,9 +2006,16 @@ class IRHaierAC160:
     ## @param[in] pos The position/mode to set the vanes to.
     ## EXACT translation from ir_Haier.cpp:1824-1839
     def setSwingV(self, pos: int) -> None:
-        if pos in [kHaierAc160SwingVOff, kHaierAc160SwingVAuto, kHaierAc160SwingVTop,
-                   kHaierAc160SwingVHighest, kHaierAc160SwingVHigh, kHaierAc160SwingVMiddle,
-                   kHaierAc160SwingVLow, kHaierAc160SwingVLowest]:
+        if pos in [
+            kHaierAc160SwingVOff,
+            kHaierAc160SwingVAuto,
+            kHaierAc160SwingVTop,
+            kHaierAc160SwingVHighest,
+            kHaierAc160SwingVHigh,
+            kHaierAc160SwingVMiddle,
+            kHaierAc160SwingVLow,
+            kHaierAc160SwingVLowest,
+        ]:
             self._.Button = kHaierAcYrw02ButtonSwingV
             self._.SwingV = pos
         else:
@@ -1994,7 +2048,7 @@ class IRHaierAC160:
         self._.OnTimerHrs = nr_mins // 60
         self._.OnTimerMins = nr_mins % 60
 
-        enabled = (nr_mins > 0)
+        enabled = nr_mins > 0
         mode = self.getTimerMode()
         if mode == kHaierAcYrw02OffTimer:
             mode = kHaierAcYrw02OffThenOnTimer if enabled else mode
@@ -2019,7 +2073,7 @@ class IRHaierAC160:
         self._.OffTimerHrs = nr_mins // 60
         self._.OffTimerMins = nr_mins % 60
 
-        enabled = (nr_mins > 0)
+        enabled = nr_mins > 0
         mode = self.getTimerMode()
         if mode == kHaierAcYrw02OnTimer:
             mode = kHaierAcYrw02OnThenOffTimer if enabled else mode
@@ -2053,14 +2107,20 @@ class IRHaierAC160:
 ## Decode the supplied Haier HSU07-HEA03 remote message.
 ## Status: STABLE / Known to be working.
 ## EXACT translation from ir_Haier.cpp:1355-1388
-def decodeHaierAC(results, offset: int = 1, nbits: int = kHaierACBits,
-                  strict: bool = True) -> bool:
+def decodeHaierAC(results, offset: int = 1, nbits: int = kHaierACBits, strict: bool = True) -> bool:
     """
     Decode a Haier A/C IR message.
     EXACT translation from IRremoteESP8266 IRrecv::decodeHaierAC
     """
     # Import here to avoid circular imports
-    from app.core.ir_protocols.ir_recv import matchMark, matchSpace, _matchGeneric, kHeader, kFooter, kMarkExcess
+    from app.core.ir_protocols.ir_recv import (
+        matchMark,
+        matchSpace,
+        _matchGeneric,
+        kHeader,
+        kFooter,
+        kMarkExcess,
+    )
 
     if strict and nbits != kHaierACBits:
         return False  # Not strictly a HAIER_AC message.
@@ -2095,7 +2155,7 @@ def decodeHaierAC(results, offset: int = 1, nbits: int = kHaierACBits,
         atleast=True,
         tolerance=25,
         excess=kMarkExcess,
-        MSBfirst=True
+        MSBfirst=True,
     ):
         return False
 
@@ -2115,8 +2175,9 @@ def decodeHaierAC(results, offset: int = 1, nbits: int = kHaierACBits,
 ## Decode the supplied Haier YR-W02 remote A/C message.
 ## Status: BETA / Appears to be working.
 ## EXACT translation from ir_Haier.cpp:1401-1421
-def decodeHaierACYRW02(results, offset: int = 1, nbits: int = kHaierACYRW02Bits,
-                       strict: bool = True) -> bool:
+def decodeHaierACYRW02(
+    results, offset: int = 1, nbits: int = kHaierACYRW02Bits, strict: bool = True
+) -> bool:
     """
     Decode a Haier YR-W02 A/C IR message.
     EXACT translation from IRremoteESP8266 IRrecv::decodeHaierACYRW02
@@ -2143,8 +2204,9 @@ def decodeHaierACYRW02(results, offset: int = 1, nbits: int = kHaierACYRW02Bits,
 ## Decode the supplied Haier 176 bit remote A/C message.
 ## Status: STABLE / Known to be working.
 ## EXACT translation from ir_Haier.cpp:1434-1455
-def decodeHaierAC176(results, offset: int = 1, nbits: int = kHaierAC176Bits,
-                     strict: bool = True) -> bool:
+def decodeHaierAC176(
+    results, offset: int = 1, nbits: int = kHaierAC176Bits, strict: bool = True
+) -> bool:
     """
     Decode a Haier 176 bit A/C IR message.
     EXACT translation from IRremoteESP8266 IRrecv::decodeHaierAC176
@@ -2158,8 +2220,7 @@ def decodeHaierAC176(results, offset: int = 1, nbits: int = kHaierAC176Bits,
 
     # Compliance
     if strict:
-        if ((results.state[0] != kHaierAcYrw02ModelA) and
-            (results.state[0] != kHaierAcYrw02ModelB)):
+        if (results.state[0] != kHaierAcYrw02ModelA) and (results.state[0] != kHaierAcYrw02ModelB):
             return False
         if not IRHaierAC176.validChecksum(results.state, nbits // 8):
             return False
@@ -2172,8 +2233,9 @@ def decodeHaierAC176(results, offset: int = 1, nbits: int = kHaierAC176Bits,
 ## Decode the supplied Haier 160 bit remote A/C message.
 ## Status: STABLE / Known to be working.
 ## EXACT translation from ir_Haier.cpp:1468-1487
-def decodeHaierAC160(results, offset: int = 1, nbits: int = kHaierAC160Bits,
-                     strict: bool = True) -> bool:
+def decodeHaierAC160(
+    results, offset: int = 1, nbits: int = kHaierAC160Bits, strict: bool = True
+) -> bool:
     """
     Decode a Haier 160 bit A/C IR message.
     EXACT translation from IRremoteESP8266 IRrecv::decodeHaierAC160

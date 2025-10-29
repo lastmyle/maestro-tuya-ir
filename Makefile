@@ -1,5 +1,11 @@
 .PHONY: help setup install build test run dev clean lint format check
 
+# Load .env file if it exists
+ifneq (,$(wildcard .env))
+    include .env
+    export
+endif
+
 help:  ## Show this help message
 	@echo "Maestro Tuya IR Bridge - Available Commands:"
 	@echo ""
@@ -18,7 +24,6 @@ install-dev: setup  ## Install project dependencies including dev tools
 build:  ## Build the project (Python package)
 	uv build
 
-
 test:  ## Run tests
 	uv run pytest tests/ -v -s --snapshot-update -n 0
 
@@ -26,10 +31,10 @@ test-coverage:  ## Run tests with coverage report
 	uv run pytest tests/ --cov=app --cov-report=html --cov-report=term
 
 run:  ## Run the FastAPI server
-	uv run uvicorn index:app --host 0.0.0.0 --port 8000
+	uv run uvicorn index:app --host 0.0.0.0 --port $${PORT:-8000}
 
 dev:  ## Run the FastAPI server in development mode (with auto-reload)
-	uv run uvicorn index:app --reload --host 0.0.0.0 --port 8000
+	uv run uvicorn index:app --reload --host 0.0.0.0 --port $${PORT:-8000}
 
 lint:  ## Run linter (ruff check)
 	uv run ruff check .

@@ -51,10 +51,10 @@ kDaikin64Bits = 64
 # DAIKIN (Original 280-bit) CONSTANTS
 # =============================================================================
 kDaikinAuto = 0b000  # temp 25
-kDaikinDry = 0b010   # temp 0xc0 = 96 degrees c
+kDaikinDry = 0b010  # temp 0xc0 = 96 degrees c
 kDaikinCool = 0b011
 kDaikinHeat = 0b100  # temp 23
-kDaikinFan = 0b110   # temp not shown, but 25
+kDaikinFan = 0b110  # temp not shown, but 25
 kDaikinMinTemp = 10  # Celsius
 kDaikinMaxTemp = 32  # Celsius
 kDaikinFanMin = 1
@@ -82,7 +82,7 @@ kDaikinCurBit = kDaikinStateLength
 kDaikinCurIndex = kDaikinStateLength + 1
 kDaikinTolerance = 35
 kDaikinMarkExcess = 50  # Typical kMarkExcess value
-kDaikinHdrMark = 3650   # kDaikinBitMark * 8
+kDaikinHdrMark = 3650  # kDaikinBitMark * 8
 kDaikinHdrSpace = 1623  # kDaikinBitMark * 4
 kDaikinBitMark = 428
 kDaikinZeroSpace = 428
@@ -310,6 +310,7 @@ kDaikin312Section2Length = kDaikin312StateLength - kDaikin312Section1Length
 # UTILITY FUNCTIONS
 # =============================================================================
 
+
 ## Sum bytes in a state array
 ## EXACT translation from IRremoteESP8266 sumBytes utility
 def sumBytes(start: List[int], length: int, init: int = 0) -> int:
@@ -346,7 +347,7 @@ def setBit(data: List[int], position: int, on: bool = True) -> None:
     byte_pos = position // 8
     bit_pos = position % 8
     if on:
-        data[byte_pos] |= (1 << bit_pos)
+        data[byte_pos] |= 1 << bit_pos
     else:
         data[byte_pos] &= ~(1 << bit_pos)
 
@@ -365,6 +366,7 @@ def setBits(data: List[int], position: int, length: int, value: int) -> None:
 # =============================================================================
 # SEND FUNCTIONS
 # =============================================================================
+
 
 ## Send a Daikin 280-bit A/C formatted message.
 ## Status: STABLE
@@ -401,7 +403,7 @@ def sendDaikin(data: List[int], nbytes: int, repeat: int = 0) -> List[int]:
             frequency=38,
             MSBfirst=False,
             repeat=0,
-            dutycycle=50
+            dutycycle=50,
         )
         all_timings.extend(header_timings)
 
@@ -422,7 +424,7 @@ def sendDaikin(data: List[int], nbytes: int, repeat: int = 0) -> List[int]:
                 frequency=38,
                 MSBfirst=False,
                 repeat=0,
-                dutycycle=50
+                dutycycle=50,
             )
             all_timings.extend(data1_timings)
         else:  # We are using the newer/more correct size.
@@ -440,7 +442,7 @@ def sendDaikin(data: List[int], nbytes: int, repeat: int = 0) -> List[int]:
                 frequency=38,
                 MSBfirst=False,
                 repeat=0,
-                dutycycle=50
+                dutycycle=50,
             )
             all_timings.extend(data1_timings)
             offset += kDaikinSection1Length
@@ -460,7 +462,7 @@ def sendDaikin(data: List[int], nbytes: int, repeat: int = 0) -> List[int]:
             frequency=38,
             MSBfirst=False,
             repeat=0,
-            dutycycle=50
+            dutycycle=50,
         )
         all_timings.extend(data2_timings)
         offset += kDaikinSection2Length
@@ -480,7 +482,7 @@ def sendDaikin(data: List[int], nbytes: int, repeat: int = 0) -> List[int]:
             frequency=38,
             MSBfirst=False,
             repeat=0,
-            dutycycle=50
+            dutycycle=50,
         )
         all_timings.extend(data3_timings)
 
@@ -523,7 +525,7 @@ def sendDaikin2(data: List[int], nbytes: int, repeat: int = 0) -> List[int]:
             frequency=kDaikin2Freq // 1000,
             MSBfirst=False,
             repeat=0,
-            dutycycle=50
+            dutycycle=50,
         )
         all_timings.extend(section1_timings)
 
@@ -542,7 +544,7 @@ def sendDaikin2(data: List[int], nbytes: int, repeat: int = 0) -> List[int]:
             frequency=kDaikin2Freq // 1000,
             MSBfirst=False,
             repeat=0,
-            dutycycle=50
+            dutycycle=50,
         )
         all_timings.extend(section2_timings)
 
@@ -581,7 +583,7 @@ def sendDaikin216(data: List[int], nbytes: int, repeat: int = 0) -> List[int]:
             frequency=kDaikin216Freq // 1000,
             MSBfirst=False,
             repeat=0,
-            dutycycle=50
+            dutycycle=50,
         )
         all_timings.extend(section1_timings)
 
@@ -600,7 +602,7 @@ def sendDaikin216(data: List[int], nbytes: int, repeat: int = 0) -> List[int]:
             frequency=kDaikin216Freq // 1000,
             MSBfirst=False,
             repeat=0,
-            dutycycle=50
+            dutycycle=50,
         )
         all_timings.extend(section2_timings)
 
@@ -639,7 +641,7 @@ def sendDaikin160(data: List[int], nbytes: int, repeat: int = 0) -> List[int]:
             frequency=kDaikin160Freq // 1000,
             MSBfirst=False,
             repeat=0,
-            dutycycle=50
+            dutycycle=50,
         )
         all_timings.extend(section1_timings)
 
@@ -658,7 +660,7 @@ def sendDaikin160(data: List[int], nbytes: int, repeat: int = 0) -> List[int]:
             frequency=kDaikin160Freq // 1000,
             MSBfirst=False,
             repeat=0,
-            dutycycle=50
+            dutycycle=50,
         )
         all_timings.extend(section2_timings)
 
@@ -697,7 +699,7 @@ def sendDaikin176(data: List[int], nbytes: int, repeat: int = 0) -> List[int]:
             frequency=kDaikin176Freq // 1000,
             MSBfirst=False,
             repeat=0,
-            dutycycle=50
+            dutycycle=50,
         )
         all_timings.extend(section1_timings)
 
@@ -716,7 +718,7 @@ def sendDaikin176(data: List[int], nbytes: int, repeat: int = 0) -> List[int]:
             frequency=kDaikin176Freq // 1000,
             MSBfirst=False,
             repeat=0,
-            dutycycle=50
+            dutycycle=50,
         )
         all_timings.extend(section2_timings)
 
@@ -759,7 +761,7 @@ def sendDaikin128(data: List[int], nbytes: int, repeat: int = 0) -> List[int]:
             frequency=kDaikin128Freq // 1000,
             MSBfirst=False,
             repeat=0,
-            dutycycle=50
+            dutycycle=50,
         )
         all_timings.extend(section1_timings)
 
@@ -778,7 +780,7 @@ def sendDaikin128(data: List[int], nbytes: int, repeat: int = 0) -> List[int]:
             frequency=kDaikin128Freq // 1000,
             MSBfirst=False,
             repeat=0,
-            dutycycle=50
+            dutycycle=50,
         )
         all_timings.extend(section2_timings)
 
@@ -818,7 +820,7 @@ def sendDaikin152(data: List[int], nbytes: int, repeat: int = 0) -> List[int]:
             frequency=kDaikin152Freq // 1000,
             MSBfirst=False,
             repeat=0,
-            dutycycle=50
+            dutycycle=50,
         )
         all_timings.extend(timings)
 
@@ -837,7 +839,7 @@ def sendDaikin152(data: List[int], nbytes: int, repeat: int = 0) -> List[int]:
             frequency=kDaikin152Freq // 1000,
             MSBfirst=False,
             repeat=0,
-            dutycycle=50
+            dutycycle=50,
         )
         all_timings.extend(timings)
 
@@ -881,7 +883,7 @@ def sendDaikin64(data: int, nbits: int = kDaikin64Bits, repeat: int = 0) -> List
             frequency=kDaikin64Freq // 1000,
             MSBfirst=False,
             repeat=0,
-            dutycycle=50
+            dutycycle=50,
         )
         all_timings.extend(timings)
 
@@ -920,7 +922,7 @@ def sendDaikin200(data: List[int], nbytes: int, repeat: int = 0) -> List[int]:
             frequency=kDaikin200Freq // 1000,
             MSBfirst=False,
             repeat=0,
-            dutycycle=50
+            dutycycle=50,
         )
         all_timings.extend(section1_timings)
 
@@ -939,7 +941,7 @@ def sendDaikin200(data: List[int], nbytes: int, repeat: int = 0) -> List[int]:
             frequency=kDaikin200Freq // 1000,
             MSBfirst=False,
             repeat=0,
-            dutycycle=50
+            dutycycle=50,
         )
         all_timings.extend(section2_timings)
 
@@ -978,7 +980,7 @@ def sendDaikin312(data: List[int], nbytes: int, repeat: int = 0) -> List[int]:
             frequency=38,
             MSBfirst=False,
             repeat=0,
-            dutycycle=50
+            dutycycle=50,
         )
         all_timings.extend(section1_timings)
 
@@ -997,7 +999,7 @@ def sendDaikin312(data: List[int], nbytes: int, repeat: int = 0) -> List[int]:
             frequency=38,
             MSBfirst=False,
             repeat=0,
-            dutycycle=50
+            dutycycle=50,
         )
         all_timings.extend(section2_timings)
 
@@ -1008,17 +1010,15 @@ def sendDaikin312(data: List[int], nbytes: int, repeat: int = 0) -> List[int]:
 # DECODE FUNCTIONS
 # =============================================================================
 
+
 ## Decode a Daikin 280-bit A/C message.
 ## Direct translation from IRremoteESP8266 IRrecv::decodeDaikin (ir_Daikin.cpp lines 601-668)
-def decodeDaikin(results, offset: int = 1, nbits: int = kDaikinBits,
-                 strict: bool = True) -> bool:
+def decodeDaikin(results, offset: int = 1, nbits: int = kDaikinBits, strict: bool = True) -> bool:
     """
     Decode a Daikin 280-bit A/C message.
     EXACT translation from IRremoteESP8266 IRrecv::decodeDaikin
     """
-    from app.core.ir_protocols.ir_recv import (
-        kHeader, kFooter, kMarkExcess, _matchGeneric
-    )
+    from app.core.ir_protocols.ir_recv import kHeader, kFooter, kMarkExcess, _matchGeneric
 
     if nbits % 8 != 0:
         return False  # Not a byte multiple
@@ -1052,7 +1052,7 @@ def decodeDaikin(results, offset: int = 1, nbits: int = kDaikinBits,
         atleast=False,
         tolerance=kDaikinTolerance,
         excess=kDaikinMarkExcess,
-        MSBfirst=False
+        MSBfirst=False,
     )
     if used == 0:
         return False
@@ -1085,7 +1085,7 @@ def decodeDaikin(results, offset: int = 1, nbits: int = kDaikinBits,
             atleast=False,
             tolerance=kDaikinTolerance,
             excess=kDaikinMarkExcess,
-            MSBfirst=False
+            MSBfirst=False,
         )
         if used == 0:
             return False
@@ -1111,7 +1111,7 @@ def decodeDaikin(results, offset: int = 1, nbits: int = kDaikinBits,
         atleast=False,
         tolerance=kDaikinTolerance,
         excess=kDaikinMarkExcess,
-        MSBfirst=False
+        MSBfirst=False,
     )
     if used == 0:
         return False
@@ -1137,7 +1137,7 @@ def decodeDaikin(results, offset: int = 1, nbits: int = kDaikinBits,
         atleast=True,
         tolerance=kDaikinTolerance,
         excess=kDaikinMarkExcess,
-        MSBfirst=False
+        MSBfirst=False,
     )
     if used == 0:
         return False
@@ -1153,14 +1153,18 @@ def decodeDaikin(results, offset: int = 1, nbits: int = kDaikinBits,
 
 ## Decode a Daikin2 312-bit A/C message.
 ## Direct translation from IRremoteESP8266 IRrecv::decodeDaikin2 (ir_Daikin.cpp lines 1335-1393)
-def decodeDaikin2(results, offset: int = 1, nbits: int = kDaikin2Bits,
-                  strict: bool = True) -> bool:
+def decodeDaikin2(results, offset: int = 1, nbits: int = kDaikin2Bits, strict: bool = True) -> bool:
     """
     Decode a Daikin2 312-bit A/C message.
     EXACT translation from IRremoteESP8266 IRrecv::decodeDaikin2
     """
     from app.core.ir_protocols.ir_recv import (
-        kHeader, kFooter, kMarkExcess, matchMark, matchSpace, _matchGeneric
+        kHeader,
+        kFooter,
+        kMarkExcess,
+        matchMark,
+        matchSpace,
+        _matchGeneric,
     )
 
     if nbits % 8 != 0:
@@ -1171,12 +1175,20 @@ def decodeDaikin2(results, offset: int = 1, nbits: int = kDaikin2Bits,
         return False
 
     # Leader
-    if not matchMark(results.rawbuf[offset], kDaikin2LeaderMark,
-                     kDaikin2Tolerance + kDaikin2Tolerance, kMarkExcess):
+    if not matchMark(
+        results.rawbuf[offset],
+        kDaikin2LeaderMark,
+        kDaikin2Tolerance + kDaikin2Tolerance,
+        kMarkExcess,
+    ):
         return False
     offset += 1
-    if not matchSpace(results.rawbuf[offset], kDaikin2LeaderSpace,
-                      kDaikin2Tolerance + kDaikin2Tolerance, kMarkExcess):
+    if not matchSpace(
+        results.rawbuf[offset],
+        kDaikin2LeaderSpace,
+        kDaikin2Tolerance + kDaikin2Tolerance,
+        kMarkExcess,
+    ):
         return False
     offset += 1
 
@@ -1199,7 +1211,7 @@ def decodeDaikin2(results, offset: int = 1, nbits: int = kDaikin2Bits,
         atleast=False,
         tolerance=kDaikin2Tolerance,
         excess=kMarkExcess,
-        MSBfirst=False
+        MSBfirst=False,
     )
     if used == 0:
         return False
@@ -1224,7 +1236,7 @@ def decodeDaikin2(results, offset: int = 1, nbits: int = kDaikin2Bits,
         atleast=True,
         tolerance=kDaikin2Tolerance,
         excess=kMarkExcess,
-        MSBfirst=False
+        MSBfirst=False,
     )
     if used == 0:
         return False
@@ -1240,8 +1252,9 @@ def decodeDaikin2(results, offset: int = 1, nbits: int = kDaikin2Bits,
 
 ## Decode a Daikin216 216-bit A/C message.
 ## Direct translation from IRremoteESP8266 IRrecv::decodeDaikin216 (ir_Daikin.cpp lines 1682-1730)
-def decodeDaikin216(results, offset: int = 1, nbits: int = kDaikin216Bits,
-                    strict: bool = True) -> bool:
+def decodeDaikin216(
+    results, offset: int = 1, nbits: int = kDaikin216Bits, strict: bool = True
+) -> bool:
     """
     Decode a Daikin216 216-bit A/C message.
     EXACT translation from IRremoteESP8266 IRrecv::decodeDaikin216
@@ -1274,7 +1287,7 @@ def decodeDaikin216(results, offset: int = 1, nbits: int = kDaikin216Bits,
         atleast=False,
         tolerance=kDaikinTolerance,
         excess=kMarkExcess,
-        MSBfirst=False
+        MSBfirst=False,
     )
     if used == 0:
         return False
@@ -1299,7 +1312,7 @@ def decodeDaikin216(results, offset: int = 1, nbits: int = kDaikin216Bits,
         atleast=True,
         tolerance=kDaikinTolerance,
         excess=kMarkExcess,
-        MSBfirst=False
+        MSBfirst=False,
     )
     if used == 0:
         return False
@@ -1315,8 +1328,9 @@ def decodeDaikin216(results, offset: int = 1, nbits: int = kDaikin216Bits,
 
 ## Decode a Daikin160 160-bit A/C message.
 ## Direct translation from IRremoteESP8266 IRrecv::decodeDaikin160 (ir_Daikin.cpp lines 2037-2084)
-def decodeDaikin160(results, offset: int = 1, nbits: int = kDaikin160Bits,
-                    strict: bool = True) -> bool:
+def decodeDaikin160(
+    results, offset: int = 1, nbits: int = kDaikin160Bits, strict: bool = True
+) -> bool:
     """
     Decode a Daikin160 160-bit A/C message.
     EXACT translation from IRremoteESP8266 IRrecv::decodeDaikin160
@@ -1349,7 +1363,7 @@ def decodeDaikin160(results, offset: int = 1, nbits: int = kDaikin160Bits,
         atleast=False,
         tolerance=kDaikinTolerance,
         excess=kMarkExcess,
-        MSBfirst=False
+        MSBfirst=False,
     )
     if used == 0:
         return False
@@ -1374,7 +1388,7 @@ def decodeDaikin160(results, offset: int = 1, nbits: int = kDaikin160Bits,
         atleast=True,
         tolerance=kDaikinTolerance,
         excess=kMarkExcess,
-        MSBfirst=False
+        MSBfirst=False,
     )
     if used == 0:
         return False
@@ -1390,8 +1404,9 @@ def decodeDaikin160(results, offset: int = 1, nbits: int = kDaikin160Bits,
 
 ## Decode a Daikin176 176-bit A/C message.
 ## Direct translation from IRremoteESP8266 IRrecv::decodeDaikin176 (ir_Daikin.cpp lines 2429-2478)
-def decodeDaikin176(results, offset: int = 1, nbits: int = kDaikin176Bits,
-                    strict: bool = True) -> bool:
+def decodeDaikin176(
+    results, offset: int = 1, nbits: int = kDaikin176Bits, strict: bool = True
+) -> bool:
     """
     Decode a Daikin176 176-bit A/C message.
     EXACT translation from IRremoteESP8266 IRrecv::decodeDaikin176
@@ -1424,7 +1439,7 @@ def decodeDaikin176(results, offset: int = 1, nbits: int = kDaikin176Bits,
         atleast=False,
         tolerance=kDaikinTolerance,
         excess=kMarkExcess,
-        MSBfirst=False
+        MSBfirst=False,
     )
     if used == 0:
         return False
@@ -1449,7 +1464,7 @@ def decodeDaikin176(results, offset: int = 1, nbits: int = kDaikin176Bits,
         atleast=True,
         tolerance=kDaikinTolerance,
         excess=kMarkExcess,
-        MSBfirst=False
+        MSBfirst=False,
     )
     if used == 0:
         return False
@@ -1465,15 +1480,14 @@ def decodeDaikin176(results, offset: int = 1, nbits: int = kDaikin176Bits,
 
 ## Decode a Daikin128 128-bit A/C message.
 ## Direct translation from IRremoteESP8266 IRrecv::decodeDaikin128 (ir_Daikin.cpp lines 2924-2982)
-def decodeDaikin128(results, offset: int = 1, nbits: int = kDaikin128Bits,
-                    strict: bool = True) -> bool:
+def decodeDaikin128(
+    results, offset: int = 1, nbits: int = kDaikin128Bits, strict: bool = True
+) -> bool:
     """
     Decode a Daikin128 128-bit A/C message.
     EXACT translation from IRremoteESP8266 IRrecv::decodeDaikin128
     """
-    from app.core.ir_protocols.ir_recv import (
-        kMarkExcess, matchMark, matchSpace, _matchGeneric
-    )
+    from app.core.ir_protocols.ir_recv import kMarkExcess, matchMark, matchSpace, _matchGeneric
 
     if nbits % 8 != 0:
         return False
@@ -1483,12 +1497,10 @@ def decodeDaikin128(results, offset: int = 1, nbits: int = kDaikin128Bits,
         return False
 
     # Leader
-    if not matchMark(results.rawbuf[offset], kDaikin128LeaderMark,
-                     kDaikinTolerance, kMarkExcess):
+    if not matchMark(results.rawbuf[offset], kDaikin128LeaderMark, kDaikinTolerance, kMarkExcess):
         return False
     offset += 1
-    if not matchSpace(results.rawbuf[offset], kDaikin128LeaderSpace,
-                      kDaikinTolerance, kMarkExcess):
+    if not matchSpace(results.rawbuf[offset], kDaikin128LeaderSpace, kDaikinTolerance, kMarkExcess):
         return False
     offset += 1
 
@@ -1511,7 +1523,7 @@ def decodeDaikin128(results, offset: int = 1, nbits: int = kDaikin128Bits,
         atleast=False,
         tolerance=kDaikinTolerance,
         excess=kMarkExcess,
-        MSBfirst=False
+        MSBfirst=False,
     )
     if used == 0:
         return False
@@ -1536,7 +1548,7 @@ def decodeDaikin128(results, offset: int = 1, nbits: int = kDaikin128Bits,
         atleast=True,
         tolerance=kDaikinTolerance,
         excess=kMarkExcess,
-        MSBfirst=False
+        MSBfirst=False,
     )
     if used == 0:
         return False
@@ -1552,8 +1564,9 @@ def decodeDaikin128(results, offset: int = 1, nbits: int = kDaikin128Bits,
 
 ## Decode a Daikin152 152-bit A/C message.
 ## Direct translation from IRremoteESP8266 IRrecv::decodeDaikin152 (ir_Daikin.cpp lines 3014-3063)
-def decodeDaikin152(results, offset: int = 1, nbits: int = kDaikin152Bits,
-                    strict: bool = True) -> bool:
+def decodeDaikin152(
+    results, offset: int = 1, nbits: int = kDaikin152Bits, strict: bool = True
+) -> bool:
     """
     Decode a Daikin152 152-bit A/C message.
     EXACT translation from IRremoteESP8266 IRrecv::decodeDaikin152
@@ -1586,7 +1599,7 @@ def decodeDaikin152(results, offset: int = 1, nbits: int = kDaikin152Bits,
         atleast=False,
         tolerance=kDaikinTolerance,
         excess=kMarkExcess,
-        MSBfirst=False
+        MSBfirst=False,
     )
     if used == 0:
         return False
@@ -1611,7 +1624,7 @@ def decodeDaikin152(results, offset: int = 1, nbits: int = kDaikin152Bits,
         atleast=True,
         tolerance=kDaikinTolerance,
         excess=kMarkExcess,
-        MSBfirst=False
+        MSBfirst=False,
     )
     if used == 0:
         return False
@@ -1627,27 +1640,34 @@ def decodeDaikin152(results, offset: int = 1, nbits: int = kDaikin152Bits,
 
 ## Decode a Daikin64 64-bit A/C message.
 ## Direct translation from IRremoteESP8266 IRrecv::decodeDaikin64 (ir_Daikin.cpp lines 3375-3417)
-def decodeDaikin64(results, offset: int = 1, nbits: int = kDaikin64Bits,
-                   strict: bool = True) -> bool:
+def decodeDaikin64(
+    results, offset: int = 1, nbits: int = kDaikin64Bits, strict: bool = True
+) -> bool:
     """
     Decode a Daikin64 64-bit A/C message.
     EXACT translation from IRremoteESP8266 IRrecv::decodeDaikin64
     """
-    from app.core.ir_protocols.ir_recv import (
-        kMarkExcess, matchMark, matchSpace, _matchGeneric
-    )
+    from app.core.ir_protocols.ir_recv import kMarkExcess, matchMark, matchSpace, _matchGeneric
 
     # Compliance
     if strict and nbits != kDaikin64Bits:
         return False
 
     # Leader
-    if not matchMark(results.rawbuf[offset], kDaikin64LdrMark,
-                     kDaikinTolerance + kDaikin64ToleranceDelta, kMarkExcess):
+    if not matchMark(
+        results.rawbuf[offset],
+        kDaikin64LdrMark,
+        kDaikinTolerance + kDaikin64ToleranceDelta,
+        kMarkExcess,
+    ):
         return False
     offset += 1
-    if not matchSpace(results.rawbuf[offset], kDaikin64LdrSpace,
-                      kDaikinTolerance + kDaikin64ToleranceDelta, kMarkExcess):
+    if not matchSpace(
+        results.rawbuf[offset],
+        kDaikin64LdrSpace,
+        kDaikinTolerance + kDaikin64ToleranceDelta,
+        kMarkExcess,
+    ):
         return False
     offset += 1
 
@@ -1670,7 +1690,7 @@ def decodeDaikin64(results, offset: int = 1, nbits: int = kDaikin64Bits,
         atleast=True,
         tolerance=kDaikinTolerance + kDaikin64ToleranceDelta,
         excess=kMarkExcess,
-        MSBfirst=False
+        MSBfirst=False,
     )
     if used == 0:
         return False
@@ -1678,7 +1698,7 @@ def decodeDaikin64(results, offset: int = 1, nbits: int = kDaikin64Bits,
     # Convert state bytes to uint64
     data_value = 0
     for i in range(8):
-        data_value |= (results.state[i] << (i * 8))
+        data_value |= results.state[i] << (i * 8)
 
     # Compliance
     if strict and not validChecksumDaikin64(data_value):
@@ -1692,8 +1712,9 @@ def decodeDaikin64(results, offset: int = 1, nbits: int = kDaikin64Bits,
 
 ## Decode a Daikin200 200-bit A/C message.
 ## Direct translation from IRremoteESP8266 IRrecv::decodeDaikin200 (ir_Daikin.cpp lines 3782-3830)
-def decodeDaikin200(results, offset: int = 1, nbits: int = kDaikin200Bits,
-                    strict: bool = True) -> bool:
+def decodeDaikin200(
+    results, offset: int = 1, nbits: int = kDaikin200Bits, strict: bool = True
+) -> bool:
     """
     Decode a Daikin200 200-bit A/C message.
     EXACT translation from IRremoteESP8266 IRrecv::decodeDaikin200
@@ -1726,7 +1747,7 @@ def decodeDaikin200(results, offset: int = 1, nbits: int = kDaikin200Bits,
         atleast=False,
         tolerance=kDaikinTolerance,
         excess=kMarkExcess,
-        MSBfirst=False
+        MSBfirst=False,
     )
     if used == 0:
         return False
@@ -1751,7 +1772,7 @@ def decodeDaikin200(results, offset: int = 1, nbits: int = kDaikin200Bits,
         atleast=True,
         tolerance=kDaikinTolerance,
         excess=kMarkExcess,
-        MSBfirst=False
+        MSBfirst=False,
     )
     if used == 0:
         return False
@@ -1767,8 +1788,9 @@ def decodeDaikin200(results, offset: int = 1, nbits: int = kDaikin200Bits,
 
 ## Decode a Daikin312 312-bit A/C message.
 ## Direct translation from IRremoteESP8266 IRrecv::decodeDaikin312 (ir_Daikin.cpp lines 3874-3922)
-def decodeDaikin312(results, offset: int = 1, nbits: int = kDaikin312Bits,
-                    strict: bool = True) -> bool:
+def decodeDaikin312(
+    results, offset: int = 1, nbits: int = kDaikin312Bits, strict: bool = True
+) -> bool:
     """
     Decode a Daikin312 312-bit A/C message.
     EXACT translation from IRremoteESP8266 IRrecv::decodeDaikin312
@@ -1801,7 +1823,7 @@ def decodeDaikin312(results, offset: int = 1, nbits: int = kDaikin312Bits,
         atleast=False,
         tolerance=kDaikinTolerance,
         excess=kMarkExcess,
-        MSBfirst=False
+        MSBfirst=False,
     )
     if used == 0:
         return False
@@ -1826,7 +1848,7 @@ def decodeDaikin312(results, offset: int = 1, nbits: int = kDaikin312Bits,
         atleast=True,
         tolerance=kDaikinTolerance,
         excess=kMarkExcess,
-        MSBfirst=False
+        MSBfirst=False,
     )
     if used == 0:
         return False
@@ -1844,6 +1866,7 @@ def decodeDaikin312(results, offset: int = 1, nbits: int = kDaikin312Bits,
 # CHECKSUM VALIDATION FUNCTIONS
 # =============================================================================
 
+
 ## Verify the checksum is valid for a Daikin message.
 ## Direct translation from IRremoteESP8266 IRDaikinESP::validChecksum (ir_Daikin.cpp lines 131-149)
 def validChecksumDaikin(state: List[int], length: int = kDaikinStateLength) -> bool:
@@ -1860,16 +1883,16 @@ def validChecksumDaikin(state: List[int], length: int = kDaikinStateLength) -> b
     # Data #2
     if length < kDaikinSection1Length + kDaikinSection2Length:
         return False
-    if state[kDaikinByteChecksum2] != sumBytes(state[kDaikinSection1Length:],
-                                                kDaikinSection2Length - 1):
+    if state[kDaikinByteChecksum2] != sumBytes(
+        state[kDaikinSection1Length:], kDaikinSection2Length - 1
+    ):
         return False
 
     # Data #3
     if length < kDaikinSection1Length + kDaikinSection2Length + 2:
         return False
     section3_start = kDaikinSection1Length + kDaikinSection2Length
-    if state[length - 1] != sumBytes(state[section3_start:],
-                                      length - section3_start - 1):
+    if state[length - 1] != sumBytes(state[section3_start:], length - section3_start - 1):
         return False
 
     return True
@@ -1889,8 +1912,7 @@ def validChecksumDaikin2(state: List[int], length: int = kDaikin2StateLength) ->
 
     if length < kDaikin2StateLength:
         return False
-    if state[length - 1] != sumBytes(state[kDaikin2Section1Length:],
-                                      kDaikin2Section2Length - 1):
+    if state[length - 1] != sumBytes(state[kDaikin2Section1Length:], kDaikin2Section2Length - 1):
         return False
 
     return True
@@ -1909,8 +1931,9 @@ def validChecksumDaikin216(state: List[int], length: int = kDaikin216StateLength
 
     if length < kDaikin216StateLength:
         return False
-    if state[length - 1] != sumBytes(state[kDaikin216Section1Length:],
-                                      kDaikin216Section2Length - 1):
+    if state[length - 1] != sumBytes(
+        state[kDaikin216Section1Length:], kDaikin216Section2Length - 1
+    ):
         return False
 
     return True
@@ -1929,8 +1952,9 @@ def validChecksumDaikin160(state: List[int], length: int = kDaikin160StateLength
 
     if length < kDaikin160StateLength:
         return False
-    if state[length - 1] != sumBytes(state[kDaikin160Section1Length:],
-                                      kDaikin160Section2Length - 1):
+    if state[length - 1] != sumBytes(
+        state[kDaikin160Section1Length:], kDaikin160Section2Length - 1
+    ):
         return False
 
     return True
@@ -1949,8 +1973,9 @@ def validChecksumDaikin176(state: List[int], length: int = kDaikin176StateLength
 
     if length < kDaikin176StateLength:
         return False
-    if state[length - 1] != sumBytes(state[kDaikin176Section1Length:],
-                                      kDaikin176Section2Length - 1):
+    if state[length - 1] != sumBytes(
+        state[kDaikin176Section1Length:], kDaikin176Section2Length - 1
+    ):
         return False
 
     return True
@@ -2034,8 +2059,9 @@ def validChecksumDaikin200(state: List[int], length: int = kDaikin200StateLength
 
     if length < kDaikin200StateLength:
         return False
-    if state[length - 1] != sumBytes(state[kDaikin200Section1Length:],
-                                      kDaikin200Section2Length - 1):
+    if state[length - 1] != sumBytes(
+        state[kDaikin200Section1Length:], kDaikin200Section2Length - 1
+    ):
         return False
 
     return True
@@ -2054,8 +2080,9 @@ def validChecksumDaikin312(state: List[int], length: int = kDaikin312StateLength
 
     if length < kDaikin312StateLength:
         return False
-    if state[length - 1] != sumBytes(state[kDaikin312Section1Length:],
-                                      kDaikin312Section2Length - 1):
+    if state[length - 1] != sumBytes(
+        state[kDaikin312Section1Length:], kDaikin312Section2Length - 1
+    ):
         return False
 
     return True

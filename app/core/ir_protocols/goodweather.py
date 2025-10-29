@@ -25,38 +25,38 @@ kGoodweatherStateLength = kGoodweatherBits // 8  # 8 bytes
 # Modes
 kGoodweatherAuto = 0b000
 kGoodweatherCool = 0b001
-kGoodweatherDry =  0b010
-kGoodweatherFan =  0b011
+kGoodweatherDry = 0b010
+kGoodweatherFan = 0b011
 kGoodweatherHeat = 0b100
 
 # Swing
 kGoodweatherSwingFast = 0b00
 kGoodweatherSwingSlow = 0b01
-kGoodweatherSwingOff =  0b10
+kGoodweatherSwingOff = 0b10
 
 # Fan Control
 kGoodweatherFanAuto = 0b00
 kGoodweatherFanHigh = 0b01
-kGoodweatherFanMed =  0b10
-kGoodweatherFanLow =  0b11
+kGoodweatherFanMed = 0b10
+kGoodweatherFanLow = 0b11
 
 # Temperature
 kGoodweatherTempMin = 16  # Celsius
 kGoodweatherTempMax = 31  # Celsius
 
 # Commands
-kGoodweatherCmdPower    = 0x00
-kGoodweatherCmdMode     = 0x01
-kGoodweatherCmdUpTemp   = 0x02
+kGoodweatherCmdPower = 0x00
+kGoodweatherCmdMode = 0x01
+kGoodweatherCmdUpTemp = 0x02
 kGoodweatherCmdDownTemp = 0x03
-kGoodweatherCmdSwing    = 0x04
-kGoodweatherCmdFan      = 0x05
-kGoodweatherCmdTimer    = 0x06
-kGoodweatherCmdAirFlow  = 0x07
-kGoodweatherCmdHold     = 0x08
-kGoodweatherCmdSleep    = 0x09
-kGoodweatherCmdTurbo    = 0x0A
-kGoodweatherCmdLight    = 0x0B
+kGoodweatherCmdSwing = 0x04
+kGoodweatherCmdFan = 0x05
+kGoodweatherCmdTimer = 0x06
+kGoodweatherCmdAirFlow = 0x07
+kGoodweatherCmdHold = 0x08
+kGoodweatherCmdSleep = 0x09
+kGoodweatherCmdTurbo = 0x0A
+kGoodweatherCmdLight = 0x0B
 
 # Default state
 kGoodweatherStateInit = 0xD50000000000
@@ -78,7 +78,7 @@ class GoodweatherProtocol:
     @Light.setter
     def Light(self, value: bool) -> None:
         if value:
-            self.raw |= (0x01 << 8)
+            self.raw |= 0x01 << 8
         else:
             self.raw &= ~(0x01 << 8)
 
@@ -89,7 +89,7 @@ class GoodweatherProtocol:
     @Turbo.setter
     def Turbo(self, value: bool) -> None:
         if value:
-            self.raw |= (0x01 << 11)
+            self.raw |= 0x01 << 11
         else:
             self.raw &= ~(0x01 << 11)
 
@@ -110,7 +110,7 @@ class GoodweatherProtocol:
     @Sleep.setter
     def Sleep(self, value: bool) -> None:
         if value:
-            self.raw |= (0x01 << 24)
+            self.raw |= 0x01 << 24
         else:
             self.raw &= ~(0x01 << 24)
 
@@ -121,7 +121,7 @@ class GoodweatherProtocol:
     @Power.setter
     def Power(self, value: bool) -> None:
         if value:
-            self.raw |= (0x01 << 25)
+            self.raw |= 0x01 << 25
         else:
             self.raw &= ~(0x01 << 25)
 
@@ -140,7 +140,7 @@ class GoodweatherProtocol:
     @AirFlow.setter
     def AirFlow(self, value: bool) -> None:
         if value:
-            self.raw |= (0x01 << 28)
+            self.raw |= 0x01 << 28
         else:
             self.raw &= ~(0x01 << 28)
 
@@ -205,7 +205,7 @@ def sendGoodweather(data: int, nbits: int = kGoodweatherBits, repeat: int = 0) -
                 zerospace=kGoodweatherZeroSpace,
                 data=chunk,
                 nbits=16,
-                MSBfirst=False
+                MSBfirst=False,
             )
             all_timings.extend(chunk_timings)
 
@@ -284,8 +284,12 @@ class IRGoodweatherAc:
     ## Direct translation from ir_Goodweather.cpp lines 128-140
     def setFan(self, speed: int) -> None:
         self._.Command = kGoodweatherCmdFan
-        if speed in [kGoodweatherFanAuto, kGoodweatherFanLow,
-                     kGoodweatherFanMed, kGoodweatherFanHigh]:
+        if speed in [
+            kGoodweatherFanAuto,
+            kGoodweatherFanLow,
+            kGoodweatherFanMed,
+            kGoodweatherFanHigh,
+        ]:
             self._.Fan = speed
         else:
             self._.Fan = kGoodweatherFanAuto
@@ -299,8 +303,13 @@ class IRGoodweatherAc:
     ## Direct translation from ir_Goodweather.cpp lines 150-163
     def setMode(self, mode: int) -> None:
         self._.Command = kGoodweatherCmdMode
-        if mode in [kGoodweatherAuto, kGoodweatherDry, kGoodweatherCool,
-                    kGoodweatherFan, kGoodweatherHeat]:
+        if mode in [
+            kGoodweatherAuto,
+            kGoodweatherDry,
+            kGoodweatherCool,
+            kGoodweatherFan,
+            kGoodweatherHeat,
+        ]:
             self._.Mode = mode
         else:
             self._.Mode = kGoodweatherAuto
@@ -372,15 +381,26 @@ class IRGoodweatherAc:
 ## Decode the supplied Goodweather message.
 ## Status: BETA / Probably works.
 ## EXACT translation from IRremoteESP8266 IRrecv::decodeGoodweather (lines 426-498)
-def decodeGoodweather(results, offset: int = 1, nbits: int = kGoodweatherBits,
-                      strict: bool = True, _tolerance: int = 25) -> bool:
+def decodeGoodweather(
+    results,
+    offset: int = 1,
+    nbits: int = kGoodweatherBits,
+    strict: bool = True,
+    _tolerance: int = 25,
+) -> bool:
     """
     Decode a Goodweather HVAC IR message.
     EXACT translation from IRremoteESP8266 IRrecv::decodeGoodweather
     """
     from app.core.ir_protocols.ir_recv import (
-        kHeader, kFooter, kMarkExcess, matchMark, matchSpace,
-        matchData, matchAtLeast, match_result_t
+        kHeader,
+        kFooter,
+        kMarkExcess,
+        matchMark,
+        matchSpace,
+        matchData,
+        matchAtLeast,
+        match_result_t,
     )
 
     if results.rawlen < 2 * (2 * nbits) + kHeader + 2 * kFooter - 1 + offset:
@@ -414,7 +434,7 @@ def decodeGoodweather(results, offset: int = 1, nbits: int = kGoodweatherBits,
             tolerance=_tolerance + kGoodweatherExtraTolerance,
             excess=kMarkExcess,
             MSBfirst=False,
-            expectlastspace=True
+            expectlastspace=True,
         )
         if data_result.success == False:
             return False
@@ -433,7 +453,7 @@ def decodeGoodweather(results, offset: int = 1, nbits: int = kGoodweatherBits,
             tolerance=_tolerance + kGoodweatherExtraTolerance,
             excess=kMarkExcess,
             MSBfirst=False,
-            expectlastspace=True
+            expectlastspace=True,
         )
         if data_result.success == False:
             return False
@@ -446,15 +466,17 @@ def decodeGoodweather(results, offset: int = 1, nbits: int = kGoodweatherBits,
         dataBitsSoFar += 8
 
     # Footer.
-    if not matchMark(results.rawbuf[offset], kGoodweatherBitMark,
-                    _tolerance + kGoodweatherExtraTolerance):
+    if not matchMark(
+        results.rawbuf[offset], kGoodweatherBitMark, _tolerance + kGoodweatherExtraTolerance
+    ):
         return False
     offset += 1
     if not matchSpace(results.rawbuf[offset], kGoodweatherHdrSpace, _tolerance):
         return False
     offset += 1
-    if not matchMark(results.rawbuf[offset], kGoodweatherBitMark,
-                    _tolerance + kGoodweatherExtraTolerance):
+    if not matchMark(
+        results.rawbuf[offset], kGoodweatherBitMark, _tolerance + kGoodweatherExtraTolerance
+    ):
         return False
     offset += 1
     if offset <= results.rawlen:

@@ -178,19 +178,9 @@ python scripts/generate_protocol_timings.py
 
 **Using Protocol Detection:**
 
+TODO: @CLAUDE fix this section
+
 ```python
-from app.core.protocol_timings import identify_protocol, get_supported_manufacturers
-
-# Identify protocol from timings
-timings = [3294, 1605, 420, 1200, ...]
-result = identify_protocol(timings)
-print(f"Manufacturer: {result['manufacturer']}")
-print(f"Protocol: {result['protocol']}")
-print(f"Confidence: {result['confidence']}")
-
-# Get all supported manufacturers
-manufacturers = get_supported_manufacturers()
-print(f"Supported: {len(manufacturers)} manufacturers")
 ```
 
 The protocol database provides:
@@ -199,6 +189,8 @@ The protocol database provides:
 - **47 manufacturer variants** (many brands share protocols)
 - **Pure Python** implementation (no C++ compilation required)
 - **Generated from IRremoteESP8266 v2.8.6** timing constants
+
+TODO: @CLAUDE update the readme to use makefile actions
 
 ### Running Tests
 

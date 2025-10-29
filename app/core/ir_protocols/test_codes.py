@@ -152,11 +152,7 @@ def add_test_code(protocol: str, name: str, code: str) -> None:
 
 def list_protocols() -> list:
     """Get list of protocols with available test codes."""
-    return [
-        protocol
-        for protocol, codes in ALL_KNOWN_GOOD_CODES.items()
-        if codes
-    ]
+    return [protocol for protocol, codes in ALL_KNOWN_GOOD_CODES.items() if codes]
 
 
 def list_test_codes(protocol: str) -> list:

@@ -14,22 +14,22 @@ kToshibaAcHdrSpace = 4300
 kToshibaAcBitMark = 580
 kToshibaAcOneSpace = 1600
 kToshibaAcZeroSpace = 490
-kToshibaAcMinGap = 4600     # WH-UB03NJ remote
-kToshibaAcUsualGap = 7400   # Others
+kToshibaAcMinGap = 4600  # WH-UB03NJ remote
+kToshibaAcUsualGap = 7400  # Others
 
 # State length constants (from ir_Toshiba.h)
-kToshibaACStateLengthShort = 6   # Short message (56 bits)
-kToshibaACStateLength = 9        # Normal message (72 bits)
-kToshibaACStateLengthLong = 10   # Long message (80 bits)
+kToshibaACStateLengthShort = 6  # Short message (56 bits)
+kToshibaACStateLength = 9  # Normal message (72 bits)
+kToshibaACStateLengthLong = 10  # Long message (80 bits)
 kToshibaAcLengthByte = 2
 kToshibaAcMinLength = 6
 kToshibaAcInvertedLength = 4
 
 # Swing constants (from ir_Toshiba.h lines 96-99)
-kToshibaAcSwingStep = 0      # 0b000
-kToshibaAcSwingOn = 1        # 0b001
-kToshibaAcSwingOff = 2       # 0b010
-kToshibaAcSwingToggle = 4    # 0b100
+kToshibaAcSwingStep = 0  # 0b000
+kToshibaAcSwingOn = 1  # 0b001
+kToshibaAcSwingOff = 2  # 0b010
+kToshibaAcSwingToggle = 4  # 0b100
 
 # Temperature constants (from ir_Toshiba.h lines 101-102)
 kToshibaAcMinTemp = 17  # Celsius
@@ -38,20 +38,20 @@ kToshibaAcMaxTemp = 30  # Celsius
 # Mode constants (from ir_Toshiba.h lines 104-109)
 kToshibaAcAuto = 0  # 0b000
 kToshibaAcCool = 1  # 0b001
-kToshibaAcDry = 2   # 0b010
+kToshibaAcDry = 2  # 0b010
 kToshibaAcHeat = 3  # 0b011
-kToshibaAcFan = 4   # 0b100
-kToshibaAcOff = 7   # 0b111
+kToshibaAcFan = 4  # 0b100
+kToshibaAcOff = 7  # 0b111
 
 # Fan speed constants (from ir_Toshiba.h lines 110-113)
 kToshibaAcFanAuto = 0  # 0b000
-kToshibaAcFanMin = 1   # 0b001
-kToshibaAcFanMed = 3   # 0b011
-kToshibaAcFanMax = 5   # 0b101
+kToshibaAcFanMin = 1  # 0b001
+kToshibaAcFanMed = 3  # 0b011
+kToshibaAcFanMax = 5  # 0b101
 
 # Special mode constants (from ir_Toshiba.h lines 115-116)
-kToshibaAcTurboOn = 1   # 0b01
-kToshibaAcEconoOn = 3   # 0b11
+kToshibaAcTurboOn = 1  # 0b01
+kToshibaAcEconoOn = 3  # 0b11
 
 # Model constants (from ir_Toshiba.h lines 118-119)
 kToshibaAcRemoteA = 0  # 0b0000
@@ -219,7 +219,7 @@ def sendToshibaAC(data: List[int], nbytes: int, repeat: int = 0) -> List[int]:
         frequency=38,
         MSBfirst=True,
         repeat=repeat,
-        dutycycle=50
+        dutycycle=50,
     )
 
 
@@ -256,8 +256,9 @@ class IRToshibaAC:
         if size < kToshibaAcLengthByte:
             return 0
         # Extract the last 4 bits (ir_Toshiba.cpp line 109)
-        return min((state[kToshibaAcLengthByte] & 0xF) + kToshibaAcMinLength,
-                   kToshibaACStateLengthLong)
+        return min(
+            (state[kToshibaAcLengthByte] & 0xF) + kToshibaAcMinLength, kToshibaACStateLengthLong
+        )
 
     ## Get the length of the current internal state per the protocol structure.
     ## Direct translation from ir_Toshiba.cpp lines 115-117
@@ -291,19 +292,21 @@ class IRToshibaAC:
     ## Direct translation from ir_Toshiba.cpp lines 166-171
     @staticmethod
     def validChecksum(state: List[int], length: int) -> bool:
-        return (length >= kToshibaAcMinLength and
-                state[length - 1] == IRToshibaAC.calcChecksum(state, length) and
-                checkInvertedBytePairs(state, kToshibaAcInvertedLength) and
-                IRToshibaAC.getInternalStateLength(state, length) == length)
+        return (
+            length >= kToshibaAcMinLength
+            and state[length - 1] == IRToshibaAC.calcChecksum(state, length)
+            and checkInvertedBytePairs(state, kToshibaAcInvertedLength)
+            and IRToshibaAC.getInternalStateLength(state, length) == length
+        )
 
     ## Calculate & set the checksum for the current internal state.
     ## Direct translation from ir_Toshiba.cpp lines 175-186
     def checksum(self, length: int = kToshibaACStateLength) -> None:
         if length >= kToshibaAcMinLength:
             # Set/clear the short msg bit (ir_Toshiba.cpp line 179)
-            self._.ShortMsg = (self.getStateLength() == kToshibaACStateLengthShort)
+            self._.ShortMsg = self.getStateLength() == kToshibaACStateLengthShort
             # Set/clear the long msg bit (ir_Toshiba.cpp line 181)
-            self._.LongMsg = (self.getStateLength() == kToshibaACStateLengthLong)
+            self._.LongMsg = self.getStateLength() == kToshibaACStateLengthLong
             invertBytePairs(self._.raw, kToshibaAcInvertedLength)
             # Always do the Xor checksum LAST! (ir_Toshiba.cpp line 184)
             self._.raw[length - 1] = self.calcChecksum(self._.raw, length)
@@ -372,8 +375,12 @@ class IRToshibaAC:
     ## Set the swing setting of the A/C.
     ## Direct translation from ir_Toshiba.cpp lines 251-261
     def setSwing(self, setting: int) -> None:
-        if setting in [kToshibaAcSwingStep, kToshibaAcSwingOn,
-                      kToshibaAcSwingOff, kToshibaAcSwingToggle]:
+        if setting in [
+            kToshibaAcSwingStep,
+            kToshibaAcSwingOn,
+            kToshibaAcSwingOff,
+            kToshibaAcSwingToggle,
+        ]:
             self._send_swing = True
             self._swing_mode = setting
             if self.getStateLength() == kToshibaACStateLengthShort:
@@ -396,8 +403,7 @@ class IRToshibaAC:
             # Changing mode or power turns Econo & Turbo to off
             # Setting the internal message length to "normal" will do that
             self.setStateLength(kToshibaACStateLength)
-        if mode in [kToshibaAcAuto, kToshibaAcCool, kToshibaAcDry,
-                   kToshibaAcHeat, kToshibaAcFan]:
+        if mode in [kToshibaAcAuto, kToshibaAcCool, kToshibaAcDry, kToshibaAcHeat, kToshibaAcFan]:
             self._prev_mode = mode
             self._.Mode = mode
         elif mode == kToshibaAcOff:
@@ -487,8 +493,13 @@ class IRToshibaAC:
 ## Decode the supplied Toshiba A/C message.
 ## Status:  STABLE / Working.
 ## Direct translation from IRremoteESP8266 IRrecv::decodeToshibaAC (ir_Toshiba.cpp lines 532-567)
-def decodeToshibaAC(results, offset: int = 1, nbits: int = kToshibaACStateLength * 8,
-                    strict: bool = True, _tolerance: int = 25) -> bool:
+def decodeToshibaAC(
+    results,
+    offset: int = 1,
+    nbits: int = kToshibaACStateLength * 8,
+    strict: bool = True,
+    _tolerance: int = 25,
+) -> bool:
     """
     Decode a Toshiba A/C IR message.
     EXACT translation from IRremoteESP8266 IRrecv::decodeToshibaAC
@@ -523,7 +534,7 @@ def decodeToshibaAC(results, offset: int = 1, nbits: int = kToshibaACStateLength
         atleast=True,
         tolerance=_tolerance,
         excess=kMarkExcess,
-        MSBfirst=True
+        MSBfirst=True,
     )
     if used == 0:
         return False

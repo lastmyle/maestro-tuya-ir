@@ -72,11 +72,11 @@ kCarrierAc64ChecksumOffset = 16
 kCarrierAc64ChecksumSize = 4
 kCarrierAc64Heat = 0b01  # 1
 kCarrierAc64Cool = 0b10  # 2
-kCarrierAc64Fan =  0b11  # 3
-kCarrierAc64FanAuto =    0b00  # 0
-kCarrierAc64FanLow =     0b01  # 1
-kCarrierAc64FanMedium =  0b10  # 2
-kCarrierAc64FanHigh =    0b11  # 3
+kCarrierAc64Fan = 0b11  # 3
+kCarrierAc64FanAuto = 0b00  # 0
+kCarrierAc64FanLow = 0b01  # 1
+kCarrierAc64FanMedium = 0b10  # 2
+kCarrierAc64FanHigh = 0b11  # 3
 kCarrierAc64MinTemp = 16  # Celsius
 kCarrierAc64MaxTemp = 30  # Celsius
 kCarrierAc64TimerMax = 9  # Hours.
@@ -135,7 +135,7 @@ def sendCarrierAC(data: int, nbits: int = kCarrierAcBits, repeat: int = 0) -> Li
                 frequency=38,
                 MSBfirst=True,
                 repeat=0,
-                dutycycle=50
+                dutycycle=50,
             )
             all_timings.extend(timings)
             temp_data = invertBits(temp_data, nbits)
@@ -155,8 +155,9 @@ def sendCarrierAC(data: int, nbits: int = kCarrierAcBits, repeat: int = 0) -> Li
 ## @param[in] strict Flag indicating if we should perform strict matching.
 ## @return A boolean. True if it can decode it, false if it can't.
 ## EXACT translation from IRremoteESP8266 ir_Carrier.cpp:90-139
-def decodeCarrierAC(results, offset: int = 1, nbits: int = kCarrierAcBits,
-                    strict: bool = True) -> bool:
+def decodeCarrierAC(
+    results, offset: int = 1, nbits: int = kCarrierAcBits, strict: bool = True
+) -> bool:
     """
     Decode the supplied Carrier HVAC message.
     EXACT translation from IRremoteESP8266 IRrecv::decodeCarrierAC (ir_Carrier.cpp:102-138)
@@ -201,7 +202,7 @@ def decodeCarrierAC(results, offset: int = 1, nbits: int = kCarrierAcBits,
             atleast=True,
             tolerance=25,
             excess=50,
-            MSBfirst=True
+            MSBfirst=True,
         )
         if not data:
             return False
@@ -223,7 +224,7 @@ def decodeCarrierAC(results, offset: int = 1, nbits: int = kCarrierAcBits,
             atleast=True,
             tolerance=25,
             excess=50,
-            MSBfirst=True
+            MSBfirst=True,
         )
         # Compliance.
         if strict:
@@ -269,7 +270,7 @@ def sendCarrierAC40(data: int, nbits: int = kCarrierAc40Bits, repeat: int = 0) -
         frequency=kCarrierAcFreq,
         MSBfirst=True,
         repeat=repeat,
-        dutycycle=50
+        dutycycle=50,
     )
 
 
@@ -284,8 +285,9 @@ def sendCarrierAC40(data: int, nbits: int = kCarrierAc40Bits, repeat: int = 0) -
 ## @param[in] strict Flag indicating if we should perform strict matching.
 ## @return A boolean. True if it can decode it, false if it can't.
 ## EXACT translation from IRremoteESP8266 ir_Carrier.cpp:156-188
-def decodeCarrierAC40(results, offset: int = 1, nbits: int = kCarrierAc40Bits,
-                      strict: bool = True) -> bool:
+def decodeCarrierAC40(
+    results, offset: int = 1, nbits: int = kCarrierAc40Bits, strict: bool = True
+) -> bool:
     """
     Decode the supplied Carrier 40-bit HVAC message.
     EXACT translation from IRremoteESP8266 IRrecv::decodeCarrierAC40 (ir_Carrier.cpp:167-187)
@@ -315,7 +317,7 @@ def decodeCarrierAC40(results, offset: int = 1, nbits: int = kCarrierAc40Bits,
         atleast=True,
         tolerance=25,
         excess=50,
-        MSBfirst=True
+        MSBfirst=True,
     )
     if not value:
         return False
@@ -358,7 +360,7 @@ def sendCarrierAC64(data: int, nbits: int = kCarrierAc64Bits, repeat: int = 0) -
         frequency=kCarrierAcFreq,
         MSBfirst=False,
         repeat=repeat,
-        dutycycle=50
+        dutycycle=50,
     )
 
 
@@ -372,8 +374,9 @@ def sendCarrierAC64(data: int, nbits: int = kCarrierAc64Bits, repeat: int = 0) -
 ## @param[in] strict Flag indicating if we should perform strict matching.
 ## @return A boolean. True if it can decode it, false if it can't.
 ## EXACT translation from IRremoteESP8266 ir_Carrier.cpp:205-240
-def decodeCarrierAC64(results, offset: int = 1, nbits: int = kCarrierAc64Bits,
-                      strict: bool = True) -> bool:
+def decodeCarrierAC64(
+    results, offset: int = 1, nbits: int = kCarrierAc64Bits, strict: bool = True
+) -> bool:
     """
     Decode the supplied Carrier 64-bit HVAC message.
     EXACT translation from IRremoteESP8266 IRrecv::decodeCarrierAC64 (ir_Carrier.cpp:215-239)
@@ -403,7 +406,7 @@ def decodeCarrierAC64(results, offset: int = 1, nbits: int = kCarrierAc64Bits,
         atleast=True,
         tolerance=25,
         excess=50,
-        MSBfirst=False
+        MSBfirst=False,
     )
     if not value:
         return False
@@ -468,7 +471,7 @@ class CarrierProtocol:
     @SwingV.setter
     def SwingV(self, value: bool) -> None:
         if value:
-            self.raw |= (1 << 29)
+            self.raw |= 1 << 29
         else:
             self.raw &= ~(1 << 29)
 
@@ -480,7 +483,7 @@ class CarrierProtocol:
     @Power.setter
     def Power(self, value: bool) -> None:
         if value:
-            self.raw |= (1 << 36)
+            self.raw |= 1 << 36
         else:
             self.raw &= ~(1 << 36)
 
@@ -491,7 +494,7 @@ class CarrierProtocol:
     @OffTimerEnable.setter
     def OffTimerEnable(self, value: bool) -> None:
         if value:
-            self.raw |= (1 << 37)
+            self.raw |= 1 << 37
         else:
             self.raw &= ~(1 << 37)
 
@@ -502,7 +505,7 @@ class CarrierProtocol:
     @OnTimerEnable.setter
     def OnTimerEnable(self, value: bool) -> None:
         if value:
-            self.raw |= (1 << 38)
+            self.raw |= 1 << 38
         else:
             self.raw &= ~(1 << 38)
 
@@ -513,7 +516,7 @@ class CarrierProtocol:
     @Sleep.setter
     def Sleep(self, value: bool) -> None:
         if value:
-            self.raw |= (1 << 39)
+            self.raw |= 1 << 39
         else:
             self.raw &= ~(1 << 39)
 
@@ -557,8 +560,9 @@ class IRCarrierAc64:
     ## EXACT translation from IRremoteESP8266 ir_Carrier.cpp:254-265
     @staticmethod
     def calcChecksum(state: int) -> int:
-        data = (state >> (kCarrierAc64ChecksumOffset + kCarrierAc64ChecksumSize)) & \
-               ((1 << (kCarrierAc64Bits - (kCarrierAc64ChecksumOffset + kCarrierAc64ChecksumSize))) - 1)
+        data = (state >> (kCarrierAc64ChecksumOffset + kCarrierAc64ChecksumSize)) & (
+            (1 << (kCarrierAc64Bits - (kCarrierAc64ChecksumOffset + kCarrierAc64ChecksumSize))) - 1
+        )
         result = 0
         while data:
             result += data & 0xF
@@ -739,7 +743,7 @@ class IRCarrierAc64:
     def setOffTimer(self, nr_of_mins: int) -> None:
         hours = min(nr_of_mins // 60, kCarrierAc64TimerMax)
         # The time can be changed in sleep mode, but doesn't set the flag.
-        self._.OffTimerEnable = (hours > 0 and not self._.Sleep)
+        self._.OffTimerEnable = hours > 0 and not self._.Sleep
         self._.OffTimer = max(kCarrierAc64TimerMin, hours)  # Hours
         if hours:  # If enabled, disable the On Timer & Sleep mode.
             self._cancelOnTimer()
@@ -785,7 +789,7 @@ def sendCarrierAC128(data: List[int], nbytes: int, repeat: int = 0) -> List[int]
             frequency=kCarrierAcFreq,
             MSBfirst=False,
             repeat=0,
-            dutycycle=50
+            dutycycle=50,
         )
         all_timings.extend(part1_timings)
 
@@ -804,12 +808,12 @@ def sendCarrierAC128(data: List[int], nbytes: int, repeat: int = 0) -> List[int]
             zerospace=kCarrierAc128ZeroSpace,
             footermark=kCarrierAc128BitMark,
             gap=kCarrierAc128SectionGap,
-            dataptr=data[nbytes // 2:],
+            dataptr=data[nbytes // 2 :],
             nbytes=nbytes // 2,
             frequency=kCarrierAcFreq,
             MSBfirst=False,
             repeat=0,
-            dutycycle=50
+            dutycycle=50,
         )
         all_timings.extend(part2_timings)
 
@@ -830,13 +834,21 @@ def sendCarrierAC128(data: List[int], nbytes: int, repeat: int = 0) -> List[int]
 ## @param[in] strict Flag indicating if we should perform strict matching.
 ## @return A boolean. True if it can decode it, false if it can't.
 ## EXACT translation from IRremoteESP8266 ir_Carrier.cpp:596-656
-def decodeCarrierAC128(results, offset: int = 1, nbits: int = kCarrierAc128Bits,
-                       strict: bool = True) -> bool:
+def decodeCarrierAC128(
+    results, offset: int = 1, nbits: int = kCarrierAc128Bits, strict: bool = True
+) -> bool:
     """
     Decode the supplied Carrier 128-bit HVAC message.
     EXACT translation from IRremoteESP8266 IRrecv::decodeCarrierAC128 (ir_Carrier.cpp:606-655)
     """
-    from app.core.ir_protocols.ir_recv import _matchGeneric, matchMark, matchSpace, matchAtLeast, kHeader, kFooter
+    from app.core.ir_protocols.ir_recv import (
+        _matchGeneric,
+        matchMark,
+        matchSpace,
+        matchAtLeast,
+        kHeader,
+        kFooter,
+    )
 
     if results.rawlen < 2 * (nbits + 2 * kHeader + kFooter) - 1 + offset:
         return False  # Can't possibly be a valid Carrier message.
@@ -865,7 +877,7 @@ def decodeCarrierAC128(results, offset: int = 1, nbits: int = kCarrierAc128Bits,
         atleast=True,
         tolerance=25,
         excess=50,
-        MSBfirst=False
+        MSBfirst=False,
     )
     if used == 0:
         return False  # No match.
@@ -899,7 +911,7 @@ def decodeCarrierAC128(results, offset: int = 1, nbits: int = kCarrierAc128Bits,
         atleast=True,
         tolerance=25,
         excess=50,
-        MSBfirst=False
+        MSBfirst=False,
     )
     if used == 0:
         return False  # No match.
@@ -909,7 +921,9 @@ def decodeCarrierAC128(results, offset: int = 1, nbits: int = kCarrierAc128Bits,
     if not matchMark(results.rawbuf[offset], kCarrierAc128HdrMark, 25, 50):
         return False
     offset += 1
-    if offset < results.rawlen and not matchAtLeast(results.rawbuf[offset], 100000):  # kDefaultMessageGap
+    if offset < results.rawlen and not matchAtLeast(
+        results.rawbuf[offset], 100000
+    ):  # kDefaultMessageGap
         return False
 
     # Compliance
@@ -956,7 +970,7 @@ def sendCarrierAC84(data: List[int], nbytes: int, repeat: int = 0) -> List[int]:
                 frequency=38000,
                 MSBfirst=False,
                 repeat=0,
-                dutycycle=33
+                dutycycle=33,
             )
             all_timings.extend(part1_timings)
 
@@ -975,7 +989,7 @@ def sendCarrierAC84(data: List[int], nbytes: int, repeat: int = 0) -> List[int]:
                 frequency=38000,
                 MSBfirst=False,
                 repeat=0,
-                dutycycle=33
+                dutycycle=33,
             )
             all_timings.extend(part2_timings)
 
@@ -992,8 +1006,9 @@ def sendCarrierAC84(data: List[int], nbytes: int, repeat: int = 0) -> List[int]:
 ## @param[in] strict Flag indicating if we should perform strict matching.
 ## @return A boolean. True if it can decode it, false if it can't.
 ## EXACT translation from IRremoteESP8266 ir_Carrier.cpp:688-747
-def decodeCarrierAC84(results, offset: int = 1, nbits: int = kCarrierAc84Bits,
-                      strict: bool = True) -> bool:
+def decodeCarrierAC84(
+    results, offset: int = 1, nbits: int = kCarrierAc84Bits, strict: bool = True
+) -> bool:
     """
     Decode the supplied Carroer A/C 84 Bit formatted message.
     EXACT translation from IRremoteESP8266 IRrecv::decodeCarrierAC84 (ir_Carrier.cpp:698-746)

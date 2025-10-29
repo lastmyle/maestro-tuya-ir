@@ -62,7 +62,7 @@ def sendNikai(data: int, nbits: int, repeat: int = 0) -> List[int]:
         frequency=38,
         MSBfirst=True,
         repeat=repeat,
-        dutycycle=33
+        dutycycle=33,
     )
 
 
@@ -74,8 +74,7 @@ def sendNikai(data: int, nbits: int, repeat: int = 0) -> List[int]:
 ## @param[in] nbits The number of data bits to expect.
 ## @param[in] strict Flag indicating if we should perform strict matching.
 ## Direct translation from IRremoteESP8266 IRrecv::decodeNikai (ir_Nikai.cpp lines 52-73)
-def decodeNikai(results, offset: int = 1, nbits: int = kNikaiBits,
-                strict: bool = True) -> bool:
+def decodeNikai(results, offset: int = 1, nbits: int = kNikaiBits, strict: bool = True) -> bool:
     """
     Decode a Nikai IR message.
     EXACT translation from IRremoteESP8266 IRrecv::decodeNikai
@@ -106,7 +105,7 @@ def decodeNikai(results, offset: int = 1, nbits: int = kNikaiBits,
         footermark=kNikaiBitMark,
         footerspace=kNikaiMinGap,
         atleast=True,
-        tolerance=25
+        tolerance=25,
     ):
         return False
 

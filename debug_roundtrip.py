@@ -31,7 +31,7 @@ def analyze_roundtrip():
     results.rawlen = len(signal)
     success = decodeFujitsuAC(results, offset=0, nbits=kFujitsuAcBits, strict=False)
     assert success
-    bytes_array = results.state[:results.bits // 8]
+    bytes_array = results.state[: results.bits // 8]
     print(f"   Decoded to: {len(bytes_array)} bytes")
     print(f"   Bytes: {' '.join(f'{b:02x}' for b in bytes_array)}")
 
@@ -117,7 +117,7 @@ def test_direct_byte_roundtrip():
     results1.rawlen = len(signal1)
     success1 = decodeFujitsuAC(results1, offset=0, nbits=kFujitsuAcBits, strict=False)
     assert success1
-    bytes1 = results1.state[:results1.bits // 8]
+    bytes1 = results1.state[: results1.bits // 8]
 
     # Encode (skipping IRFujitsuAC)
     signal2 = sendFujitsuAC(bytes1, len(bytes1), repeat=0)
@@ -130,7 +130,7 @@ def test_direct_byte_roundtrip():
     results2.rawlen = len(signal3)
     success2 = decodeFujitsuAC(results2, offset=0, nbits=kFujitsuAcBits, strict=False)
     assert success2
-    bytes2 = results2.state[:results2.bits // 8]
+    bytes2 = results2.state[: results2.bits // 8]
 
     print(f"\nOriginal bytes: {' '.join(f'{b:02x}' for b in bytes1)}")
     print(f"Final bytes:    {' '.join(f'{b:02x}' for b in bytes2)}")

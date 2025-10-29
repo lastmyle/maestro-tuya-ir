@@ -64,7 +64,7 @@ def sendBluestarHeavy(data: List[int], nbytes: int, repeat: int = 0) -> List[int
         frequency=kBluestarHeavyFreq,
         MSBfirst=True,
         repeat=repeat,
-        dutycycle=kDutyDefault
+        dutycycle=kDutyDefault,
     )
 
 
@@ -77,8 +77,9 @@ def sendBluestarHeavy(data: List[int], nbytes: int, repeat: int = 0) -> List[int
 ## @param[in] strict Flag indicating if we should perform strict matching.
 ## @return A boolean. True if it can decode it, false if it can't.
 ## Direct translation from IRremoteESP8266 IRrecv::decodeBluestarHeavy (ir_BluestarHeavy.cpp lines 43-72)
-def decodeBluestarHeavy(results, offset: int = 1, nbits: int = kBluestarHeavyBits,
-                        strict: bool = True) -> bool:
+def decodeBluestarHeavy(
+    results, offset: int = 1, nbits: int = kBluestarHeavyBits, strict: bool = True
+) -> bool:
     """
     Decode a BluestarHeavy IR message.
     EXACT translation from IRremoteESP8266 IRrecv::decodeBluestarHeavy
@@ -111,7 +112,7 @@ def decodeBluestarHeavy(results, offset: int = 1, nbits: int = kBluestarHeavyBit
         atleast=False,
         tolerance=25,
         excess=kMarkExcess,
-        MSBfirst=True
+        MSBfirst=True,
     )
     if used == 0:
         return False  # We failed to find any data.

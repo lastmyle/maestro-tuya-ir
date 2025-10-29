@@ -50,7 +50,9 @@ kSymphonyDefaultRepeat = 3
 ## @param[in] nbits The number of bits of message to be sent.
 ## @param[in] repeat The number of times the command is to be repeated.
 ## Direct translation from IRremoteESP8266 IRsend::sendSymphony (ir_Symphony.cpp lines 46-57)
-def sendSymphony(data: int, nbits: int = kSymphonyBits, repeat: int = kSymphonyDefaultRepeat) -> List[int]:
+def sendSymphony(
+    data: int, nbits: int = kSymphonyBits, repeat: int = kSymphonyDefaultRepeat
+) -> List[int]:
     """
     Send a Symphony packet.
     EXACT translation from IRremoteESP8266 IRsend::sendSymphony
@@ -74,7 +76,7 @@ def sendSymphony(data: int, nbits: int = kSymphonyBits, repeat: int = kSymphonyD
         frequency=38,
         MSBfirst=True,
         repeat=repeat,
-        dutycycle=50
+        dutycycle=50,
     )
 
 
@@ -88,8 +90,9 @@ def sendSymphony(data: int, nbits: int = kSymphonyBits, repeat: int = kSymphonyD
 ## @param[in] _tolerance The tolerance percentage for matching (default 25%)
 ## @return True if it can decode it, false if it can't.
 ## Direct translation from IRremoteESP8266 IRrecv::decodeSymphony (ir_Symphony.cpp lines 60-94)
-def decodeSymphony(results, offset: int = 1, nbits: int = kSymphonyBits,
-                   strict: bool = True, _tolerance: int = 25) -> bool:
+def decodeSymphony(
+    results, offset: int = 1, nbits: int = kSymphonyBits, strict: bool = True, _tolerance: int = 25
+) -> bool:
     """
     Decode the supplied Symphony packet/message.
     EXACT translation from IRremoteESP8266 IRrecv::decodeSymphony
@@ -124,7 +127,7 @@ def decodeSymphony(results, offset: int = 1, nbits: int = kSymphonyBits,
         atleast=True,
         tolerance=_tolerance,
         excess=0,
-        MSBfirst=True
+        MSBfirst=True,
     )
     if used == 0:
         return False

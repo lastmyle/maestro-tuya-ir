@@ -67,7 +67,7 @@ kCoronaAcOffTimerSection = 2
 # Timer constants (ir_Corona.h lines 99-102)
 kCoronaAcTimerMax = 12 * 60  # 12H in Minutes
 # Min value on remote is 1 hour, actual sent value can be 2 secs
-kCoronaAcTimerOff = 0xffff
+kCoronaAcTimerOff = 0xFFFF
 kCoronaAcTimerUnitsPerMin = 30  # 30 units = 1 minute
 
 # Nibble positions
@@ -242,8 +242,7 @@ def checksumCorona(data: List[int]) -> None:
 ## @param[in] nbytes Nr. of bytes of data in the array.
 ## @param[in] repeat Nr. of times the message is to be repeated.
 ## Direct translation from ir_Corona.cpp lines 37-77
-def sendCoronaAc(data: List[int], nbytes: int = kCoronaAcStateLength,
-                 repeat: int = 0) -> List[int]:
+def sendCoronaAc(data: List[int], nbytes: int = kCoronaAcStateLength, repeat: int = 0) -> List[int]:
     """
     Send a Corona AC formatted message.
     EXACT translation from IRremoteESP8266 IRsend::sendCoronaAc
@@ -282,7 +281,7 @@ def sendCoronaAc(data: List[int], nbytes: int = kCoronaAcStateLength,
                 frequency=kCoronaAcFreq,
                 MSBfirst=False,
                 repeat=0,
-                dutycycle=50  # kDutyDefault
+                dutycycle=50,  # kDutyDefault
             )
             all_timings.extend(section_timings)
             pos += kCoronaAcSectionBytes  # Adjust by how many bytes was sent
@@ -301,19 +300,20 @@ def sendCoronaAc(data: List[int], nbytes: int = kCoronaAcStateLength,
 ## @param[in] strict Flag indicating if we should perform strict matching.
 ## @return A boolean. True if it can decode it, false if it can't.
 ## Direct translation from ir_Corona.cpp lines 79-142
-def decodeCoronaAc(results, offset: int = 1, nbits: int = kCoronaAcBits,
-                   strict: bool = True) -> bool:
+def decodeCoronaAc(
+    results, offset: int = 1, nbits: int = kCoronaAcBits, strict: bool = True
+) -> bool:
     """
     Decode the supplied Corona AC message.
     EXACT translation from IRremoteESP8266 IRrecv::decodeCoronaAc
     """
-    from app.core.ir_protocols.ir_recv import (
-        _matchGeneric
-    )
+    from app.core.ir_protocols.ir_recv import _matchGeneric
 
     isLong = results.rawlen >= kCoronaAcBits * 2
-    if results.rawlen < 2 * nbits + \
-       (kCoronaAcOverhead if isLong else kCoronaAcOverheadShort) - offset:
+    if (
+        results.rawlen
+        < 2 * nbits + (kCoronaAcOverhead if isLong else kCoronaAcOverheadShort) - offset
+    ):
         return False  # Too short a message to match.
     if strict and nbits != kCoronaAcBits and nbits != kCoronaAcBitsShort:
         return False
@@ -346,13 +346,12 @@ def decodeCoronaAc(results, offset: int = 1, nbits: int = kCoronaAcBits,
             atleast=True,
             tolerance=kCoronaTolerance,
             excess=0,  # kMarkExcess
-            MSBfirst=False
+            MSBfirst=False,
         )
         if used == 0:
             return False  # We failed to find any data.
         # short versions section 0 is special
-        if strict and not validSectionCorona(results.state, pos,
-                                             3 if not isLong else section):
+        if strict and not validSectionCorona(results.state, pos, 3 if not isLong else section):
             return False
         offset += used  # Adjust for how much of the message we read.
         pos += kCoronaAcSectionBytes  # Adjust by how many bytes of data was read
@@ -491,8 +490,7 @@ class IRCoronaAc:
     ## @param[in] mode The desired operating mode.
     ## Direct translation from ir_Corona.cpp lines 350-363
     def setMode(self, mode: int) -> None:
-        if mode in [kCoronaAcModeCool, kCoronaAcModeDry,
-                    kCoronaAcModeFan, kCoronaAcModeHeat]:
+        if mode in [kCoronaAcModeCool, kCoronaAcModeDry, kCoronaAcModeFan, kCoronaAcModeHeat]:
             self._.Mode = mode
             return
         else:
@@ -679,9 +677,9 @@ class IRCoronaAc:
         """Convert the internal state to a human readable string"""
         result = ""
         result += "Power: "
-        result += ("On" if self._.Power else "Off")
+        result += "On" if self._.Power else "Off"
         result += ", PowerButton: "
-        result += ("On" if self._.PowerButton else "Off")
+        result += "On" if self._.PowerButton else "Off"
         result += ", Mode: "
         result += str(self._.Mode)
         result += ", Temp: "
@@ -689,13 +687,13 @@ class IRCoronaAc:
         result += ", Fan: "
         result += str(self._.Fan)
         result += ", SwingVToggle: "
-        result += ("On" if self._.SwingVToggle else "Off")
+        result += "On" if self._.SwingVToggle else "Off"
         result += ", Econo: "
-        result += ("On" if self._.Econo else "Off")
+        result += "On" if self._.Econo else "Off"
         result += ", OnTimer: "
-        result += (str(self.getOnTimer()) + "m" if self.getOnTimer() else "Off")
+        result += str(self.getOnTimer()) + "m" if self.getOnTimer() else "Off"
         result += ", OffTimer: "
-        result += (str(self.getOffTimer()) + "m" if self.getOffTimer() else "Off")
+        result += str(self.getOffTimer()) + "m" if self.getOffTimer() else "Off"
         return result
 
     ## Convert the A/C state to it's common stdAc::state_t equivalent.

@@ -49,8 +49,8 @@ kKelon168Bits = kKelon168StateLength * 8  # 168 bits
 kKelonModeHeat = 0
 kKelonModeSmart = 1  # (temp = 26C, but not shown)
 kKelonModeCool = 2
-kKelonModeDry = 3    # (temp = 25C, but not shown)
-kKelonModeFan = 4    # (temp = 25C, but not shown)
+kKelonModeDry = 3  # (temp = 25C, but not shown)
+kKelonModeFan = 4  # (temp = 25C, but not shown)
 
 # Fan speed constants (from ir_Kelon.h lines 63-69)
 # Note! Kelon fan speeds are actually 0:AUTO, 1:MAX, 2:MED, 3:MIN
@@ -122,7 +122,7 @@ class KelonProtocol:
     def PowerToggle(self, value: bool) -> None:
         byte = self._get_byte(2)
         if value:
-            byte |= (1 << 2)
+            byte |= 1 << 2
         else:
             byte &= ~(1 << 2)
         self._set_byte(2, byte)
@@ -135,7 +135,7 @@ class KelonProtocol:
     def SleepEnabled(self, value: bool) -> None:
         byte = self._get_byte(2)
         if value:
-            byte |= (1 << 3)
+            byte |= 1 << 3
         else:
             byte &= ~(1 << 3)
         self._set_byte(2, byte)
@@ -158,7 +158,7 @@ class KelonProtocol:
     def SwingVToggle(self, value: bool) -> None:
         byte = self._get_byte(2)
         if value:
-            byte |= (1 << 7)
+            byte |= 1 << 7
         else:
             byte &= ~(1 << 7)
         self._set_byte(2, byte)
@@ -182,7 +182,7 @@ class KelonProtocol:
     def TimerEnabled(self, value: bool) -> None:
         byte = self._get_byte(3)
         if value:
-            byte |= (1 << 3)
+            byte |= 1 << 3
         else:
             byte &= ~(1 << 3)
         self._set_byte(3, byte)
@@ -206,7 +206,7 @@ class KelonProtocol:
     def TimerHalfHour(self, value: bool) -> None:
         byte = self._get_byte(4)
         if value:
-            byte |= (1 << 0)
+            byte |= 1 << 0
         else:
             byte &= ~(1 << 0)
         self._set_byte(4, byte)
@@ -229,7 +229,7 @@ class KelonProtocol:
     def SmartModeEnabled(self, value: bool) -> None:
         byte = self._get_byte(4)
         if value:
-            byte |= (1 << 7)
+            byte |= 1 << 7
         else:
             byte &= ~(1 << 7)
         self._set_byte(4, byte)
@@ -243,7 +243,7 @@ class KelonProtocol:
     def SuperCoolEnabled1(self, value: bool) -> None:
         byte = self._get_byte(5)
         if value:
-            byte |= (1 << 4)
+            byte |= 1 << 4
         else:
             byte &= ~(1 << 4)
         self._set_byte(5, byte)
@@ -256,7 +256,7 @@ class KelonProtocol:
     def SuperCoolEnabled2(self, value: bool) -> None:
         byte = self._get_byte(5)
         if value:
-            byte |= (1 << 7)
+            byte |= 1 << 7
         else:
             byte &= ~(1 << 7)
         self._set_byte(5, byte)
@@ -292,7 +292,7 @@ def sendKelon(data: int, nbits: int = kKelonBits, repeat: int = 0) -> List[int]:
         frequency=kKelonFreq,
         MSBfirst=False,  # LSB First
         repeat=repeat,
-        dutycycle=50
+        dutycycle=50,
     )
 
 
@@ -305,8 +305,9 @@ def sendKelon(data: int, nbits: int = kKelonBits, repeat: int = 0) -> List[int]:
 ## @param[in] strict Flag indicating if we should perform strict matching.
 ## @return True if it can decode it, false if it can't.
 ## Direct translation from IRremoteESP8266 IRrecv::decodeKelon (ir_Kelon.cpp lines 66-92)
-def decodeKelon(results, offset: int = 1, nbits: int = kKelonBits, strict: bool = True,
-                _tolerance: int = 25) -> bool:
+def decodeKelon(
+    results, offset: int = 1, nbits: int = kKelonBits, strict: bool = True, _tolerance: int = 25
+) -> bool:
     """
     Decode a Kelon 48-bit HVAC IR message.
     EXACT translation from IRremoteESP8266 IRrecv::decodeKelon
@@ -337,7 +338,7 @@ def decodeKelon(results, offset: int = 1, nbits: int = kKelonBits, strict: bool 
         atleast=True,
         tolerance=_tolerance,
         excess=kMarkExcess,
-        MSBfirst=False
+        MSBfirst=False,
     )
     if used == 0:
         return False
@@ -388,7 +389,7 @@ def sendKelon168(data: List[int], nbytes: int, repeat: int = 0) -> List[int]:
             frequency=kKelonFreq,
             MSBfirst=False,  # LSB First
             repeat=0,
-            dutycycle=50
+            dutycycle=50,
         )
         all_timings.extend(section1)
 
@@ -402,12 +403,12 @@ def sendKelon168(data: List[int], nbytes: int, repeat: int = 0) -> List[int]:
             zerospace=kKelonZeroSpace,
             footermark=kKelonBitMark,
             gap=kKelon168FooterSpace,
-            dataptr=data[kKelon168Section1Size:kKelon168Section1Size + kKelon168Section2Size],
+            dataptr=data[kKelon168Section1Size : kKelon168Section1Size + kKelon168Section2Size],
             nbytes=kKelon168Section2Size,
             frequency=kKelonFreq,
             MSBfirst=False,  # LSB First
             repeat=0,
-            dutycycle=50
+            dutycycle=50,
         )
         all_timings.extend(section2)
 
@@ -421,12 +422,12 @@ def sendKelon168(data: List[int], nbytes: int, repeat: int = 0) -> List[int]:
             zerospace=kKelonZeroSpace,
             footermark=kKelonBitMark,
             gap=kKelonGap,
-            dataptr=data[kKelon168Section1Size + kKelon168Section2Size:],
+            dataptr=data[kKelon168Section1Size + kKelon168Section2Size :],
             nbytes=nbytes - (kKelon168Section1Size + kKelon168Section2Size),
             frequency=kKelonFreq,
             MSBfirst=False,  # LSB First
             repeat=0,
-            dutycycle=50
+            dutycycle=50,
         )
         all_timings.extend(section3)
 
@@ -442,8 +443,9 @@ def sendKelon168(data: List[int], nbytes: int, repeat: int = 0) -> List[int]:
 ## @param[in] strict Flag indicating if we should perform strict matching.
 ## @return True if it can decode it, false if it can't.
 ## Direct translation from IRremoteESP8266 IRrecv::decodeKelon168 (ir_Kelon.cpp lines 497-552)
-def decodeKelon168(results, offset: int = 1, nbits: int = kKelon168Bits, strict: bool = True,
-                   _tolerance: int = 25) -> bool:
+def decodeKelon168(
+    results, offset: int = 1, nbits: int = kKelon168Bits, strict: bool = True, _tolerance: int = 25
+) -> bool:
     """
     Decode a Kelon 168 bit HVAC IR message.
     EXACT translation from IRremoteESP8266 IRrecv::decodeKelon168
@@ -477,7 +479,7 @@ def decodeKelon168(results, offset: int = 1, nbits: int = kKelon168Bits, strict:
         atleast=False,
         tolerance=_tolerance,
         excess=kMarkExcess,
-        MSBfirst=False
+        MSBfirst=False,
     )
     if not used:
         return False  # Failed to match.
@@ -487,7 +489,9 @@ def decodeKelon168(results, offset: int = 1, nbits: int = kKelon168Bits, strict:
     used = _matchGeneric(
         data_ptr=results.rawbuf[offset:],
         result_bits_ptr=None,
-        result_bytes_ptr=results.state[kKelon168Section1Size:kKelon168Section1Size + kKelon168Section2Size],
+        result_bytes_ptr=results.state[
+            kKelon168Section1Size : kKelon168Section1Size + kKelon168Section2Size
+        ],
         use_bits=False,
         remaining=results.rawlen - offset,
         nbits=kKelon168Section2Size * 8,
@@ -502,7 +506,7 @@ def decodeKelon168(results, offset: int = 1, nbits: int = kKelon168Bits, strict:
         atleast=False,
         tolerance=_tolerance,
         excess=kMarkExcess,
-        MSBfirst=False
+        MSBfirst=False,
     )
     if not used:
         return False  # Failed to match.
@@ -512,7 +516,7 @@ def decodeKelon168(results, offset: int = 1, nbits: int = kKelon168Bits, strict:
     used = _matchGeneric(
         data_ptr=results.rawbuf[offset:],
         result_bits_ptr=None,
-        result_bytes_ptr=results.state[kKelon168Section1Size + kKelon168Section2Size:],
+        result_bytes_ptr=results.state[kKelon168Section1Size + kKelon168Section2Size :],
         use_bits=False,
         remaining=results.rawlen - offset,
         nbits=nbits - (kKelon168Section1Size + kKelon168Section2Size) * 8,
@@ -527,7 +531,7 @@ def decodeKelon168(results, offset: int = 1, nbits: int = kKelon168Bits, strict:
         atleast=True,
         tolerance=_tolerance,
         excess=kMarkExcess,
-        MSBfirst=False
+        MSBfirst=False,
     )
     if not used:
         return False  # Failed to match.
@@ -624,16 +628,18 @@ class IRKelonAc:
     ## @return The current dehumidification intensity.
     ## Direct translation from ir_Kelon.cpp lines 211-217
     def getDryGrade(self) -> int:
-        val = (self._.DehumidifierGrade & 0b011) * \
-              (-1 if (self._.DehumidifierGrade & 0b100) else 1)
+        val = (self._.DehumidifierGrade & 0b011) * (-1 if (self._.DehumidifierGrade & 0b100) else 1)
         return val
 
     ## Set the desired operation mode.
     ## @param[in] mode The desired operation mode.
     ## Direct translation from ir_Kelon.cpp lines 219-252
     def setMode(self, mode: int) -> None:
-        if self._.Mode == kKelonModeSmart or self._.Mode == kKelonModeFan or \
-           self._.Mode == kKelonModeDry:
+        if (
+            self._.Mode == kKelonModeSmart
+            or self._.Mode == kKelonModeFan
+            or self._.Mode == kKelonModeDry
+        ):
             self._.Temperature = self._previousTemp
 
         if self._.SuperCoolEnabled1:
@@ -773,13 +779,13 @@ class IRKelonAc:
     @staticmethod
     def convertMode(mode: str) -> int:
         """Convert common mode to Kelon mode"""
-        if mode == 'cool':
+        if mode == "cool":
             return kKelonModeCool
-        elif mode == 'heat':
+        elif mode == "heat":
             return kKelonModeHeat
-        elif mode == 'dry':
+        elif mode == "dry":
             return kKelonModeDry
-        elif mode == 'fan':
+        elif mode == "fan":
             return kKelonModeFan
         else:
             return kKelonModeSmart  # aka Auto
@@ -791,11 +797,11 @@ class IRKelonAc:
     @staticmethod
     def convertFan(fan: str) -> int:
         """Convert common fan speed to Kelon fan speed"""
-        if fan in ['min', 'low']:
+        if fan in ["min", "low"]:
             return kKelonFanMin
-        elif fan == 'medium':
+        elif fan == "medium":
             return kKelonFanMedium
-        elif fan in ['high', 'max']:
+        elif fan in ["high", "max"]:
             return kKelonFanMax
         else:
             return kKelonFanAuto
@@ -808,15 +814,15 @@ class IRKelonAc:
     def toCommonMode(mode: int) -> str:
         """Convert Kelon mode to common mode"""
         if mode == kKelonModeCool:
-            return 'cool'
+            return "cool"
         elif mode == kKelonModeHeat:
-            return 'heat'
+            return "heat"
         elif mode == kKelonModeDry:
-            return 'dry'
+            return "dry"
         elif mode == kKelonModeFan:
-            return 'fan'
+            return "fan"
         else:
-            return 'auto'
+            return "auto"
 
     ## Convert a native fan speed to it's stdAc::fanspeed_t equivalent.
     ## @param[in] speed A native fan speed value.
@@ -826,13 +832,13 @@ class IRKelonAc:
     def toCommonFanSpeed(speed: int) -> str:
         """Convert Kelon fan speed to common fan speed"""
         if speed == kKelonFanMin:
-            return 'low'
+            return "low"
         elif speed == kKelonFanMedium:
-            return 'medium'
+            return "medium"
         elif speed == kKelonFanMax:
-            return 'high'
+            return "high"
         else:
-            return 'auto'
+            return "auto"
 
     ## Convert the internal A/C object state to it's stdAc::state_t equivalent.
     ## @return A stdAc::state_t containing the current settings.
@@ -840,30 +846,29 @@ class IRKelonAc:
     def toCommon(self, prev: Optional[dict] = None) -> dict:
         """Convert to common A/C state format"""
         result = {}
-        result['protocol'] = 'KELON'
-        result['model'] = -1  # Unused.
+        result["protocol"] = "KELON"
+        result["model"] = -1  # Unused.
         # AC only supports toggling it
-        result['power'] = (prev is None or prev.get('power', True)) ^ bool(self._.PowerToggle)
-        result['mode'] = self.toCommonMode(self.getMode())
-        result['celsius'] = True
-        result['degrees'] = self.getTemp()
-        result['fanspeed'] = self.toCommonFanSpeed(self.getFan())
+        result["power"] = (prev is None or prev.get("power", True)) ^ bool(self._.PowerToggle)
+        result["mode"] = self.toCommonMode(self.getMode())
+        result["celsius"] = True
+        result["degrees"] = self.getTemp()
+        result["fanspeed"] = self.toCommonFanSpeed(self.getFan())
         # AC only supports toggling it
-        result['swingv'] = 'auto'
-        if prev is not None and \
-           (prev.get('swingv') != 'auto') ^ bool(self._.SwingVToggle):
-            result['swingv'] = 'off'
-        result['turbo'] = self.getSupercool()
-        result['sleep'] = 0 if self.getSleep() else -1
+        result["swingv"] = "auto"
+        if prev is not None and (prev.get("swingv") != "auto") ^ bool(self._.SwingVToggle):
+            result["swingv"] = "off"
+        result["turbo"] = self.getSupercool()
+        result["sleep"] = 0 if self.getSleep() else -1
         # Not supported.
-        result['swingh'] = 'off'
-        result['light'] = True
-        result['beep'] = True
-        result['quiet'] = False
-        result['filter'] = False
-        result['clean'] = False
-        result['econo'] = False
-        result['clock'] = -1
+        result["swingh"] = "off"
+        result["light"] = True
+        result["beep"] = True
+        result["quiet"] = False
+        result["filter"] = False
+        result["clean"] = False
+        result["econo"] = False
+        result["clock"] = -1
         return result
 
     ## Convert the internal settings into a human readable string.

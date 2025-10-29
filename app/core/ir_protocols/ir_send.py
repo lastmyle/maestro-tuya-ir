@@ -22,8 +22,15 @@ from typing import List
 ## @param[in] MSBfirst Flag for bit transmission order.
 ##   Defaults to MSB->LSB order.
 ## Direct translation from IRremoteESP8266 IRsend::sendData (lines 248-279)
-def sendData(onemark: int, onespace: int, zeromark: int, zerospace: int,
-             data: int, nbits: int, MSBfirst: bool) -> List[int]:
+def sendData(
+    onemark: int,
+    onespace: int,
+    zeromark: int,
+    zerospace: int,
+    data: int,
+    nbits: int,
+    MSBfirst: bool,
+) -> List[int]:
     """
     Encode data bits into IR timings.
     EXACT translation from IRremoteESP8266 IRsend::sendData
@@ -86,10 +93,22 @@ def sendData(onemark: int, onespace: int, zeromark: int, zerospace: int,
 ## @note Assumes a frequency < 1000 means kHz otherwise it is in Hz.
 ##   Most common value is 38000 or 38, for 38kHz.
 ## Direct translation from IRremoteESP8266 IRsend::sendGeneric (lines 411-435)
-def sendGeneric(headermark: int, headerspace: int, onemark: int, onespace: int,
-                zeromark: int, zerospace: int, footermark: int, gap: int,
-                dataptr: List[int], nbytes: int, frequency: int, MSBfirst: bool,
-                repeat: int, dutycycle: int) -> List[int]:
+def sendGeneric(
+    headermark: int,
+    headerspace: int,
+    onemark: int,
+    onespace: int,
+    zeromark: int,
+    zerospace: int,
+    footermark: int,
+    gap: int,
+    dataptr: List[int],
+    nbytes: int,
+    frequency: int,
+    MSBfirst: bool,
+    repeat: int,
+    dutycycle: int,
+) -> List[int]:
     """
     Encode byte array into IR protocol timings with header and footer.
     EXACT translation from IRremoteESP8266 IRsend::sendGeneric
@@ -110,8 +129,9 @@ def sendGeneric(headermark: int, headerspace: int, onemark: int, onespace: int,
 
         # Data
         for i in range(nbytes):  # for (uint16_t i = 0; i < nbytes; i++)
-            byte_timings = sendData(onemark, onespace, zeromark, zerospace,
-                                   dataptr[i], 8, MSBfirst)  # *(dataptr + i)
+            byte_timings = sendData(
+                onemark, onespace, zeromark, zerospace, dataptr[i], 8, MSBfirst
+            )  # *(dataptr + i)
             all_timings.extend(byte_timings)
 
         # Footer
@@ -150,10 +170,22 @@ def sendGeneric(headermark: int, headerspace: int, onemark: int, onespace: int,
 ## @note Assumes a frequency < 1000 means kHz otherwise it is in Hz.
 ##   Most common value is 38000 or 38, for 38kHz.
 ## Direct translation from IRremoteESP8266 IRsend::sendGeneric (uint64_t variant)
-def sendGenericUint64(headermark: int, headerspace: int, onemark: int, onespace: int,
-                      zeromark: int, zerospace: int, footermark: int, gap: int,
-                      data: int, nbits: int, frequency: int, MSBfirst: bool,
-                      repeat: int, dutycycle: int) -> List[int]:
+def sendGenericUint64(
+    headermark: int,
+    headerspace: int,
+    onemark: int,
+    onespace: int,
+    zeromark: int,
+    zerospace: int,
+    footermark: int,
+    gap: int,
+    data: int,
+    nbits: int,
+    frequency: int,
+    MSBfirst: bool,
+    repeat: int,
+    dutycycle: int,
+) -> List[int]:
     """
     Encode uint64_t data into IR protocol timings with header and footer.
     EXACT translation from IRremoteESP8266 IRsend::sendGeneric (uint64_t variant)
@@ -173,8 +205,7 @@ def sendGenericUint64(headermark: int, headerspace: int, onemark: int, onespace:
             all_timings.append(headerspace)  # space(headerspace)
 
         # Data
-        data_timings = sendData(onemark, onespace, zeromark, zerospace,
-                               data, nbits, MSBfirst)
+        data_timings = sendData(onemark, onespace, zeromark, zerospace, data, nbits, MSBfirst)
         all_timings.extend(data_timings)
 
         # Footer

@@ -28,10 +28,9 @@ kWhynterZeroSpaceTicks = 15
 kWhynterZeroSpace = kWhynterZeroSpaceTicks * kWhynterTick
 kWhynterMinCommandLengthTicks = 2160  # Totally made up value.
 kWhynterMinCommandLength = kWhynterMinCommandLengthTicks * kWhynterTick
-kWhynterMinGapTicks = (
-    kWhynterMinCommandLengthTicks
-    - (2 * (kWhynterBitMarkTicks + kWhynterZeroSpaceTicks)
-       + 32 * (kWhynterBitMarkTicks + kWhynterOneSpaceTicks))
+kWhynterMinGapTicks = kWhynterMinCommandLengthTicks - (
+    2 * (kWhynterBitMarkTicks + kWhynterZeroSpaceTicks)
+    + 32 * (kWhynterBitMarkTicks + kWhynterOneSpaceTicks)
 )
 kWhynterMinGap = kWhynterMinGapTicks * kWhynterTick
 
@@ -79,7 +78,7 @@ def sendWhynter(data: int, nbits: int = kWhynterBits, repeat: int = 0) -> List[i
             frequency=38,
             MSBfirst=True,
             repeat=0,  # Repeats are already handled.
-            dutycycle=50
+            dutycycle=50,
         )
         all_timings.extend(generic_timings)
 
@@ -96,8 +95,9 @@ def sendWhynter(data: int, nbits: int = kWhynterBits, repeat: int = 0) -> List[i
 ## @return True if it can decode it, false if it can't.
 ## @see https://github.com/z3t0/Arduino-IRremote/blob/master/ir_Whynter.cpp
 ## Direct translation from IRremoteESP8266 IRrecv::decodeWhynter (lines 74-102)
-def decodeWhynter(results, offset: int = 1, nbits: int = kWhynterBits,
-                  strict: bool = True, _tolerance: int = 25) -> bool:
+def decodeWhynter(
+    results, offset: int = 1, nbits: int = kWhynterBits, strict: bool = True, _tolerance: int = 25
+) -> bool:
     """
     Decode a Whynter IR message.
     EXACT translation from IRremoteESP8266 IRrecv::decodeWhynter
@@ -106,7 +106,12 @@ def decodeWhynter(results, offset: int = 1, nbits: int = kWhynterBits,
     """
     # Import here to avoid circular imports
     from app.core.ir_protocols.ir_recv import (
-        kHeader, kFooter, kMarkExcess, matchMark, matchSpace, _matchGeneric
+        kHeader,
+        kFooter,
+        kMarkExcess,
+        matchMark,
+        matchSpace,
+        _matchGeneric,
     )
 
     if results.rawlen <= 2 * nbits + 2 * kHeader + kFooter - 1 + offset:
@@ -145,7 +150,7 @@ def decodeWhynter(results, offset: int = 1, nbits: int = kWhynterBits,
         atleast=True,
         tolerance=_tolerance,
         excess=kMarkExcess,
-        MSBfirst=True
+        MSBfirst=True,
     )
     if used == 0:
         return False
@@ -171,9 +176,10 @@ def decodeWhynter(results, offset: int = 1, nbits: int = kWhynterBits,
 
         # Check if this is a one or zero based on the space length
         from app.core.ir_protocols.ir_recv import match
+
         if match(results.rawbuf[space_idx], kWhynterOneSpace, _tolerance, kMarkExcess):
             # It's a one - set the bit (MSB first)
-            data |= (1 << (nbits - 1 - i))
+            data |= 1 << (nbits - 1 - i)
         elif match(results.rawbuf[space_idx], kWhynterZeroSpace, _tolerance, kMarkExcess):
             # It's a zero - bit already 0
             pass

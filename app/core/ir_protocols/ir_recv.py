@@ -111,7 +111,7 @@ def reverseBits(data: int, nbits: int) -> int:
     result = 0
     for i in range(nbits):
         result <<= 1
-        result |= (data & 1)
+        result |= data & 1
         data >>= 1
     return result
 
@@ -131,9 +131,19 @@ def reverseBits(data: int, nbits: int) -> int:
 ## @return A match_result_t structure with the success status, data & how many
 ##   buffer entries were used.
 ## Direct translation from IRremoteESP8266 IRrecv::matchData (lines 1457-1499)
-def matchData(data_ptr: List[int], offset: int, nbits: int, onemark: int,
-              onespace: int, zeromark: int, zerospace: int, tolerance: int,
-              excess: int, MSBfirst: bool, expectlastspace: bool) -> match_result_t:
+def matchData(
+    data_ptr: List[int],
+    offset: int,
+    nbits: int,
+    onemark: int,
+    onespace: int,
+    zeromark: int,
+    zerospace: int,
+    tolerance: int,
+    excess: int,
+    MSBfirst: bool,
+    expectlastspace: bool,
+) -> match_result_t:
     """
     Match & decode data bits from IR timings.
     EXACT translation from IRremoteESP8266 IRrecv::matchData
@@ -146,11 +156,13 @@ def matchData(data_ptr: List[int], offset: int, nbits: int, onemark: int,
         # Replicate: for (result.used = 0; result.used < nbits * 2; result.used += 2, data_ptr += 2)
         while result.used < nbits * 2:
             # Is the bit a '1'?
-            if matchMark(data_ptr[offset + result.used], onemark, tolerance, excess) and \
-               matchSpace(data_ptr[offset + result.used + 1], onespace, tolerance, excess):
+            if matchMark(data_ptr[offset + result.used], onemark, tolerance, excess) and matchSpace(
+                data_ptr[offset + result.used + 1], onespace, tolerance, excess
+            ):
                 result.data = (result.data << 1) | 1
-            elif matchMark(data_ptr[offset + result.used], zeromark, tolerance, excess) and \
-                 matchSpace(data_ptr[offset + result.used + 1], zerospace, tolerance, excess):
+            elif matchMark(
+                data_ptr[offset + result.used], zeromark, tolerance, excess
+            ) and matchSpace(data_ptr[offset + result.used + 1], zerospace, tolerance, excess):
                 result.data <<= 1  # The bit is a '0'.
             else:
                 if not MSBfirst:
@@ -160,8 +172,19 @@ def matchData(data_ptr: List[int], offset: int, nbits: int, onemark: int,
         result.success = True
     else:  # We are expecting data without a final space.
         # Match all but the last bit, as it may not match easily.
-        result = matchData(data_ptr, offset, nbits - 1 if nbits else 0, onemark,
-                          onespace, zeromark, zerospace, tolerance, excess, True, True)
+        result = matchData(
+            data_ptr,
+            offset,
+            nbits - 1 if nbits else 0,
+            onemark,
+            onespace,
+            zeromark,
+            zerospace,
+            tolerance,
+            excess,
+            True,
+            True,
+        )
         if result.success:
             # Is the bit a '1'?
             if matchMark(data_ptr[offset + result.used], onemark, tolerance, excess):
@@ -195,10 +218,21 @@ def matchData(data_ptr: List[int], offset: int, nbits: int, onemark: int,
 ## @param[in] expectlastspace Do we expect a space at the end of the message?
 ## @return If successful, how many buffer entries were used. Otherwise 0.
 ## Direct translation from IRremoteESP8266 IRrecv::matchBytes (lines 1518-1538)
-def matchBytes(data_ptr: List[int], offset: int, result_ptr: List[int],
-               remaining: int, nbytes: int, onemark: int, onespace: int,
-               zeromark: int, zerospace: int, tolerance: int, excess: int,
-               MSBfirst: bool, expectlastspace: bool) -> int:
+def matchBytes(
+    data_ptr: List[int],
+    offset: int,
+    result_ptr: List[int],
+    remaining: int,
+    nbytes: int,
+    onemark: int,
+    onespace: int,
+    zeromark: int,
+    zerospace: int,
+    tolerance: int,
+    excess: int,
+    MSBfirst: bool,
+    expectlastspace: bool,
+) -> int:
     """
     Match & decode bytes from IR timings.
     EXACT translation from IRremoteESP8266 IRrecv::matchBytes
@@ -212,9 +246,19 @@ def matchBytes(data_ptr: List[int], offset: int, result_ptr: List[int],
             lastspace = expectlastspace
         else:
             lastspace = True
-        result = matchData(data_ptr, offset + used_offset, 8, onemark, onespace,
-                          zeromark, zerospace, tolerance, excess,
-                          MSBfirst, lastspace)
+        result = matchData(
+            data_ptr,
+            offset + used_offset,
+            8,
+            onemark,
+            onespace,
+            zeromark,
+            zerospace,
+            tolerance,
+            excess,
+            MSBfirst,
+            lastspace,
+        )
         if result.success == False:
             return 0  # Fail
         result_ptr[byte_pos] = result.data & 0xFF  # (uint8_t)result.data
@@ -253,12 +297,26 @@ def matchBytes(data_ptr: List[int], offset: int, result_ptr: List[int],
 ##   true is Most Significant Bit First Order, false is Least Significant First
 ## @return If successful, how many buffer entries were used. Otherwise 0.
 ## Direct translation from IRremoteESP8266 IRrecv::_matchGeneric (lines 1570-1645)
-def _matchGeneric(data_ptr: List[int], result_bits_ptr: Optional[List[int]],
-                 result_bytes_ptr: Optional[List[int]], use_bits: bool,
-                 remaining: int, nbits: int, hdrmark: int, hdrspace: int,
-                 onemark: int, onespace: int, zeromark: int, zerospace: int,
-                 footermark: int, footerspace: int, atleast: bool,
-                 tolerance: int, excess: int, MSBfirst: bool) -> int:
+def _matchGeneric(
+    data_ptr: List[int],
+    result_bits_ptr: Optional[List[int]],
+    result_bytes_ptr: Optional[List[int]],
+    use_bits: bool,
+    remaining: int,
+    nbits: int,
+    hdrmark: int,
+    hdrspace: int,
+    onemark: int,
+    onespace: int,
+    zeromark: int,
+    zerospace: int,
+    footermark: int,
+    footerspace: int,
+    atleast: bool,
+    tolerance: int,
+    excess: int,
+    MSBfirst: bool,
+) -> int:
     """
     Match & decode a generic/typical IR message.
     EXACT translation from IRremoteESP8266 IRrecv::_matchGeneric
@@ -298,19 +356,40 @@ def _matchGeneric(data_ptr: List[int], result_bits_ptr: Optional[List[int]],
 
     # Data
     if use_bits:  # Bits.
-        result = matchData(data_ptr, offset, nbits, onemark, onespace,
-                          zeromark, zerospace, tolerance, excess, MSBfirst,
-                          kexpectspace)
+        result = matchData(
+            data_ptr,
+            offset,
+            nbits,
+            onemark,
+            onespace,
+            zeromark,
+            zerospace,
+            tolerance,
+            excess,
+            MSBfirst,
+            kexpectspace,
+        )
         if not result.success:
             return 0
         if result_bits_ptr is not None:
             result_bits_ptr[0] = result.data  # *result_bits_ptr = result.data
         offset += result.used
     else:  # bytes
-        data_used = matchBytes(data_ptr, offset, result_bytes_ptr,
-                              remaining - offset, nbits // 8, onemark, onespace,
-                              zeromark, zerospace, tolerance, excess, MSBfirst,
-                              kexpectspace)
+        data_used = matchBytes(
+            data_ptr,
+            offset,
+            result_bytes_ptr,
+            remaining - offset,
+            nbits // 8,
+            onemark,
+            onespace,
+            zeromark,
+            zerospace,
+            tolerance,
+            excess,
+            MSBfirst,
+            kexpectspace,
+        )
         if not data_used:
             return 0
         offset += data_used
@@ -339,6 +418,7 @@ class decode_results:
     Results returned from the decoder.
     EXACT translation from IRremoteESP8266 decode_results class
     """
+
     def __init__(self):
         self.decode_type = 0  # Protocol type
         self.value = 0  # Decoded value (for simple protocols)
@@ -362,9 +442,13 @@ class decode_results:
 ## @param[in] _tolerance The tolerance percentage for matching (passed from IRrecv instance)
 ## @return A boolean. True if it can decode it, false if it can't.
 ## Direct translation from IRremoteESP8266 IRrecv::decodeFujitsuAC (ir_Fujitsu.cpp lines 1003-1099)
-def decodeFujitsuAC(results: decode_results, offset: int = 1,
-                   nbits: int = kFujitsuAcBits, strict: bool = False,
-                   _tolerance: int = 25) -> bool:
+def decodeFujitsuAC(
+    results: decode_results,
+    offset: int = 1,
+    nbits: int = kFujitsuAcBits,
+    strict: bool = False,
+    _tolerance: int = 25,
+) -> bool:
     """
     Decode a Fujitsu AC IR message.
     EXACT translation from IRremoteESP8266 IRrecv::decodeFujitsuAC
@@ -379,8 +463,12 @@ def decodeFujitsuAC(results: decode_results, offset: int = 1,
 
     # Compliance
     if strict:
-        if nbits not in [kFujitsuAcBits, kFujitsuAcBits - 8,
-                        kFujitsuAcMinBits, kFujitsuAcMinBits + 8]:
+        if nbits not in [
+            kFujitsuAcBits,
+            kFujitsuAcBits - 8,
+            kFujitsuAcMinBits,
+            kFujitsuAcMinBits + 8,
+        ]:
             return False  # Must be called with the correct nr. of bits.
 
     # Header / Some of the Data
@@ -405,7 +493,7 @@ def decodeFujitsuAC(results: decode_results, offset: int = 1,
         atleast=False,
         tolerance=_tolerance + kFujitsuAcExtraTolerance,
         excess=0,
-        MSBfirst=False  # LSB first
+        MSBfirst=False,  # LSB first
     )
     if not used:
         return False
@@ -435,7 +523,7 @@ def decodeFujitsuAC(results: decode_results, offset: int = 1,
             tolerance=_tolerance + kFujitsuAcExtraTolerance,
             excess=0,
             MSBfirst=False,
-            expectlastspace=True  # Default value in C++
+            expectlastspace=True,  # Default value in C++
         )
         if data_result.success == False:
             break  # Fail
@@ -445,16 +533,16 @@ def decodeFujitsuAC(results: decode_results, offset: int = 1,
         offset += data_result.used
 
     # Footer
-    if offset > results.rawlen or \
-       not matchMark(results.rawbuf[offset], kFujitsuAcBitMark,
-                    _tolerance + kFujitsuAcExtraTolerance, 0):
+    if offset > results.rawlen or not matchMark(
+        results.rawbuf[offset], kFujitsuAcBitMark, _tolerance + kFujitsuAcExtraTolerance, 0
+    ):
         return False
     offset += 1
 
     # The space is optional if we are out of capture.
-    if offset < results.rawlen and \
-       not matchAtLeast(results.rawbuf[offset], kFujitsuAcMinGap,
-                       _tolerance + kFujitsuAcExtraTolerance, 0):
+    if offset < results.rawlen and not matchAtLeast(
+        results.rawbuf[offset], kFujitsuAcMinGap, _tolerance + kFujitsuAcExtraTolerance, 0
+    ):
         return False
 
     # Compliance
@@ -498,8 +586,9 @@ def decodeFujitsuAC(results: decode_results, offset: int = 1,
     return True  # All good.
 
 
-def validate_timings(timings: List[int], headermark: int, headerspace: int,
-                     bitmark: int, tolerance: int) -> bool:
+def validate_timings(
+    timings: List[int], headermark: int, headerspace: int, bitmark: int, tolerance: int
+) -> bool:
     """
     Validate that timings appear to be a specific protocol.
     Quick check without full decode.
@@ -539,8 +628,9 @@ def validate_fujitsu_timings(timings: List[int]) -> bool:
     @return True if timings look like Fujitsu protocol, False otherwise
     """
     tolerance = 25 + kFujitsuAcExtraTolerance
-    return validate_timings(timings, kFujitsuAcHdrMark, kFujitsuAcHdrSpace,
-                          kFujitsuAcBitMark, tolerance)
+    return validate_timings(
+        timings, kFujitsuAcHdrMark, kFujitsuAcHdrSpace, kFujitsuAcBitMark, tolerance
+    )
 
 
 ## Match & decode a generic/typical constant bit time <= 64bit IR message.
@@ -565,11 +655,22 @@ def validate_fujitsu_timings(timings: List[int]) -> bool:
 ##   true is Most Significant Bit First Order, false is Least Significant First
 ## @return If successful, how many buffer entries were used. Otherwise 0.
 ## Direct translation from IRremoteESP8266 IRrecv::matchGenericConstBitTime (lines 1766-1830)
-def matchGenericConstBitTime(data_ptr: List[int], result_ptr: List[int],
-                             remaining: int, nbits: int, hdrmark: int,
-                             hdrspace: int, one: int, zero: int,
-                             footermark: int, footerspace: int, atleast: bool,
-                             tolerance: int, excess: int, MSBfirst: bool) -> int:
+def matchGenericConstBitTime(
+    data_ptr: List[int],
+    result_ptr: List[int],
+    remaining: int,
+    nbits: int,
+    hdrmark: int,
+    hdrspace: int,
+    one: int,
+    zero: int,
+    footermark: int,
+    footerspace: int,
+    atleast: bool,
+    tolerance: int,
+    excess: int,
+    MSBfirst: bool,
+) -> int:
     """
     Match & decode a generic/typical constant bit time IR message.
     EXACT translation from IRremoteESP8266 IRrecv::matchGenericConstBitTime
@@ -600,7 +701,7 @@ def matchGenericConstBitTime(data_ptr: List[int], result_ptr: List[int],
             atleast=atleast,
             tolerance=tolerance,
             excess=excess,
-            MSBfirst=MSBfirst
+            MSBfirst=MSBfirst,
         )
         return used
 
@@ -626,7 +727,7 @@ def matchGenericConstBitTime(data_ptr: List[int], result_ptr: List[int],
         atleast=False,
         tolerance=tolerance,
         excess=excess,
-        MSBfirst=True
+        MSBfirst=True,
     )
     if not offset:
         return 0  # Didn't match.
@@ -692,10 +793,22 @@ def matchGenericConstBitTime(data_ptr: List[int], result_ptr: List[int],
 ## @param[in] excess Nr. of uSeconds. (Def: kMarkExcess)
 ## @return If successful, how many buffer entries were used. Otherwise 0.
 ## Direct translation from IRremoteESP8266 IRrecv::matchGeneric (uint64_t variant)
-def matchGeneric(data_ptr: List[int], result_ptr: List[int], remaining: int,
-                 nbits: int, hdrmark: int, hdrspace: int, onemark: int,
-                 onespace: int, zeromark: int, zerospace: int, footermark: int,
-                 footerspace: int, atleast: bool, tolerance: int) -> bool:
+def matchGeneric(
+    data_ptr: List[int],
+    result_ptr: List[int],
+    remaining: int,
+    nbits: int,
+    hdrmark: int,
+    hdrspace: int,
+    onemark: int,
+    onespace: int,
+    zeromark: int,
+    zerospace: int,
+    footermark: int,
+    footerspace: int,
+    atleast: bool,
+    tolerance: int,
+) -> bool:
     """
     Match & decode a generic/typical IR message (uint64_t result variant).
     EXACT translation from IRremoteESP8266 IRrecv::matchGeneric (uint64_t variant)
@@ -721,6 +834,6 @@ def matchGeneric(data_ptr: List[int], result_ptr: List[int], remaining: int,
         atleast=atleast,
         tolerance=tolerance,
         excess=kMarkExcess,
-        MSBfirst=True
+        MSBfirst=True,
     )
     return used != 0
