@@ -28,6 +28,24 @@ from app.core.ir_protocols.fujitsu import (
     kFujitsuAcFanQuiet,
 )
 from app.core.ir_protocols.gree import IRGreeAC, sendGree
+from app.core.ir_protocols.panasonic import (
+    IRPanasonicAc,
+    sendPanasonicAC,
+    kPanasonicAcMinTemp,
+    kPanasonicAcMaxTemp,
+    kPanasonicAcAuto,
+    kPanasonicAcCool,
+    kPanasonicAcHeat,
+    kPanasonicAcDry,
+    kPanasonicAcFan,
+    kPanasonicAcFanMin,
+    kPanasonicAcFanLow,
+    kPanasonicAcFanMed,
+    kPanasonicAcFanHigh,
+    kPanasonicAcFanMax,
+    kPanasonicAcFanAuto,
+    kPanasonicAcStateLength,
+)
 from pydantic import BaseModel
 
 router = APIRouter()
@@ -221,6 +239,79 @@ def generate_gree_commands(current_bytes: List[int]) -> List[CommandInfo]:
     return commands
 
 
+def generate_panasonic_commands(current_bytes: List[int]) -> List[CommandInfo]:
+    """
+    Generate all available commands for Panasonic AC.
+
+    Returns 3-part commands combining temperature, mode, and fan speed.
+    Format: {temp}_{mode}_{fan} (e.g., "24_heat_auto", "18_cool_low")
+    Plus separate power on/off commands.
+    """
+    commands = []
+
+    # Define modes and fan speeds
+    modes = [
+        (kPanasonicAcAuto, "auto", "Auto"),
+        (kPanasonicAcCool, "cool", "Cool"),
+        (kPanasonicAcHeat, "heat", "Heat"),
+        (kPanasonicAcDry, "dry", "Dry"),
+        (kPanasonicAcFan, "fan", "Fan"),
+    ]
+
+    fan_speeds = [
+        (kPanasonicAcFanAuto, "auto", "Auto fan"),
+        (kPanasonicAcFanMin, "min", "Min fan"),
+        (kPanasonicAcFanLow, "low", "Low fan"),
+        (kPanasonicAcFanMed, "med", "Medium fan"),
+        (kPanasonicAcFanHigh, "high", "High fan"),
+        (kPanasonicAcFanMax, "max", "Max fan"),
+    ]
+
+    # Generate all combinations of temp + mode + fan
+    for temp in range(kPanasonicAcMinTemp, kPanasonicAcMaxTemp + 1):  # 16-30°C
+        for mode_val, mode_name, mode_desc in modes:
+            for fan_val, fan_name, fan_desc in fan_speeds:
+                ac = IRPanasonicAc()
+                ac.setRaw(current_bytes)
+                ac.setTemp(temp)
+                ac.setMode(mode_val)
+                ac.setFan(fan_val)
+                ac.setPower(True)
+
+                new_bytes = ac.getRaw()
+                signal = sendPanasonicAC(new_bytes, kPanasonicAcStateLength)
+                tuya_code = encode_ir(signal)
+
+                commands.append(
+                    CommandInfo(
+                        name=f"{temp}_{mode_name}_{fan_name}",
+                        description=f"{temp}°C, {mode_desc}, {fan_desc}",
+                        tuya_code=tuya_code,
+                    )
+                )
+
+    # Power commands
+    for power_state in [True, False]:
+        ac = IRPanasonicAc()
+        ac.setRaw(current_bytes)
+        ac.setPower(power_state)
+
+        new_bytes = ac.getRaw()
+        signal = sendPanasonicAC(new_bytes, kPanasonicAcStateLength)
+        tuya_code = encode_ir(signal)
+
+        power_name = "on" if power_state else "off"
+        commands.append(
+            CommandInfo(
+                name=f"power_{power_name}",
+                description=f"Turn power {power_name}",
+                tuya_code=tuya_code,
+            )
+        )
+
+    return commands
+
+
 def get_protocol_info(protocol_type: decode_type_t, state_bytes: List[int]) -> Dict[str, Any]:
     """
     Get protocol information including manufacturer, temperature ranges, and operation modes.
@@ -335,6 +426,15 @@ def get_protocol_info(protocol_type: decode_type_t, state_bytes: List[int]) -> D
             "fan_modes": ["auto", "quiet", "1", "2", "3", "4", "5"],
             "notes": "Daikin312 (312-bit)",
         },
+        # Panasonic (1 variant)
+        decode_type_t.PANASONIC_AC: {
+            "manufacturer": "Panasonic",
+            "min_temperature": 16,
+            "max_temperature": 30,
+            "operation_modes": ["auto", "cool", "heat", "dry", "fan"],
+            "fan_modes": ["auto", "min", "low", "med", "high", "max"],
+            "notes": "Panasonic AC (216-bit) - Supports swing, quiet, powerful, timer modes",
+        },
     }
 
     # Get protocol info or use defaults
@@ -366,7 +466,7 @@ def generate_commands_for_protocol(
     Returns:
         List of CommandInfo objects with all available commands
 
-    Note: Currently Fujitsu and Gree have full command generation.
+    Note: Currently Fujitsu, Gree, and Panasonic have full command generation.
           Other protocols return basic power commands.
           TODO: Implement full command generation for all 91+ protocols.
     """
@@ -374,6 +474,8 @@ def generate_commands_for_protocol(
         return generate_fujitsu_commands(state_bytes)
     elif protocol_type == decode_type_t.GREE:
         return generate_gree_commands(state_bytes)
+    elif protocol_type == decode_type_t.PANASONIC_AC:
+        return generate_panasonic_commands(state_bytes)
     else:
         # For other protocols, return a basic command set (power on/off)
         # TODO: Implement full command generation for all 91+ protocols
