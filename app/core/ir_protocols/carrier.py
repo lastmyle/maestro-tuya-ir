@@ -985,7 +985,7 @@ def decodeCarrierAC84(
     Decode the supplied Carroer A/C 84 Bit formatted message.
     EXACT translation from IRremoteESP8266 IRrecv::decodeCarrierAC84 (ir_Carrier.cpp:698-746)
     """
-    from app.core.ir_protocols.ir_recv import _matchGeneric, kHeader, kFooter
+    from app.core.ir_protocols.ir_recv import _matchGeneric, matchGenericConstBitTime, kHeader, kFooter, kMarkExcess
 
     # Check if we have enough data to even possibly match.
     if results.rawlen < 2 * nbits + kHeader + kFooter - 1 + offset:
@@ -999,19 +999,63 @@ def decodeCarrierAC84(
     if nbits % 8 != kCarrierAc84ExtraBits:
         return False
 
-    # Note: Python implementation simplified - we'd need a special matchGenericConstBitTime
-    # For now, this is a placeholder that indicates the decode would happen here
-    # The actual implementation would require matching constant bit time encoding
+    data = [0]  # Will hold first 4 bits
 
     # Header + Data (kCarrierAc84ExtraBits only)
-    # ... matchGenericConstBitTime would go here ...
+    # C++: matchGenericConstBitTime(..., kCarrierAc84ExtraBits, kCarrierAc84HdrMark, kCarrierAc84HdrSpace,
+    #                                kCarrierAc84Zero, kCarrierAc84One, 0, 0, false, _tolerance + kCarrierAc84ExtraTolerance, ...)
+    used = matchGenericConstBitTime(
+        data_ptr=results.rawbuf[offset:],
+        result_ptr=data,
+        remaining=results.rawlen - offset,
+        nbits=kCarrierAc84ExtraBits,
+        hdrmark=kCarrierAc84HdrMark,
+        hdrspace=kCarrierAc84HdrSpace,  # Header
+        one=kCarrierAc84Zero,  # Note: One and Zero are swapped in constant bit time
+        zero=kCarrierAc84One,
+        footermark=0,
+        footerspace=0,  # No Footer
+        atleast=False,
+        tolerance=25 + kCarrierAc84ExtraTolerance,  # _tolerance + kCarrierAc84ExtraTolerance
+        excess=kMarkExcess,
+        MSBfirst=False,
+    )
+    if not used:
+        return False
+
+    # Stuff the captured data so far into the first byte of the state.
+    results.state[0] = data[0]
+    offset += used
 
     # Capture the rest of the data as normal as we should be on a byte boundary.
     # Data + Footer
-    # ... rest of decoding would go here ...
+    # C++: matchGeneric(results->rawbuf + offset, results->state + 1, results->rawlen - offset,
+    #                   nbits - kCarrierAc84ExtraBits, 0, 0, kCarrierAc84Zero, kCarrierAc84One, ...)
+    used = _matchGeneric(
+        data_ptr=results.rawbuf[offset:],
+        result_bits_ptr=None,
+        result_bytes_ptr=results.state[1:],
+        use_bits=False,
+        remaining=results.rawlen - offset,
+        nbits=nbits - kCarrierAc84ExtraBits,
+        hdrmark=0,
+        hdrspace=0,  # No Header
+        onemark=kCarrierAc84Zero,
+        onespace=kCarrierAc84One,  # Data
+        zeromark=kCarrierAc84One,
+        zerospace=kCarrierAc84Zero,
+        footermark=kCarrierAc84Zero,
+        footerspace=kCarrierAc84Gap,
+        atleast=True,
+        tolerance=25 + kCarrierAc84ExtraTolerance,
+        excess=kMarkExcess,
+        MSBfirst=False,
+    )
+    if used == 0:
+        return False
 
     # Success
-    # results.decode_type = CARRIER_AC84
     results.bits = nbits
+    # results.decode_type = CARRIER_AC84
     results.repeat = False
     return True

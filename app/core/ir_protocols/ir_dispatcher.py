@@ -551,13 +551,13 @@ def decode(results: decode_results, max_skip: int = 0, noise_floor: int = 0) -> 
             decodePanasonic,
         )
 
-        if decodePanasonicAC(results, offset):
+        if decodePanasonicAC(results, offset, strict=False):
             results.decode_type = decode_type_t.PANASONIC_AC
             return True
-        if decodePanasonicAC32(results, offset):
+        if decodePanasonicAC32(results, offset, strict=False):
             results.decode_type = decode_type_t.PANASONIC_AC32
             return True
-        if decodePanasonic(results, offset):
+        if decodePanasonic(results, offset, strict=False):
             results.decode_type = decode_type_t.PANASONIC
             return True
 
