@@ -13,39 +13,7 @@ from typing import Dict, List, Any, Optional
 
 from app.core.tuya_encoder import decode_ir, encode_ir
 from app.core.ir_protocols import decode, decode_results, decode_type_t, send
-from app.core.ir_protocols.fujitsu import (
-    IRFujitsuAC,
-    sendFujitsuAC,
-    kFujitsuAcModeAuto,
-    kFujitsuAcModeCool,
-    kFujitsuAcModeHeat,
-    kFujitsuAcModeDry,
-    kFujitsuAcModeFan,
-    kFujitsuAcFanAuto,
-    kFujitsuAcFanHigh,
-    kFujitsuAcFanMed,
-    kFujitsuAcFanLow,
-    kFujitsuAcFanQuiet,
-)
-from app.core.ir_protocols.gree import IRGreeAC, sendGree
-from app.core.ir_protocols.panasonic import (
-    IRPanasonicAc,
-    sendPanasonicAC,
-    kPanasonicAcMinTemp,
-    kPanasonicAcMaxTemp,
-    kPanasonicAcAuto,
-    kPanasonicAcCool,
-    kPanasonicAcHeat,
-    kPanasonicAcDry,
-    kPanasonicAcFan,
-    kPanasonicAcFanMin,
-    kPanasonicAcFanLow,
-    kPanasonicAcFanMed,
-    kPanasonicAcFanHigh,
-    kPanasonicAcFanMax,
-    kPanasonicAcFanAuto,
-    kPanasonicAcStateLength,
-)
+from app.services import command_generator
 from pydantic import BaseModel
 
 router = APIRouter()
@@ -82,236 +50,6 @@ class IdentifyResponse(BaseModel):
     model: Optional[str] = None  # Specific model if detected
 
 
-def generate_fujitsu_commands(current_bytes: List[int]) -> List[CommandInfo]:
-    """
-    Generate all available commands for Fujitsu AC.
-
-    Returns 3-part commands combining temperature, mode, and fan speed.
-    Format: {temp}_{mode}_{fan} (e.g., "24_heat_auto", "18_cool_quiet")
-    Plus separate power on/off commands.
-    """
-    commands = []
-
-    # Define modes and fan speeds
-    modes = [
-        (kFujitsuAcModeAuto, "auto", "Auto"),
-        (kFujitsuAcModeCool, "cool", "Cool"),
-        (kFujitsuAcModeHeat, "heat", "Heat"),
-        (kFujitsuAcModeDry, "dry", "Dry"),
-        (kFujitsuAcModeFan, "fan", "Fan"),
-    ]
-
-    fan_speeds = [
-        (kFujitsuAcFanAuto, "auto", "Auto fan"),
-        (kFujitsuAcFanQuiet, "quiet", "Quiet fan"),
-        (kFujitsuAcFanLow, "low", "Low fan"),
-        (kFujitsuAcFanMed, "med", "Medium fan"),
-        (kFujitsuAcFanHigh, "high", "High fan"),
-    ]
-
-    # Generate all combinations of temp + mode + fan
-    for temp in range(16, 31):  # 16-30°C
-        for mode_val, mode_name, mode_desc in modes:
-            for fan_val, fan_name, fan_desc in fan_speeds:
-                ac = IRFujitsuAC()
-                ac.setRaw(current_bytes, len(current_bytes))
-                ac.setTemp(temp)
-                ac.setMode(mode_val)
-                ac.setFanSpeed(fan_val)
-                ac.setPower(True)
-
-                new_bytes = ac.getRaw()
-                signal = sendFujitsuAC(new_bytes, len(new_bytes))
-                tuya_code = encode_ir(signal)
-
-                commands.append(
-                    CommandInfo(
-                        name=f"{temp}_{mode_name}_{fan_name}",
-                        description=f"{temp}°C, {mode_desc}, {fan_desc}",
-                        tuya_code=tuya_code,
-                    )
-                )
-
-    # Power commands
-    for power_state in [True, False]:
-        ac = IRFujitsuAC()
-        ac.setRaw(current_bytes, len(current_bytes))
-        ac.setPower(power_state)
-
-        new_bytes = ac.getRaw()
-        signal = sendFujitsuAC(new_bytes, len(new_bytes))
-        tuya_code = encode_ir(signal)
-
-        power_name = "on" if power_state else "off"
-        commands.append(
-            CommandInfo(
-                name=f"power_{power_name}",
-                description=f"Turn power {power_name}",
-                tuya_code=tuya_code,
-            )
-        )
-
-    return commands
-
-
-def generate_gree_commands(current_bytes: List[int]) -> List[CommandInfo]:
-    """
-    Generate all available commands for Gree AC.
-
-    Returns 3-part commands combining temperature, mode, and fan speed.
-    Format: {temp}_{mode}_{fan} (e.g., "24_heat_auto", "18_cool_low")
-    Plus separate power on/off commands.
-    """
-    commands = []
-
-    # Import Gree constants
-    from app.core.ir_protocols.gree import (
-        kGreeMinTempC,
-        kGreeMaxTempC,
-        kGreeAuto,
-        kGreeCool,
-        kGreeHeat,
-        kGreeDry,
-        kGreeFan,
-        kGreeFanAuto,
-        kGreeFanMin,
-        kGreeFanMax,
-    )
-
-    # Define modes and fan speeds
-    modes = [
-        (kGreeAuto, "auto", "Auto"),
-        (kGreeCool, "cool", "Cool"),
-        (kGreeHeat, "heat", "Heat"),
-        (kGreeDry, "dry", "Dry"),
-        (kGreeFan, "fan", "Fan"),
-    ]
-
-    fan_speeds = [
-        (kGreeFanAuto, "auto", "Auto fan"),
-        (kGreeFanMin, "low", "Low fan"),
-        (kGreeFanMin + 1, "med", "Medium fan"),
-        (kGreeFanMax, "high", "High fan"),
-    ]
-
-    # Generate all combinations of temp + mode + fan
-    for temp in range(kGreeMinTempC, kGreeMaxTempC + 1):
-        for mode_val, mode_name, mode_desc in modes:
-            for fan_val, fan_name, fan_desc in fan_speeds:
-                ac = IRGreeAC()
-                ac.setRaw(current_bytes)
-                ac.setTemp(temp)
-                ac.setMode(mode_val)
-                ac.setFan(fan_val)
-                ac.setPower(True)
-
-                new_bytes = ac.getRaw()
-                signal = sendGree(new_bytes, len(new_bytes))
-                tuya_code = encode_ir(signal)
-
-                commands.append(
-                    CommandInfo(
-                        name=f"{temp}_{mode_name}_{fan_name}",
-                        description=f"{temp}°C, {mode_desc}, {fan_desc}",
-                        tuya_code=tuya_code,
-                    )
-                )
-
-    # Power commands
-    for power_state in [True, False]:
-        ac = IRGreeAC()
-        ac.setRaw(current_bytes)
-        ac.setPower(power_state)
-
-        new_bytes = ac.getRaw()
-        signal = sendGree(new_bytes, len(new_bytes))
-        tuya_code = encode_ir(signal)
-
-        power_name = "on" if power_state else "off"
-        commands.append(
-            CommandInfo(
-                name=f"power_{power_name}",
-                description=f"Turn power {power_name}",
-                tuya_code=tuya_code,
-            )
-        )
-
-    return commands
-
-
-def generate_panasonic_commands(current_bytes: List[int]) -> List[CommandInfo]:
-    """
-    Generate all available commands for Panasonic AC.
-
-    Returns 3-part commands combining temperature, mode, and fan speed.
-    Format: {temp}_{mode}_{fan} (e.g., "24_heat_auto", "18_cool_low")
-    Plus separate power on/off commands.
-    """
-    commands = []
-
-    # Define modes and fan speeds
-    modes = [
-        (kPanasonicAcAuto, "auto", "Auto"),
-        (kPanasonicAcCool, "cool", "Cool"),
-        (kPanasonicAcHeat, "heat", "Heat"),
-        (kPanasonicAcDry, "dry", "Dry"),
-        (kPanasonicAcFan, "fan", "Fan"),
-    ]
-
-    fan_speeds = [
-        (kPanasonicAcFanAuto, "auto", "Auto fan"),
-        (kPanasonicAcFanMin, "min", "Min fan"),
-        (kPanasonicAcFanLow, "low", "Low fan"),
-        (kPanasonicAcFanMed, "med", "Medium fan"),
-        (kPanasonicAcFanHigh, "high", "High fan"),
-        (kPanasonicAcFanMax, "max", "Max fan"),
-    ]
-
-    # Generate all combinations of temp + mode + fan
-    for temp in range(kPanasonicAcMinTemp, kPanasonicAcMaxTemp + 1):  # 16-30°C
-        for mode_val, mode_name, mode_desc in modes:
-            for fan_val, fan_name, fan_desc in fan_speeds:
-                ac = IRPanasonicAc()
-                ac.setRaw(current_bytes)
-                ac.setTemp(temp)
-                ac.setMode(mode_val)
-                ac.setFan(fan_val)
-                ac.setPower(True)
-
-                new_bytes = ac.getRaw()
-                signal = sendPanasonicAC(new_bytes, kPanasonicAcStateLength)
-                tuya_code = encode_ir(signal)
-
-                commands.append(
-                    CommandInfo(
-                        name=f"{temp}_{mode_name}_{fan_name}",
-                        description=f"{temp}°C, {mode_desc}, {fan_desc}",
-                        tuya_code=tuya_code,
-                    )
-                )
-
-    # Power commands
-    for power_state in [True, False]:
-        ac = IRPanasonicAc()
-        ac.setRaw(current_bytes)
-        ac.setPower(power_state)
-
-        new_bytes = ac.getRaw()
-        signal = sendPanasonicAC(new_bytes, kPanasonicAcStateLength)
-        tuya_code = encode_ir(signal)
-
-        power_name = "on" if power_state else "off"
-        commands.append(
-            CommandInfo(
-                name=f"power_{power_name}",
-                description=f"Turn power {power_name}",
-                tuya_code=tuya_code,
-            )
-        )
-
-    return commands
-
-
 def get_protocol_info(protocol_type: decode_type_t, state_bytes: List[int]) -> Dict[str, Any]:
     """
     Get protocol information including manufacturer, temperature ranges, and operation modes.
@@ -325,26 +63,13 @@ def get_protocol_info(protocol_type: decode_type_t, state_bytes: List[int]) -> D
     """
     protocol_name = decode_type_t(protocol_type).name
 
+    # Try to get info from command generator service first (for protocols with full support)
+    if command_generator.is_supported(protocol_type):
+        return command_generator.get_protocol_info(protocol_type)
+
     # Complete protocol map for all 91+ variants across 46 manufacturers
+    # This provides basic info for protocols without full command generation
     protocol_map = {
-        # Fujitsu (1 variant)
-        decode_type_t.FUJITSU_AC: {
-            "manufacturer": "Fujitsu",
-            "min_temperature": 16,
-            "max_temperature": 30,
-            "operation_modes": ["auto", "cool", "heat", "dry", "fan"],
-            "fan_modes": ["auto", "quiet", "low", "med", "high"],
-            "notes": "Fujitsu AC (128-bit) - Supports swing, powerful, econo modes",
-        },
-        # Gree (1 variant)
-        decode_type_t.GREE: {
-            "manufacturer": "Gree",
-            "min_temperature": 16,
-            "max_temperature": 30,
-            "operation_modes": ["auto", "cool", "heat", "dry", "fan", "econo"],
-            "fan_modes": ["auto", "min", "med", "max"],
-            "notes": "Gree AC (64-bit) - Supports iFeelReport, turbo, light, sleep, swing",
-        },
         # Daikin (10 variants)
         decode_type_t.DAIKIN: {
             "manufacturer": "Daikin",
@@ -426,15 +151,6 @@ def get_protocol_info(protocol_type: decode_type_t, state_bytes: List[int]) -> D
             "fan_modes": ["auto", "quiet", "1", "2", "3", "4", "5"],
             "notes": "Daikin312 (312-bit)",
         },
-        # Panasonic (1 variant)
-        decode_type_t.PANASONIC_AC: {
-            "manufacturer": "Panasonic",
-            "min_temperature": 16,
-            "max_temperature": 30,
-            "operation_modes": ["auto", "cool", "heat", "dry", "fan"],
-            "fan_modes": ["auto", "min", "low", "med", "high", "max"],
-            "notes": "Panasonic AC (216-bit) - Supports swing, quiet, powerful, timer modes",
-        },
     }
 
     # Get protocol info or use defaults
@@ -466,33 +182,37 @@ def generate_commands_for_protocol(
     Returns:
         List of CommandInfo objects with all available commands
 
-    Note: Currently Fujitsu, Gree, and Panasonic have full command generation.
+    Note: Uses command generator service for supported protocols (Fujitsu, Gree, Panasonic).
           Other protocols return basic power commands.
-          TODO: Implement full command generation for all 91+ protocols.
     """
-    if protocol_type == decode_type_t.FUJITSU_AC:
-        return generate_fujitsu_commands(state_bytes)
-    elif protocol_type == decode_type_t.GREE:
-        return generate_gree_commands(state_bytes)
-    elif protocol_type == decode_type_t.PANASONIC_AC:
-        return generate_panasonic_commands(state_bytes)
-    else:
-        # For other protocols, return a basic command set (power on/off)
-        # TODO: Implement full command generation for all 91+ protocols
-        timings = send(protocol_type, state_bytes, len(state_bytes), 0)
-        if timings:
-            tuya_code = encode_ir(timings)
-        else:
-            tuya_code = ""
-
+    # Try command generator service first
+    if command_generator.is_supported(protocol_type):
+        service_commands = command_generator.generate_commands(protocol_type, state_bytes)
+        # Convert service CommandInfo to API CommandInfo
         return [
-            CommandInfo(name="power_on", description="Turn power on", tuya_code=tuya_code),
             CommandInfo(
-                name="power_off",
-                description="Turn power off (state with power bit cleared)",
-                tuya_code=tuya_code,
-            ),
+                name=cmd.name,
+                description=cmd.description,
+                tuya_code=cmd.tuya_code,
+            )
+            for cmd in service_commands
         ]
+
+    # For protocols without full command generation, return basic commands
+    timings = send(protocol_type, state_bytes, len(state_bytes), 0)
+    if timings:
+        tuya_code = encode_ir(timings)
+    else:
+        tuya_code = ""
+
+    return [
+        CommandInfo(name="power_on", description="Turn power on", tuya_code=tuya_code),
+        CommandInfo(
+            name="power_off",
+            description="Turn power off (state with power bit cleared)",
+            tuya_code=tuya_code,
+        ),
+    ]
 
 
 @router.post("/identify", response_model=IdentifyResponse)
@@ -601,6 +321,7 @@ async def identify(request: IdentifyRequest):
         )
     except Exception as e:
         import traceback
+
         traceback.print_exc()  # Print to console for debugging
         raise HTTPException(
             status_code=500,
