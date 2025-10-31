@@ -167,10 +167,10 @@ kPanasonicKnownGoodState = [
     0x04,
     0x00,
     0x00,
-    0x00,
+    0x2E,
     0x80,
-    0x00,
-    0x00,
+    0x62,
+    0x09,
     0x00,
     0x0E,
     0xE0,
@@ -447,9 +447,11 @@ def sendPanasonicAC(
             zeromark=kPanasonicBitMark,
             zerospace=kPanasonicZeroSpace,
             footermark=kPanasonicBitMark,
+            gap=kPanasonicAcSectionGap,  # 10,000µs gap before section 2
             dataptr=data,
             nbytes=kPanasonicAcSection1Length,
             MSBfirst=False,
+            repeat=0,  # Don't use repeat inside sendGeneric, handle it here
         )
         all_timings.extend(section1_timings)
 
@@ -462,11 +464,17 @@ def sendPanasonicAC(
             zeromark=kPanasonicBitMark,
             zerospace=kPanasonicZeroSpace,
             footermark=kPanasonicBitMark,
+            gap=0,  # No gap after final section
             dataptr=data[kPanasonicAcSection1Length:],
             nbytes=nbytes - kPanasonicAcSection1Length,
             MSBfirst=False,
+            repeat=0,
         )
         all_timings.extend(section2_timings)
+
+        # Add inter-message gap only between repeated messages
+        if r < repeat:
+            all_timings.append(kPanasonicAcMessageGap)
 
     return all_timings
 

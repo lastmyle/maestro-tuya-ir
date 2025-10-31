@@ -7,11 +7,11 @@ import pytest
 import sys
 
 from app.core.tuya_encoder import decode_ir, encode_ir
-from app.core.ir_protocols.test_codes import FUJITSU_KNOWN_GOOD_CODES
+from app.core.ir_protocols.test_codes import FUJITSU_KNOWN_GOOD_CODES, PANASONIC_KNOWN_GOOD_CODES
 
 
 # Use centralized test codes
-KNOWN_GOOD_CODES = FUJITSU_KNOWN_GOOD_CODES
+KNOWN_GOOD_CODES = FUJITSU_KNOWN_GOOD_CODES | PANASONIC_KNOWN_GOOD_CODES
 
 
 # def test_decode_completely():

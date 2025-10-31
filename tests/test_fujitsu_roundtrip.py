@@ -2,6 +2,7 @@ from app.core.ir_protocols.fujitsu import IRFujitsuAC, sendFujitsuAC
 from app.core.ir_protocols.ir_recv import decode_results, decodeFujitsuAC, kFujitsuAcBits
 from app.core.tuya_encoder import decode_ir, encode_ir
 from tests.test_tuya_encoder_roundtrip import KNOWN_GOOD_CODES
+from app.settings import settings
 
 import requests
 import urllib.parse
@@ -40,12 +41,11 @@ def test_round_trip():
     print(f"Original: {original}")
     print(f"New: {new_command}")
 
-    # Construct URL to send the new command to remote hub
-    base_url = "https://cloud.hubitat.com/api/fa2f9b71-aa19-49c1-bfff-327f7da9037d/apps/4/devices/6/sendCode"
-    access_token = "2e42137e-b1d4-4d29-8ef9-c098ca82304e"
+    # Construct URL to send the new command to remote hub (from settings)
+    base_url = f"https://cloud.hubitat.com/api/{settings.hubitat.hub_id}/apps/{settings.hubitat.api_app_id}/devices/{settings.hubitat.device_id}/sendCode"
     # URL-encode the command to handle special characters like / and +
     encoded_command = urllib.parse.quote(new_command, safe="")
-    full_url = f"{base_url}/{encoded_command}?access_token={access_token}"
+    full_url = f"{base_url}/{encoded_command}?access_token={settings.hubitat.access_token}"
 
     print(f"\nSending to hub:")
     print(full_url)
@@ -73,12 +73,11 @@ def test_send_code():
 
     print(f"New: {new_command}")
 
-    # Construct URL to send the new command to remote hub
-    base_url = "https://cloud.hubitat.com/api/fa2f9b71-aa19-49c1-bfff-327f7da9037d/apps/4/devices/6/sendCode"
-    access_token = "2e42137e-b1d4-4d29-8ef9-c098ca82304e"
+    # Construct URL to send the new command to remote hub (from settings)
+    base_url = f"https://cloud.hubitat.com/api/{settings.hubitat.hub_id}/apps/{settings.hubitat.api_app_id}/devices/{settings.hubitat.device_id}/sendCode"
     # URL-encode the command to handle special characters like / and +
     encoded_command = urllib.parse.quote(new_command, safe="")
-    full_url = f"{base_url}/{encoded_command}?access_token={access_token}"
+    full_url = f"{base_url}/{encoded_command}?access_token={settings.hubitat.access_token}"
 
     print(f"\nSending to hub:")
     print(full_url)

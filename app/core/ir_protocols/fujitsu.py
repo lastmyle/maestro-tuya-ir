@@ -1076,7 +1076,9 @@ def sendFujitsuAC(data: List[int], nbytes: int) -> List[int]:
         zeromark=kFujitsuAcBitMark,
         zerospace=kFujitsuAcZeroSpace,
         footermark=kFujitsuAcBitMark,
+        gap=0,  # No trailing gap for single message (kFujitsuAcMinGap only for repeats)
         dataptr=data,
         nbytes=nbytes,
         MSBfirst=False,  # LSB first
+        repeat=0,  # Single message only
     )

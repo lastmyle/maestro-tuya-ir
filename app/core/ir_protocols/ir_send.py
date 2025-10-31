@@ -74,9 +74,12 @@ def sendData(
 ## @param[in] zeromark Nr. of usecs for a '0' bit mark.
 ## @param[in] zerospace Nr. of usecs for a '0' bit space.
 ## @param[in] footermark Nr. of usecs for the footer mark. 0 means no footer mark.
+## @param[in] gap Nr. of usecs for the gap between repeated messages. 0 means no gap.
+##   NOTE: Gap is only added BETWEEN messages when repeat > 0, NOT after the final message.
 ## @param[in] dataptr Byte array of data to encode.
 ## @param[in] nbytes Number of bytes in dataptr.
 ## @param[in] MSBfirst True for MSB-first bit order, False for LSB-first.
+## @param[in] repeat Number of extra times to send the message. 0 = send once only.
 ## Adapted from IRremoteESP8266 IRsend::sendGeneric
 def sendGeneric(
     headermark: int,
@@ -86,34 +89,60 @@ def sendGeneric(
     zeromark: int,
     zerospace: int,
     footermark: int,
-    dataptr: List[int],
-    nbytes: int,
-    MSBfirst: bool,
+    gap: int = 0,
+    dataptr: List[int] = None,
+    nbytes: int = 0,
+    MSBfirst: bool = True,
+    repeat: int = 0,
 ) -> List[int]:
     """
     Encode byte array into IR protocol timing array.
-    Adapted from IRremoteESP8266 IRsend::sendGeneric (hardware params removed).
+    Adapted from IRremoteESP8266 IRsend::sendGeneric.
 
-    Returns list of timing values in microseconds (mark/space pairs).
+    Args:
+        gap: Space in microseconds between repeated messages. NOT added after final message.
+        repeat: Number of extra transmissions. 0 = send once, 1 = send twice, etc.
+
+    Returns:
+        List of timing values in microseconds (mark/space pairs).
     """
+    if dataptr is None:
+        return []
+
     all_timings = []
 
-    # Header
-    if headermark:
-        all_timings.append(headermark)
-    if headerspace:
-        all_timings.append(headerspace)
+    # Send message (repeat + 1) times
+    for r in range(repeat + 1):
+        # Header
+        if headermark:
+            all_timings.append(headermark)
+        if headerspace:
+            all_timings.append(headerspace)
 
-    # Data
-    for i in range(nbytes):
-        byte_timings = sendData(
-            onemark, onespace, zeromark, zerospace, dataptr[i], 8, MSBfirst
-        )
-        all_timings.extend(byte_timings)
+        # Data
+        for i in range(nbytes):
+            byte_timings = sendData(
+                onemark, onespace, zeromark, zerospace, dataptr[i], 8, MSBfirst
+            )
+            all_timings.extend(byte_timings)
 
-    # Footer
-    if footermark:
-        all_timings.append(footermark)
+        # Footer
+        if footermark:
+            all_timings.append(footermark)
+
+        # Gap - added after each message in the loop
+        # For Panasonic: gap is used for section separator (always added)
+        # For others with repeat: gap is inter-message spacing
+        # If this is the last message AND gap is for inter-message only, skip it
+        if gap:
+            # Only skip gap if this is the last repetition AND we're repeating
+            # (i.e., don't skip for single messages where gap is structural like Panasonic)
+            if repeat > 0 and r == repeat:
+                # This is the last of multiple repeats, skip the gap
+                pass
+            else:
+                # Add gap: either structural (repeat=0) or between messages (repeat>0, not last)
+                all_timings.append(gap)
 
     return all_timings
 
@@ -126,9 +155,12 @@ def sendGeneric(
 ## @param[in] zeromark Nr. of usecs for a '0' bit mark.
 ## @param[in] zerospace Nr. of usecs for a '0' bit space.
 ## @param[in] footermark Nr. of usecs for the footer mark. 0 means no footer mark.
+## @param[in] gap Nr. of usecs for the gap between repeated messages. 0 means no gap.
+##   NOTE: Gap is only added BETWEEN messages when repeat > 0, NOT after the final message.
 ## @param[in] data Integer data to encode.
 ## @param[in] nbits Number of bits to encode from data.
 ## @param[in] MSBfirst True for MSB-first bit order, False for LSB-first.
+## @param[in] repeat Number of extra times to send the message. 0 = send once only.
 ## Adapted from IRremoteESP8266 IRsend::sendGeneric (uint64_t variant)
 def sendGenericUint64(
     headermark: int,
@@ -138,30 +170,47 @@ def sendGenericUint64(
     zeromark: int,
     zerospace: int,
     footermark: int,
-    data: int,
-    nbits: int,
-    MSBfirst: bool,
+    gap: int = 0,
+    data_uint64: int = 0,
+    nbits: int = 0,
+    MSBfirst: bool = True,
+    repeat: int = 0,
 ) -> List[int]:
     """
     Encode integer data into IR protocol timing array.
-    Adapted from IRremoteESP8266 IRsend::sendGeneric (hardware params removed).
+    Adapted from IRremoteESP8266 IRsend::sendGeneric.
 
-    Returns list of timing values in microseconds (mark/space pairs).
+    Args:
+        gap: Space in microseconds between repeated messages. NOT added after final message.
+        repeat: Number of extra transmissions. 0 = send once, 1 = send twice, etc.
+        data_uint64: Integer data to encode (renamed from 'data' to avoid conflicts).
+
+    Returns:
+        List of timing values in microseconds (mark/space pairs).
     """
     all_timings = []
 
-    # Header
-    if headermark:
-        all_timings.append(headermark)
-    if headerspace:
-        all_timings.append(headerspace)
+    # Send message (repeat + 1) times
+    for r in range(repeat + 1):
+        # Header
+        if headermark:
+            all_timings.append(headermark)
+        if headerspace:
+            all_timings.append(headerspace)
 
-    # Data
-    data_timings = sendData(onemark, onespace, zeromark, zerospace, data, nbits, MSBfirst)
-    all_timings.extend(data_timings)
+        # Data
+        data_timings = sendData(onemark, onespace, zeromark, zerospace, data_uint64, nbits, MSBfirst)
+        all_timings.extend(data_timings)
 
-    # Footer
-    if footermark:
-        all_timings.append(footermark)
+        # Footer
+        if footermark:
+            all_timings.append(footermark)
+
+        # Gap - same logic as sendGeneric
+        if gap:
+            if repeat > 0 and r == repeat:
+                pass  # Skip gap after last repetition
+            else:
+                all_timings.append(gap)
 
     return all_timings
