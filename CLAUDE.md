@@ -259,6 +259,147 @@ This:
 make dev  # Runs with auto-reload
 ```
 
+## AWS SSO Authentication
+
+### Setting Up AWS SSO for LastMyle Accounts
+
+The project uses AWS SSO for secure access to LastMyle AWS accounts.
+
+#### Initial Configuration
+
+Add the following profiles to your `~/.aws/config` file:
+
+```ini
+[default]
+region = us-west-2
+
+[profile AdministratorAccess-440744230208]
+sso_start_url = https://d-9067ed02ff.awsapps.com/start/#
+sso_region = us-east-1
+sso_account_id = 440744230208
+sso_role_name = AdministratorAccess
+region = us-west-2
+
+[profile maestro-development]
+sso_start_url = https://d-9067ed02ff.awsapps.com/start/#
+sso_region = us-east-1
+sso_account_id = 440744230208
+sso_role_name = AdministratorAccess
+region = us-west-2
+
+[profile maestro-production]
+sso_start_url = https://d-9067ed02ff.awsapps.com/start/#
+sso_region = us-east-1
+sso_account_id = 343218224546
+sso_role_name = AdministratorAccess
+region = us-west-2
+
+[profile maestro-org]
+sso_start_url = https://d-9067ed02ff.awsapps.com/start/#
+sso_region = us-east-1
+sso_account_id = 891377391463
+sso_role_name = AdministratorAccess
+region = us-west-2
+```
+
+#### Account Structure
+
+The LastMyle AWS organization has three accounts:
+
+- **maestro-development** (440744230208) - Development and testing environment
+- **maestro-production** (343218224546) - Production environment
+- **maestro-org** (891377391463) - Organization management account
+
+All profiles use:
+- SSO URL: https://d-9067ed02ff.awsapps.com/start/#
+- SSO Region: us-east-1
+- Default Region: us-west-2
+- Role: AdministratorAccess
+
+#### Logging In
+
+```bash
+# Login to development account
+aws sso login --profile maestro-development
+
+# Login to production account
+aws sso login --profile maestro-production
+
+# Login to organization account
+aws sso login --profile maestro-org
+```
+
+This will:
+1. Open your browser to https://d-9067ed02ff.awsapps.com/start/#
+2. Prompt you to authorize the login
+3. Cache credentials for 8 hours (default)
+
+#### Using AWS CLI with SSO
+
+```bash
+# Set your profile for the current session
+export AWS_PROFILE=maestro-development
+
+# Or prefix individual commands
+aws s3 ls --profile maestro-development
+
+# For production
+aws s3 ls --profile maestro-production
+```
+
+#### Troubleshooting SSO
+
+**Session Expired**
+```bash
+# Re-login when credentials expire
+aws sso login --profile maestro-development
+```
+
+**SSO Cache Issues**
+```bash
+# Clear SSO cache and re-login
+rm -rf ~/.aws/sso/cache/
+aws sso login --profile maestro-development
+```
+
+**Profile Not Found**
+```bash
+# Verify your AWS config
+cat ~/.aws/config
+
+# Ensure the maestro-* profiles are configured
+```
+
+#### Deployment with SSO
+
+When deploying to AWS services (ECS, Lambda, etc.):
+
+```bash
+# Deploy to development
+aws sso login --profile maestro-development
+AWS_PROFILE=maestro-development make deploy
+
+# Deploy to production
+aws sso login --profile maestro-production
+AWS_PROFILE=maestro-production make deploy-prod
+```
+
+#### Quick Reference
+
+```bash
+# Development workflow
+aws sso login --profile maestro-development
+export AWS_PROFILE=maestro-development
+aws s3 ls
+aws ecs list-clusters
+
+# Production workflow
+aws sso login --profile maestro-production
+export AWS_PROFILE=maestro-production
+aws s3 ls
+aws ecs list-clusters
+```
+
 ## Protocol Support
 
 Currently supported manufacturers (via IRremoteESP8266):
