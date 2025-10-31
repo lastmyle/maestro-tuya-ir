@@ -58,6 +58,7 @@ def sendBluestarHeavy(data: List[int], nbytes: int, repeat: int = 0) -> List[int
         zeromark=kBluestarHeavyBitMark,
         zerospace=kBluestarHeavyZeroSpace,
         footermark=kBluestarHeavyHdrMark,
+        gap=kDefaultMessageGap,
         dataptr=data,
         nbytes=nbytes,  # Bytes
         MSBfirst=True,

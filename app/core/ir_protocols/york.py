@@ -205,6 +205,7 @@ def sendYork(data: List[int], nbytes: int, repeat: int = 0) -> List[int]:
             zeromark=kYorkBitMark,
             zerospace=kYorkZeroSpace,
             footermark=kYorkBitMark,
+            gap=0  # kDefaultMessageGap,
             dataptr=data,
             nbytes=nbytes,
             MSBfirst=False,  # LSB first

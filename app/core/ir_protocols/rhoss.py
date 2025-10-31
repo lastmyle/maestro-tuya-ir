@@ -153,6 +153,7 @@ def sendRhoss(data: List[int], nbytes: int, repeat: int = kRhossDefaultRepeat) -
             zeromark=kRhossBitMark,
             zerospace=kRhossZeroSpace,
             footermark=kRhossBitMark,
+            gap=kRhossZeroSpace,
             dataptr=data,
             nbytes=nbytes,
             MSBfirst=False,

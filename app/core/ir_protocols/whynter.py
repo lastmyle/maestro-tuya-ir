@@ -71,6 +71,7 @@ def sendWhynter(data: int, nbits: int = kWhynterBits, repeat: int = 0) -> List[i
             zeromark=kWhynterBitMark,
             zerospace=kWhynterZeroSpace,
             footermark=kWhynterBitMark,
+            gap=kWhynterMinGap,
             minsend=kWhynterMinCommandLength - (kWhynterBitMark + kWhynterZeroSpace),
             data=data,
             nbits=nbits,

@@ -56,6 +56,7 @@ def sendClimaButler(data: int, nbits: int = kClimaButlerBits, repeat: int = 0) -
             zeromark=kClimaButlerBitMark,
             zerospace=kClimaButlerZeroSpace,
             footermark=kClimaButlerBitMark,
+            gap=kClimaButlerHdrSpace,
             data=data,
             nbits=nbits,
             MSBfirst=True,

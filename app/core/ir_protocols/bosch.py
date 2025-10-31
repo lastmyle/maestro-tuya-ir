@@ -312,6 +312,7 @@ def sendBosch144(data: List[int], nbytes: int, repeat: int = 0) -> List[int]:
                 zeromark=kBoschBitMark,
                 zerospace=kBoschZeroSpace,
                 footermark=kBoschBitMark,
+                gap=kBoschFooterSpace,
                 dataptr=data[offset : offset + kBosch144BytesPerSection],
                 nbytes=kBosch144BytesPerSection,
                 MSBfirst=True,

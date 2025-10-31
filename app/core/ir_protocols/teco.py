@@ -226,6 +226,7 @@ def sendTeco(data: int, nbits: int = kTecoBits, repeat: int = 0) -> List[int]:
             zeromark=kTecoBitMark,
             zerospace=kTecoZeroSpace,
             footermark=kTecoBitMark,
+            gap=kTecoGap,
             dataptr=data_bytes,
             nbytes=len(data_bytes),
             nbits=nbits,

@@ -275,6 +275,7 @@ def sendCoronaAc(data: List[int], nbytes: int = kCoronaAcStateLength, repeat: in
                 zeromark=kCoronaAcBitMark,
                 zerospace=kCoronaAcZeroSpace,
                 footermark=kCoronaAcBitMark,
+                gap=kCoronaAcSpaceGap,
                 dataptr=data[pos:],
                 nbytes=kCoronaAcSectionBytes,
                 MSBfirst=False,

@@ -64,6 +64,7 @@ def sendTeknopoint(data: List[int], nbytes: int, repeat: int = 0) -> List[int]:
         zeromark=kTeknopointBitMark,
         zerospace=kTeknopointZeroSpace,
         footermark=kTeknopointBitMark,
+        gap=kDefaultMessageGap,
         dataptr=data,
         nbytes=nbytes,
         MSBfirst=False,

@@ -189,6 +189,7 @@ def sendAmcor(
             zeromark=kAmcorZeroMark,
             zerospace=kAmcorZeroSpace,
             footermark=kAmcorFooterMark,
+            gap=kAmcorGap,
             dataptr=data,
             nbytes=nbytes,
             MSBfirst=False,

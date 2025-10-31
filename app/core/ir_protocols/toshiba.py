@@ -213,6 +213,7 @@ def sendToshibaAC(data: List[int], nbytes: int, repeat: int = 0) -> List[int]:
         zeromark=kToshibaAcBitMark,
         zerospace=kToshibaAcZeroSpace,
         footermark=kToshibaAcBitMark,
+        gap=kToshibaAcUsualGap,
         dataptr=data,
         nbytes=nbytes,
         MSBfirst=True,

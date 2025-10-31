@@ -266,6 +266,7 @@ def sendSanyoAc(data: List[int], nbytes: int = kSanyoAcStateLength, repeat: int 
         zeromark=kSanyoAcBitMark,
         zerospace=kSanyoAcZeroSpace,
         footermark=kSanyoAcBitMark,
+        gap=kSanyoAcGap,
         dataptr=data,
         nbytes=nbytes,
         MSBfirst=False,
@@ -977,6 +978,7 @@ def sendSanyoAc88(
             zeromark=kSanyoAc88BitMark,
             zerospace=kSanyoAc88ZeroSpace,
             footermark=kSanyoAc88BitMark,
+            gap=kSanyoAc88Gap,
             dataptr=data,
             nbytes=nbytes,
             MSBfirst=False,
@@ -1336,6 +1338,7 @@ def sendSanyoAc152(
             zeromark=kSanyoAc152BitMark,
             zerospace=kSanyoAc152ZeroSpace,
             footermark=kSanyoAc152BitMark,
+            gap=100000,  # kDefaultMessageGap
             dataptr=data,
             nbytes=nbytes,
             MSBfirst=False,

@@ -141,7 +141,8 @@ def sendSAMSUNG(data: int, nbits: int = kSamsungBits, repeat: int = 0) -> List[i
         zeromark=kSamsungBitMark,
         zerospace=kSamsungZeroSpace,
         footermark=kSamsungBitMark,
-        data=data,
+        gap=kSamsungMinGap,
+        dataint=data,
         nbits=nbits,
         MSBfirst=True,
     )
@@ -270,7 +271,8 @@ def sendSamsung36(data: int, nbits: int = kSamsung36Bits, repeat: int = 0) -> Li
             zeromark=kSamsung36BitMark,
             zerospace=kSamsung36ZeroSpace,
             footermark=kSamsung36BitMark,
-            data=data >> (nbits - 16),
+            gap=kSamsung36HdrSpace,
+            dataint=data >> (nbits - 16),
             nbits=16,
             MSBfirst=True,
         )
@@ -285,8 +287,9 @@ def sendSamsung36(data: int, nbits: int = kSamsung36Bits, repeat: int = 0) -> Li
             zeromark=kSamsung36BitMark,
             zerospace=kSamsung36ZeroSpace,
             footermark=kSamsung36BitMark,
+            gap=kSamsungMinGap,  # Gap is just a guess.
             # Mask off the rest of the bits.
-            data=data & ((1 << (nbits - 16)) - 1),
+            dataint=data & ((1 << (nbits - 16)) - 1),
             nbits=nbits - 16,
             MSBfirst=True,
         )
@@ -439,6 +442,7 @@ def sendSamsungAC(data: List[int], nbytes: int, repeat: int = 0) -> List[int]:
                 zeromark=kSamsungAcBitMark,
                 zerospace=kSamsungAcZeroSpace,
                 footermark=kSamsungAcBitMark,
+                gap=kSamsungAcSectionGap,
                 dataptr=data[offset:],
                 nbytes=kSamsungAcSectionLength,  # 7 bytes == 56 bits
                 MSBfirst=False,

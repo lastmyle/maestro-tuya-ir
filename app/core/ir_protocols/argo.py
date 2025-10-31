@@ -298,6 +298,7 @@ def sendArgo(data: List[int], nbytes: int, repeat: int = 0, sendFooter: bool = F
         zeromark=kArgoBitMark,
         zerospace=kArgoZeroSpace,
         footermark=footermark,
+        gap=gap,
         dataptr=data,
         nbytes=nbytes,
         MSBfirst=False,

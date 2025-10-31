@@ -881,6 +881,7 @@ def sendHaierAC(data: List[int], nbytes: int, repeat: int = 0) -> List[int]:
             zeromark=kHaierAcBitMark,
             zerospace=kHaierAcZeroSpace,
             footermark=kHaierAcBitMark,
+            gap=kHaierAcMinGap,
             dataptr=data,
             nbytes=nbytes,
             MSBfirst=True,

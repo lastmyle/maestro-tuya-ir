@@ -462,6 +462,7 @@ def sendMirage(
         zeromark=kMirageBitMark,
         zerospace=kMirageZeroSpace,
         footermark=kMirageBitMark,
+        gap=kMirageGap,
         dataptr=data,
         nbytes=nbytes,
         MSBfirst=False,

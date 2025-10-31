@@ -129,7 +129,8 @@ def sendCarrierAC(data: int, nbits: int = kCarrierAcBits, repeat: int = 0) -> Li
                 zeromark=kCarrierAcBitMark,
                 zerospace=kCarrierAcZeroSpace,
                 footermark=kCarrierAcBitMark,
-                data=temp_data,
+                gap=kCarrierAcGap,
+                dataint=temp_data,
                 nbits=nbits,
                 MSBfirst=True,
             )
@@ -260,7 +261,8 @@ def sendCarrierAC40(data: int, nbits: int = kCarrierAc40Bits, repeat: int = 0) -
         zeromark=kCarrierAc40BitMark,
         zerospace=kCarrierAc40ZeroSpace,
         footermark=kCarrierAc40BitMark,
-        data=data,
+        gap=kCarrierAc40Gap,
+        dataint=data,
         nbits=nbits,
         MSBfirst=True,
     )
@@ -346,7 +348,8 @@ def sendCarrierAC64(data: int, nbits: int = kCarrierAc64Bits, repeat: int = 0) -
         zeromark=kCarrierAc64BitMark,
         zerospace=kCarrierAc64ZeroSpace,
         footermark=kCarrierAc64BitMark,
-        data=data,
+        gap=kCarrierAc64Gap,
+        dataint=data,
         nbits=nbits,
         MSBfirst=False,
     )
@@ -771,6 +774,7 @@ def sendCarrierAC128(data: List[int], nbytes: int, repeat: int = 0) -> List[int]
             zeromark=kCarrierAc128BitMark,
             zerospace=kCarrierAc128ZeroSpace,
             footermark=kCarrierAc128BitMark,
+            gap=kCarrierAc128SectionGap,
             dataptr=data,
             nbytes=nbytes // 2,
             MSBfirst=False,
@@ -791,6 +795,7 @@ def sendCarrierAC128(data: List[int], nbytes: int, repeat: int = 0) -> List[int]
             zeromark=kCarrierAc128BitMark,
             zerospace=kCarrierAc128ZeroSpace,
             footermark=kCarrierAc128BitMark,
+            gap=kCarrierAc128SectionGap,
             dataptr=data[nbytes // 2 :],
             nbytes=nbytes // 2,
             MSBfirst=False,
@@ -944,7 +949,8 @@ def sendCarrierAC84(data: List[int], nbytes: int, repeat: int = 0) -> List[int]:
                 zeromark=kCarrierAc84One,
                 zerospace=kCarrierAc84Zero,
                 footermark=0,
-                data=data[0] & 0x0F,  # GETBITS64(data[0], 0, kCarrierAc84ExtraBits)
+                gap=0,  # No footer
+                dataint=data[0] & 0x0F,  # GETBITS64(data[0], 0, kCarrierAc84ExtraBits)
                 nbits=kCarrierAc84ExtraBits,
                 MSBfirst=False,
             )
@@ -959,6 +965,7 @@ def sendCarrierAC84(data: List[int], nbytes: int, repeat: int = 0) -> List[int]:
                 zeromark=kCarrierAc84One,
                 zerospace=kCarrierAc84Zero,
                 footermark=kCarrierAc84Zero,
+                gap=100000,  # kDefaultMessageGap - Footer
                 dataptr=data[1:],
                 nbytes=nbytes - 1,
                 MSBfirst=False,

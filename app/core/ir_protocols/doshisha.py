@@ -78,6 +78,7 @@ def sendDoshisha(data: int, nbits: int = kDoshishaBits, repeat: int = 0) -> List
         zeromark=kDoshishaBitMark,
         zerospace=kDoshishaZeroSpace,
         footermark=kDoshishaBitMark,
+        gap=kDefaultMessageGap,
         data=data,
         nbits=nbits,
         MSBfirst=True,

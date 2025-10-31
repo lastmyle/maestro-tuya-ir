@@ -382,6 +382,7 @@ def sendWhirlpoolAC(
             zeromark=kWhirlpoolAcBitMark,
             zerospace=kWhirlpoolAcZeroSpace,
             footermark=kWhirlpoolAcBitMark,
+            gap=kWhirlpoolAcGap,
             dataptr=data,
             nbytes=6,  # 6 bytes == 48 bits
             MSBfirst=False,
@@ -397,6 +398,7 @@ def sendWhirlpoolAC(
             zeromark=kWhirlpoolAcBitMark,
             zerospace=kWhirlpoolAcZeroSpace,
             footermark=kWhirlpoolAcBitMark,
+            gap=kWhirlpoolAcGap,
             dataptr=data[6:],
             nbytes=8,  # 8 bytes == 64 bits
             MSBfirst=False,
@@ -412,6 +414,7 @@ def sendWhirlpoolAC(
             zeromark=kWhirlpoolAcBitMark,
             zerospace=kWhirlpoolAcZeroSpace,
             footermark=kWhirlpoolAcBitMark,
+            gap=kWhirlpoolAcMinGap,
             dataptr=data[14:],
             nbytes=7,  # 7 bytes == 56 bits
             MSBfirst=False,

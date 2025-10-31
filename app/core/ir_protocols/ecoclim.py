@@ -208,6 +208,7 @@ def sendEcoclim(data: int, nbits: int, repeat: int = 0) -> List[int]:
                 zeromark=kEcoclimBitMark,
                 zerospace=kEcoclimZeroSpace,
                 footermark=0,
+                gap=0,
                 dataptr=data,
                 nbytes=0,  # Using nbits instead
                 nbits=nbits,

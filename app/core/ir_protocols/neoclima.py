@@ -323,6 +323,7 @@ def sendNeoclima(data: List[int], nbytes: int, repeat: int = 0) -> List[int]:
             zeromark=kNeoclimaBitMark,
             zerospace=kNeoclimaZeroSpace,
             footermark=kNeoclimaBitMark,
+            gap=kNeoclimaHdrSpace,
             dataptr=data,
             nbytes=nbytes,
             MSBfirst=False,

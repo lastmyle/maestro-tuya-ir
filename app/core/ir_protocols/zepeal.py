@@ -65,6 +65,7 @@ def sendZepeal(data: int, nbits: int, repeat: int = 0) -> List[int]:
         zeromark=kZepealZeroMark,
         zerospace=kZepealZeroSpace,
         footermark=kZepealFooterMark,
+        gap=kZepealGap,
         dataptr=data,
         nbits=nbits,
         MSBfirst=True,

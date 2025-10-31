@@ -227,6 +227,7 @@ def sendDelonghiAc(data: int, nbits: int = kDelonghiAcBits, repeat: int = 0) -> 
         zeromark=kDelonghiAcBitMark,
         zerospace=kDelonghiAcZeroSpace,
         footermark=kDelonghiAcBitMark,
+        gap=kDelonghiAcGap,
         data=data,
         nbits=nbits,
         MSBfirst=False,  # LSB First
