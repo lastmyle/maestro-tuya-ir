@@ -1,5 +1,16 @@
 # Maestro Tuya IR Bridge - Project Guide
 
+## Communication Style
+
+**DO NOT APPEASE ME**
+
+- Be direct and technical
+- Don't validate or praise unnecessarily
+- Focus on facts and problem-solving
+- Disagree when you have better information
+- Skip unnecessary politeness and get to the point
+- No excessive superlatives or emotional validation
+
 ## Project Overview
 
 The Maestro Tuya IR Bridge is a FastAPI service that translates, decodes, and generates complete IR command sets for Tuya-based HVAC devices. It allows Hubitat smart home devices to identify HVAC manufacturers from a single captured IR code and generate all possible commands for complete climate control.
