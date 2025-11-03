@@ -1255,80 +1255,72 @@ class CommandGenerator:
         for temp in range(metadata.min_temp, metadata.max_temp + 1):
             for mode in metadata.modes:
                 for fan in metadata.fans:
-                    try:
-                        # Create AC instance
-                        ac = metadata.ac_class()
+                    # Create AC instance
+                    ac = metadata.ac_class()
 
-                        # Set current state if supported
-                        if metadata.supports_raw_init and hasattr(ac, "setRaw"):
-                            ac.setRaw(state_bytes)
+                    # Set current state if supported
+                    if metadata.supports_raw_init and hasattr(ac, "setRaw"):
+                        ac.setRaw(state_bytes)
 
-                        # Set temperature
-                        set_temp = getattr(ac, metadata.set_temp_method)
-                        set_temp(temp)
+                    # Set temperature
+                    set_temp = getattr(ac, metadata.set_temp_method)
+                    set_temp(temp)
 
-                        # Set mode
-                        set_mode = getattr(ac, metadata.set_mode_method)
-                        set_mode(mode.value)
+                    # Set mode
+                    set_mode = getattr(ac, metadata.set_mode_method)
+                    set_mode(mode.value)
 
-                        # Set fan speed
-                        set_fan = getattr(ac, metadata.set_fan_method)
-                        set_fan(fan.value)
+                    # Set fan speed
+                    set_fan = getattr(ac, metadata.set_fan_method)
+                    set_fan(fan.value)
 
-                        # Set power on
-                        set_power = getattr(ac, metadata.set_power_method)
-                        set_power(True)
+                    # Set power on
+                    set_power = getattr(ac, metadata.set_power_method)
+                    set_power(True)
 
-                        # Get raw bytes
-                        get_raw = getattr(ac, metadata.get_raw_method)
-                        new_bytes = get_raw()
+                    # Get raw bytes
+                    get_raw = getattr(ac, metadata.get_raw_method)
+                    new_bytes = get_raw()
 
-                        # Generate timings
-                        signal = metadata.send_function(new_bytes, len(new_bytes))
+                    # Generate timings
+                    signal = metadata.send_function(new_bytes, len(new_bytes))
 
-                        # Encode to Tuya format
-                        tuya_code = encode_ir(signal)
+                    # Encode to Tuya format
+                    tuya_code = encode_ir(signal)
 
-                        # Create command
-                        commands.append(
-                            CommandInfo(
-                                name=f"{temp}_{mode.name}_{fan.name}",
-                                description=f"{temp}°C, {mode.description}, {fan.description}",
-                                tuya_code=tuya_code,
-                            )
+                    # Create command
+                    commands.append(
+                        CommandInfo(
+                            name=f"{temp}_{mode.name}_{fan.name}",
+                            description=f"{temp}°C, {mode.description}, {fan.description}",
+                            tuya_code=tuya_code,
                         )
-                    except Exception as e:
-                        # Skip combinations that fail (some protocols have restrictions)
-                        continue
+                    )
 
         # Generate power commands
         for power_state in [True, False]:
-            try:
-                ac = metadata.ac_class()
+            ac = metadata.ac_class()
 
-                if metadata.supports_raw_init and hasattr(ac, "setRaw"):
-                    ac.setRaw(state_bytes)
+            # if metadata.supports_raw_init and hasattr(ac, "setRaw"):
+            #     ac.setRaw(state_bytes)
 
-                set_power = getattr(ac, metadata.set_power_method)
-                set_power(power_state)
+            set_power = getattr(ac, metadata.set_power_method)
+            set_power(power_state)
 
-                get_raw = getattr(ac, metadata.get_raw_method)
-                new_bytes = get_raw()
+            get_raw = getattr(ac, metadata.get_raw_method)
+            new_bytes = get_raw()
 
-                signal = metadata.send_function(new_bytes, len(new_bytes))
-                tuya_code = encode_ir(signal)
+            signal = metadata.send_function(new_bytes, len(new_bytes))
+            tuya_code = encode_ir(signal)
 
-                power_name = "on" if power_state else "off"
-                commands.append(
-                    CommandInfo(
-                        name=f"power_{power_name}",
-                        description=f"Turn power {power_name}",
-                        tuya_code=tuya_code,
-                    )
+            power_name = "on" if power_state else "off"
+            commands.append(
+                CommandInfo(
+                    name=f"power_{power_name}",
+                    description=f"Turn power {power_name}",
+                    tuya_code=tuya_code,
                 )
-            except Exception:
-                # Skip if power commands fail
-                pass
+            )
 
         return commands
 
