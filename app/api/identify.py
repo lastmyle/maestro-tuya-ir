@@ -97,81 +97,46 @@ async def identify(request: IdentifyRequest):
             ...
         }
     """
-    try:
-        # Step 1: Decode Tuya code to timings
-        timings = decode_ir(request.tuya_code)
+    # Step 1: Decode Tuya code to timings
+    timings = decode_ir(request.tuya_code)
 
-        # Step 2: Auto-detect protocol using unified IRrecv::decode() dispatcher
-        results = decode_results()
-        results.rawbuf = timings
-        results.rawlen = len(timings)
+    # Step 2: Auto-detect protocol using unified IRrecv::decode() dispatcher
+    results = decode_results()
+    results.rawbuf = timings
+    results.rawlen = len(timings)
 
-        if not decode(results):
-            # Provide helpful error message
-            raise HTTPException(
-                status_code=400,
-                detail={
-                    "error": "PROTOCOL_NOT_RECOGNIZED",
-                    "message": "Could not identify protocol from IR code",
-                    "details": "Tried all 91+ supported protocol variants across 46 manufacturers. Code may be corrupted or from an unsupported device.",
-                },
-            )
+    decode(results)
 
-        # Step 3: Extract state bytes
-        byte_count = results.bits // 8
-        state_bytes = results.state[:byte_count]
+    # Step 3: Extract state bytes
+    byte_count = results.bits // 8
+    state_bytes = results.state[:byte_count]
 
-        # Step 4: Get protocol info and commands in one call
-        result = command_generator.identify_protocol_and_generate_commands(
-            results.decode_type, state_bytes
+    # Step 4: Get protocol info and commands in one call
+    result = command_generator.identify_protocol_and_generate_commands(
+        results.decode_type, state_bytes
+    )
+
+    # Convert service CommandInfo to API CommandInfo
+    commands = [
+        CommandInfo(
+            name=cmd.name,
+            description=cmd.description,
+            tuya_code=cmd.tuya_code,
         )
+        for cmd in result["commands"]
+    ]
 
-        # Convert service CommandInfo to API CommandInfo
-        commands = [
-            CommandInfo(
-                name=cmd.name,
-                description=cmd.description,
-                tuya_code=cmd.tuya_code,
-            )
-            for cmd in result["commands"]
-        ]
-
-        # Step 5: Build and return response
-        return IdentifyResponse(
-            protocol=result["protocol"],
-            manufacturer=result["manufacturer"],
-            commands=commands,
-            min_temperature=result["min_temperature"],
-            max_temperature=result["max_temperature"],
-            operation_modes=result["operation_modes"],
-            fan_modes=result["fan_modes"],
-            confidence=result.get("confidence", 1.0),
-            notes=result.get("notes"),
-            detected_state=result.get("detected_state"),
-            model=result.get("model"),
-        )
-
-    except HTTPException:
-        # Re-raise HTTP exceptions as-is
-        raise
-    except ValueError as e:
-        raise HTTPException(
-            status_code=400,
-            detail={
-                "error": "INVALID_TUYA_CODE",
-                "message": "Invalid Tuya IR code format",
-                "details": str(e),
-            },
-        )
-    except Exception as e:
-        import traceback
-
-        traceback.print_exc()  # Print to console for debugging
-        raise HTTPException(
-            status_code=500,
-            detail={
-                "error": "INTERNAL_ERROR",
-                "message": "An unexpected error occurred during protocol analysis",
-                "details": f"{type(e).__name__}: {str(e)}",
-            },
-        )
+    # Step 5: Build and return response
+    return IdentifyResponse(
+        protocol=result["protocol"],
+        manufacturer=result["manufacturer"],
+        commands=commands,
+        min_temperature=result["min_temperature"],
+        max_temperature=result["max_temperature"],
+        operation_modes=result["operation_modes"],
+        fan_modes=result["fan_modes"],
+        confidence=result.get("confidence", 1.0),
+        notes=result.get("notes"),
+        detected_state=result.get("detected_state"),
+        model=result.get("model"),
+    )
