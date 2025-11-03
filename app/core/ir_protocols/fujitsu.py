@@ -343,7 +343,7 @@ class IRFujitsuAC:
         self.setTemp(24)
         self._.Fan = kFujitsuAcFanHigh
         self._.Mode = kFujitsuAcModeCool
-        self._.Swing = kFujitsuAcSwingBoth
+        self._.Swing = kFujitsuAcSwingVert  # Changed from SwingBoth to SwingVert for better compatibility
         self._cmd = kFujitsuAcCmdTurnOn
         self._.Filter = False
         self._.Clean = False
