@@ -1258,10 +1258,6 @@ class CommandGenerator:
                     # Create AC instance
                     ac = metadata.ac_class()
 
-                    # Set current state if supported
-                    if metadata.supports_raw_init and hasattr(ac, "setRaw"):
-                        ac.setRaw(state_bytes)
-
                     # Set temperature
                     set_temp = getattr(ac, metadata.set_temp_method)
                     set_temp(temp)
@@ -1300,9 +1296,6 @@ class CommandGenerator:
         # Generate power commands
         for power_state in [True, False]:
             ac = metadata.ac_class()
-
-            # if metadata.supports_raw_init and hasattr(ac, "setRaw"):
-            #     ac.setRaw(state_bytes)
 
             set_power = getattr(ac, metadata.set_power_method)
             set_power(power_state)

@@ -153,33 +153,35 @@ kPanasonicAcIonFilterOffset = 0  # Bit
 # Known good state
 # EXACT translation from IRremoteESP8266 ir_Panasonic.h lines 100-103
 kPanasonicKnownGoodState = [
-    0x02,
-    0x20,
-    0xE0,
-    0x04,
-    0x00,
-    0x00,
-    0x00,
-    0x06,
-    0x02,
-    0x20,
-    0xE0,
-    0x04,
-    0x00,
-    0x00,
-    0x2E,
-    0x80,
-    0x62,
-    0x09,
-    0x00,
-    0x0E,
-    0xE0,
-    0x00,
-    0x00,
-    0x81,
-    0x00,
-    0x00,
-    0x00,
+    # Section 1 (bytes 0-7): Header and identification
+    0x02,  # Byte 0: Section 1 header signature (always 0x02)
+    0x20,  # Byte 1: Section 1 manufacturer ID (Panasonic = 0x20)
+    0xE0,  # Byte 2: Section 1 signature byte
+    0x04,  # Byte 3: Section 1 signature byte
+    0x00,  # Byte 4: Section 1 reserved
+    0x00,  # Byte 5: Section 1 reserved
+    0x00,  # Byte 6: Section 1 reserved
+    0x06,  # Byte 7: Section 1 signature byte
+    # Section 2 (bytes 8-26): AC control settings
+    0x02,  # Byte 8: Section 2 header signature (always 0x02)
+    0x20,  # Byte 9: Section 2 manufacturer ID (Panasonic = 0x20)
+    0xE0,  # Byte 10: Section 2 signature byte
+    0x04,  # Byte 11: Section 2 signature byte
+    0x00,  # Byte 12: Section 2 byte 4 - reserved/unknown
+    0x00,  # Byte 13: Power(bit 0), OnTimer(bit 1), OffTimer(bit 2), Mode(bits 4-6) - 0x00 = power OFF, no timers, no mode
+    0x2E,  # Byte 14: Temperature (bits 1-5) - 0x2E encodes default temp setting
+    0x80,  # Byte 15: Reserved/unknown - appears to be required for proper operation
+    0x62,  # Byte 16: SwingV(bits 0-3), Fan(bits 4-7) - 0x62 = swing position 2, fan speed
+    0x09,  # Byte 17: SwingH(bits 0-3) - horizontal swing/vane position
+    0x00,  # Byte 18: OnTimer low byte
+    0x0E,  # Byte 19: OnTimer high nibble / OffTimer low nibble
+    0xE0,  # Byte 20: OffTimer high byte
+    0x00,  # Byte 21: Quiet(bit 0 or 5), Powerful(bit 0 or 5) - model dependent
+    0x00,  # Byte 22: Ion filter (bit 0) - DKE model only
+    0x81,  # Byte 23: Model identifier (0x81 = base model, 0x01 = DKE, 0x89 = RKR)
+    0x00,  # Byte 24: Clock low byte (minutes since midnight & 0xFF)
+    0x00,  # Byte 25: Clock high byte (minutes since midnight >> 8)
+    0x00,  # Byte 26: Checksum (calculated via sumBytes with init=0xF4)
 ]
 
 # Panasonic AC32 mode constants
@@ -238,18 +240,18 @@ def GETBITS64(value: int, offset: int, size: int) -> int:
     return (value >> offset) & mask
 
 
-def setBit(byte_ptr: List[int], bit: int, on: bool) -> None:
-    """Set a bit in a byte array element"""
+def setBit(byte_ref: List[int], bit: int, on: bool) -> None:
+    """Set a bit in a mutable byte reference (list with one element)"""
     if on:
-        byte_ptr[0] |= 1 << bit
+        byte_ref[0] |= 1 << bit
     else:
-        byte_ptr[0] &= ~(1 << bit)
+        byte_ref[0] &= ~(1 << bit)
 
 
-def setBits(byte_ptr: List[int], offset: int, nbits: int, data: int) -> None:
-    """Set multiple bits in a byte array element"""
+def setBits(byte_ref: List[int], offset: int, nbits: int, data: int) -> None:
+    """Set multiple bits in a mutable byte reference (list with one element)"""
     mask = ((1 << nbits) - 1) << offset
-    byte_ptr[0] = (byte_ptr[0] & ~mask) | ((data << offset) & mask)
+    byte_ref[0] = (byte_ref[0] & ~mask) | ((data << offset) & mask)
 
 
 def sumBytes(state: List[int], length: int, init: int = 0) -> int:
@@ -627,8 +629,9 @@ class IRPanasonicAc:
     ##   turn it on, and setPower(false) should turn it off.
     ## EXACT translation from IRremoteESP8266 ir_Panasonic.cpp lines 346-348
     def setPower(self, on: bool) -> None:
-        setBit([self.remote_state[13]], kPanasonicAcPowerOffset, on)
-        self.remote_state[13] = [self.remote_state[13]][0]
+        byte_ref = [self.remote_state[13]]
+        setBit(byte_ref, kPanasonicAcPowerOffset, on)
+        self.remote_state[13] = byte_ref[0]
 
     ## Get the A/C power state of the remote.
     ## @return true, the setting is on. false, the setting is off.
@@ -669,8 +672,9 @@ class IRPanasonicAc:
             self.setTemp(self._temp)
 
         self.remote_state[13] &= 0x0F  # Clear the previous mode bits.
-        setBits([self.remote_state[13]], kHighNibble, kModeBitsSize, mode)
-        self.remote_state[13] = [self.remote_state[13]][0]
+        byte_ref = [self.remote_state[13]]
+        setBits(byte_ref, kHighNibble, kModeBitsSize, mode)
+        self.remote_state[13] = byte_ref[0]
 
     ## Get the current temperature setting.
     ## @return The current setting for temp. in degrees celsius.
@@ -688,8 +692,9 @@ class IRPanasonicAc:
         temperature = min(temperature, kPanasonicAcMaxTemp)
         if remember:
             self._temp = temperature
-        setBits([self.remote_state[14]], kPanasonicAcTempOffset, kPanasonicAcTempSize, temperature)
-        self.remote_state[14] = [self.remote_state[14]][0]
+        byte_ref = [self.remote_state[14]]
+        setBits(byte_ref, kPanasonicAcTempOffset, kPanasonicAcTempSize, temperature)
+        self.remote_state[14] = byte_ref[0]
 
     ## Get the current vertical swing setting.
     ## @return The current position it is set to.
@@ -705,8 +710,9 @@ class IRPanasonicAc:
         if elevation != kPanasonicAcSwingVAuto:
             elevation = max(elevation, kPanasonicAcSwingVHighest)
             elevation = min(elevation, kPanasonicAcSwingVLowest)
-        setBits([self.remote_state[16]], kLowNibble, kNibbleSize, elevation)
-        self.remote_state[16] = [self.remote_state[16]][0]
+        byte_ref = [self.remote_state[16]]
+        setBits(byte_ref, kLowNibble, kNibbleSize, elevation)
+        self.remote_state[16] = byte_ref[0]
 
     ## Get the current horizontal swing setting.
     ## @return The current position it is set to.
@@ -740,8 +746,9 @@ class IRPanasonicAc:
         else:  # Ignore everything else.
             return
 
-        setBits([self.remote_state[17]], kLowNibble, kNibbleSize, direction)
-        self.remote_state[17] = [self.remote_state[17]][0]
+        swingh_byte = [self.remote_state[17]]
+        setBits(swingh_byte, kLowNibble, kNibbleSize, direction)
+        self.remote_state[17] = swingh_byte[0]
 
     ## Set the speed of the fan.
     ## @param[in] speed The desired setting.
@@ -755,8 +762,9 @@ class IRPanasonicAc:
             kPanasonicAcFanMax,
             kPanasonicAcFanAuto,
         ]:
-            setBits([self.remote_state[16]], kHighNibble, kNibbleSize, speed + kPanasonicAcFanDelta)
-            self.remote_state[16] = [self.remote_state[16]][0]
+            fan_byte = [self.remote_state[16]]
+            setBits(fan_byte, kHighNibble, kNibbleSize, speed + kPanasonicAcFanDelta)
+            self.remote_state[16] = fan_byte[0]
         else:
             self.setFan(kPanasonicAcFanAuto)
 
@@ -788,8 +796,9 @@ class IRPanasonicAc:
 
         if on:
             self.setPowerful(False)  # Powerful is mutually exclusive.
-        setBit([self.remote_state[21]], offset, on)
-        self.remote_state[21] = [self.remote_state[21]][0]
+        byte_ref = [self.remote_state[21]]
+        setBit(byte_ref, offset, on)
+        self.remote_state[21] = byte_ref[0]
 
     ## Get the Powerful (Turbo) setting of the A/C.
     ## @return true, the setting is on. false, the setting is off.
@@ -813,8 +822,9 @@ class IRPanasonicAc:
 
         if on:
             self.setQuiet(False)  # Quiet is mutually exclusive.
-        setBit([self.remote_state[21]], offset, on)
-        self.remote_state[21] = [self.remote_state[21]][0]
+        byte_ref = [self.remote_state[21]]
+        setBit(byte_ref, offset, on)
+        self.remote_state[21] = byte_ref[0]
 
     ## Convert standard (military/24hr) time to nr. of minutes since midnight.
     ## @param[in] hours The hours component of the time.
@@ -860,12 +870,14 @@ class IRPanasonicAc:
         if mins_since_midnight == kPanasonicAcTimeSpecial:
             corrected = kPanasonicAcTimeSpecial
         ptr[0] = corrected & 0xFF
+        byte_ref = [ptr[1]]
         setBits(
-            [ptr[1]],
+            byte_ref,
             kLowNibble,
             kPanasonicAcTimeOverflowSize,
             corrected >> (kPanasonicAcTimeSize - kPanasonicAcTimeOverflowSize),
         )
+        ptr[1] = byte_ref[0]
 
     ## Set the current clock time value.
     ## @param[in] mins_since_midnight The time as nr. of minutes past midnight.
@@ -885,8 +897,9 @@ class IRPanasonicAc:
     ## EXACT translation from IRremoteESP8266 ir_Panasonic.cpp lines 594-600
     def setOnTimer(self, mins_since_midnight: int, enable: bool = True) -> None:
         # Set the timer flag.
-        setBit([self.remote_state[13]], kPanasonicAcOnTimerOffset, enable)
-        self.remote_state[13] = [self.remote_state[13]][0]
+        byte_ref = [self.remote_state[13]]
+        setBit(byte_ref, kPanasonicAcOnTimerOffset, enable)
+        self.remote_state[13] = byte_ref[0]
         # Store the time.
         self._setTime(self.remote_state[18:20], mins_since_midnight, True)
 
@@ -923,13 +936,16 @@ class IRPanasonicAc:
         if mins_since_midnight == kPanasonicAcTimeSpecial:
             corrected = kPanasonicAcTimeSpecial
         # Set the timer flag.
-        setBit([self.remote_state[13]], kPanasonicAcOffTimerOffset, enable)
-        self.remote_state[13] = [self.remote_state[13]][0]
+        byte_ref = [self.remote_state[13]]
+        setBit(byte_ref, kPanasonicAcOffTimerOffset, enable)
+        self.remote_state[13] = byte_ref[0]
         # Store the time.
-        setBits([self.remote_state[19]], kHighNibble, kNibbleSize, corrected & 0x0F)
-        self.remote_state[19] = [self.remote_state[19]][0]
-        setBits([self.remote_state[20]], 0, 7, corrected >> kNibbleSize)
-        self.remote_state[20] = [self.remote_state[20]][0]
+        byte_ref = [self.remote_state[19]]
+        setBits(byte_ref, kHighNibble, kNibbleSize, corrected & 0x0F)
+        self.remote_state[19] = byte_ref[0]
+        byte_ref = [self.remote_state[20]]
+        setBits(byte_ref, 0, 7, corrected >> kNibbleSize)
+        self.remote_state[20] = byte_ref[0]
 
     ## Cancel the Off Timer.
     ## EXACT translation from IRremoteESP8266 ir_Panasonic.cpp line 638
@@ -958,10 +974,9 @@ class IRPanasonicAc:
     ## EXACT translation from IRremoteESP8266 ir_Panasonic.cpp lines 660-664
     def setIon(self, on: bool) -> None:
         if self.getModel() == kPanasonicDke:
-            setBit([self.remote_state[kPanasonicAcIonFilterByte]], kPanasonicAcIonFilterOffset, on)
-            self.remote_state[kPanasonicAcIonFilterByte] = [
-                self.remote_state[kPanasonicAcIonFilterByte]
-            ][0]
+            byte_ref = [self.remote_state[kPanasonicAcIonFilterByte]]
+            setBit(byte_ref, kPanasonicAcIonFilterOffset, on)
+            self.remote_state[kPanasonicAcIonFilterByte] = byte_ref[0]
 
 
 ## Decode the supplied Panasonic AC message.
