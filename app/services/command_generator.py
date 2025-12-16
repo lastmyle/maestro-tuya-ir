@@ -1194,6 +1194,55 @@ class ProtocolRegistry:
             )
         )
 
+        # Import Daikin216 constants
+        from app.core.ir_protocols.daikin import (
+            IRDaikin216,
+            sendDaikin216,
+            kDaikin216StateLength,
+            kDaikinMinTemp,
+            kDaikinMaxTemp,
+            kDaikinAuto,
+            kDaikinCool,
+            kDaikinHeat,
+            kDaikinDry,
+            kDaikinFan,
+            kDaikinFanAuto,
+            kDaikinFanQuiet,
+            kDaikinFanMin,
+            kDaikinFanMed,
+            kDaikinFanMax,
+        )
+
+        # Register Daikin216 AC
+        self.register(
+            ProtocolMetadata(
+                protocol_type=decode_type_t.DAIKIN216,
+                protocol_name="DAIKIN216",
+                manufacturer="Daikin",
+                ac_class=IRDaikin216,
+                send_function=sendDaikin216,
+                state_length=kDaikin216StateLength,
+                min_temp=kDaikinMinTemp,
+                max_temp=kDaikinMaxTemp,
+                modes=[
+                    ModeConfig(kDaikinAuto, "auto", "Auto"),
+                    ModeConfig(kDaikinCool, "cool", "Cool"),
+                    ModeConfig(kDaikinHeat, "heat", "Heat"),
+                    ModeConfig(kDaikinDry, "dry", "Dry"),
+                    ModeConfig(kDaikinFan, "fan", "Fan"),
+                ],
+                fans=[
+                    FanConfig(kDaikinFanAuto, "auto", "Auto fan"),
+                    FanConfig(kDaikinFanQuiet, "quiet", "Quiet fan"),
+                    FanConfig(kDaikinFanMin, "1", "Fan 1"),
+                    FanConfig(kDaikinFanMin + 1, "2", "Fan 2"),
+                    FanConfig(kDaikinFanMed, "3", "Fan 3"),
+                    FanConfig(kDaikinFanMed + 1, "4", "Fan 4"),
+                    FanConfig(kDaikinFanMax, "5", "Fan 5"),
+                ],
+            )
+        )
+
     def register(self, metadata: ProtocolMetadata):
         """Register a protocol's metadata"""
         self._protocols[metadata.protocol_type] = metadata

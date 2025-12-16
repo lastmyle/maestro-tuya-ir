@@ -2020,3 +2020,173 @@ def validChecksumDaikin312(state: List[int], length: int = kDaikin312StateLength
         return False
 
     return True
+
+
+# =============================================================================
+# IRDaikin216 CLASS - Full state manipulation for Daikin216 protocol
+# =============================================================================
+
+class IRDaikin216:
+    """
+    Class for handling Daikin216 216-bit A/C protocol.
+
+    Based on IRremoteESP8266 IRDaikin216 class with exact byte structure:
+    - Byte 7: Sum1 (checksum for section 1)
+    - Byte 13: Power (bit 0), Mode (bits 2-4)
+    - Byte 14: Temp (bits 1-6)
+    - Byte 16: SwingV (bits 0-3), Fan (bits 4-7)
+    - Byte 17: SwingH (bits 0-3)
+    - Byte 21: Powerful (bit 0)
+    - Byte 26: Sum2 (checksum for section 2)
+    """
+
+    def __init__(self):
+        """Initialize with default state (all zeros + magic bytes)."""
+        self.remote_state = [0x00] * kDaikin216StateLength
+        self.stateReset()
+
+    def stateReset(self):
+        """Reset state to default values with magic bytes."""
+        # Zero everything
+        for i in range(kDaikin216StateLength):
+            self.remote_state[i] = 0x00
+
+        # Set magic bytes (from IRremoteESP8266 stateReset)
+        self.remote_state[0] = 0x11
+        self.remote_state[1] = 0xDA
+        self.remote_state[2] = 0x27
+        self.remote_state[3] = 0xF0
+        # Byte 7 is Sum1 (checksum), set by checksum()
+        self.remote_state[8] = 0x11
+        self.remote_state[9] = 0xDA
+        self.remote_state[10] = 0x27
+        self.remote_state[23] = 0xC0
+        # Byte 26 is Sum2 (checksum), set by checksum()
+
+    def checksum(self):
+        """Calculate and set checksums for both sections."""
+        # Sum1 at byte 7: sum of bytes 0-6
+        self.remote_state[7] = sumBytes(self.remote_state, kDaikin216Section1Length - 1)
+
+        # Sum2 at byte 26: sum of bytes 8-25
+        self.remote_state[26] = sumBytes(
+            self.remote_state[kDaikin216Section1Length:],
+            kDaikin216Section2Length - 1
+        )
+
+    def getRaw(self) -> List[int]:
+        """Get the raw state bytes."""
+        self.checksum()  # Ensure checksums are up to date
+        return list(self.remote_state)
+
+    def setRaw(self, new_state: List[int]):
+        """Set the raw state from bytes."""
+        length = min(len(new_state), kDaikin216StateLength)
+        for i in range(length):
+            self.remote_state[i] = new_state[i]
+
+    # Power control
+    def setPower(self, on: bool):
+        """Set power state. Byte 13, bit 0."""
+        if on:
+            self.remote_state[13] |= 0b00000001  # Set bit 0
+        else:
+            self.remote_state[13] &= 0b11111110  # Clear bit 0
+
+    def getPower(self) -> bool:
+        """Get power state."""
+        return (self.remote_state[13] & 0b00000001) != 0
+
+    def on(self):
+        """Turn power on."""
+        self.setPower(True)
+
+    def off(self):
+        """Turn power off."""
+        self.setPower(False)
+
+    # Mode control
+    def setMode(self, mode: int):
+        """Set operating mode. Byte 13, bits 2-4 (3 bits)."""
+        # Valid modes: Auto(0), Cool(3), Heat(4), Dry(2), Fan(6)
+        if mode in [kDaikinAuto, kDaikinCool, kDaikinHeat, kDaikinDry, kDaikinFan]:
+            # Clear bits 2-4, then set the mode
+            self.remote_state[13] &= 0b11100011  # Clear bits 2-4
+            self.remote_state[13] |= (mode & 0b111) << 2  # Set bits 2-4
+        else:
+            # Default to Auto
+            self.setMode(kDaikinAuto)
+
+    def getMode(self) -> int:
+        """Get operating mode."""
+        return (self.remote_state[13] >> 2) & 0b111
+
+    # Temperature control
+    def setTemp(self, temp: int):
+        """Set temperature. Byte 14, bits 1-6 (6 bits)."""
+        # Clamp to valid range
+        degrees = max(temp, kDaikinMinTemp)
+        degrees = min(degrees, kDaikinMaxTemp)
+
+        # Clear bits 1-6, then set temperature
+        self.remote_state[14] &= 0b10000001  # Clear bits 1-6
+        self.remote_state[14] |= (degrees & 0b111111) << 1  # Set bits 1-6
+
+    def getTemp(self) -> int:
+        """Get temperature."""
+        return (self.remote_state[14] >> 1) & 0b111111
+
+    # Fan control
+    def setFan(self, fan: int):
+        """Set fan speed. Byte 16, bits 4-7 (4 bits)."""
+        # Fan encoding: numeric speeds 1-5 are encoded as 2+fan (3-7)
+        # Special values kDaikinFanQuiet (11) and kDaikinFanAuto (10) are used directly
+        if fan == kDaikinFanQuiet or fan == kDaikinFanAuto:
+            fanset = fan
+        elif fan < kDaikinFanMin or fan > kDaikinFanMax:
+            fanset = kDaikinFanAuto
+        else:
+            fanset = 2 + fan
+
+        # Clear bits 4-7, then set fan
+        self.remote_state[16] &= 0b00001111  # Clear bits 4-7
+        self.remote_state[16] |= (fanset & 0b1111) << 4  # Set bits 4-7
+
+    def getFan(self) -> int:
+        """Get fan speed."""
+        return (self.remote_state[16] >> 4) & 0b1111
+
+    # Swing control
+    def setSwingVertical(self, on: bool):
+        """Set vertical swing. Byte 16, bits 0-3."""
+        swing_val = kDaikin216SwingOn if on else kDaikin216SwingOff
+        # Clear bits 0-3, then set swing
+        self.remote_state[16] &= 0b11110000  # Clear bits 0-3
+        self.remote_state[16] |= swing_val & 0b1111  # Set bits 0-3
+
+    def getSwingVertical(self) -> bool:
+        """Get vertical swing state."""
+        return (self.remote_state[16] & 0b1111) == kDaikin216SwingOn
+
+    def setSwingHorizontal(self, on: bool):
+        """Set horizontal swing. Byte 17, bits 0-3."""
+        swing_val = kDaikin216SwingOn if on else kDaikin216SwingOff
+        # Clear bits 0-3, then set swing
+        self.remote_state[17] &= 0b11110000  # Clear bits 0-3
+        self.remote_state[17] |= swing_val & 0b1111  # Set bits 0-3
+
+    def getSwingHorizontal(self) -> bool:
+        """Get horizontal swing state."""
+        return (self.remote_state[17] & 0b1111) == kDaikin216SwingOn
+
+    # Powerful mode
+    def setPowerful(self, on: bool):
+        """Set powerful mode. Byte 21, bit 0."""
+        if on:
+            self.remote_state[21] |= 0b00000001  # Set bit 0
+        else:
+            self.remote_state[21] &= 0b11111110  # Clear bit 0
+
+    def getPowerful(self) -> bool:
+        """Get powerful mode state."""
+        return (self.remote_state[21] & 0b00000001) != 0
