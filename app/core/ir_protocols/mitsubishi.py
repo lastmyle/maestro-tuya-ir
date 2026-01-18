@@ -127,7 +127,7 @@ kMitsubishi112BitMark = 450
 kMitsubishi112OneSpace = 1250
 kMitsubishi112ZeroSpace = 385
 kMitsubishi112Gap = 100000  # kDefaultMessageGap
-kMitsubishi112HdrMarkTolerance = 5
+kMitsubishi112HdrMarkTolerance = 10  # Increased from 5 to support more variants
 
 # State length (EXACT translation from ir_Mitsubishi.h:192)
 kMitsubishi112StateLength = 14
@@ -661,7 +661,7 @@ def decodeMitsubishi136(
 ## Decode the supplied Mitsubishi/TCL 112-bit A/C message.
 ## EXACT translation from IRremoteESP8266 ir_Mitsubishi.cpp:1291-1356
 def decodeMitsubishi112(
-    results, offset: int = 1, nbits: int = 112, strict: bool = True, _tolerance: int = 25
+    results, offset: int = 1, nbits: int = 112, strict: bool = True, _tolerance: int = 35  # Increased from 25 to support more variants
 ) -> bool:
     """
     Decode the supplied Mitsubishi/TCL 112-bit A/C message.
