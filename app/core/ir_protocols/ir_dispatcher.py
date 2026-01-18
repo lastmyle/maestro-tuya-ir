@@ -381,6 +381,24 @@ def send(
 
         return sendCarrierAC128(state, nbytes, repeat)
 
+    # Haier variants (4 total)
+    elif protocol_type == decode_type_t.HAIER_AC:
+        from app.core.ir_protocols.haier import sendHaierAC
+
+        return sendHaierAC(state, nbytes, repeat)
+    elif protocol_type == decode_type_t.HAIER_AC_YRW02:
+        from app.core.ir_protocols.haier import sendHaierACYRW02
+
+        return sendHaierACYRW02(state, nbytes, repeat)
+    elif protocol_type == decode_type_t.HAIER_AC176:
+        from app.core.ir_protocols.haier import sendHaierAC176
+
+        return sendHaierAC176(state, nbytes, repeat)
+    elif protocol_type == decode_type_t.HAIER_AC160:
+        from app.core.ir_protocols.haier import sendHaierAC160
+
+        return sendHaierAC160(state, nbytes, repeat)
+
     # Protocol not supported
     return None
 
@@ -600,8 +618,29 @@ def decode(results: decode_results, max_skip: int = 0, noise_floor: int = 0) -> 
             results.decode_type = decode_type_t.GREE
             return True
 
+        # DECODE_HAIER (all variants - order matters, try larger protocols first)
+        from app.core.ir_protocols.haier import (
+            decodeHaierAC176,
+            decodeHaierAC160,
+            decodeHaierACYRW02,
+            decodeHaierAC,
+        )
+
+        if decodeHaierAC176(results, offset):
+            results.decode_type = decode_type_t.HAIER_AC176
+            return True
+        if decodeHaierAC160(results, offset):
+            results.decode_type = decode_type_t.HAIER_AC160
+            return True
+        if decodeHaierACYRW02(results, offset):
+            results.decode_type = decode_type_t.HAIER_AC_YRW02
+            return True
+        if decodeHaierAC(results, offset):
+            results.decode_type = decode_type_t.HAIER_AC
+            return True
+
         # More protocols will be added here as we import them
-        # Current count: 36 variants from 9 manufacturers
+        # Current count: 40 variants from 10 manufacturers
 
     # Nothing matched
     return False
