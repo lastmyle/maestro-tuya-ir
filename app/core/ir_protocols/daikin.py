@@ -382,14 +382,14 @@ def sendDaikin(data: List[int], nbytes: int, repeat: int = 0) -> List[int]:
         return []  # Not enough bytes to send a proper message.
 
     # Import here to avoid circular import
-    from app.core.ir_protocols.ir_send import sendGeneric
+    from app.core.ir_protocols.ir_send import sendGeneric, sendGenericUint64
 
     all_timings = []
 
     for r in range(repeat + 1):
         offset = 0
         # Send the header, 0b00000
-        header_timings = sendGeneric(
+        header_timings = sendGenericUint64(
             headermark=0,
             headerspace=0,  # No header for the header
             onemark=kDaikinBitMark,
@@ -398,7 +398,7 @@ def sendDaikin(data: List[int], nbytes: int, repeat: int = 0) -> List[int]:
             zerospace=kDaikinZeroSpace,
             footermark=kDaikinBitMark,
             gap=kDaikinZeroSpace + kDaikinGap,
-            data_value=0b00000,
+            data_uint64=0b00000,
             nbits=kDaikinHeaderLength,
             MSBfirst=False,
         )
@@ -407,7 +407,7 @@ def sendDaikin(data: List[int], nbytes: int, repeat: int = 0) -> List[int]:
         # Data #1
         if nbytes < kDaikinStateLength:  # Are we using the legacy size?
             # Do this as a constant to save RAM and keep in flash memory
-            data1_timings = sendGeneric(
+            data1_timings = sendGenericUint64(
                 headermark=kDaikinHdrMark,
                 headerspace=kDaikinHdrSpace,
                 onemark=kDaikinBitMark,
@@ -416,7 +416,7 @@ def sendDaikin(data: List[int], nbytes: int, repeat: int = 0) -> List[int]:
                 zerospace=kDaikinZeroSpace,
                 footermark=kDaikinBitMark,
                 gap=kDaikinZeroSpace + kDaikinGap,
-                data_value=kDaikinFirstHeader64,
+                data_uint64=kDaikinFirstHeader64,
                 nbits=64,
                 MSBfirst=False,
             )
@@ -1026,11 +1026,12 @@ def decodeDaikin(results, offset: int = 1, nbits: int = kDaikinBits, strict: boo
         offset += used
 
     # Data #2
+    # Python fix: use result_offset instead of slicing (slices create copies, not references)
     data_offset = 0 if nbytes == kDaikinStateLengthShort else kDaikinSection1Length
     used = _matchGeneric(
         data_ptr=results.rawbuf[offset:],
         result_bits_ptr=None,
-        result_bytes_ptr=results.state[data_offset:],
+        result_bytes_ptr=results.state,
         use_bits=False,
         remaining=results.rawlen - offset,
         nbits=kDaikinSection2Length * 8,
@@ -1046,6 +1047,7 @@ def decodeDaikin(results, offset: int = 1, nbits: int = kDaikinBits, strict: boo
         tolerance=kDaikinTolerance,
         excess=kDaikinMarkExcess,
         MSBfirst=False,
+        result_offset=data_offset,  # Python fix: write at offset in state array
     )
     if used == 0:
         return False
@@ -1056,7 +1058,7 @@ def decodeDaikin(results, offset: int = 1, nbits: int = kDaikinBits, strict: boo
     used = _matchGeneric(
         data_ptr=results.rawbuf[offset:],
         result_bits_ptr=None,
-        result_bytes_ptr=results.state[data_offset:],
+        result_bytes_ptr=results.state,
         use_bits=False,
         remaining=results.rawlen - offset,
         nbits=(nbytes - data_offset) * 8,
@@ -1072,6 +1074,7 @@ def decodeDaikin(results, offset: int = 1, nbits: int = kDaikinBits, strict: boo
         tolerance=kDaikinTolerance,
         excess=kDaikinMarkExcess,
         MSBfirst=False,
+        result_offset=data_offset,  # Python fix: write at offset in state array
     )
     if used == 0:
         return False

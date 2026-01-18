@@ -233,10 +233,15 @@ def matchBytes(
     excess: int,
     MSBfirst: bool,
     expectlastspace: bool,
+    result_offset: int = 0,  # Python fix: write offset into result_ptr (C++ uses pointer arithmetic)
 ) -> int:
     """
     Match & decode bytes from IR timings.
     EXACT translation from IRremoteESP8266 IRrecv::matchBytes
+
+    Note: result_offset parameter added for Python compatibility.
+    In C++, callers pass &state[offset] which is a pointer to the middle of the array.
+    In Python, slicing creates a copy, so we pass the full array + write offset instead.
     """
     # Check if there is enough capture buffer to possibly have the desired bytes.
     if remaining + (1 if expectlastspace else 0) < (nbytes * 8 * 2) + 1:
@@ -262,7 +267,7 @@ def matchBytes(
         )
         if result.success == False:
             return 0  # Fail
-        result_ptr[byte_pos] = result.data & 0xFF  # (uint8_t)result.data
+        result_ptr[result_offset + byte_pos] = result.data & 0xFF  # Python fix: use result_offset
         used_offset += result.used
     return used_offset
 
@@ -317,6 +322,7 @@ def _matchGeneric(
     tolerance: int,
     excess: int,
     MSBfirst: bool,
+    result_offset: int = 0,  # Python fix: write offset into result_bytes_ptr
 ) -> int:
     """
     Match & decode a generic/typical IR message.
@@ -324,8 +330,9 @@ def _matchGeneric(
 
     Returns offset (number of buffer entries used) on success, 0 on failure.
     """
-    # If we are expecting byte sizes, check it's a factor of 8 or fail.
-    if not use_bits and nbits % 8 != 0:
+    # If we are expecting byte sizes AND storing results, check it's a factor of 8 or fail.
+    # When result_bytes_ptr is None, we're just validating timing, not storing data.
+    if not use_bits and result_bytes_ptr is not None and nbits % 8 != 0:
         return 0
     # Calculate if we expect a trailing space in the data section.
     kexpectspace = footermark or (onespace != zerospace)
@@ -376,24 +383,45 @@ def _matchGeneric(
             result_bits_ptr[0] = result.data  # *result_bits_ptr = result.data
         offset += result.used
     else:  # bytes
-        data_used = matchBytes(
-            data_ptr,
-            offset,
-            result_bytes_ptr,
-            remaining - offset,
-            nbits // 8,
-            onemark,
-            onespace,
-            zeromark,
-            zerospace,
-            tolerance,
-            excess,
-            MSBfirst,
-            kexpectspace,
-        )
-        if not data_used:
-            return 0
-        offset += data_used
+        if result_bytes_ptr is not None:
+            # Store bytes in result buffer
+            data_used = matchBytes(
+                data_ptr,
+                offset,
+                result_bytes_ptr,
+                remaining - offset,
+                nbits // 8,
+                onemark,
+                onespace,
+                zeromark,
+                zerospace,
+                tolerance,
+                excess,
+                MSBfirst,
+                kexpectspace,
+                result_offset,  # Python fix: pass write offset
+            )
+            if not data_used:
+                return 0
+            offset += data_used
+        else:
+            # Just validate timing without storing (e.g., for preamble validation)
+            result = matchData(
+                data_ptr,
+                offset,
+                nbits,
+                onemark,
+                onespace,
+                zeromark,
+                zerospace,
+                tolerance,
+                excess,
+                MSBfirst,
+                kexpectspace,
+            )
+            if not result.success:
+                return 0
+            offset += result.used
 
     # Footer
     if footermark and not matchMark(data_ptr[offset], footermark, tolerance, excess):
