@@ -17,6 +17,29 @@ from app.core.tuya_encoder import encode_ir
 from app.core.ir_protocols import decode_type_t
 
 
+def _prepare_timings_for_tuya(timings: List[int]) -> List[int]:
+    """
+    Prepare IR timings for Tuya encoding.
+
+    Some protocols (e.g., Haier) generate large inter-message gaps that exceed
+    the 16-bit limit (65535µs) for Tuya encoding. This function:
+    1. Removes trailing gaps (values > 10000µs at the end)
+    2. Caps all values at 65535µs
+
+    Args:
+        timings: Raw IR timing values in microseconds
+
+    Returns:
+        Timings safe for Tuya encoding
+    """
+    # Remove trailing large gaps (inter-message gaps)
+    result = list(timings)
+    while result and result[-1] > 10000:
+        result = result[:-1]
+    # Cap all values at 65535 (16-bit max)
+    return [min(t, 65535) for t in result]
+
+
 @dataclass
 class ModeConfig:
     """Configuration for an AC mode"""
@@ -459,6 +482,21 @@ class ProtocolRegistry:
             kHaierAcFanLow,
             kHaierAcFanMed,
             kHaierAcFanHigh,
+            # AC176 imports
+            IRHaierAC176,
+            sendHaierAC176,
+            kHaierAC176StateLength,
+            kHaierAcYrw02MinTempC,
+            kHaierAcYrw02MaxTempC,
+            kHaierAcYrw02Auto,
+            kHaierAcYrw02Cool,
+            kHaierAcYrw02Heat,
+            kHaierAcYrw02Dry,
+            kHaierAcYrw02Fan,
+            kHaierAcYrw02FanAuto,
+            kHaierAcYrw02FanLow,
+            kHaierAcYrw02FanMed,
+            kHaierAcYrw02FanHigh,
         )
 
         # Register Haier AC
@@ -484,6 +522,33 @@ class ProtocolRegistry:
                     FanConfig(kHaierAcFanLow, "low", "Low fan"),
                     FanConfig(kHaierAcFanMed, "med", "Medium fan"),
                     FanConfig(kHaierAcFanHigh, "high", "High fan"),
+                ],
+            )
+        )
+
+        # Register Haier AC176
+        self.register(
+            ProtocolMetadata(
+                protocol_type=decode_type_t.HAIER_AC176,
+                protocol_name="HAIER_AC176",
+                manufacturer="Haier",
+                ac_class=IRHaierAC176,
+                send_function=sendHaierAC176,
+                state_length=kHaierAC176StateLength,
+                min_temp=kHaierAcYrw02MinTempC,
+                max_temp=kHaierAcYrw02MaxTempC,
+                modes=[
+                    ModeConfig(kHaierAcYrw02Auto, "auto", "Auto"),
+                    ModeConfig(kHaierAcYrw02Cool, "cool", "Cool"),
+                    ModeConfig(kHaierAcYrw02Heat, "heat", "Heat"),
+                    ModeConfig(kHaierAcYrw02Dry, "dry", "Dry"),
+                    ModeConfig(kHaierAcYrw02Fan, "fan", "Fan"),
+                ],
+                fans=[
+                    FanConfig(kHaierAcYrw02FanAuto, "auto", "Auto fan"),
+                    FanConfig(kHaierAcYrw02FanLow, "low", "Low fan"),
+                    FanConfig(kHaierAcYrw02FanMed, "med", "Medium fan"),
+                    FanConfig(kHaierAcYrw02FanHigh, "high", "High fan"),
                 ],
             )
         )
@@ -1327,8 +1392,9 @@ class CommandGenerator:
                     get_raw = getattr(ac, metadata.get_raw_method)
                     new_bytes = get_raw()
 
-                    # Generate timings
+                    # Generate timings and prepare for Tuya encoding
                     signal = metadata.send_function(new_bytes, len(new_bytes))
+                    signal = _prepare_timings_for_tuya(signal)
 
                     # Encode to Tuya format
                     tuya_code = encode_ir(signal)
@@ -1353,6 +1419,7 @@ class CommandGenerator:
             new_bytes = get_raw()
 
             signal = metadata.send_function(new_bytes, len(new_bytes))
+            signal = _prepare_timings_for_tuya(signal)
             tuya_code = encode_ir(signal)
 
             power_name = "on" if power_state else "off"

@@ -5,11 +5,14 @@ Integration tests for Haier AC176 protocol command generation.
 Tests the complete workflow:
 1. Decode Tuya IR code
 2. Identify as HAIER_AC176
-3. Generate full command set (245 commands)
+3. Generate full command set
 4. Verify command structure and validity
+5. E2E API tests via FastAPI TestClient
 """
 
 import pytest
+from fastapi.testclient import TestClient
+from index import app
 from app.core.tuya_encoder import decode_ir, encode_ir
 from app.core.ir_protocols.ir_recv import decode_results
 from app.core.ir_protocols.haier import (
@@ -566,6 +569,151 @@ class TestHaierAC176CommandOutput:
 
         # Verify all samples generated
         assert len(samples) == 4
+
+
+class TestHaierAC176APIEndpoint:
+    """E2E tests for /api/identify endpoint with Haier AC176."""
+
+    @pytest.fixture
+    def client(self):
+        """Create FastAPI test client."""
+        return TestClient(app)
+
+    def test_api_identify_haier_ac176(self, client):
+        """Test /api/identify correctly identifies Haier AC176 code."""
+        response = client.post(
+            "/api/identify",
+            json={"tuya_code": HAIER_AC176_USER_CODE}
+        )
+
+        assert response.status_code == 200
+        data = response.json()
+
+        # Verify protocol detection
+        assert data["protocol"] == "HAIER_AC176"
+        assert data["manufacturer"] == "Haier"
+
+    def test_api_returns_correct_temperature_range(self, client):
+        """Test API returns correct temperature range for Haier AC176."""
+        response = client.post(
+            "/api/identify",
+            json={"tuya_code": HAIER_AC176_USER_CODE}
+        )
+
+        assert response.status_code == 200
+        data = response.json()
+
+        assert data["min_temperature"] == kHaierAcYrw02MinTempC  # 16
+        assert data["max_temperature"] == kHaierAcYrw02MaxTempC  # 30
+
+    def test_api_returns_all_operation_modes(self, client):
+        """Test API returns all operation modes."""
+        response = client.post(
+            "/api/identify",
+            json={"tuya_code": HAIER_AC176_USER_CODE}
+        )
+
+        assert response.status_code == 200
+        data = response.json()
+
+        expected_modes = ["auto", "cool", "heat", "dry", "fan"]
+        assert set(data["operation_modes"]) == set(expected_modes)
+
+    def test_api_returns_all_fan_modes(self, client):
+        """Test API returns all fan modes."""
+        response = client.post(
+            "/api/identify",
+            json={"tuya_code": HAIER_AC176_USER_CODE}
+        )
+
+        assert response.status_code == 200
+        data = response.json()
+
+        expected_fans = ["auto", "low", "med", "high"]
+        assert set(data["fan_modes"]) == set(expected_fans)
+
+    def test_api_generates_commands(self, client):
+        """Test API generates commands for Haier AC176."""
+        response = client.post(
+            "/api/identify",
+            json={"tuya_code": HAIER_AC176_USER_CODE}
+        )
+
+        assert response.status_code == 200
+        data = response.json()
+
+        # Should generate commands
+        commands = data["commands"]
+        assert isinstance(commands, list)
+        assert len(commands) > 0
+
+        # Expected: 15 temps × 5 modes × 4 fans + 2 power = 302 commands
+        expected_count = (15 * 5 * 4) + 2
+        assert len(commands) == expected_count, f"Expected {expected_count}, got {len(commands)}"
+
+    def test_api_command_structure(self, client):
+        """Test each command has required fields."""
+        response = client.post(
+            "/api/identify",
+            json={"tuya_code": HAIER_AC176_USER_CODE}
+        )
+
+        assert response.status_code == 200
+        data = response.json()
+
+        for cmd in data["commands"]:
+            assert "name" in cmd
+            assert "description" in cmd
+            assert "tuya_code" in cmd
+            assert isinstance(cmd["tuya_code"], str)
+            assert len(cmd["tuya_code"]) > 0
+
+    def test_api_generated_codes_are_valid_tuya(self, client):
+        """Test generated Tuya codes can be decoded back to timings."""
+        response = client.post(
+            "/api/identify",
+            json={"tuya_code": HAIER_AC176_USER_CODE}
+        )
+
+        assert response.status_code == 200
+        data = response.json()
+
+        # Test first 10 commands can be decoded
+        for cmd in data["commands"][:10]:
+            timings = decode_ir(cmd["tuya_code"])
+            assert len(timings) > 0, f"Failed to decode {cmd['name']}"
+
+    def test_api_has_power_commands(self, client):
+        """Test API generates power on/off commands."""
+        response = client.post(
+            "/api/identify",
+            json={"tuya_code": HAIER_AC176_USER_CODE}
+        )
+
+        assert response.status_code == 200
+        data = response.json()
+
+        command_names = [cmd["name"] for cmd in data["commands"]]
+        assert "power_on" in command_names
+        assert "power_off" in command_names
+
+    def test_api_has_expected_temp_mode_fan_commands(self, client):
+        """Test API generates specific temperature/mode/fan combinations."""
+        response = client.post(
+            "/api/identify",
+            json={"tuya_code": HAIER_AC176_USER_CODE}
+        )
+
+        assert response.status_code == 200
+        data = response.json()
+
+        command_names = [cmd["name"] for cmd in data["commands"]]
+
+        # Check for specific commands
+        assert "22_cool_auto" in command_names
+        assert "24_heat_high" in command_names
+        assert "16_auto_low" in command_names
+        assert "30_dry_med" in command_names
 
 
 if __name__ == "__main__":
