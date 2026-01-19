@@ -80,8 +80,10 @@ kDaikinLightDim = 2
 kDaikinLightOff = 3
 kDaikinCurBit = kDaikinStateLength
 kDaikinCurIndex = kDaikinStateLength + 1
-kDaikinTolerance = 35
-kDaikinMarkExcess = 50  # Typical kMarkExcess value
+kDaikinTolerance = 40  # Increased from 35 to handle real-world timing variations
+# Note: kMarkExcess is for hardware captures where marks run long.
+# For Tuya codes (already processed), we use 0 for symmetric tolerance.
+kDaikinMarkExcess = 0
 kDaikinHdrMark = 3650  # kDaikinBitMark * 8
 kDaikinHdrSpace = 1623  # kDaikinBitMark * 4
 kDaikinBitMark = 428
