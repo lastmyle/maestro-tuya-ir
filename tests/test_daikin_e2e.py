@@ -124,6 +124,34 @@ class TestDaikinAPIEndpoint:
         assert "power_on" in command_names
         assert "power_off" in command_names
 
+    def test_api_generates_full_command_matrix(self, client):
+        """Test API generates full command matrix with temp/mode/fan combinations."""
+        response = client.post(
+            "/api/identify",
+            json={"tuya_code": DAIKIN_USER_CODE}
+        )
+
+        assert response.status_code == 200
+        data = response.json()
+
+        # Daikin has:
+        # - Temps: 10-32°C = 23 values
+        # - Modes: auto, cool, heat, dry, fan = 5 modes
+        # - Fans: auto, quiet, 1, 2, 3, 4, 5 = 7 speeds
+        # Total: 23 * 5 * 7 = 805 + 2 power commands = 807
+        commands = data["commands"]
+        assert len(commands) > 100, f"Expected full command matrix, got {len(commands)} commands"
+
+        # Verify we have different temperature commands
+        temp_commands = [c for c in commands if c["name"].startswith("2")]  # e.g., "22_cool_auto"
+        assert len(temp_commands) > 20, "Should have commands for multiple temperatures"
+
+        # Verify we have different mode commands
+        cool_commands = [c for c in commands if "_cool_" in c["name"]]
+        heat_commands = [c for c in commands if "_heat_" in c["name"]]
+        assert len(cool_commands) > 10, "Should have multiple cool commands"
+        assert len(heat_commands) > 10, "Should have multiple heat commands"
+
     def test_api_generated_codes_are_valid_tuya(self, client):
         """Test generated Tuya codes can be decoded back to timings."""
         response = client.post(
