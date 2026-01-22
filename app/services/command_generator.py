@@ -1442,8 +1442,27 @@ class CommandGenerator:
                     )
 
         # Generate power commands
+        # Use a sensible default state (first mode, mid temperature, first fan)
+        # Real AC remotes send the previous state with power bit toggled
+        default_mode = metadata.modes[0] if metadata.modes else None
+        default_fan = metadata.fans[0] if metadata.fans else None
+        default_temp = (metadata.min_temp + metadata.max_temp) // 2
+
         for power_state in [True, False]:
             ac = metadata.ac_class()
+
+            # Set a reasonable default state before setting power
+            # This mimics how real remotes work - they send full state with power bit set/cleared
+            if default_mode:
+                set_mode = getattr(ac, metadata.set_mode_method)
+                set_mode(default_mode.value)
+
+            set_temp = getattr(ac, metadata.set_temp_method)
+            set_temp(default_temp)
+
+            if default_fan:
+                set_fan = getattr(ac, metadata.set_fan_method)
+                set_fan(default_fan.value)
 
             set_power = getattr(ac, metadata.set_power_method)
             set_power(power_state)
