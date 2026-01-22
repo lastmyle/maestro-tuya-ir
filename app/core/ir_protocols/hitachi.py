@@ -41,7 +41,7 @@ kHitachiAc1HdrSpace = 3400
 kHitachiAcBitMark = 400
 kHitachiAcOneSpace = 1250
 kHitachiAcZeroSpace = 500
-kHitachiAcMinGap = 100000  # Just a guess (kDefaultMessageGap)
+kHitachiAcMinGap = 20000  # Minimum gap between messages (~20ms, real-world signals show ~30ms)
 
 # Support for HitachiAc424 protocol (ir_Hitachi.cpp:34-40)
 kHitachiAc424LdrMark = 29784  # Leader
@@ -1813,16 +1813,19 @@ def decodeHitachiAC(
                 return False
 
     # Success (EXACT translation from ir_Hitachi.cpp:911-928)
+    # Use enum values for proper protocol identification
+    from app.core.ir_protocols.ir_dispatcher import decode_type_t
+
     if nbits == kHitachiAc1Bits:
-        results.decode_type = "HITACHI_AC1"
+        results.decode_type = decode_type_t.HITACHI_AC1
     elif nbits == kHitachiAc2Bits:
-        results.decode_type = "HITACHI_AC2"
+        results.decode_type = decode_type_t.HITACHI_AC2
     elif nbits == kHitachiAc264Bits:
-        results.decode_type = "HITACHI_AC264"
+        results.decode_type = decode_type_t.HITACHI_AC264
     elif nbits == kHitachiAc344Bits:
-        results.decode_type = "HITACHI_AC344"
+        results.decode_type = decode_type_t.HITACHI_AC344
     else:
-        results.decode_type = "HITACHI_AC"
+        results.decode_type = decode_type_t.HITACHI_AC
 
     results.bits = nbits
     return True
@@ -1880,7 +1883,9 @@ def decodeHitachiAc424(
         return False  # We failed to find any data.
 
     # Success (EXACT translation from ir_Hitachi.cpp:1005-1007)
-    results.decode_type = "HITACHI_AC424"
+    from app.core.ir_protocols.ir_dispatcher import decode_type_t
+
+    results.decode_type = decode_type_t.HITACHI_AC424
     results.bits = nbits
     return True
 
@@ -1940,7 +1945,9 @@ def decodeHitachiAc3(
         return False
 
     # Success (EXACT translation from ir_Hitachi.cpp:1475-1477)
-    results.decode_type = "HITACHI_AC3"
+    from app.core.ir_protocols.ir_dispatcher import decode_type_t
+
+    results.decode_type = decode_type_t.HITACHI_AC3
     results.bits = nbits
     return True
 
@@ -1986,6 +1993,8 @@ def decodeHitachiAc296(
         return False
 
     # Success (EXACT translation from ir_Hitachi.cpp:1992-1994)
-    results.decode_type = "HITACHI_AC296"
+    from app.core.ir_protocols.ir_dispatcher import decode_type_t
+
+    results.decode_type = decode_type_t.HITACHI_AC296
     results.bits = nbits
     return True

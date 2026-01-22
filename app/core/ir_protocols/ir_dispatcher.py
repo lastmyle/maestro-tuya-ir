@@ -486,23 +486,41 @@ def decode(results: decode_results, max_skip: int = 0, noise_floor: int = 0) -> 
             decodeHitachiAc424,
             decodeHitachiAc296,
             decodeHitachiAc3,
+            kHitachiAcHdrMark,
+            kHitachiAcHdrSpace,
         )
+        from app.core.ir_protocols.ir_recv import matchMark, matchSpace
 
-        # HitachiAC424 must come before HitachiAC (it's more specific)
-        if decodeHitachiAc424(results, offset):
-            results.decode_type = decode_type_t.HITACHI_AC424
-            return True
-        if decodeHitachiAc296(results, offset):
-            results.decode_type = decode_type_t.HITACHI_AC296
-            return True
-        if decodeHitachiAc3(results, offset):
-            results.decode_type = decode_type_t.HITACHI_AC3
-            return True
-        # HitachiAC decoder handles AC, AC1, AC264, AC344 (multi-format)
-        if decodeHitachiAC(results, offset):
-            # decode_type is set by the decoder based on bits detected
-            # Could be HITACHI_AC, HITACHI_AC1, HITACHI_AC264, or HITACHI_AC344
-            return True
+        # Some Hitachi remotes send a preamble before the actual signal
+        # Try to find the header pattern and adjust offset if needed
+        hitachi_offsets = [offset]
+
+        # Look for Hitachi header pattern (3300µs mark, 1700µs space) in first 10 positions
+        for i in range(offset, min(offset + 10, results.rawlen - 2)):
+            if (
+                matchMark(results.rawbuf[i], kHitachiAcHdrMark)
+                and matchSpace(results.rawbuf[i + 1], kHitachiAcHdrSpace)
+            ):
+                if i != offset:
+                    hitachi_offsets.append(i)
+                break
+
+        for hit_offset in hitachi_offsets:
+            # HitachiAC424 must come before HitachiAC (it's more specific)
+            if decodeHitachiAc424(results, hit_offset):
+                results.decode_type = decode_type_t.HITACHI_AC424
+                return True
+            if decodeHitachiAc296(results, hit_offset):
+                results.decode_type = decode_type_t.HITACHI_AC296
+                return True
+            if decodeHitachiAc3(results, hit_offset):
+                results.decode_type = decode_type_t.HITACHI_AC3
+                return True
+            # HitachiAC decoder handles AC, AC1, AC264, AC344 (multi-format)
+            if decodeHitachiAC(results, hit_offset):
+                # decode_type is set by the decoder based on bits detected
+                # Could be HITACHI_AC, HITACHI_AC1, HITACHI_AC264, or HITACHI_AC344
+                return True
 
         # DECODE_SAMSUNG_AC
         from app.core.ir_protocols.samsung import decodeSamsungAC, decodeSamsung36, decodeSAMSUNG
