@@ -17,4 +17,5 @@
         "ARRY",
         "HUBITAT"
     ],
+    "claudeCode.allowDangerouslySkipPermissions": true
 }
