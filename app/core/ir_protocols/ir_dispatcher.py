@@ -616,14 +616,15 @@ def decode(results: decode_results, max_skip: int = 0, noise_floor: int = 0) -> 
         if decodeMitsubishiHeavy(results, offset):
             # decode_type is set by decoder (MITSUBISHI_HEAVY_88 or MITSUBISHI_HEAVY_152)
             return True
-        if decodeMitsubishiAC(results, offset):
+        # Use strict=False for Mitsubishi AC to allow detection without repeat frames
+        if decodeMitsubishiAC(results, offset, strict=False):
             results.decode_type = decode_type_t.MITSUBISHI_AC
             return True
-        if decodeMitsubishi136(results, offset):
+        if decodeMitsubishi136(results, offset, strict=False):
             results.decode_type = decode_type_t.MITSUBISHI136
             return True
         # Mitsubishi112 also handles TCL112AC (sets decode_type appropriately)
-        if decodeMitsubishi112(results, offset):
+        if decodeMitsubishi112(results, offset, strict=False):
             # decode_type is set by decoder (MITSUBISHI112 or TCL112AC)
             return True
 
