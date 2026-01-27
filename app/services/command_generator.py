@@ -377,6 +377,54 @@ class ProtocolRegistry:
             )
         )
 
+        # Import Mitsubishi constants
+        from app.core.ir_protocols.mitsubishi import (
+            IRMitsubishiAc,
+            sendMitsubishiAC,
+            kMitsubishiACStateLength,
+            kMitsubishiAcMinTemp,
+            kMitsubishiAcMaxTemp,
+            kMitsubishiAcAuto,
+            kMitsubishiAcCool,
+            kMitsubishiAcDry,
+            kMitsubishiAcHeat,
+            kMitsubishiAcFan,
+            kMitsubishiAcFanAuto,
+            kMitsubishiAcFanMax,
+            kMitsubishiAcFanRealMax,
+            kMitsubishiAcFanSilent,
+        )
+
+        # Register Mitsubishi AC (144-bit)
+        self.register(
+            ProtocolMetadata(
+                protocol_type=decode_type_t.MITSUBISHI_AC,
+                protocol_name="MITSUBISHI_AC",
+                manufacturer="Mitsubishi",
+                ac_class=IRMitsubishiAc,
+                send_function=sendMitsubishiAC,
+                state_length=kMitsubishiACStateLength,
+                min_temp=int(kMitsubishiAcMinTemp),
+                max_temp=int(kMitsubishiAcMaxTemp),
+                modes=[
+                    ModeConfig(kMitsubishiAcAuto, "auto", "Auto"),
+                    ModeConfig(kMitsubishiAcCool, "cool", "Cool"),
+                    ModeConfig(kMitsubishiAcHeat, "heat", "Heat"),
+                    ModeConfig(kMitsubishiAcDry, "dry", "Dry"),
+                    ModeConfig(kMitsubishiAcFan, "fan", "Fan"),
+                ],
+                fans=[
+                    FanConfig(kMitsubishiAcFanAuto, "auto", "Auto fan"),
+                    FanConfig(1, "low", "Low fan"),
+                    FanConfig(2, "med_low", "Medium-Low fan"),
+                    FanConfig(3, "med", "Medium fan"),
+                    FanConfig(kMitsubishiAcFanRealMax, "high", "High fan"),
+                    FanConfig(kMitsubishiAcFanMax, "max", "Max fan"),
+                    FanConfig(kMitsubishiAcFanSilent, "quiet", "Quiet fan"),
+                ],
+            )
+        )
+
         # Import Sharp constants
         from app.core.ir_protocols.sharp import (
             IRSharpAc,

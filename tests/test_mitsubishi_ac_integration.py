@@ -211,8 +211,7 @@ class TestMitsubishiACAPIEndpoint:
         assert response.status_code == 200
         data = response.json()
         assert data["protocol"] == "MITSUBISHI_AC"
-        # Manufacturer comes from protocol_map, may be "Mitsubishi" or "Unknown"
-        assert data["manufacturer"] in ["Mitsubishi", "Unknown"]
+        assert data["manufacturer"] == "Mitsubishi"
 
     def test_api_returns_temperature_range(self, client):
         """Test that API returns correct temperature range."""
@@ -224,7 +223,7 @@ class TestMitsubishiACAPIEndpoint:
         assert response.status_code == 200
         data = response.json()
         assert data["min_temperature"] == 16
-        assert data["max_temperature"] == 30  # API returns 30, not 31
+        assert data["max_temperature"] == 31
 
     def test_api_returns_operation_modes(self, client):
         """Test that API returns operation modes."""
@@ -251,9 +250,13 @@ class TestMitsubishiACAPIEndpoint:
         data = response.json()
         fans = data["fan_modes"]
         assert "auto" in fans
+        assert "low" in fans
+        assert "med" in fans
+        assert "high" in fans
+        assert "quiet" in fans
 
     def test_api_returns_power_commands(self, client):
-        """Test that API returns at least power commands."""
+        """Test that API returns power commands."""
         timings = sendMitsubishiAC(MITSUBISHI_AC_STATE, kMitsubishiACStateLength)
         tuya_code = encode_ir(timings)
 
@@ -265,6 +268,32 @@ class TestMitsubishiACAPIEndpoint:
         command_names = [c["name"] for c in commands]
         assert "power_on" in command_names
         assert "power_off" in command_names
+
+    def test_api_generates_full_command_set(self, client):
+        """Test that API generates complete command set for all temp/mode/fan combos."""
+        timings = sendMitsubishiAC(MITSUBISHI_AC_STATE, kMitsubishiACStateLength)
+        tuya_code = encode_ir(timings)
+
+        response = client.post("/api/identify", json={"tuya_code": tuya_code})
+
+        assert response.status_code == 200
+        data = response.json()
+        commands = data["commands"]
+        command_names = [c["name"] for c in commands]
+
+        # Should have power commands
+        assert "power_on" in command_names
+        assert "power_off" in command_names
+
+        # Should have temp/mode/fan combinations
+        # 16 temps * 5 modes * 7 fans = 560 + 2 power = 562
+        assert len(commands) >= 500  # At least 500 commands
+
+        # Verify specific command patterns exist
+        assert "24_cool_auto" in command_names
+        assert "20_heat_low" in command_names
+        assert "16_auto_quiet" in command_names
+        assert "31_dry_high" in command_names
 
     def test_api_generated_codes_are_valid_tuya(self, client):
         """Test that generated codes are valid Tuya format."""

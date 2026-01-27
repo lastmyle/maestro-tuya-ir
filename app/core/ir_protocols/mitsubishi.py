@@ -393,6 +393,182 @@ def validChecksumMitsubishiHeavy88(
 
 
 # ===============================================================================
+# MITSUBISHI AC CLASS (144-bit)
+# ===============================================================================
+
+
+class IRMitsubishiAc:
+    """
+    Class for handling Mitsubishi 144-bit A/C remote messages.
+    EXACT translation from IRremoteESP8266 IRMitsubishiAC class.
+
+    Protocol structure (18 bytes):
+    - Bytes 0-4: Signature (0x23, 0xCB, 0x26, 0x01, 0x00)
+    - Byte 5: Power (bit 5)
+    - Byte 6: Mode (bits 0-2)
+    - Byte 7: Temperature (bits 0-3), HalfDegree (bit 4)
+    - Byte 8: Wide Vane / Horizontal Swing (bits 0-3)
+    - Byte 9: Fan (bits 0-2), Vane/SwingV (bits 3-5), FanAuto (bit 7)
+    - Bytes 10-16: Timer and other settings
+    - Byte 17: Checksum
+    """
+
+    def __init__(self) -> None:
+        """Initialize the Mitsubishi AC state."""
+        self._state = [0] * kMitsubishiACStateLength
+        self.stateReset()
+
+    def stateReset(self) -> None:
+        """
+        Reset the internal state to a fixed known good state.
+        EXACT translation from IRremoteESP8266 IRMitsubishiAC::stateReset
+        """
+        # Signature bytes
+        self._state[0] = 0x23
+        self._state[1] = 0xCB
+        self._state[2] = 0x26
+        self._state[3] = 0x01
+        self._state[4] = 0x00
+        # Power off, Mode auto
+        self._state[5] = 0x00  # Power bit at position 5
+        self._state[6] = kMitsubishiAcAuto  # Mode
+        # Temperature: 24C (offset from 16 = 8, shifted)
+        self._state[7] = 0x08  # Temp = 24C (8 = 24 - 16)
+        # Wide vane: middle
+        self._state[8] = kMitsubishiAcWideVaneMiddle
+        # Fan auto, Vane auto
+        self._state[9] = (kMitsubishiAcFanAuto & 0x07) | ((kMitsubishiAcVaneAuto & 0x07) << 3) | 0x80
+        # Rest are zeros (timers, etc)
+        for i in range(10, kMitsubishiACStateLength - 1):
+            self._state[i] = 0x00
+        # Checksum will be calculated
+        self._state[17] = 0x00
+        self.checksum()
+
+    def checksum(self) -> None:
+        """Calculate and set the checksum for the current state."""
+        self._state[kMitsubishiACStateLength - 1] = calculateChecksum(self._state)
+
+    def getRaw(self) -> List[int]:
+        """
+        Get the raw state bytes for transmission.
+        EXACT translation from IRremoteESP8266 IRMitsubishiAC::getRaw
+        """
+        self.checksum()
+        return self._state.copy()
+
+    def setRaw(self, data: List[int]) -> None:
+        """Set the internal state from raw bytes."""
+        for i in range(min(len(data), kMitsubishiACStateLength)):
+            self._state[i] = data[i]
+
+    def getPower(self) -> bool:
+        """Get the power state."""
+        return bool(self._state[5] & 0x20)  # Bit 5 of byte 5
+
+    def setPower(self, on: bool) -> None:
+        """
+        Set the power state.
+        EXACT translation from IRremoteESP8266 IRMitsubishiAC::setPower
+        """
+        if on:
+            self._state[5] |= 0x20  # Set bit 5
+        else:
+            self._state[5] &= ~0x20 & 0xFF  # Clear bit 5
+
+    def on(self) -> None:
+        """Turn the A/C on."""
+        self.setPower(True)
+
+    def off(self) -> None:
+        """Turn the A/C off."""
+        self.setPower(False)
+
+    def getMode(self) -> int:
+        """
+        Get the operating mode.
+        EXACT translation from IRremoteESP8266 IRMitsubishiAC::getMode
+        """
+        return self._state[6] & 0x07
+
+    def setMode(self, mode: int) -> None:
+        """
+        Set the operating mode.
+        EXACT translation from IRremoteESP8266 IRMitsubishiAC::setMode
+        """
+        new_mode = mode
+        if mode not in [kMitsubishiAcAuto, kMitsubishiAcCool, kMitsubishiAcDry, kMitsubishiAcHeat, kMitsubishiAcFan]:
+            new_mode = kMitsubishiAcAuto
+        self._state[6] = (self._state[6] & 0xF8) | (new_mode & 0x07)
+
+    def getTemp(self) -> float:
+        """
+        Get the temperature setting in Celsius.
+        EXACT translation from IRremoteESP8266 IRMitsubishiAC::getTemp
+        """
+        temp = (self._state[7] & 0x0F) + int(kMitsubishiAcMinTemp)
+        if self._state[7] & 0x10:  # Half degree bit
+            temp += 0.5
+        return float(temp)
+
+    def setTemp(self, degrees: float) -> None:
+        """
+        Set the temperature in Celsius.
+        EXACT translation from IRremoteESP8266 IRMitsubishiAC::setTemp
+        """
+        temp = max(kMitsubishiAcMinTemp, min(kMitsubishiAcMaxTemp, degrees))
+        # Calculate offset from minimum
+        offset = int(temp - kMitsubishiAcMinTemp)
+        half_degree = (temp - int(temp)) >= 0.5
+        self._state[7] = (self._state[7] & 0xE0) | (offset & 0x0F)
+        if half_degree:
+            self._state[7] |= 0x10
+        else:
+            self._state[7] &= ~0x10 & 0xFF
+
+    def getFan(self) -> int:
+        """
+        Get the fan speed setting.
+        EXACT translation from IRremoteESP8266 IRMitsubishiAC::getFan
+        """
+        return self._state[9] & 0x07
+
+    def setFan(self, speed: int) -> None:
+        """
+        Set the fan speed.
+        EXACT translation from IRremoteESP8266 IRMitsubishiAC::setFan
+        """
+        new_speed = speed
+        if speed > kMitsubishiAcFanSilent:
+            new_speed = kMitsubishiAcFanAuto
+        # Set fan speed in bits 0-2, set FanAuto bit if auto mode
+        self._state[9] = (self._state[9] & 0xF8) | (new_speed & 0x07)
+        if new_speed == kMitsubishiAcFanAuto:
+            self._state[9] |= 0x80  # FanAuto bit
+        else:
+            self._state[9] &= ~0x80 & 0xFF
+
+    def getVane(self) -> int:
+        """Get the vertical vane position."""
+        return (self._state[9] >> 3) & 0x07
+
+    def setVane(self, position: int) -> None:
+        """Set the vertical vane position."""
+        new_pos = position
+        if position > kMitsubishiAcVaneSwing:
+            new_pos = kMitsubishiAcVaneAuto
+        self._state[9] = (self._state[9] & 0xC7) | ((new_pos & 0x07) << 3)
+
+    def getWideVane(self) -> int:
+        """Get the horizontal vane position."""
+        return self._state[8] & 0x0F
+
+    def setWideVane(self, position: int) -> None:
+        """Set the horizontal vane position."""
+        self._state[8] = (self._state[8] & 0xF0) | (position & 0x0F)
+
+
+# ===============================================================================
 # SEND FUNCTIONS
 # ===============================================================================
 
