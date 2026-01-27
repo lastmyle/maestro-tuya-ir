@@ -38,6 +38,10 @@ def client():
     return TestClient(app)
 
 
+# Example Mitsubishi AC Tuya code for reference/testing
+# This is a valid code that can be sent to an IR blaster
+MITSUBISHI_AC_TEST_CODE = "B0gN1gbCARQFgAMBpAHgAQPgAw/gAx/gExfgBzPgCwvgPwPgD1PgV3fg/wPiASsDuAGMPA=="
+
 # Mitsubishi AC 144-bit state with proper signature (0x23, 0xCB, 0x26, 0x01, 0x00)
 MITSUBISHI_AC_STATE = [
     0x23, 0xCB, 0x26, 0x01, 0x00,  # Signature bytes
@@ -111,6 +115,20 @@ class TestMitsubishiACIRGeneration:
 
 class TestMitsubishiACDecoding:
     """Test decoding of Mitsubishi AC signals."""
+
+    def test_decode_hardcoded_tuya_code(self):
+        """Test decoding the hardcoded reference Tuya code."""
+        decoded_timings = decode_ir(MITSUBISHI_AC_TEST_CODE)
+
+        results = decode_results()
+        results.rawbuf = decoded_timings
+        results.rawlen = len(decoded_timings)
+        results.state = [0] * 100
+
+        success = decode(results)
+        assert success
+        assert results.decode_type == decode_type_t.MITSUBISHI_AC
+        assert results.bits == 144
 
     def test_decode_mitsubishi_ac_direct(self):
         """Test direct decoding of Mitsubishi AC signal."""
