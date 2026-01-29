@@ -2,15 +2,17 @@
 Maestro Tuya IR Bridge - Main FastAPI Application
 
 This is the main entry point for the Maestro Tuya IR Bridge service.
-It provides two endpoints:
-  1. GET /api/manufacturers - List all supported manufacturers
-  2. POST /api/identify - Identify protocol from Tuya IR code and generate commands
+It provides endpoints for:
+  1. GET /api/manufacturers - List manufacturers with known good codes
+  2. POST /api/generate-from-manufacturer - Generate commands from known codes
+  3. POST /api/identify - Identify protocol from Tuya IR code and generate commands
 """
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import RedirectResponse
 from app.api.identify import router as identify_router
+from app.api.manufacturers import router as manufacturers_router
 
 # Create FastAPI app with Swagger UI at root
 app = FastAPI(
@@ -30,8 +32,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Register router
+# Register routers
 app.include_router(identify_router, prefix="/api", tags=["identify"])
+app.include_router(manufacturers_router, prefix="/api", tags=["manufacturers"])
 
 
 # Redirect root to Swagger UI
