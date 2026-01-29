@@ -21,10 +21,13 @@ DAIKIN_KNOWN_GOOD_CODES = {
     # "HEAT_22C": "...",
 }
 
-# Mitsubishi AC test codes (add when available)
+# Mitsubishi AC test codes (generated from IRMitsubishiAc class)
 MITSUBISHI_KNOWN_GOOD_CODES = {
-    # "COOL_24C": "...",
-    # "HEAT_22C": "...",
+    "OFF": "B0gN1gbCARQFgAMBpAHgAQPgAw/gAx/gExfgBzPgCwvgUwPgG2fgCyPgC//gQ3PgvwPhC98FFAW4AYw8",
+    "COOL_24C_AUTO": "B0gN1gbCARQFgAMBpAHgAQPgAw/gAx/gExfgBzPgCwvgPwPgD5/gIzfgKz/gG0/gxwPhD1+B/wO4AYw8",
+    "HEAT_22C_AUTO": "B0gN1gbCARQFgAMBpAHgAQPgAw/gAx/gExfgBzPgCwvgPwPgJ1/gC+PgGxvgI4fgzwPB5+AHA4AbA7gBjDw=",
+    "COOL_24C_MAX": "B0gN1gbCARQFgAMBpAHgAQPgAw/gAx/gExfgBzPgCwvgPwPgD5/gIzfgHz/gC/vg7wPhCeMDuAGMPA==",
+    "AUTO_22C_AUTO": "B0gN1gbCARQFgAMBpAHgAQPgAw/gAx/gExfgBzPgCwvgPwPgC1PgE2fgC+PgGxvgK4fgywPhD28FFAW4AYw8",
 }
 
 # Panasonic AC test codes
